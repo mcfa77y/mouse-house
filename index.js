@@ -2,6 +2,20 @@ var cool = require('cool-ascii-faces');
 var express = require('express');
 var app = express();
 var pg = require('pg');
+var path = require('path');
+var favicon = require('serve-favicon');
+var logger = require('morgan');
+var cookieParser = require('cookie-parser');
+var bodyParser = require('body-parser');
+var cors = require('cors')
+// var routes = require('./routes/index');
+const rp = require('request-promise');
+var app = express();
+// var routes = require('./routes/index');
+// handel bars helpers
+var hbs = require('hbs');
+var helpers = require('handlebars-helpers')({handlebars: hbs.handlebars});
+//helpers.comparison({handlebars: hbs.handlebars});
 
 app.set('port', (process.env.PORT || 5000));
 
@@ -9,10 +23,20 @@ app.use(express.static(__dirname + '/public'));
 
 // views is directory for all template files
 app.set('views', __dirname + '/views');
-app.set('view engine', 'ejs');
+app.set('view engine', 'hbs');
 
 app.get('/', function(request, response) {
   response.render('pages/index')
+});
+
+app.get('/mouse', function(request, response) {
+  response.render('pages/mouse')
+});
+app.get('/cage', function(request, response) {
+  response.render('pages/cage')
+});
+app.get('/breed', function(request, response) {
+  response.render('pages/breed')
 });
 
 app.get('/cool', function(request, response) {
@@ -35,3 +59,11 @@ app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
 });
 
+app.use(logger('dev'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+    extended: false
+}));
+
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
