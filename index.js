@@ -14,13 +14,16 @@ var app = express();
 // var routes = require('./routes/index');
 // handel bars helpers
 var hbs = require('hbs');
+var hbsutils = require('hbs-utils')(hbs);
 var helpers = require('handlebars-helpers')({handlebars: hbs.handlebars});
 //helpers.comparison({handlebars: hbs.handlebars});
 
 app.set('port', (process.env.PORT || 5000));
 
 app.use(express.static(__dirname + '/public'));
-
+// reg partials
+hbs.registerPartials(__dirname + '/views/partials');
+hbsutils.registerWatchedPartials(__dirname + '/views/partials');
 // views is directory for all template files
 app.set('views', __dirname + '/views');
 app.set('view engine', 'hbs');
