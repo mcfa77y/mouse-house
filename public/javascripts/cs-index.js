@@ -61,7 +61,7 @@ $(function() {
 
 function setupSelects() {
     $(".js-example-basic-multiple").select2({
-        placeholder: "Select a mouse",
+        placeholder: "Select",
         allowClear: true
     });
 }
@@ -79,6 +79,7 @@ function setupDatePicker() {
         const picker = new MaterialDatetimePicker()
             .on('submit', (val) => {
                 input.value = val.format("MM/DD/YYYY");
+                $(input).change()
             });
         input.addEventListener('focus', () => picker.open());
     })

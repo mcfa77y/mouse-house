@@ -1,89 +1,57 @@
-id mouse0 - fk id mouse1 - fk id pairing date - ts plug date - ts check for pup - ts litter dob - ts ween date - ts male count - int female count - int genotype - enum notes - varchar status - 0,1
+id mouse0 - fk id 
+mouse1 - fk id 
+pairing date - ts 
+plug date - ts
+check for pup - ts
+litter dob - ts
+ween date - ts
+male count - int female count - int 
+genotype - enum notes - varchar status - 0,1
 <fieldset>
     <legend>Breed</legend>
-    <div class="form-group col-md-6">
-        <label for="idx" class="col-md-3 control-label">index</label>
-        <div class="col-md-9">
-            <input type="text" class="form-control" id="idx" placeholder="1234">
-        </div>
-    </div>
-    <div class="form-group col-md-6">
-        <label for="type" class="col-md-3 control-label">type</label>
-        <div class="col-md-9">
-            <select class="form-control" id="type">
-                <option value="stock">stock</option>
-                <option value="breeding">breeding</option>
-                <option value="experiment">experiment</option>
-                <option value="terminating">terminating</option>
-                <option value="add type">add type</option>
+    {{> text_input id='idx' description='ID' placeholder='1234'}}
+    <div class="form-group col-md-6 label-floating " style="
+    height: 55px;
+">
+        <label for="genotype" class="col-md-2 control-label">genotype</label>
+        <div class="col-md-10">
+            <select class="form-control js-example-basic-multiple" multiple="multiple" id="type">
+                <option value="X">X</option>
+                <option value="Y">Y</option>
+                <option value="Z">Z</option>
             </select>
         </div>
     </div>
     <div class="form-group col-md-6">
-        <label for="pairing-date" class="col-md-3 control-label">pairing date</label>
-        <div class="col-md-9">
-            <input type="text" class="form-control c-datepicker-input" id="pairing-date" placeholder="mm/dd/yyyy">
-            <div class="input-group">
-                <input type="text" class="form-control" placeholder="mm/dd/yyyy">
-                <span class="input-group-btn">
-        <button class="btn btn-info" type="button">today</button>
-      </span>
-            </div>
-        </div>
-    </div>
-    <div class="form-group col-md-6">
-        <label for="plug-date" class="col-md-3 control-label">plug date</label>
-        <div class="col-md-9">
-            <input type="text" class="form-control c-datepicker-input" id="plug-date" placeholder="mm/dd/yyyy">
-        </div>
-    </div>
-    <div class="form-group col-md-6">
-        <label for="check-for-pup-date" class="col-md-3 control-label">check-for-pup date</label>
-        <div class="col-md-9">
-            <input type="text" class="form-control c-datepicker-input" id="check-for-pup-date" placeholder="mm/dd/yyyy">
-        </div>
-    </div>
-    <div class="form-group col-md-6">
-        <label for="litter-dob-date" class="col-md-3 control-label">litter-dob date</label>
-        <div class="col-md-9">
-            <input type="text" class="form-control c-datepicker-input" id="litter-dob-date" placeholder="mm/dd/yyyy">
-        </div>
-    </div>
-    <div class="form-group col-md-6">
-        <label for="ween-date" class="col-md-3 control-label">ween date</label>
-        <div class="col-md-9">
-            <input type="text" class="form-control c-datepicker-input" id="ween-date" placeholder="mm/dd/yyyy">
-        </div>
-    </div>
-    <div class="form-group col-md-6">
-        <label for="male-count" class="col-md-3 control-label">male count</label>
-        <div class="col-md-9">
-            <input type="text" class="form-control" id="male-count" placeholder="#">
-        </div>
-    </div>
-    <div class="form-group col-md-6">
-        <label for="female-count" class="col-md-3 control-label">female count</label>
-        <div class="col-md-9">
-            <input type="text" class="form-control" id="female-count" placeholder="#">
-        </div>
-    </div>
-    <div class="form-group col-md-12">
-        <label for="genotype" class="col-md-1 control-label">genotype</label>
-        <div class="col-md-9">
-            <select class="form-control js-example-basic-multiple" multiple="multiple" id="type">
+        <label for="male-mouse" class="col-md-2 control-label">Male mouse</label>
+        <div class="col-md-10">
+            <select class="form-control" id="type">
                 <option value="huey">huey</option>
                 <option value="duey">duey</option>
                 <option value="louie">louie</option>
             </select>
         </div>
     </div>
-    <div class="form-group col-md-12">
-        <label for="notes" class="col-md-1 control-label">Notes</label>
-        <div class="col-md-9">
-            <textarea class="form-control" rows="3" id="notes">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</textarea>
-            <span class="help-block">A longer block of help text that breaks onto a new line and may extend beyond one line.</span>
+    <div class="form-group col-md-6">
+        <label for="male-mouse" class="col-md-2 control-label">Female mouse</label>
+        <div class="col-md-10">
+            <select class="form-control" id="type">
+                <option value="blossom">blossom</option>
+                <option value="buttercup">buttercup</option>
+                <option value="bubbles">bubbles</option>
+            </select>
         </div>
     </div>
+    {{> date_input id='pairing-date' description='Pairing date'}}
+    {{> date_input id='plug-date' description='Plug date'}}
+    {{> date_input id='pup-check-date' description='Pup check date'}}
+    {{> date_input id='litter-date-of-birth' description='Litter D.O.B.'}}
+    {{> date_input id='ween-date' description='Ween date'}}
+    {{> text_input id='male-count' description='Male count' placeholder='3'}}
+    {{> text_input id='female-count' description='Female count' placeholder='3'}}
+
+    
+    {{> text_area_input id='notes' description='Notes'}}
     <div class="form-group">
         <div class="col-md-3 col-md-offset-9">
             <button type="button" class="btn btn-default">Reset</button>

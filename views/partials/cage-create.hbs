@@ -1,12 +1,8 @@
-id fk mouse 0..5 type - enum stock, breeding, experiment, terminating notes - varchar setup date - timestamp last update - timestamp end date - timestamp
+id fk mouse 0..5 type - enum stock, breeding, experiment, terminating 
+notes - varchar setup date - timestamp last update - timestamp end date - timestamp
 <fieldset>
     <legend>Cage</legend>
-    <div class="form-group col-md-6">
-        <label for="idx" class="col-md-2 control-label">index</label>
-        <div class="col-md-10">
-            <input type="text" class="form-control" id="idx" placeholder="1234">
-        </div>
-    </div>
+    {{> text_input id='idx' description='ID' placeholder='1234'}}
     <div class="form-group col-md-6">
         <label for="type" class="col-md-2 control-label">type</label>
         <div class="col-md-10">
@@ -19,24 +15,10 @@ id fk mouse 0..5 type - enum stock, breeding, experiment, terminating notes - va
             </select>
         </div>
     </div>
-    <div class="form-group col-md-6">
-        <label for="setup-date" class="col-md-2 control-label">setup date</label>
-        <div class="col-md-10">
-            <input type="text" class="form-control c-datepicker-input" id="setup-date" placeholder="mm/dd/yyyy">
-        </div>
-    </div>
-    <div class="form-group col-md-6">
-        <label for="last-update" class="col-md-2 control-label">last update</label>
-        <div class="col-md-10">
-            <input type="text" class="form-control c-datepicker-input" id="last-update" placeholder="mm/dd/yyyy">
-        </div>
-    </div>
-    <div class="form-group col-md-6">
-        <label for="end-date" class="col-md-2 control-label">end date</label>
-        <div class="col-md-10">
-            <input type="text" class="form-control c-datepicker-input" id="end-date" placeholder="mm/dd/yyyy">
-        </div>
-    </div>
+    {{> date_input id='setup-date' description='Setup date'}}
+    {{> date_input id='last-update' description='Last update'}}
+    {{> date_input id='end-date' description='End date'}}
+
     <div class="form-group col-md-12">
         <label for="mice" class="col-md-1 control-label">mice</label>
         <div class="col-md-10">
@@ -47,13 +29,7 @@ id fk mouse 0..5 type - enum stock, breeding, experiment, terminating notes - va
             </select>
         </div>
     </div>
-    <div class="form-group col-md-12">
-        <label for="notes" class="col-md-1 control-label">Notes</label>
-        <div class="col-md-10">
-            <textarea class="form-control" rows="3" id="notes">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</textarea>
-            <span class="help-block">A longer block of help text that breaks onto a new line and may extend beyond one line.</span>
-        </div>
-    </div>
+    {{> text_area_input id='notes' description='Notes'}}
     <div class="form-group">
         <div class="col-md-3 col-md-offset-9">
             <button type="button" class="btn btn-default">Reset</button>

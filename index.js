@@ -23,7 +23,10 @@ app.set('port', (process.env.PORT || 5000));
 app.use(express.static(__dirname + '/public'));
 // reg partials
 hbs.registerPartials(__dirname + '/views/partials');
+hbs.registerPartials(__dirname + '/views/partials/form-elements');
 hbsutils.registerWatchedPartials(__dirname + '/views/partials');
+hbsutils.registerWatchedPartials(__dirname + '/views/partials/form-elements');
+
 // views is directory for all template files
 app.set('views', __dirname + '/views');
 app.set('view engine', 'hbs');
