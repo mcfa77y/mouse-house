@@ -1,6 +1,8 @@
 $(function() {
     setupToastr();
     setupDatePicker();
+    setupDropDown();
+    setupSelects();
     $.material.init();
     var win;
     var checkConnect;
@@ -57,14 +59,29 @@ $(function() {
 
 });
 
-function setupDatePicker() {
-    const input = document.querySelector('.c-datepicker-input');
-    const picker = new MaterialDatePicker()
-        .on('submit', (val) => {
-            input.value = val.format("DD/MM/YYYY");
-        });
+function setupSelects() {
+    $(".js-example-basic-multiple").select2({
+        placeholder: "Select a mouse",
+        allowClear: true
+    });
+}
 
-    input.addEventListener('focus', () => picker.open());
+function setupDropDown() {
+    $(".dropdown-menu li a").click(function() {
+        var selText = $(this).text();
+        $(this).parents('.btn-group').find('.dropdown-toggle').html(selText + ' <span class="caret"></span>');
+    });
+}
+
+function setupDatePicker() {
+    const inputs = document.querySelectorAll('.c-datepicker-input');
+    inputs.forEach((input) => {
+        const picker = new MaterialDatetimePicker()
+            .on('submit', (val) => {
+                input.value = val.format("MM/DD/YYYY");
+            });
+        input.addEventListener('focus', () => picker.open());
+    })
 }
 
 function setupToastr() {
