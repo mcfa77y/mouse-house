@@ -60,10 +60,17 @@ $(function() {
 });
 
 function setupSelects() {
-    $(".js-example-basic-multiple").select2({
-        placeholder: "Select",
-        allowClear: true
-    });
+    // $('.foo-select-duet')
+    //     .selectize({maxItems: 2});
+
+    // $('.foo-select')
+    //     .toArray()
+    //     .forEach((s)=>{$(s).selectize()})
+
+    // $(".js-example-basic-multiple").select2({
+    //     placeholder: "Select",
+    //     allowClear: true
+    // });
 }
 
 function setupDropDown() {

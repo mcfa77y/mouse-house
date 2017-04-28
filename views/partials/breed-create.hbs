@@ -10,12 +10,13 @@ genotype - enum notes - varchar status - 0,1
 <fieldset>
     <legend>Breed</legend>
     {{> text_input id='idx' description='ID' placeholder='1234'}}
-    <div class="form-group col-md-6 label-floating " style="
+    {{> select_input {id='genotype2' description='Genotype2' items=['X', 'Y', 'Z']}}}
+    <div class="form-group col-md-6" style="
     height: 55px;
 ">
-        <label for="genotype" class="col-md-2 control-label">genotype</label>
-        <div class="col-md-10">
-            <select class="form-control js-example-basic-multiple" multiple="multiple" id="type">
+        <label for="genotype" class="col-md-3 control-label">Genotype</label>
+        <div class="col-md-9">
+            <select class="form-control foo-select-duet" multiple="multiple" id="genotype">
                 <option value="X">X</option>
                 <option value="Y">Y</option>
                 <option value="Z">Z</option>
@@ -23,9 +24,9 @@ genotype - enum notes - varchar status - 0,1
         </div>
     </div>
     <div class="form-group col-md-6">
-        <label for="male-mouse" class="col-md-2 control-label">Male mouse</label>
-        <div class="col-md-10">
-            <select class="form-control" id="type">
+        <label for="male-mouse" class="col-md-3 control-label foo-select">Male mouse</label>
+        <div class="col-md-9">
+            <select class="form-control" id="male-mouse">
                 <option value="huey">huey</option>
                 <option value="duey">duey</option>
                 <option value="louie">louie</option>
@@ -33,9 +34,9 @@ genotype - enum notes - varchar status - 0,1
         </div>
     </div>
     <div class="form-group col-md-6">
-        <label for="male-mouse" class="col-md-2 control-label">Female mouse</label>
-        <div class="col-md-10">
-            <select class="form-control" id="type">
+        <label for="female-mouse" class="col-md-3 control-label">Female mouse</label>
+        <div class="col-md-9">
+            <select class="form-control" id="female-mouse">
                 <option value="blossom">blossom</option>
                 <option value="buttercup">buttercup</option>
                 <option value="bubbles">bubbles</option>
