@@ -9,6 +9,8 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var cors = require('cors')
 // var routes = require('./routes/index');
+var Sequelize = require('Sequelize')
+
 const rp = require('request-promise');
 var app = express();
 // var routes = require('./routes/index');
@@ -48,6 +50,17 @@ app.get('/breed', function(request, response) {
 app.get('/cool', function(request, response) {
   response.send(cool());
 });
+
+var sequelize = new Sequelize('joelau', '', '', {
+  host: 'localhost',
+  dialect: 'postgres',
+  pool: {
+    max: 5,
+    min: 0,
+    idle: 10000
+  }
+});
+
 
 app.get('/db', function (request, response) {
   pg.connect(process.env.DATABASE_URL, function(err, client, done) {

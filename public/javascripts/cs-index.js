@@ -60,12 +60,12 @@ $(function() {
 });
 
 function setupSelects() {
-    // $('.foo-select-duet')
-    //     .selectize({maxItems: 2});
+    $('.foo-select-duet')
+        .selectize({maxItems: 2});
 
-    // $('.foo-select')
-    //     .toArray()
-    //     .forEach((s)=>{$(s).selectize()})
+    $('.foo-select')
+        .toArray()
+        .forEach((s)=>{$(s).selectize()})
 
     // $(".js-example-basic-multiple").select2({
     //     placeholder: "Select",

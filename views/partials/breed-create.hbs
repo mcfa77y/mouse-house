@@ -10,11 +10,11 @@ genotype - enum notes - varchar status - 0,1
 <fieldset>
     <legend>Breed</legend>
     {{> text_input id='idx' description='ID' placeholder='1234'}}
-    
+
     <div class="form-group col-md-6" style="
     height: 55px;
 ">
-        <label for="genotype" class="col-md-3 control-label">Genotype</label>
+        <label for="genotype" class="col-md-3  label-floating control-label">Genotype</label>
         <div class="col-md-9">
             <select class="form-control foo-select-duet" multiple="multiple" id="genotype">
                 <option value="X">X</option>
@@ -23,31 +23,31 @@ genotype - enum notes - varchar status - 0,1
             </select>
         </div>
     </div>
-    <div class="form-group col-md-6">
-        <label for="male-mouse" class="col-md-3 control-label foo-select">Male mouse</label>
+    <div class="form-group  label-floating col-md-6">
+        <label for="male-mouse" class="col-md-3 control-label">Male mouse</label>
         <div class="col-md-9">
-            <select class="form-control" id="male-mouse">
+            <select class="form-control foo-select" id="male-mouse">
                 <option value="huey">huey</option>
                 <option value="duey">duey</option>
                 <option value="louie">louie</option>
             </select>
         </div>
     </div>
-    <div class="form-group col-md-6">
+    <div class="form-group  label-floating col-md-6">
         <label for="female-mouse" class="col-md-3 control-label">Female mouse</label>
         <div class="col-md-9">
-            <select class="form-control" id="female-mouse">
+            <select class="form-control foo-select" id="female-mouse">
                 <option value="blossom">blossom</option>
                 <option value="buttercup">buttercup</option>
                 <option value="bubbles">bubbles</option>
             </select>
         </div>
     </div>
-    {{> date_input id='pairing-date' description='Pairing date'}}
-    {{> date_input id='plug-date' description='Plug date'}}
-    {{> date_input id='pup-check-date' description='Pup check date'}}
+    {{> date_input id='pairing-date' description='Pairing'}}
+    {{> date_input id='plug-date' description='Plug'}}
+    {{> date_input id='pup-check-date' description='Pup check'}}
     {{> date_input id='litter-date-of-birth' description='Litter D.O.B.'}}
-    {{> date_input id='ween-date' description='Ween date'}}
+    {{> date_input id='ween-date' description='Ween'}}
     {{> text_input id='male-count' description='Male count' placeholder='3'}}
     {{> text_input id='female-count' description='Female count' placeholder='3'}}
 
