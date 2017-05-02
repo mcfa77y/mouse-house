@@ -8,7 +8,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var cors = require('cors')
-// var routes = require('./routes/index');
+    // var routes = require('./routes/index');
 var Sequelize = require('Sequelize')
 
 const rp = require('request-promise');
@@ -17,7 +17,9 @@ var app = express();
 // handel bars helpers
 var hbs = require('hbs');
 var hbsutils = require('hbs-utils')(hbs);
-var helpers = require('handlebars-helpers')({handlebars: hbs.handlebars});
+var helpers = require('handlebars-helpers')({
+    handlebars: hbs.handlebars
+});
 //helpers.comparison({handlebars: hbs.handlebars});
 
 app.set('port', (process.env.PORT || 5000));
@@ -34,48 +36,87 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'hbs');
 
 app.get('/', function(request, response) {
-  response.render('pages/index')
+    response.render('pages/index')
 });
 
 app.get('/mouse', function(request, response) {
-  response.render('pages/mouse')
+    response.render('pages/mouse')
 });
 app.get('/cage', function(request, response) {
-  response.render('pages/cage')
+    response.render('pages/cage')
 });
 app.get('/breed', function(request, response) {
-  response.render('pages/breed')
+    response.render('pages/breed')
 });
 
 app.get('/cool', function(request, response) {
-  response.send(cool());
+    response.send(cool());
 });
 
 var sequelize = new Sequelize('joelau', '', '', {
-  host: 'localhost',
-  dialect: 'postgres',
-  pool: {
-    max: 5,
-    min: 0,
-    idle: 10000
-  }
-});
+    host: 'localhost',
+    dialect: 'postgres',
+    pool: {
+        max: 5,
+        min: 0,
+        idle: 10000
+    }
+})
 
+var loopback = require('loopback');
 
-app.get('/db', function (request, response) {
-  pg.connect(process.env.DATABASE_URL, function(err, client, done) {
-    client.query('SELECT * FROM test_table', function(err, result) {
-      done();
-      if (err)
-       { console.error(err); response.send("Error " + err); }
-      else
-       { response.render('pages/db', {results: result.rows} ); }
+app.get('/xxx', (req, res) => {
+    var ds = loopback.createDataSource('postgresql', {
+        "host": "",
+        "port": "",
+        "url": "",
+        "database": "",
+        "password": "",
+        "user": "",
+        "ssl":true
     });
-  });
+    // Discover and build models from INVENTORY table
+    ds.discoverAndBuildModels('MOUSE', {
+            visited: {},
+            associations: true
+        },
+        function(err, models) {
+            // Now we have a list of models keyed by the model name
+            // Find the first record from the inventory
+            models.Mouse.findOne({}, function(err, inv) {
+                if (err) {
+                    console.error(err);
+                    return;
+                }
+                console.log("\nInventory: ", inv);
+                // Navigate to the product model
+                // Assumes inventory table has a foreign key relationship to product table
+                inv.product(function(err, prod) {
+                    console.log("\nProduct: ", prod);
+                    console.log("\n ------------- ");
+                });
+            });
+        });
+})
+
+app.get('/db', function(request, response) {
+    pg.connect(process.env.DATABASE_URL, function(err, client, done) {
+        client.query('SELECT * FROM test_table', function(err, result) {
+            done();
+            if (err) {
+                console.error(err);
+                response.send("Error " + err);
+            } else {
+                response.render('pages/db', {
+                    results: result.rows
+                });
+            }
+        });
+    });
 });
 
 app.listen(app.get('port'), function() {
-  console.log('Node app is running on port', app.get('port'));
+    console.log('Node app is running on port', app.get('port'));
 });
 
 app.use(logger('dev'));
