@@ -6,9 +6,7 @@ notes - varchar setup date - timestamp last update - timestamp end date - timest
     {{#JSONparse '{"items": ["stock","breeding","experiment","terminating"], "id":"type", "description":"type"}'}}
         {{> select_input }}
     {{/JSONparse}}
-    {{#JSONparse '{"items": ["huey","duey","louie","blossom","buttercup","bubbles"], "id":"mice", "description":"mice"}'}}
-        {{> select_input }}
-    {{/JSONparse}}
+
     {{> date_input id='setup-date' description='Setup date'}}
     {{> date_input id='last-update' description='Last update'}}
     {{> date_input id='end-date' description='End date'}}

@@ -10,39 +10,16 @@ genotype - enum notes - varchar status - 0,1
 <fieldset>
     <legend>Breed</legend>
     {{> text_input id='idx' description='ID' placeholder='1234'}}
-    {{#JSONparse '{"items": [1,2,3], "id":"foo", "desc":"bar"}'}}
+    {{#JSONparse '{"items": ["X","Y","Z"], "id":"genotype", "description":"Genotype"}'}}
         {{> select_input }}
     {{/JSONparse}}
-    <div class="form-group col-md-6" style="height: 55px;">
-        <label for="genotype" class="col-md-3 control-label">Genotype</label>
-        <div class="col-md-9">
-            <select class="form-control foo-select-duet" multiple="multiple" id="genotype">
-                <option value="X">X</option>
-                <option value="Y">Y</option>
-                <option value="Z">Z</option>
-            </select>
-        </div>
-    </div>
-    <div class="form-group  label-floating col-md-6">
-        <label for="male-mouse" class="col-md-3 control-label">Male mouse</label>
-        <div class="col-md-9">
-            <select class="form-control foo-select" id="male-mouse">
-                <option value="huey">huey</option>
-                <option value="duey">duey</option>
-                <option value="louie">louie</option>
-            </select>
-        </div>
-    </div>
-    <div class="form-group  label-floating col-md-6">
-        <label for="female-mouse" class="col-md-3 control-label">Female mouse</label>
-        <div class="col-md-9">
-            <select class="form-control foo-select" id="female-mouse">
-                <option value="blossom">blossom</option>
-                <option value="buttercup">buttercup</option>
-                <option value="bubbles">bubbles</option>
-            </select>
-        </div>
-    </div>
+    {{#JSONparse '{"items": ["huey","duey","louie"], "id":"male_mouse", "description":"male mouse"}'}}
+        {{> select_input }}
+    {{/JSONparse}}
+    {{#JSONparse '{"items": ["blossom","buttercup","bubbles"], "id":"female_mouse", "description":"female mouse"}'}}
+        {{> select_input }}
+    {{/JSONparse}}
+
     {{> date_input id='pairing-date' description='Pairing'}}
     {{> date_input id='plug-date' description='Plug'}}
     {{> date_input id='pup-check-date' description='Pup check'}}
