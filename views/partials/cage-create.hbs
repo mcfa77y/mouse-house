@@ -1,34 +1,21 @@
-id fk mouse 0..5 type - enum stock, breeding, experiment, terminating 
+id fk mouse 0..5 type - enum stock, breeding, experiment, terminating
 notes - varchar setup date - timestamp last update - timestamp end date - timestamp
 <fieldset>
     <legend>Cage</legend>
     {{> text_input id='idx' description='ID' placeholder='1234'}}
-    <div class="form-group col-md-6">
-        <label for="type" class="col-md-2 control-label">type</label>
-        <div class="col-md-10">
-            <select class="form-control" id="type">
-                <option value="stock">stock</option>
-                <option value="breeding">breeding</option>
-                <option value="experiment">experiment</option>
-                <option value="terminating">terminating</option>
-                <option value="add type">add type</option>
-            </select>
-        </div>
-    </div>
+    {{#JSONparse '{"items": ["stock","breeding","experiment","terminating"], "id":"type", "description":"type"}'}}
+        {{> select_input }}
+    {{/JSONparse}}
+    {{#JSONparse '{"items": ["huey","duey","louie","blossom","buttercup","bubbles"], "id":"mice", "description":"mice"}'}}
+        {{> select_input }}
+    {{/JSONparse}}
     {{> date_input id='setup-date' description='Setup date'}}
     {{> date_input id='last-update' description='Last update'}}
     {{> date_input id='end-date' description='End date'}}
+    {{#JSONparse '{"items": ["huey","duey","louie","blossom","buttercup","bubbles"], "id":"mice", "description":"mice"}'}}
+        {{> select_input }}
+    {{/JSONparse}}
 
-    <div class="form-group col-md-12">
-        <label for="mice" class="col-md-1 control-label">mice</label>
-        <div class="col-md-10">
-            <select class="form-control js-example-basic-multiple" multiple="multiple" id="type">
-                <option value="huey">huey</option>
-                <option value="duey">duey</option>
-                <option value="louie">louie</option>
-            </select>
-        </div>
-    </div>
     {{> text_area_input id='notes' description='Notes'}}
     <div class="form-group">
         <div class="col-md-3 col-md-offset-9">

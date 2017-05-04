@@ -1,20 +1,20 @@
-id mouse0 - fk id 
-mouse1 - fk id 
-pairing date - ts 
+id mouse0 - fk id
+mouse1 - fk id
+pairing date - ts
 plug date - ts
 check for pup - ts
 litter dob - ts
 ween date - ts
-male count - int female count - int 
+male count - int female count - int
 genotype - enum notes - varchar status - 0,1
 <fieldset>
     <legend>Breed</legend>
     {{> text_input id='idx' description='ID' placeholder='1234'}}
-
-    <div class="form-group col-md-6" style="
-    height: 55px;
-">
-        <label for="genotype" class="col-md-3  label-floating control-label">Genotype</label>
+    {{#JSONparse '{"items": [1,2,3], "id":"foo", "desc":"bar"}'}}
+        {{> select_input }}
+    {{/JSONparse}}
+    <div class="form-group col-md-6" style="height: 55px;">
+        <label for="genotype" class="col-md-3 control-label">Genotype</label>
         <div class="col-md-9">
             <select class="form-control foo-select-duet" multiple="multiple" id="genotype">
                 <option value="X">X</option>
@@ -51,7 +51,7 @@ genotype - enum notes - varchar status - 0,1
     {{> text_input id='male-count' description='Male count' placeholder='3'}}
     {{> text_input id='female-count' description='Female count' placeholder='3'}}
 
-    
+
     {{> text_area_input id='notes' description='Notes'}}
     <div class="form-group">
         <div class="col-md-3 col-md-offset-9">

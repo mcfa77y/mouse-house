@@ -9,7 +9,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var cors = require('cors')
 // var routes = require('./routes/index');
-var Sequelize = require('Sequelize')
+var Sequelize = require('sequelize')
 
 const rp = require('request-promise');
 var app = express();

@@ -1,10 +1,7 @@
-<div class="form-group col-md-6">
-	<h1>
-items: {{items}}
-	</h1>
+<div class="form-group label-floating  col-md-6">
     <label for="{{id}}" class="col-md-3 control-label">{{description}}</label>
     <div class="col-md-9">
-        <select class="form-control foo-select-duet" multiple="multiple" id="{{id}}">
+        <select class="form-control foo-select" id="{{id}}">
             {{#each items}}
             <option value="{{this}}">{{this}}</option>
             {{/each}}
