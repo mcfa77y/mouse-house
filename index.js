@@ -8,16 +8,18 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var cors = require('cors')
-// var routes = require('./routes/index');
-var Sequelize = require('sequelize')
-
+    // var routes = require('./routes/index');
+var Sequelize = require('Sequelize')
+const BlueBird = require('bluebird')
 const rp = require('request-promise');
 var app = express();
 // var routes = require('./routes/index');
 // handel bars helpers
 var hbs = require('hbs');
 var hbsutils = require('hbs-utils')(hbs);
-var helpers = require('handlebars-helpers')({handlebars: hbs.handlebars});
+var helpers = require('handlebars-helpers')({
+    handlebars: hbs.handlebars
+});
 //helpers.comparison({handlebars: hbs.handlebars});
 
 app.set('port', (process.env.PORT || 5000));
@@ -34,48 +36,83 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'hbs');
 
 app.get('/', function(request, response) {
-  response.render('pages/index')
+    response.render('pages/index')
 });
 
 app.get('/mouse', function(request, response) {
-  response.render('pages/mouse')
+    response.render('pages/mouse')
 });
 app.get('/cage', function(request, response) {
-  response.render('pages/cage')
+    response.render('pages/cage')
 });
 app.get('/breed', function(request, response) {
-  response.render('pages/breed')
+    response.render('pages/breed')
 });
 
 app.get('/cool', function(request, response) {
-  response.send(cool());
+    response.send(cool());
 });
 
 var sequelize = new Sequelize('joelau', '', '', {
-  host: 'localhost',
-  dialect: 'postgres',
-  pool: {
-    max: 5,
-    min: 0,
-    idle: 10000
-  }
-});
+    host: 'localhost',
+    dialect: 'postgres',
+    pool: {
+        max: 5,
+        min: 0,
+        idle: 10000
+    }
+})
 
+var loopback = require('loopback');
 
-app.get('/db', function (request, response) {
-  pg.connect(process.env.DATABASE_URL, function(err, client, done) {
-    client.query('SELECT * FROM test_table', function(err, result) {
-      done();
-      if (err)
-       { console.error(err); response.send("Error " + err); }
-      else
-       { response.render('pages/db', {results: result.rows} ); }
+app.get('/xxx', (req, res) => {
+    var ds = loopback.createDataSource('postgresql', {
+        "host": "127.0.0.1",
+        "port": 5432,
+        "url": "postgres://postgres:postgres@127.0.0.1:5432/postgres",
+        "database": "postgres",
+        "password": "postgres",
+        "user": "postgres",
     });
-  });
+    ds.discoverModelDefinitions({views: false, limit: 20})
+      .then((args)=>{
+        let dmp = args.map((arg)=>{
+          return arg.name
+        })
+        return BlueBird.reduce(dmp, (acc, tableName)=>{
+          return ds.discoverModelProperties(tableName).then((args)=>{
+            return acc.add(args)
+          })
+        }, [])
+      })
+      .then((acc)=>{
+        res.render('pages/add_enum', {data: acc})
+      })
+      .catch((err)=>{
+        console.log("boo " + err)
+        res.send(err)
+      })
+    
+})
+
+app.get('/db', function(request, response) {
+    pg.connect(process.env.DATABASE_URL, function(err, client, done) {
+        client.query('SELECT * FROM test_table', function(err, result) {
+            done();
+            if (err) {
+                console.error(err);
+                response.send("Error " + err);
+            } else {
+                response.render('pages/db', {
+                    results: result.rows
+                });
+            }
+        });
+    });
 });
 
 app.listen(app.get('port'), function() {
-  console.log('Node app is running on port', app.get('port'));
+    console.log('Node app is running on port', app.get('port'));
 });
 
 app.use(logger('dev'));
