@@ -3,6 +3,8 @@ drop table ENUM cascade;
 drop table MOUSE cascade;
 drop table CAGE cascade;
 drop table BREED cascade;
+drop table breed_mouse cascade;
+drop table cage_mouse cascade;
 
 create table ENUM_TYPE (
       id SERIAL not null,
@@ -22,7 +24,7 @@ create table ENUM (
       soft_delete integer default 0,
       primary key (id),
       CONSTRAINT enum_enum_type_id_fkey FOREIGN KEY (enum_type_id)
-            REFERENCES enum (id) MATCH SIMPLE
+            REFERENCES enum_type (id) MATCH SIMPLE
             ON UPDATE NO ACTION ON DELETE NO action);
 
 CREATE TABLE MOUSE (
@@ -30,7 +32,7 @@ CREATE TABLE MOUSE (
       genotype_id integer not null,
       dob date not null,
       sex_id integer not null,
-      ear_tag integer, 
+      ear_tag integer,
       status_id integer not null,
       notes varchar (1024),
       create_timestamp timestamp default current_timestamp,
@@ -63,7 +65,7 @@ CREATE TABLE CAGE (
       CONSTRAINT CAGE_TYPE_ID_fkey FOREIGN KEY (TYPE_id)
             REFERENCES enum (id) MATCH SIMPLE
             ON UPDATE NO ACTION ON DELETE NO action);
-      
+
 CREATE TABLE BREED (
       id SERIAL not null,
       pairing_date date not null,

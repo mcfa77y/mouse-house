@@ -8,6 +8,10 @@ router.get('/breed', function(request, response) {
         .then((result) => {
             console.log('breed-route: ' + result)
         })
+    enum_controller.foreignKeys()
+        .then((x) => {
+            console.log(JSON.stringify(x, null, 3))
+        })
 });
 
 module.exports = router;
