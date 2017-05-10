@@ -10,9 +10,7 @@ genotype - enum notes - varchar status - 0,1
 <fieldset>
     <legend>Breed</legend>
     {{> text_input id='idx' description='ID' placeholder='1234'}}
-    {{#JSONparse '{"items": ["X","Y","Z"], "id":"genotype", "description":"Genotype"}'}}
-        {{> select_input }}
-    {{/JSONparse}}
+    {{> select_input genome_data }}
     {{#JSONparse '{"items": ["huey","duey","louie"], "id":"male_mouse", "description":"male mouse"}'}}
         {{> select_input }}
     {{/JSONparse}}

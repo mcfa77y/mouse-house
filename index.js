@@ -10,9 +10,12 @@ var bodyParser = require('body-parser');
 var cors = require('cors')
     // var routes = require('./routes/index');
 var Sequelize = require('Sequelize')
-const BlueBird = require('bluebird')
 const rp = require('request-promise');
 var app = express();
+
+
+var breed = require('./routes/breed');
+app.use('/', breed);
 // var routes = require('./routes/index');
 // handel bars helpers
 var hbs = require('hbs');
@@ -27,8 +30,9 @@ app.set('port', (process.env.PORT || 5000));
 app.use(express.static(__dirname + '/public'));
 // reg partials
 hbs.registerPartials(__dirname + '/views/partials');
-hbs.registerPartials(__dirname + '/views/partials/form-elements');
 hbsutils.registerWatchedPartials(__dirname + '/views/partials');
+
+hbs.registerPartials(__dirname + '/views/partials/form-elements');
 hbsutils.registerWatchedPartials(__dirname + '/views/partials/form-elements');
 
 // views is directory for all template files
@@ -45,35 +49,13 @@ app.get('/mouse', function(request, response) {
 app.get('/cage', function(request, response) {
     response.render('pages/cage')
 });
-app.get('/breed', function(request, response) {
-    response.render('pages/breed')
-});
+
 
 app.get('/cool', function(request, response) {
     response.send(cool());
 });
-
-var sequelize = new Sequelize('joelau', '', '', {
-    host: 'localhost',
-    dialect: 'postgres',
-    pool: {
-        max: 5,
-        min: 0,
-        idle: 10000
-    }
-})
-
-var loopback = require('loopback');
-
 app.get('/xxx', (req, res) => {
-    var ds = loopback.createDataSource('postgresql', {
-        "host": "127.0.0.1",
-        "port": 5432,
-        "url": "postgres://postgres:postgres@127.0.0.1:5432/postgres",
-        "database": "postgres",
-        "password": "postgres",
-        "user": "postgres",
-    });
+   
     ds.discoverModelDefinitions({views: false, limit: 20})
       .then((args)=>{
         let dmp = args.map((arg)=>{
