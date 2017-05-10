@@ -1,4 +1,4 @@
-const db = require('./database')
+const db = require('../lib/database')
 String.prototype.capitalize = function() {
     return this.replace(/(^|\s|_)([a-z])/g, function(m, p1, p2) {
         return p1 + p2.toUpperCase();
@@ -13,23 +13,6 @@ class Base_Controller {
         this.last_name = lname
     }
 
-
-    models() {
-        return db.discoverAndBuildModels(this.name, {
-                visited: {},
-                associations: true
-            })
-            .then((models) => {
-                return models[this.name.toLowerCase().capitalize().replace('_', '')]
-            })
-    }
-
-    modelProperties() {
-        return db.data_source.discoverModelProperties(this.name)
-    }
-    foreignKeys() {
-        return db.data_source.discoverForeignKeys(this.name)
-    }
 }
 
 // export the class instance

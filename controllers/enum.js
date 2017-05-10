@@ -1,9 +1,11 @@
 const enum_type_controller = require('./enum_type')
 const Base_Controller = require('./base_controller')
-
+const squel = require('squel')
+const db = require('../lib/database')
 class Controller extends Base_Controller {
 
     getByEnumTypeCode(my_code) {
+
         return enum_type_controller
             .getByCode(my_code)
             .then((results) => {

@@ -55,41 +55,39 @@ app.get('/cool', function(request, response) {
 });
 app.get('/xxx', (req, res) => {
 
-    ds.discoverModelDefinitions({views: false, limit: 20})
-      .then((args)=>{
-        let dmp = args.map((arg)=>{
-          return arg.name
+    ds.discoverModelDefinitions({ views: false, limit: 20 })
+        .then((args) => {
+            let dmp = args.map((arg) => {
+                return arg.name
+            })
+            return BlueBird.reduce(dmp, (acc, tableName) => {
+                return ds.discoverModelProperties(tableName).then((args) => {
+                    return acc.add(args)
+                })
+            }, [])
         })
-        return BlueBird.reduce(dmp, (acc, tableName)=>{
-          return ds.discoverModelProperties(tableName).then((args)=>{
-            return acc.add(args)
-          })
-        }, [])
-      })
-      .then((acc)=>{
-        res.render('pages/add_enum', {data: acc})
-      })
-      .catch((err)=>{
-        console.log("boo " + err)
-        res.send(err)
-      })
+        .then((acc) => {
+            res.render('pages/add_enum', { data: acc })
+        })
+        .catch((err) => {
+            console.log("boo " + err)
+            res.send(err)
+        })
 
 })
-
+const db = require('./lib/database')
+const squel = require('squel')
 app.get('/db', function(request, response) {
-    pg.connect(process.env.DATABASE_URL, function(err, client, done) {
-        client.query('SELECT * FROM test_table', function(err, result) {
-            done();
-            if (err) {
-                console.error(err);
-                response.send("Error " + err);
-            } else {
-                response.render('pages/db', {
-                    results: result.rows
-                });
-            }
-        });
-    });
+    db.any(squel.select().from('enum').toString())
+        .then((result) => {
+            response.render('pages/db', {
+                results: result
+            });
+        })
+        .catch((err) => {
+            console.error(err);
+            response.send("Error " + err);
+        })
 });
 
 app.listen(app.get('port'), function() {
