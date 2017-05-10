@@ -9,7 +9,6 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var cors = require('cors')
     // var routes = require('./routes/index');
-var Sequelize = require('Sequelize')
 const rp = require('request-promise');
 var app = express();
 
@@ -55,7 +54,7 @@ app.get('/cool', function(request, response) {
     response.send(cool());
 });
 app.get('/xxx', (req, res) => {
-   
+
     ds.discoverModelDefinitions({views: false, limit: 20})
       .then((args)=>{
         let dmp = args.map((arg)=>{
@@ -74,7 +73,7 @@ app.get('/xxx', (req, res) => {
         console.log("boo " + err)
         res.send(err)
       })
-    
+
 })
 
 app.get('/db', function(request, response) {

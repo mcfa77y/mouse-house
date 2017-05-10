@@ -7,7 +7,8 @@
   },
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "debug": "nodemon --inspect index.js"
   },
   "dependencies": {
     "bluebird": "^3.4.7",
@@ -22,6 +23,8 @@
     "googleapis": "^18.0.0",
     "handlebars-helpers": "^0.8.2",
     "hbs": "^4.0.1",
+    "loopback": "^3.7.0",
+    "loopback-connector-postgresql": "^3.0.0",
     "material-datetime-picker": "^2.3.0",
     "morgan": "~1.7.0",
     "pg": "^6.1.5",

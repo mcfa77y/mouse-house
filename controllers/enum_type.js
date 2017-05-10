@@ -1,20 +1,17 @@
-const db = require('./database')
 const Base_Controller = require('./base_controller')
 
-function Enum_Type() {
-    Base_Controller.call('enum_type', 'm', 'h')
+class Enum_Type extends Base_Controller {
+    getByCode(my_code) {
+        console.log('self.name: ' + this.name())
+        return this.models()
+            .then((enumType) => {
+                return enumType.find({
+                    where: {
+                        code: my_code
+                    }
+                })
+            })
+    }
 }
 
-Enum_Type.prototype.getByCode = (my_code) => {
-    console.log('self.name: ' + this.name())
-    this.models().then((enumType) => {
-        enumType.find({
-            where: {
-                code: my_code
-            }
-        }).then((results) => {
-            return results
-        })
-    })
-}
-module.exports = Enum_Type
+module.exports = new Enum_Type('enum_type', 'j', 'l')
