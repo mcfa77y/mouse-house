@@ -1,4 +1,6 @@
 const db = require('../lib/database')
+const squel = require('squel')
+
 String.prototype.capitalize = function() {
     return this.replace(/(^|\s|_)([a-z])/g, function(m, p1, p2) {
         return p1 + p2.toUpperCase();
@@ -6,14 +8,15 @@ String.prototype.capitalize = function() {
 };
 // Constructor
 class Base_Controller {
-    constructor(bar, fname, lname) {
+    constructor(_name) {
         // always initialize all instance properties
-        this.name = bar;
-        this.first_name = fname
-        this.last_name = lname
-    }
+        this.name = _name;
+      }
 
 }
 
 // export the class instance
-module.exports = Base_Controller;
+exports.Base_Controller = Base_Controller;
+
+exports.db = db
+exports.squel = squel

@@ -11,13 +11,9 @@ genotype - enum notes - varchar status - 0,1
     <legend>Breed</legend>
     {{> text_input id='idx' description='ID' placeholder='1234'}}
     {{> select_input genome_data }}
-    {{#JSONparse '{"items": ["huey","duey","louie"], "id":"male_mouse", "description":"male mouse"}'}}
-        {{> select_input }}
-    {{/JSONparse}}
-    {{#JSONparse '{"items": ["blossom","buttercup","bubbles"], "id":"female_mouse", "description":"female mouse"}'}}
-        {{> select_input }}
-    {{/JSONparse}}
-
+    {{> select_input male_mouse_data}}
+    {{> select_input female_mouse_data}}
+    
     {{> date_input id='pairing-date' description='Pairing'}}
     {{> date_input id='plug-date' description='Plug'}}
     {{> date_input id='pup-check-date' description='Pup check'}}
@@ -35,3 +31,4 @@ genotype - enum notes - varchar status - 0,1
         </div>
     </div>
 </fieldset>
+<a href="javascript:void(0)" class="btn btn-default btn-fab"><i class="material-icons">grade</i></a>

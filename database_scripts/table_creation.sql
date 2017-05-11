@@ -1,10 +1,10 @@
-drop table ENUM_TYPE cascade;
-drop table ENUM cascade;
-drop table MOUSE cascade;
-drop table CAGE cascade;
-drop table BREED cascade;
-drop table breed_mouse cascade;
-drop table cage_mouse cascade;
+drop table IF EXISTS ENUM_TYPE cascade;
+drop table IF EXISTS ENUM cascade;
+drop table IF EXISTS MOUSE cascade;
+drop table IF EXISTS CAGE cascade;
+drop table IF EXISTS BREED cascade;
+drop table IF EXISTS breed_mouse cascade;
+drop table IF EXISTS cage_mouse cascade;
 
 create table ENUM_TYPE (
       id SERIAL not null,
@@ -94,10 +94,10 @@ CREATE TABLE CAGE_MOUSE (
       soft_delete integer default 0,
       primary key (id),
       CONSTRAINT cm_mouse_id_fkey FOREIGN KEY (mouse_id)
-            REFERENCES enum (id) MATCH SIMPLE
+            REFERENCES mouse (id) MATCH SIMPLE
             ON UPDATE NO ACTION ON DELETE NO action,
        CONSTRAINT cm_cage_id_fkey FOREIGN KEY (cage_id)
-            REFERENCES enum (id) MATCH SIMPLE
+            REFERENCES cage (id) MATCH SIMPLE
             ON UPDATE NO ACTION ON DELETE NO action);
 
 
@@ -111,13 +111,13 @@ CREATE TABLE BREED_MOUSE (
       soft_delete integer default 0,
       primary key (id),
       CONSTRAINT bm_mouse_male_id_fkey FOREIGN KEY (mouse_male_id)
-            REFERENCES enum (id) MATCH SIMPLE
+            REFERENCES mouse (id) MATCH SIMPLE
             ON UPDATE NO ACTION ON DELETE NO action,
       CONSTRAINT bm_mouse_female_id_fkey FOREIGN KEY (mouse_female_id)
-            REFERENCES enum (id) MATCH SIMPLE
+            REFERENCES mouse (id) MATCH SIMPLE
             ON UPDATE NO ACTION ON DELETE NO action,
        CONSTRAINT bm_breed_id_fkey FOREIGN KEY (breed_id)
-            REFERENCES enum (id) MATCH SIMPLE
+            REFERENCES breed (id) MATCH SIMPLE
             ON UPDATE NO ACTION ON DELETE NO action);
 
 insert into enum_type (code, modify_timestamp) values('SEX', current_timestamp);

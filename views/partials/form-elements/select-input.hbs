@@ -1,9 +1,9 @@
-<div class="form-group label-floating  col-md-6">
-    <label for="{{id}}" class="col-md-3 control-label">{{description}}</label>
-    <div class="col-md-9">
+<div class="form-group label-floating  col-md-2">
+    <label for="{{id}}" class=" control-label">{{description}}</label>
+    <div class="">
         <select class="form-control foo-select" id="{{id}}">
             {{#each items}}
-            <option value="{{this}}">{{this}}</option>
+            <option value="{{this.id}}">{{this.description}}</option>
             {{/each}}
         </select>
     </div>
