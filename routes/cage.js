@@ -5,28 +5,24 @@ const BlueBird = require('bluebird')
 const enum_controller = require(path.join(__dirname, '..', 'controllers/enum'))
 const mouse_controller = require(path.join(__dirname, '..', 'controllers/mouse'))
 const cage_controller = require(path.join(__dirname, '..', 'controllers/cage'))
-const utils = require('./route-utils')
+const util = require('./route-utils')
 
-router.get('/mouse', function(req, res) {
+router.get('/cage', function(req, res) {
     BlueBird.all([
             mouse_controller.getAll(),
             enum_controller.getByEnumTypeCode('MOUSE_STATUS'),
             enum_controller.getByEnumTypeCode('MOUSE_GENOTYPE'),
-            cage_controller.getAll()
 
         ])
-        .spread((m, s, g, c ) => {
-            utils.logJSON(m)
-            utils.logJSON(s)
-            s = utils.selectJSON(s, 'status')
-            g = utils.selectJSON(g, 'genotype')
-            c = c.map((c)=>{return {id: c.id, description: c.name}})
-            c = utils.selectJSON(c, 'cage')
-            res.render('pages/mouse', {
+        .spread((m, s, g ) => {
+            util.logJSON(m)
+            util.logJSON(s)
+            s = util.selectJSON(s, 'status')
+            g = util.selectJSON(g, 'genotype')
+            res.render('pages/cage', {
                 mice_data: m,
                 status: s,
-                genotype: g,
-                cage: c
+                genotype: g
             })
         })
 

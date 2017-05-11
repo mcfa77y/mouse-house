@@ -3,6 +3,7 @@ $(function() {
     setupDatePicker();
     setupDropDown();
     setupSelects();
+    setupTodayButton();
     $.material.init();
     var win;
     var checkConnect;
@@ -59,13 +60,39 @@ $(function() {
 
 });
 
+function setupTodayButton() {
+
+
+    $('.today-btn')
+        .toArray()
+        .forEach((s) => {
+                let f = s
+
+            $(s).click(() => {
+                let d = new Date()
+                let foo = $(f)
+                var datestring = ("0" + (d.getMonth() + 1)).slice(-2) + "/" + ("0" + d.getDate()).slice(-2) + "/" +
+                    d.getFullYear();
+                let input = foo.parent().parent().find('.form-control.c-datepicker-input')
+                input.val(datestring)
+                input.change()
+            })
+        })
+
+    // $(".js-example-basic-multiple").select2({
+    //     placeholder: "Select",
+    //     allowClear: true
+    // });
+}
+
 function setupSelects() {
-    $('.foo-select-duet')
-        .selectize({maxItems: 2});
+
 
     $('.foo-select')
         .toArray()
-        .forEach((s)=>{$(s).selectize()})
+        .forEach((s) => {
+            $(s).selectize()
+        })
 
     // $(".js-example-basic-multiple").select2({
     //     placeholder: "Select",

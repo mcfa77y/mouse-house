@@ -18,6 +18,9 @@ app.use('/', breed);
 
 var mouse = require('./routes/mouse');
 app.use('/', mouse);
+
+var cage = require('./routes/cage');
+app.use('/', cage);
 // var routes = require('./routes/index');
 // handel bars helpers
 var hbs = require('hbs');
@@ -45,9 +48,6 @@ app.get('/', function(request, response) {
     response.render('pages/index')
 });
 
-app.get('/cage', function(request, response) {
-    response.render('pages/cage')
-});
 
 
 app.get('/cool', function(request, response) {

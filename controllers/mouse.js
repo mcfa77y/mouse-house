@@ -7,15 +7,9 @@ const enum_type_controller = require('./enum_type')
 const enum_controller = require('./enum')
 
 class Controller extends Base_Controller {
-    getMiceForSelect() {
-        const query = squel.select()
-            .from(this.name)
-            .toString()
-        return db.any(query)
-    }
     getMaleMiceForSelect() {
         return enum_controller.getByEnumTypeCodeAndDesc('SEX', 'male')
-            .then((result)=>{
+            .then((result) => {
                 const query = squel.select()
                     .field('id')
                     .field('id', 'description')
@@ -26,11 +20,11 @@ class Controller extends Base_Controller {
                 return db.any(query)
 
             })
-       
+
     }
     getFemaleMiceForSelect() {
         return enum_controller.getByEnumTypeCodeAndDesc('SEX', 'female')
-            .then((result)=>{
+            .then((result) => {
                 const query = squel.select()
                     .field('id')
                     .field('id', 'description')
@@ -41,7 +35,7 @@ class Controller extends Base_Controller {
                 return db.any(query)
 
             })
-       
+
     }
 }
 

@@ -11,8 +11,13 @@ class Base_Controller {
     constructor(_name) {
         // always initialize all instance properties
         this.name = _name;
-      }
-
+    }
+    getAll(){
+    	const query = squel.select()
+            .from(this.name)
+            .toString()
+        return db.any(query)
+    }
 }
 
 // export the class instance

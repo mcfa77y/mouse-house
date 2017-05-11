@@ -2,10 +2,11 @@
     <legend>Add Mouse</legend>
     {{> text_input id='idx' description='ID' placeholder='1234'}}
     {{> text_input id='ear-tag' description='Ear tag' placeholder='1234'}}
-    {{> text_input id='cage-id' description='Cage ID' placeholder='1234'}}
-
+    {{> select_input status}}
+    {{> select_input cage}}
+    {{> select_input genotype}}
     {{> date_input id='date-of-birth' description='D.O.B.'}}
-    <div class="form-group col-md-6">
+    <div class="form-group label-floating col-md-6">
         <label class="col-md-3 control-label">Sex</label>
         <div class="col-md-9">
             <div class="radio radio-inline">
@@ -23,6 +24,7 @@
         </div>
     </div>
     {{> text_area_input id='notes' description='Notes'}}
+    
     <div class="form-group">
         <div class="col-md-3 col-md-offset-9">
             <button type="button" class="btn btn-default">Reset</button>

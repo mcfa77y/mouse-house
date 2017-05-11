@@ -58,6 +58,7 @@ CREATE TABLE CAGE (
       end_date date,
       update_date date,
       notes varchar (1024),
+      name varchar (64),
       create_timestamp timestamp default current_timestamp,
       modify_timestamp timestamp,
       soft_delete integer default 0,
