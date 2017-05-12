@@ -1,22 +1,23 @@
 $(function() {
     $('#mice').DataTable( {
         "ajax": {
-            "url": "/getMice",
-            "type": "POST"
+            "url": "/mice",
+            "type": "GET"
             },
         "columns":[
             {"data": "id"},
-            {"data": "genotype_id"},
-            {"data": "dob"},
-            {"data": "sex_id"},
             {"data": "ear_tag"},
-            {"data": "status_id"},
+            {"data": "dob"},
+            {"data": "genotype"},
+            {"data": "sex"},
             {"data": "notes"},
+            {"data": "status"},
             {"data": "create_timestamp"},
             {"data": "modify_timestamp"},
-            {"data": "soft_delete"}
         ]
-
-
     } );
-}
+
+    $('#save-mouse-button').click(()=>{
+        
+    })
+})

@@ -1,32 +1,56 @@
-const {Base_Controller, db, squel} = require('./base_controller')
+const {
+    Base_Controller,
+    db,
+    squel,
+    memoizeMethods,
+    d, autoBind
+} = require('./base_controller')
 const enum_type_controller = require('./enum_type')
 
+const TABLE_NAME = 'enum'
 class Controller extends Base_Controller {
-    getByEnumTypeCode(my_code) {
+    
+
+}
+const memoize_methods = {
+	getByEnumTypeCode: d((my_code) => {
         return enum_type_controller.getByCode(my_code)
             .then((enum_type) => {
-            	const find_by_code = squel.select()
-		            .field('id')
-		            .field('description')
-		            .from('enum')
-		            .where('enum_type_id = ?', enum_type.id)
-		            .toString()
+                const find_by_code = squel.select()
+                    .field('id')
+                    .field('description')
+                    .from(TABLE_NAME)
+                    .where('enum_type_id = ?', enum_type.id)
+                    .toString()
                 return db.any(find_by_code)
             })
-    }
+    }, {
+        async: true
+    }),
 
-    getByEnumTypeCodeAndDesc(my_code, my_description) {
+    getByEnumTypeCodeAndDesc: d((my_code, my_description)=>{
         return enum_type_controller.getByCode(my_code)
             .then((enum_type) => {
-            	const find_by_code = squel.select()
-		            .field('id')
-		            .from('enum')
-		            .where('enum_type_id = ?', enum_type.id)
-		            .where('description = ?', my_description)
-		            .toString()
+                const find_by_code = squel.select()
+                    .field('id')
+                    .from(TABLE_NAME)
+                    .where('enum_type_id = ?', enum_type.id)
+                    .where('description = ?', my_description)
+                    .toString()
                 return db.one(find_by_code)
             })
-    }
+    }, {async: true}),
+
+    getByIdMemo: d((_id)=>{
+    	const query = squel.select()
+            .field('description')
+            .from(TABLE_NAME)
+            .where('id = ?', _id)
+            .toString()
+        return db.one(query)
+    })
 }
 
-module.exports = new Controller('enum')
+Object.defineProperties(Controller.prototype, memoizeMethods(memoize_methods))
+
+module.exports = new Controller(TABLE_NAME)

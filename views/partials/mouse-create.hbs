@@ -1,34 +1,26 @@
-<fieldset>
-    <legend>Add Mouse</legend>
-    {{> text_input id='idx' description='ID' placeholder='1234'}}
-    {{> text_input id='ear-tag' description='Ear tag' placeholder='1234'}}
-    {{> select_input status}}
-    {{> select_input cage}}
-    {{> select_input genotype}}
-    {{> date_input id='date-of-birth' description='D.O.B.'}}
-    <div class="form-group label-floating col-md-6">
-        <label class="col-md-3 control-label">Sex</label>
-        <div class="col-md-9">
-            <div class="radio radio-inline">
-                <label>
-                    <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked="">
-                    <i class="fa fa-mars fa-2x" aria-hidden="true"></i>
-                </label>
+<div id="create-mouse-modal" class="modal fade">
+    <div class="modal-dialog  modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Add mouse</h4>
             </div>
-            <div class="radio radio-inline">
-                <label>
-                    <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
-                    <i class="fa fa-venus fa-2x" aria-hidden="true"></i>
-                </label>
+            <div class="modal-body">
+                <fieldset id="mouse-fields">
+                    {{> text_input id='idx' description='ID' placeholder='1234'}}
+                    {{> text_input id='ear-tag' description='Ear tag' placeholder='1234'}}
+                    {{> select_input status}}
+                    {{> select_input cage}}
+                    {{> select_input genotype}}
+                    {{> date_input id='date-of-birth' description='D.O.B.'}}
+                    {{> radio_input sex}}
+                    {{> text_area_input id='notes' description='Notes'}}
+                </fieldset>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button id="save-mouse-button" type="button" class="btn btn-primary">Save changes</button>
             </div>
         </div>
     </div>
-    {{> text_area_input id='notes' description='Notes'}}
-    
-    <div class="form-group">
-        <div class="col-md-3 col-md-offset-9">
-            <button type="button" class="btn btn-default">Reset</button>
-            <button type="button" class="btn btn-primary">Submit</button>
-        </div>
-    </div>
-</fieldset>
+</div>
