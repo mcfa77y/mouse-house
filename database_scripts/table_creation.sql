@@ -146,3 +146,48 @@ insert into enum (enum_type_id, description, modify_timestamp) values((select id
 insert into enum (enum_type_id, description, modify_timestamp) values((select id from enum_type where code = 'MOUSE_GENOTYPE'), 'IRF 3/7 -/- dKO', current_timestamp);
 
 
+
+INSERT INTO public.mouse
+(id,
+       genotype_id,
+       dob,
+       sex_id,
+       ear_tag,
+       status_id,
+       notes,
+       create_timestamp,
+       modify_timestamp,
+       soft_delete)
+VALUES(nextval('mouse_id_seq'::regclass), 
+      (select e.id from enum e where e.description like 'Goldenticket'), 
+      '2016-05-14 16:33:48', 
+      (select e.id from enum e where e.description like 'male'), 
+      37,
+      (select e.id from enum e where e.description like '0' and e.enum_type_id = (select et.id from enum_type et where et.code like 'MOUSE_STATUS')),
+      'i am mikey mouse',
+      now(), 
+      now(), 
+      0);
+      
+      
+INSERT INTO public.mouse
+(id,
+       genotype_id,
+       dob,
+       sex_id,
+       ear_tag,
+       status_id,
+       notes,
+       create_timestamp,
+       modify_timestamp,
+       soft_delete)
+VALUES(nextval('mouse_id_seq'::regclass), 
+      (select e.id from enum e where e.description like 'Rag2'), 
+      '2016-05-14 16:33:48', 
+      (select e.id from enum e where e.description like 'female'), 
+      37,
+      (select e.id from enum e where e.description like '1' and e.enum_type_id = (select et.id from enum_type et where et.code like 'MOUSE_STATUS')),
+      'i am minerva mouse',
+      now(), 
+      now(), 
+      0);
