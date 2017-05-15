@@ -4,7 +4,7 @@
         {{#each items}}
         <div class="radio radio-primary">
             <label>
-                <input type="radio" name="{{../id}}" value="{{this.id}}"> 
+                <input type="radio" id="{{../id}}_{{this.description}}"  checked="" name="{{../id}}" value="{{this.id}}"> 
                 {{this.description}}
             </label>
         </div>

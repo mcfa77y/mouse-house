@@ -16,14 +16,21 @@ genotype - enum notes - varchar status - 0,1
     
     {{> date_input id='pairing-date' description='Pairing'}}
     {{> date_input id='plug-date' description='Plug'}}
+    {{> text_area_input id='notes' description='Notes'}}
+<div class="col-md-12">
+<button data-toggle="collapse" data-target="#demo" type="button" class="btn btn-default">
+    Add offspring</button>
+    </div>
+<div id="demo" class="collapse">
     {{> date_input id='pup-check-date' description='Pup check'}}
     {{> date_input id='litter-date-of-birth' description='Litter D.O.B.'}}
     {{> date_input id='ween-date' description='Ween'}}
     {{> text_input id='male-count' description='Male count' placeholder='3'}}
     {{> text_input id='female-count' description='Female count' placeholder='3'}}
+    {{> text_area_input id='notes2' description='Notes'}}
+</div>
 
-
-    {{> text_area_input id='notes' description='Notes'}}
+   
     <div class="form-group">
         <div class="col-md-3 col-md-offset-9">
             <button type="button" class="btn btn-default">Reset</button>

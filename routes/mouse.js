@@ -68,4 +68,13 @@ router.get('/mice', function(req, res) {
 
 });
 
+
+router.post('/mouse', function(req, res) {
+    utils.logJSON(req.param)
+    utils.logJSON(req.body)
+    utils.logJSON(req.query)
+    utils.logJSON(req)
+    res.send({success:true})
+});
+
 module.exports = router;
