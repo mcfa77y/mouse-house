@@ -25,7 +25,9 @@ module.exports = {
 
     selectJSON: (items, id, description = '') => {
         if (description === '') {
-            description = id.toProperCase().replace('_', ' ')
+            description = id.toProperCase()
+                .replace('_id', '')
+                .replace('_', ' ')
         }
         return {
             id,

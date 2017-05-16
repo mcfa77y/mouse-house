@@ -30,6 +30,11 @@ class Base_Controller {
             .toString()
         return db.one(query)
     }
+    insert(){
+        const query = squel.insert()
+            .into(this.name)
+
+    }
 }
 
 // export the class instance

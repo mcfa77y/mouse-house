@@ -15,16 +15,16 @@ router.get('/mouse', function(req, res) {
             sex: enum_controller.getByEnumTypeCode('SEX')
         })
         .then(({status, genotype, cages, sex}) => {
-            status = utils.selectJSON(status, 'status')
-            genotype = utils.selectJSON(genotype, 'genotype')
+            status = utils.selectJSON(status, 'status_id')
+            genotype = utils.selectJSON(genotype, 'genotype_id')
             cages = cages.map((cage) => {
                 return {
                     id: cage.id,
                     description: cage.name
                 }
             })
-            sex = utils.selectJSON(sex, 'sex')
-            cages = utils.selectJSON(cages, 'cage')
+            sex = utils.selectJSON(sex, 'sex_id')
+            cages = utils.selectJSON(cages, 'cage_id')
             res.render('pages/mouse', {
                 status,
                 genotype,
@@ -70,11 +70,9 @@ router.get('/mice', function(req, res) {
 
 
 router.post('/mouse', function(req, res) {
-    utils.logJSON(req.param)
     utils.logJSON(req.body)
-    utils.logJSON(req.query)
-    utils.logJSON(req)
     res.send({success:true})
+    mouse_controller.insert(req.body)
 });
 
 module.exports = router;
