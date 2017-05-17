@@ -17,23 +17,25 @@ class Base_Controller {
         // always initialize all instance properties
         this.name = _name;
     }
-    getAll(){
+    all(){
     	const query = squel.select()
             .from(this.name)
             .toString()
         return db.any(query)
     }
-    getById(_id){
+    by_id(_id){
         const query = squel.select()
             .from(this.name)
             .where('id = ?', _id)
             .toString()
         return db.one(query)
     }
-    insert(){
+    insert(row){
         const query = squel.insert()
             .into(this.name)
-
+            .setFields(row)
+            .toString()
+        return db.one(query)
     }
 }
 
