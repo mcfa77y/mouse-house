@@ -3,17 +3,18 @@ const {
     db,
     squel,
     memoizeMethods,
-    d, autoBind
+    d,
+    autoBind
 } = require('./base_controller')
 const enum_type_controller = require('./enum_type')
 
 const TABLE_NAME = 'enum'
 class Controller extends Base_Controller {
-    
+
 
 }
 const memoize_methods = {
-	getByEnumTypeCode: d((my_code) => {
+    getByEnumTypeCode: d((my_code) => {
         return enum_type_controller.getByCode(my_code)
             .then((enum_type) => {
                 const find_by_code = squel.select()
@@ -28,7 +29,7 @@ const memoize_methods = {
         async: true
     }),
 
-    getByEnumTypeCodeAndDesc: d((my_code, my_description)=>{
+    getByEnumTypeCodeAndDesc: d((my_code, my_description) => {
         return enum_type_controller.getByCode(my_code)
             .then((enum_type) => {
                 const find_by_code = squel.select()
@@ -39,15 +40,19 @@ const memoize_methods = {
                     .toString()
                 return db.one(find_by_code)
             })
-    }, {async: true}),
+    }, {
+        async: true
+    }),
 
-    getByIdMemo: d((_id)=>{
-    	const query = squel.select()
+    getById: d((_id) => {
+        const query = squel.select()
             .field('description')
             .from(TABLE_NAME)
             .where('id = ?', _id)
             .toString()
         return db.one(query)
+    }, {
+        async: true
     })
 }
 
