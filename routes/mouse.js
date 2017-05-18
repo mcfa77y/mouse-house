@@ -18,10 +18,10 @@ router.delete('/api/mice/:id', db.removePuppy);
 
 router.get('/mouse', function(req, res) {
     BlueBird.props({
-            status: enum_controller.getByEnumTypeCode('MOUSE_STATUS'),
-            genotype: enum_controller.getByEnumTypeCode('MOUSE_GENOTYPE'),
+            status: enum_controller.by_code('MOUSE_STATUS'),
+            genotype: enum_controller.by_code('MOUSE_GENOTYPE'),
             cages: cage_controller.all(),
-            sex: enum_controller.getByEnumTypeCode('SEX'),
+            sex: enum_controller.by_code('SEX'),
             mice: mouse_controller.all_pretty()
         })
         .then(({status, genotype, cages, sex, mice}) => {

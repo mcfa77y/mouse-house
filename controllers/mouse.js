@@ -6,8 +6,8 @@ const utils = require('./utils_controller')
 const mouse_model = require('../model/mouse')
 
 class Controller extends Base_Controller {
-    get_by_sex(sex) {
-        return enum_controller.getByEnumTypeCodeAndDesc('SEX', sex)
+    by_sex(sex) {
+        return enum_controller.by_codeAndDesc('SEX', sex)
             .then((sex_enum) => {
                 const query = squel.select()
                     .field('id')

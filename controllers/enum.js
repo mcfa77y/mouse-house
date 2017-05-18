@@ -14,7 +14,7 @@ class Controller extends Base_Controller {
 
 }
 const memoize_methods = {
-    getByEnumTypeCode: d((my_code) => {
+    by_code: d((my_code) => {
         return enum_type_controller.getByCode(my_code)
             .then((enum_type) => {
                 const find_by_code = squel.select()
@@ -29,7 +29,7 @@ const memoize_methods = {
         async: true
     }),
 
-    getByEnumTypeCodeAndDesc: d((my_code, my_description) => {
+    by_codeAndDesc: d((my_code, my_description) => {
         return enum_type_controller.getByCode(my_code)
             .then((enum_type) => {
                 const find_by_code = squel.select()

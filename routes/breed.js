@@ -7,19 +7,14 @@ const mouse_controller = require(path.join(__dirname, '..', 'controllers/mouse')
 const utils = require('./route-utils')
 
 router.get('/breed', function(req, res) {
-    BlueBird.all([enum_controller.getByEnumTypeCode('MOUSE_GENOTYPE'),
-            mouse_controller.getMaleMiceForSelect(),
-            mouse_controller.getFemaleMiceForSelect()
-        ])
-        .spread((g, m, f) => {
-        	let gt = utils.selectJSON(g, 'mouse_genotype', 'Genotype')
-        	utils.logJSON(gt)
-        	utils.logJSON(m)
-        	
-        	let mm = utils.selectJSON(m, 'male_mouse')
-        	
-
-			let fm = utils.selectJSON(f, 'female_mouse')
+    BlueBird.props({genotype: enum_controller.by_code('MOUSE_GENOTYPE'),
+            male_mice: mouse_controller.by_sex('male'),
+            female_mice: mouse_controller.by_sex('female')
+        })
+        .then(({genotype, male_mice, female_mice}) => {
+        	let gt = utils.selectJSON(genotype, 'mouse_genotype', 'Genotype')
+        	let mm = utils.selectJSON(male_mice, 'male_mouse')
+			let fm = utils.selectJSON(female_mice, 'female_mouse')
         	
             res.render('pages/breed', {genotype_data: gt, male_mouse_data: mm, female_mouse_data: fm})
         })

@@ -10,8 +10,8 @@ const util = require('./route-utils')
 router.get('/cage', function(req, res) {
     BlueBird.all([
             mouse_controller.all(),
-            enum_controller.getByEnumTypeCode('MOUSE_STATUS'),
-            enum_controller.getByEnumTypeCode('MOUSE_GENOTYPE'),
+            enum_controller.by_code('MOUSE_STATUS'),
+            enum_controller.by_code('MOUSE_GENOTYPE'),
 
         ])
         .spread((m, s, g ) => {
