@@ -120,12 +120,16 @@ function setupDatePicker() {
                 value: moment()
             })
             .on('submit', (val) => {
-                input.value = val.format("MM/DD/YYYY");
+                input.value = val.format('MM/DD/YYYY');
                 $(input).change()
             })
             .on('open', () => {
-                picker.set(moment(input.value))
-                $('.c-datepicker.c-datepicker--open').css('z-index', 12)
+                input.value = input.value||moment().format('MM/DD/YYYY')
+                picker.setDate(moment(input.value))
+                picker.setTime(moment(input.value))
+                // extra styling to make it look good and behave normally
+                $('.c-datepicker.c-datepicker--open').css('z-index', 1200)
+                $('.c-datepicker__clock').css('padding-top', '357px')
                 $('.btn.btn-fab.btn-fab-mini.today-btn, .form-control.c-datepicker-input').prop('disabled', true)
                 
             })
