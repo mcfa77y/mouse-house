@@ -1,7 +1,11 @@
 <div class="form-group label-floating  col-md-3">
     <label for="{{id}}" class=" control-label">{{description}}</label>
     <div class="">
+    	{{#if isMultiple}}
+        <select class="form-control foo-select" id="{{id}}" multiple="multiple">
+        {{else}}
         <select class="form-control foo-select" id="{{id}}">
+        {{/if}}
             {{#each items}}
             <option value="{{this.id}}">{{this.description}}</option>
             {{/each}}
