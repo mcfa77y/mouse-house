@@ -38,6 +38,17 @@ module.exports = {
 
     relativeTime: (date) => {
         return moment(date, moment.ISO_8601).fromNow()
+    },
+
+    removeEmpty : (obj, removeEmptyStrings) => {
+        Object.keys(obj).forEach((key) => {
+            let isEmpty = (obj[key] == null || isNaN(obj[key]))
+            if(removeEmptyStrings){
+                isEmpty = isEmpty || obj[key] == ''
+            }
+            isEmpty && delete obj[key]
+        })
+        return obj
     }
 }
 

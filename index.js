@@ -25,13 +25,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 var breed = require('./routes/breed');
-app.use('/', breed);
 
 var mouse = require('./routes/mouse');
-app.use('/', mouse);
 
 var cage = require('./routes/cage');
-app.use('/', cage);
+
 // var routes = require('./routes/index');
 // handel bars helpers
 var hbs = require('hbs');
@@ -43,7 +41,6 @@ var helpers = require('handlebars-helpers')({
 
 app.set('port', (process.env.PORT || 5000));
 
-app.use(express.static(__dirname + '/public'));
 // reg partials
 hbs.registerPartials(__dirname + '/views/partials');
 hbsutils.registerWatchedPartials(__dirname + '/views/partials');
@@ -55,7 +52,9 @@ hbsutils.registerWatchedPartials(__dirname + '/views/partials/form-elements');
 app.set('views', __dirname + '/views');
 app.set('view engine', 'hbs');
 
-
+app.use('/', breed);
+app.use('/', mouse);
+app.use('/', cage);
 
 
 app.get('/', function(request, response) {

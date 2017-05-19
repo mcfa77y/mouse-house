@@ -57,12 +57,12 @@ $(function() {
 
     function get_selected_row_ids(){
         var data = table.rows( {selected: true} ).data().pluck( 'id' );
-        return _.range(data.length).map((index)=> return data[index])
+        return _.range(data.length).map((index)=> {return data[index]})[0]
     }
     function on_select ( e, dt, type, indexes ) {
         update_crud_buttons()
         if ( type === 'row' ) {
-            
+
             // do something with the ID of the selected items
         }
     }
@@ -73,30 +73,30 @@ $(function() {
 
     $('#save-mouse-button').click(() => {
         const dt = utils.form_ids_vals('mouse-fields')
-        $.post('/mouse', dt)
-            .done(function(response) {
+        axios.post('/mouse', dt)
+            .then(function(response) {
                 console.log(response);
             })
-            .fail(function(error) {
+            .catch(function(error) {
                 console.log(error);
             });
     })
     $('#open-delete-mouse-modal-button').click(() =>{
-        $.delete('/mouse', {ids: get_selected_row_ids()})
-            .done((resp)=>{
+        axios.delete('/mouse/' + get_selected_row_ids())
+            .then((resp)=>{
                 toastr["success"](foo(resp))
             })
-            .fail((err)=>{
+            .catch((err)=>{
                 toastr['error']('delete something happened' + foo(err))
             })
     })
     $('#save-cage-button').click(() => {
         const dt = utils.form_ids_vals('cage-fields')
-        $.post('/cage', dt)
-            .done(function(response) {
+        axios.post('/cage', dt)
+            .then(function(response) {
                 console.log(response);
             })
-            .fail(function(error) {
+            .catch(function(error) {
                 console.log(error);
             });
     })

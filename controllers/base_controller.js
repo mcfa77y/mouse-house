@@ -31,6 +31,8 @@ class Base_Controller {
         return db.one(query)
     }
     insert(row){
+        row.create_timestamp = new Date()
+        row.modify_timestamp = row.create_timestamp
         const query = squel.insert()
             .into(this.name)
             .setFields(row)

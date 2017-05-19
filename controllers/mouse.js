@@ -3,11 +3,12 @@ const { Base_Controller, db, squel } = require('./base_controller')
 const enum_type_controller = require('./enum_type')
 const enum_controller = require('./enum')
 const utils = require('./utils_controller')
-const mouse_model = require('../model/mouse')
+const mouse_model = require('../models/mouse')
+const _ = require('underscore')
 
 class Controller extends Base_Controller {
     by_sex(sex) {
-        return enum_controller.by_codeAndDesc('SEX', sex)
+        return enum_controller.getByEnumTypeCodeAndDesc('SEX', sex)
             .then((sex_enum) => {
                 const query = squel.select()
                     .field('id')
@@ -51,11 +52,15 @@ class Controller extends Base_Controller {
 
     }
     insert(model){
-        //
+        // remove empty params
+        model = utils.removeEmpty(model, true)
+        // do related things
         if(model.cage_id){
             console.log('add mouse to cage')
         }
         delete model.cage_id
+
+
         return super.insert(model)
     }
 }

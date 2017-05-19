@@ -5,6 +5,8 @@ const BlueBird = require('bluebird')
 const enum_controller = require(path.join(__dirname, '..', 'controllers/enum'))
 const mouse_controller = require(path.join(__dirname, '..', 'controllers/mouse'))
 const cage_controller = require(path.join(__dirname, '..', 'controllers/cage'))
+
+const mouse_model = require(path.join(__dirname, '..', 'models/mouse'))
 const utils = require('./route-utils')
 
 /*
@@ -58,7 +60,8 @@ router.get('/mice', function(req, res) {
 
 router.post('/mouse', function(req, res) {
     utils.logJSON(req.body)
-    mouse_controller.insert(req.body).then((x)=>{
+    let model = new mouse_model(req.body)
+    mouse_controller.insert(model).then((x)=>{
         res.send({success:true})
     })
     .catch((err)=>{
@@ -66,7 +69,7 @@ router.post('/mouse', function(req, res) {
     })
 });
 
-router.delete('/mouse/:id', function(req, res) {
+router.delete('/mouse/:id ', function(req, res) {
     mouse_controller.delete(req.body.id).then((x)=>{
         res.send({success:true})
     })
