@@ -66,4 +66,13 @@ router.post('/mouse', function(req, res) {
     })
 });
 
+router.delete('/mouse/:id', function(req, res) {
+    mouse_controller.delete(req.body.id).then((x)=>{
+        res.send({success:true})
+    })
+    .catch((err)=>{
+        res.status(500).send({success: false, err})
+    })
+});
+
 module.exports = router;

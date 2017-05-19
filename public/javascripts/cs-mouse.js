@@ -35,24 +35,29 @@ $(function() {
     });
     function update_crud_buttons (){
         var data = table.rows( {selected: true} ).data().pluck( 'id' );
-            var disableCreate = false
-            var disableDelete = true
-            var disableUpdate = true
+        var disableCreate = false
+        var disableDelete = true
+        var disableUpdate = true
 
-            if(data.length === 1){
-                disableCreate = true
-                disableDelete = false
-                disableUpdate = false
-            }
-            else if(data.length>1){
-                disableCreate = true
-                disableDelete = false
-                disableUpdate = true
-            }
+        if(data.length === 1){
+            disableCreate = true
+            disableDelete = false
+            disableUpdate = false
+        }
+        else if(data.length>1){
+            disableCreate = true
+            disableDelete = false
+            disableUpdate = true
+        }
 
-            $('#open-create-mouse-modal-button').attr('disabled', disableCreate)
-            $('#open-delete-mouse-modal-button').attr('disabled', disableDelete)
-            $('#open-update-mouse-modal-button').attr('disabled', disableUpdate)
+        $('#open-create-mouse-modal-button').attr('disabled', disableCreate)
+        $('#open-delete-mouse-modal-button').attr('disabled', disableDelete)
+        $('#open-update-mouse-modal-button').attr('disabled', disableUpdate)
+    }
+
+    function get_selected_row_ids(){
+        var data = table.rows( {selected: true} ).data().pluck( 'id' );
+        return _.range(data.length).map((index)=> return data[index])
     }
     function on_select ( e, dt, type, indexes ) {
         update_crud_buttons()
@@ -76,7 +81,15 @@ $(function() {
                 console.log(error);
             });
     })
-
+    $('#open-delete-mouse-modal-button').click(() =>{
+        $.delete('/mouse', {ids: get_selected_row_ids()})
+            .done((resp)=>{
+                toastr["success"](foo(resp))
+            })
+            .fail((err)=>{
+                toastr['error']('delete something happened' + foo(err))
+            })
+    })
     $('#save-cage-button').click(() => {
         const dt = utils.form_ids_vals('cage-fields')
         $.post('/cage', dt)

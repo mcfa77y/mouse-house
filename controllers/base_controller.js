@@ -37,6 +37,13 @@ class Base_Controller {
             .toString()
         return db.one(query)
     }
+    delete(_id){
+        const query = squel.delete()
+            .from(this.name)
+            .where('id = ?', _id)
+            .toString()
+        return db.any(query)
+    }
 }
 
 // export the class instance
