@@ -5,6 +5,7 @@ const BlueBird = require('bluebird')
 const enum_controller = require(path.join(__dirname, '..', 'controllers/enum'))
 const mouse_controller = require(path.join(__dirname, '..', 'controllers/mouse'))
 const cage_controller = require(path.join(__dirname, '..', 'controllers/cage'))
+const cage_model = require(path.join(__dirname, '..', 'models/cage'))
 const util = require('./route-utils')
 
 router.get('/cage', function(req, res) {
@@ -26,5 +27,18 @@ router.get('/cage', function(req, res) {
 
 
 });
+
+
+router.post('/cage', function(req, res) {
+    let model = new cage_model(req.body)
+    cage_controller.insert(model).then((x) => {
+            res.send({ success: true })
+        })
+        .catch((err) => {
+            res.status(500).send({ success: false, err })
+        })
+
+});
+
 
 module.exports = router;

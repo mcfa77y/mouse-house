@@ -81,6 +81,16 @@ $(function() {
                 console.log(error);
             });
     })
+
+    $('#open-update-mouse-modal-button').click(() =>{
+        axios.get('/mouse/' + get_selected_row_ids())
+            .then((resp)=>{
+                toastr["success"](foo(resp))
+            })
+            .catch((err)=>{
+                toastr['error']('delete something happened' + foo(err))
+            })
+    })
     $('#open-delete-mouse-modal-button').click(() =>{
         axios.delete('/mouse/' + get_selected_row_ids())
             .then((resp)=>{
