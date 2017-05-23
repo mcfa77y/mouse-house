@@ -42,11 +42,12 @@ module.exports = {
 
     removeEmpty : (obj, removeEmptyStrings) => {
         Object.keys(obj).forEach((key) => {
-            let isEmpty = (obj[key] == null || isNaN(obj[key]))
+            let val = obj[key]
+            let isEmpty = (val == null || isNaN(val) )
             if(removeEmptyStrings){
-                isEmpty = isEmpty || obj[key] == ''
+                isEmpty = isEmpty || val == ''
             }
-            isEmpty && delete obj[key]
+            isEmpty && delete val
         })
         return obj
     }

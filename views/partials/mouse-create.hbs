@@ -9,11 +9,11 @@
                 <fieldset id="mouse-fields">
                     {{> text_input id='id' description='ID' placeholder='1234'}}
                     {{> text_input id='ear_tag' description='Ear tag' placeholder='1234'}}
-                    {{> select_input status}}
-                    {{> select_input cages}}
-                    {{> select_input genotype}}
+                    {{> select_input status id='status_id' description='Status'}}
+                    {{> select_input cages id='cage_id' description='Cage'}}
+                    {{> select_input genotype id='genotype_id' description="Genotype"}}
                     {{> date_input id='dob' description='D.O.B.'}}
-                    {{> radio_input sex}}
+                    {{> radio_input sex description='Sex'}}
                     {{> text_area_input id='notes' description='Notes'}}
                 </fieldset>
             </div>

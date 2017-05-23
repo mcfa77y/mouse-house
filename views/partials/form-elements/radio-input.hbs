@@ -1,13 +1,17 @@
 <div class="form-group">
     <label class="col-md-1 control-label">{{description}}</label>
     <div class="col-md-2">
-        {{#each items}}
+        {{#forEach items}}
         <div class="radio radio-primary">
             <label>
-                <input type="radio" id="{{../id}}_{{this.description}}"  checked="" name="{{../id}}" value="{{this.id}}"> 
+                {{#if isFirst}}
+                <input type="radio" id="{{../id}}_{{this.description}}"  checked="" name="{{../id}}" value="{{this.id}}">
+                {{else}}
+                <input type="radio" id="{{../id}}_{{this.description}}" name="{{../id}}" value="{{this.id}}">
+                {{/if}}
                 {{this.description}}
             </label>
         </div>
-        {{/each}}
+        {{/forEach}}
     </div>
 </div>

@@ -30,8 +30,6 @@ module.exports = {
                 .replace('_', ' ')
         }
         return {
-            id,
-            description,
             items
         }
     },
