@@ -40,14 +40,21 @@ module.exports = {
         return moment(date, moment.ISO_8601).fromNow()
     },
 
+    stringTime: (date) => {
+        return moment(date, moment.ISO_8601).format('MM/DD/YY')
+    },
+
     removeEmpty : (obj, removeEmptyStrings) => {
         Object.keys(obj).forEach((key) => {
             let val = obj[key]
-            let isEmpty = (val == null || isNaN(val) )
+            if(isNaN(val) && (key.indexOf('id') === 0 || key.indexOf('_id') > 0 || key.indexOf('soft_delete') === 0)){
+                delete obj[key]
+            }
+            let isEmpty = (val == null)
             if(removeEmptyStrings){
                 isEmpty = isEmpty || val == ''
             }
-            isEmpty && delete val
+            isEmpty && delete obj[key]
         })
         return obj
     }

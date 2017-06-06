@@ -33,7 +33,10 @@ module.exports = {
             items
         }
     },
+    stringTime:()=>{
 
+    },
+    
     relativeTime: (date) => {
         return moment(date, moment.ISO_8601).fromNow()
     }

@@ -6,7 +6,7 @@ const enum_controller = require(path.join(__dirname, '..', 'controllers/enum'))
 const mouse_controller = require(path.join(__dirname, '..', 'controllers/mouse'))
 const utils = require('./route-utils')
 
-router.get('/breed', function(req, res) {
+router.get('/', function(req, res) {
     BlueBird.props({genotype: enum_controller.by_code('MOUSE_GENOTYPE'),
             male_mice: mouse_controller.by_sex('male'),
             female_mice: mouse_controller.by_sex('female')

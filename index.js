@@ -53,9 +53,9 @@ hbsutils.registerWatchedPartials(__dirname + '/views/partials/form-elements');
 app.set('views', __dirname + '/views');
 app.set('view engine', 'hbs');
 
-app.use('/', breed);
-app.use('/', mouse);
-app.use('/', cage);
+app.use('/breed', breed);
+app.use('/mouse', mouse);
+app.use('/cage', cage);
 
 
 app.get('/', function(request, response) {

@@ -19,7 +19,7 @@ router.put('/api/mice/:id', db.updatePuppy);
 router.delete('/api/mice/:id', db.removePuppy);
 */
 
-router.get('/mouse', function(req, res) {
+router.get('/', function(req, res) {
     BlueBird.props({
             status: enum_controller.by_code('MOUSE_STATUS'),
             genotype: enum_controller.by_code('MOUSE_GENOTYPE'),
@@ -43,14 +43,15 @@ router.get('/mouse', function(req, res) {
                 genotype,
                 cages,
                 sex,
-                mice
+                mice,
+                extra_js:['cs-mouse']
             })
         })
 
 
 });
 
-router.get('/mouse/:id', function(req, res) {
+router.get('/:id', function(req, res) {
     Logger.log('get0')
     mouse_controller.by_id(req.params.id).then((x) => {
             return mouse_controller.pretty(x)
@@ -63,8 +64,7 @@ router.get('/mouse/:id', function(req, res) {
         })
 });
 
-router.delete('/mouse/:id', function(req, res) {
-    Logger.log('del2')
+router.delete('/:id', function(req, res) {
     mouse_controller.delete(req.params.id).then((x) => {
             res.send({ success: true })
         })
@@ -73,7 +73,7 @@ router.delete('/mouse/:id', function(req, res) {
         })
 });
 
-router.get('/mice', function(req, res) {
+router.get('/', function(req, res) {
     mouse_controller.all_pretty()
         .then((mouse_array) => {
             res.send({
@@ -82,7 +82,7 @@ router.get('/mice', function(req, res) {
         })
 });
 
-router.post('/mouse', function(req, res) {
+router.post('/', function(req, res) {
     utils.logJSON(req.body)
     let model = new mouse_model(req.body)
     mouse_controller.insert(model).then((x) => {

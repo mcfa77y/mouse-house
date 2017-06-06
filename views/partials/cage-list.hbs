@@ -1,0 +1,28 @@
+<table id='cage-list' class="mdl-data-table" cellspacing="0" width="100%">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>type</th>
+            <th>setup</th>
+            <th>update</th>
+            <th>end</th>
+            <th>mice</th>
+            <th>Notes</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each cages}}
+        <tr>
+            <td>{{id}}</td>
+            <td>{{type}}</td>
+            <td>{{setup_date}}</td>
+            <td>{{update_date}}</td>
+            <td>{{end_date}}</td>
+            <td>{{mice}}</td>
+            <td>{{ellipsis notes 32}}</td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+{{>crud_buttons model_name='cage'}}
+

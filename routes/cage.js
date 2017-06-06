@@ -1,35 +1,46 @@
 const express = require('express');
 const router = express.Router();
-var path = require('path');
+const path = require('path');
 const BlueBird = require('bluebird')
 const enum_controller = require(path.join(__dirname, '..', 'controllers/enum'))
 const mouse_controller = require(path.join(__dirname, '..', 'controllers/mouse'))
 const cage_controller = require(path.join(__dirname, '..', 'controllers/cage'))
 const cage_model = require(path.join(__dirname, '..', 'models/cage'))
-const util = require('./route-utils')
+const utils = require('./route-utils')
 
-router.get('/cage', function(req, res) {
+router.get('/', function(req, res) {
     BlueBird.props({
             mice: mouse_controller.all(),
-            cage_type: enum_controller.by_code('CAGE_TYPE')
+            cage_type: enum_controller.by_code('CAGE_TYPE'),
+            cages: cage_controller.all_pretty()
         })
-        .then(({mice, cage_type}) => {
+        .then(({mice, cage_type, cages}) => {
             mice = mice.map((mouse)=>{
                 return {id: mouse.id, description: mouse.id}
             })
-            mice = util.selectJSON(mice, 'mouse_ids', 'mice')
-            cage_type = util.selectJSON(cage_type, 'cage_type')
+            mice = utils.selectJSON(mice, 'mouse_ids', 'mice')
+            cage_type = utils.selectJSON(cage_type, 'cage_type')
+            utils.logJSON(cages)
             res.render('pages/cage', {
                 mice,
-                cage_type
+                cage_type,
+                cages,
+                extra_js:['cs-cage']
             })
         })
-
-
 });
 
 
-router.post('/cage', function(req, res) {
+router.delete('/:id', function(req, res) {
+    cage_controller.delete(req.params.id).then((x) => {
+            res.send({ success: true })
+        })
+        .catch((err) => {
+            res.status(500).send({ success: false, err })
+        })
+});
+
+router.post('/', function(req, res) {
     let model = new cage_model(req.body)
     cage_controller.insert(model).then((x) => {
             res.send({ success: true })
@@ -39,6 +50,7 @@ router.post('/cage', function(req, res) {
         })
 
 });
+
 
 
 module.exports = router;

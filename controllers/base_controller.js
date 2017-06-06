@@ -1,9 +1,9 @@
-const db = require('../lib/database')
 const squel = require('squel')
+const d = require('d');
 const memoize = require('memoizee');
 const memoizeMethods = require('memoizee/methods');
-
-const d = require('d');
+const db = require('../lib/database')
+const utils = require('./utils_controller')
 
 String.prototype.capitalize = function() {
     return this.replace(/(^|\s|_)([a-z])/g, function(m, p1, p2) {
@@ -31,13 +31,13 @@ class Base_Controller {
         return db.one(query)
     }
     insert(row){
-        row.create_timestamp = new Date()
+        row.create_timestamp = utils.stringTime(new Date())
         row.modify_timestamp = row.create_timestamp
         const query = squel.insert()
             .into(this.name)
             .setFields(row)
             .toString()
-        return db.one(query)
+        return db.any(query)
     }
     delete(_id){
         const query = squel.delete()
