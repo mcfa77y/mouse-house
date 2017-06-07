@@ -29,7 +29,7 @@ const memoize_methods = {
         async: true
     }),
 
-    by_codeAndDesc: d((my_code, my_description) => {
+    by_code_desc: d((my_code, my_description) => {
         return enum_type_controller.getByCode(my_code)
             .then((enum_type) => {
                 const find_by_code = squel.select()
@@ -44,7 +44,7 @@ const memoize_methods = {
         async: true
     }),
 
-    getById: d((_id) => {
+    by_id: d((_id) => {
         const query = squel.select()
             .field('description')
             .from(TABLE_NAME)

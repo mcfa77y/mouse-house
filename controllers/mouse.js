@@ -8,7 +8,7 @@ const _ = require('underscore')
 
 class Controller extends Base_Controller {
     by_sex(sex) {
-        return enum_controller.getByEnumTypeCodeAndDesc('SEX', sex)
+        return enum_controller.by_code_desc('SEX', sex)
             .then((sex_enum) => {
                 const query = squel.select()
                     .field('id')
