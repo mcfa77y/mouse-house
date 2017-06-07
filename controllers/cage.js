@@ -11,7 +11,7 @@ const utils = require('./utils_controller')
 class Controller extends Base_Controller {
     pretty(model) {
         return BlueBird.props({
-                type: enum_controller.getById(model.type_id),
+                type: enum_controller.by_id(model.type_id),
             })
             .then(({ type }) => {
                 model.type = type.description

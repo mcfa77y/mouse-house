@@ -14,8 +14,8 @@ class Controller extends Base_Controller {
 
 }
 const memoize_methods = {
-    by_code: d((my_code) => {
-        return enum_type_controller.getByCode(my_code)
+    by_code: d((_code) => {
+        return enum_type_controller.getByCode(_code)
             .then((enum_type) => {
                 const find_by_code = squel.select()
                     .field('id')
@@ -29,14 +29,14 @@ const memoize_methods = {
         async: true
     }),
 
-    by_code_desc: d((my_code, my_description) => {
-        return enum_type_controller.getByCode(my_code)
+    by_code_desc: d((_code, _description) => {
+        return enum_type_controller.getByCode(_code)
             .then((enum_type) => {
                 const find_by_code = squel.select()
                     .field('id')
                     .from(TABLE_NAME)
                     .where('enum_type_id = ?', enum_type.id)
-                    .where('description = ?', my_description)
+                    .where('description = ?', _description)
                     .toString()
                 return db.one(find_by_code)
             })

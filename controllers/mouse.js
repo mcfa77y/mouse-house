@@ -23,9 +23,9 @@ class Controller extends Base_Controller {
 
     pretty(mouse) {
         return BlueBird.props({
-                sex: enum_controller.getById(mouse.sex_id),
-                genotype: enum_controller.getById(mouse.genotype_id),
-                status: enum_controller.getById(mouse.status_id)
+                sex: enum_controller.by_id(mouse.sex_id),
+                genotype: enum_controller.by_id(mouse.genotype_id),
+                status: enum_controller.by_id(mouse.status_id)
             })
             .then(({ sex, genotype, status }) => {
                 mouse.sex = sex.description
