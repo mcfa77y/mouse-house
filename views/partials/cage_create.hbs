@@ -8,13 +8,13 @@
             <div class="modal-body">
                 <fieldset id="cage-fields">
                 <div class="row">
-                    {{> text_input id='id' description='ID' placeholder='1234'}}
-                    {{> select_input cage_type id='type_id' description='Type'}}
-                    {{> date_input id='setup_date' description='Setup date'}}
-                    {{> date_input id='update_date' description='Last update'}}
-                    {{> date_input id='end_date' description='End date'}}
-                    {{> select_input mice id='mouse_ids' isMultiple=true description='Mice'}}
-                    {{> text_area_input id='notes' description='Notes'}}
+                    {{> form_elements/text_input id='id' description='ID' placeholder='1234'}}
+                    {{> form_elements/select_input cage_type id='type_id' description='Type'}}
+                    {{> form_elements/date_input id='setup_date' description='Setup date'}}
+                    {{> form_elements/date_input id='update_date' description='Last update'}}
+                    {{> form_elements/date_input id='end_date' description='End date'}}
+                    {{> form_elements/select_input mice id='mouse_ids' isMultiple=true description='Mice'}}
+                    {{> form_elements/text_area_input id='notes' description='Notes'}}
                 </div>
 
                 </fieldset>

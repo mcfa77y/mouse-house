@@ -46,8 +46,8 @@ app.set('port', (process.env.PORT || 5000));
 hbs.registerPartials(__dirname + '/views/partials');
 hbsutils.registerWatchedPartials(__dirname + '/views/partials');
 
-hbs.registerPartials(__dirname + '/views/partials/form-elements');
-hbsutils.registerWatchedPartials(__dirname + '/views/partials/form-elements');
+// hbs.registerPartials(__dirname + '/views/partials/form-elements');
+// hbsutils.registerWatchedPartials(__dirname + '/views/partials/form-elements');
 
 // views is directory for all template files
 app.set('views', __dirname + '/views');

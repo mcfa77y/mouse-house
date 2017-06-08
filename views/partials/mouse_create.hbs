@@ -8,15 +8,15 @@
             <div class="modal-body">
                 <fieldset id="mouse-fields">
                     <div class="row">
-                    {{> text_input id='id' description='ID' placeholder='1234'}}
-                    {{> text_input id='ear_tag' description='Ear tag' placeholder='1234'}}
-                    {{> select_input status id='status_id' description='Status'}}
-                    {{> select_input cages id='cage_id' description='Cage'}}
-                    {{> select_input genotype id='genotype_id' description="Genotype"}}
-                    {{> date_input id='dob' description='D.O.B.'}}
-                    {{> radio_input sex id='sex_id' description='Sex'}}
+                    {{> form_elements/text_input id='id' description='ID' placeholder='1234'}}
+                    {{> form_elements/text_input id='ear_tag' description='Ear tag' placeholder='1234'}}
+                    {{> form_elements/select_input status id='status_id' description='Status'}}
+                    {{> form_elements/select_input cages id='cage_id' description='Cage'}}
+                    {{> form_elements/select_input genotype id='genotype_id' description="Genotype"}}
+                    {{> form_elements/date_input id='dob' description='D.O.B.'}}
+                    {{> form_elements/radio_input sex id='sex_id' description='Sex'}}
                     </div>
-                    {{> text_area_input id='notes' description='Notes'}}
+                    {{> form_elements/text_area_input id='notes' description='Notes'}}
                 </fieldset>
             </div>
             <div class="modal-footer">

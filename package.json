@@ -10,6 +10,7 @@
     "build": "webpack-dev-server",
     "build:prod": "webpack -p",
     "start": "node index.js",
+    "build": "webpack",
     "debug": "nodemon --inspect index.js"
   },
   "dependencies": {

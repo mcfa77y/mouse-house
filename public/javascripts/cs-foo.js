@@ -65,10 +65,13 @@ var foo = (model_name, column_names) => {
     update_button.click(() => {
         axios.get('/' + model_name + '/' + get_selected_row_ids())
             .then((resp) => {
-                toastr["success"](utils.json_string(resp))
+                toastr["success"](utils.json_string(resp.data))
+                var context = {title: "My New Post", body: "This is my first post!"};
+                var html    = Handlebars.templates['foo.hbs'](context);
+                $('#test').html(html)
             })
             .catch((err) => {
-                toastr['error']('delete something happened' + utils.json_string(err))
+                toastr['error']('update something happened' + utils.json_string(err))
             })
     })
 

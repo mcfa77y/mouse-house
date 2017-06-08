@@ -32,9 +32,9 @@ class Controller extends Base_Controller {
                 mouse.genotype = genotype.description
                 mouse.status = status.description
                     // convert to relative time
-                mouse.dob = utils.relativeTime(mouse.dob)
-                mouse.create_timestamp = utils.relativeTime(mouse.create_timestamp)
-                mouse.modify_timestamp = utils.relativeTime(mouse.modify_timestamp)
+                mouse.dob = utils.format_time(mouse.dob)
+                mouse.create_timestamp = utils.format_time(mouse.create_timestamp)
+                mouse.modify_timestamp = utils.format_time(mouse.modify_timestamp)
                 return mouse
             })
     }
@@ -53,7 +53,7 @@ class Controller extends Base_Controller {
     }
     insert(model){
         // remove empty params
-        model = utils.removeEmpty(model, true)
+        model = utils.remove_empty(model, true)
         // do related things
         if(model.cage_id){
             console.log('add mouse to cage')

@@ -6,7 +6,7 @@ String.prototype.toProperCase = function() {
     });
 };
 module.exports = {
-    logJSON: (json) => {
+    log_json: (json) => {
         let cache = [];
         const result = JSON.stringify(json, (key, value) => {
             if (typeof value === 'object' && value !== null) {
@@ -23,7 +23,7 @@ module.exports = {
         Logger.log(result)
     },
 
-    selectJSON: (items, id, description = '') => {
+    select_json: (items, id, description = '') => {
         if (description === '') {
             description = id.toProperCase()
                 .replace('_id', '')
@@ -36,22 +36,22 @@ module.exports = {
         }
     },
 
-    relativeTime: (date) => {
+    relative_time: (date) => {
         return moment(date, moment.ISO_8601).fromNow()
     },
 
-    stringTime: (date) => {
-        return moment(date, moment.ISO_8601).format('MM/DD/YY')
+    format_time: (date, format='MM/DD/YY') => {
+        return moment(date, moment.ISO_8601).format(format)
     },
 
-    removeEmpty : (obj, removeEmptyStrings) => {
+    remove_empty : (obj, remove_emptyStrings) => {
         Object.keys(obj).forEach((key) => {
             let val = obj[key]
             if(isNaN(val) && (key.indexOf('id') === 0 || key.indexOf('_id') > 0 || key.indexOf('soft_delete') === 0)){
                 delete obj[key]
             }
             let isEmpty = (val == null)
-            if(removeEmptyStrings){
+            if(remove_emptyStrings){
                 isEmpty = isEmpty || val == ''
             }
             isEmpty && delete obj[key]
@@ -60,4 +60,4 @@ module.exports = {
     }
 }
 
-// exports.logJSON =(json)=>{Logger.log(JSON.stringify(json, null, 4))}
+// exports.log_json =(json)=>{Logger.log(JSON.stringify(json, null, 4))}

@@ -12,10 +12,10 @@ router.get('/', function(req, res) {
             female_mice: mouse_controller.by_sex('female')
         })
         .then(({genotype, male_mice, female_mice}) => {
-        	let gt = utils.selectJSON(genotype, 'mouse_genotype', 'Genotype')
-        	let mm = utils.selectJSON(male_mice, 'male_mouse')
-			let fm = utils.selectJSON(female_mice, 'female_mouse')
-        	
+        	let gt = utils.select_json(genotype, 'mouse_genotype', 'Genotype')
+        	let mm = utils.select_json(male_mice, 'male_mouse')
+			let fm = utils.select_json(female_mice, 'female_mouse')
+
             res.render('pages/breed', {genotype_data: gt, male_mouse_data: mm, female_mouse_data: fm})
         })
 
