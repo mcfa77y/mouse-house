@@ -3,7 +3,9 @@ $(function() {
         $('#id').val(data.id).change()
         $('#ear_tag').val(data.ear_tag).change()
         $('#dob').val(data.dob).change()
-
+        $('#cage_id')[0].selectize.setValue(""+data.cage_id)
+        $('#status_id')[0].selectize.setValue(""+data.status_id)
+        $('#genotype_id')[0].selectize.setValue(""+data.genotype_id)
     }
 
     foo('mouse',

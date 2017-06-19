@@ -131,11 +131,11 @@ function setupDatePicker() {
                 $('.c-datepicker.c-datepicker--open').css('z-index', 1200)
                 $('.c-datepicker__clock').css('padding-top', '357px')
                 $('.btn.btn-fab.btn-fab-mini.today-btn, .form-control.c-datepicker-input').prop('disabled', true)
-                
+
             })
             .on('close', (val) => {
                 $('.btn.btn-fab.btn-fab-mini.today-btn, .form-control.c-datepicker-input').prop('disabled', false)
-                
+
             })
         input.addEventListener('focus', () => picker.open());
     })

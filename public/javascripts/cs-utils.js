@@ -2,11 +2,21 @@
     var utils = {
 
         set_text: (id, value = '') => {
-            $('#'+id).val(val)
+            $('#'+id).val(val).change
         },
         set_select: (id, value='') => {
-
+            $('#'+id)[0].selectize.setValue(""+value)
         },
+        set_radio: (id, value='') =>{
+            // turn off all previous checks
+            $(`:radio[name^="${id}"]:checked`).props('checked', false)
+            $(`:radio[name^="${id}"]`).toArray().forEach(
+                (radio)=>{
+                    if ($(radio).val() == value) {
+                        $(radio).props('checked', true)
+                    }
+                })
+        }
         id_to_val: (el) => {
             var result = {};
             result[$(el).attr('id')] = $(el).val();
