@@ -1,6 +1,12 @@
 
     var utils = {
 
+        set_text: (id, value = '') => {
+            $('#'+id).val(val)
+        },
+        set_select: (id, value='') => {
+
+        },
         id_to_val: (el) => {
             var result = {};
             result[$(el).attr('id')] = $(el).val();
@@ -24,7 +30,7 @@
                     return Object.assign(accumulator, currentValue);
                 }, {})
         },
-        
+
         json_string : (json) => {
             let cache = [];
             const result = JSON.stringify(json, (key, value) => {

@@ -1,18 +1,17 @@
-(function() {
-  var template = Handlebars.template, templates = Handlebars.templates = Handlebars.templates || {};
-templates['foo.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    var helper, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
-
-  return "<div class=\"entry\">\n    <h1>"
-    + alias4(((helper = (helper = helpers.title || (depth0 != null ? depth0.title : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"title","hash":{},"data":data}) : helper)))
-    + "</h1>\n    <div class=\"body\">\n      "
-    + alias4(((helper = (helper = helpers.body || (depth0 != null ? depth0.body : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"body","hash":{},"data":data}) : helper)))
-    + "\n    </div>\n  </div>\n";
-},"useData":true});
-})();
-
 $(function() {
-    foo('mouse', ['id', 'ear_tag', 'dob', 'genotype', 'sex', 'notes', 'status', 'create_timestamp', 'modify_timestamp'])
+    function update_mouse_modal (data) {
+        $('#id').val(data.id).change()
+        $('#ear_tag').val(data.ear_tag).change()
+        $('#dob').val(data.dob).change()
+
+    }
+
+    foo('mouse',
+        ['id', 'ear_tag', 'dob',
+        'genotype', 'sex', 'notes',
+        'status', 'create_timestamp',
+        'modify_timestamp'],
+        update_mouse_modal)
 
 
 

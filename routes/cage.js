@@ -18,9 +18,9 @@ router.get('/', function(req, res) {
             mice = mice.map((mouse)=>{
                 return {id: mouse.id, description: mouse.id}
             })
-            mice = utils.selectJSON(mice, 'mouse_ids', 'mice')
-            cage_type = utils.selectJSON(cage_type, 'cage_type')
-            utils.logJSON(cages)
+            mice = utils.select_json(mice, 'mouse_ids', 'mice')
+            cage_type = utils.select_json(cage_type, 'cage_type')
+            utils.log_json(cages)
             res.render('pages/cage', {
                 mice,
                 cage_type,

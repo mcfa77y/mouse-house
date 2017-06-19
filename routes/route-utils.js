@@ -6,7 +6,7 @@ String.prototype.toProperCase = function() {
     });
 };
 module.exports = {
-    logJSON: (json) => {
+    log_json: (json) => {
         let cache = [];
         const result = JSON.stringify(json, (key, value) => {
             if (typeof value === 'object' && value !== null) {
@@ -23,7 +23,7 @@ module.exports = {
         Logger.log(result)
     },
 
-    selectJSON: (items, id, description = '') => {
+    select_json: (items, id, description = '') => {
         if (description === '') {
             description = id.toProperCase()
                 .replace('_id', '')
@@ -33,13 +33,13 @@ module.exports = {
             items
         }
     },
-    stringTime:()=>{
+    format_time:()=>{
 
     },
-    
-    relativeTime: (date) => {
+
+    relative_time: (date) => {
         return moment(date, moment.ISO_8601).fromNow()
     }
 }
 
-// exports.logJSON =(json)=>{Logger.log(JSON.stringify(json, null, 4))}
+// exports.log_json =(json)=>{Logger.log(JSON.stringify(json, null, 4))}

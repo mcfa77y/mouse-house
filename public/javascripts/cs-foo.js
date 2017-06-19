@@ -66,8 +66,6 @@ var foo = (model_name, column_names) => {
         axios.get('/' + model_name + '/' + get_selected_row_ids())
             .then((resp) => {
                 toastr["success"](utils.json_string(resp.data))
-                var context = {title: "My New Post", body: "This is my first post!"};
-                var html    = Handlebars.templates['foo.hbs'](context);
                 $('#test').html(html)
             })
             .catch((err) => {

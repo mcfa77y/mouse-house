@@ -28,16 +28,16 @@ router.get('/', function(req, res) {
             mice: mouse_controller.all_pretty()
         })
         .then(({ status, genotype, cages, sex, mice }) => {
-            status = utils.selectJSON(status, 'status_id')
-            genotype = utils.selectJSON(genotype, 'genotype_id')
+            status = utils.select_json(status, 'status_id')
+            genotype = utils.select_json(genotype, 'genotype_id')
             cages = cages.map((cage) => {
                 return {
                     id: cage.id,
                     description: cage.name
                 }
             })
-            sex = utils.selectJSON(sex, 'sex_id')
-            cages = utils.selectJSON(cages, 'cage_id')
+            sex = utils.select_json(sex, 'sex_id')
+            cages = utils.select_json(cages, 'cage_id')
             res.render('pages/mouse', {
                 status,
                 genotype,
@@ -58,6 +58,7 @@ router.get('/:id', function(req, res) {
         })
         .then((y)=>{
             res.send(y)
+
         })
         .catch((err) => {
             res.status(500).send({ success: false, err })
@@ -83,7 +84,7 @@ router.get('/', function(req, res) {
 });
 
 router.post('/', function(req, res) {
-    utils.logJSON(req.body)
+    utils.log_json(req.body)
     let model = new mouse_model(req.body)
     mouse_controller.insert(model).then((x) => {
             res.send({ success: true })
