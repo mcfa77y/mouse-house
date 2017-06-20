@@ -1,4 +1,4 @@
-var foo = (model_name, column_names, fn_update_model) => {
+let foo = (model_name, column_names, fn_update_model) => {
     let columns = column_names.map((x) => {
         return { data: x }
     })
@@ -14,10 +14,10 @@ var foo = (model_name, column_names, fn_update_model) => {
     let save_button = $('#save-' + model_name + '-button')
 
     function update_crud_buttons() {
-        var data = table.rows({ selected: true}).data().pluck('id');
+        let data = table.rows({ selected: true}).data().pluck('id');
 
-        var disableDelete = true
-        var disableUpdate = true
+        let disableDelete = true
+        let disableUpdate = true
 
         if (data.length === 1) {
             disableDelete = false
@@ -32,7 +32,7 @@ var foo = (model_name, column_names, fn_update_model) => {
     }
 
     function get_selected_row_ids() {
-        var data = table.rows({ selected: true}).data().pluck('id');
+        let data = table.rows({ selected: true}).data().pluck('id_alias');
 
         return _.range(data.length).map((index) => {
             return data[index]

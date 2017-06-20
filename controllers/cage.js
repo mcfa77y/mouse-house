@@ -8,6 +8,8 @@ const enum_type_controller = require('./enum_type')
 const enum_controller = require('./enum')
 const utils = require('./utils_controller')
 const city_names = require('../lib/data/city_names.json').city_names
+
+
 class Controller extends Base_Controller {
     pretty(model) {
         return BlueBird.props({
@@ -45,6 +47,16 @@ class Controller extends Base_Controller {
         model.name = city_names[Math.floor(Math.random() * city_names.length)]
 
         return super.insert(model)
+    }
+    update(model){
+        // do related things
+        if(model.mouse_ids){
+            console.log('add mouse to cage' + model.mouse_ids)
+        }
+        delete model.mouse_ids
+
+
+        return super.update(model)
     }
 }
 

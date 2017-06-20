@@ -14,9 +14,9 @@ router.get('/', function(req, res) {
             cage_type: enum_controller.by_code('CAGE_TYPE'),
             cages: cage_controller.all_pretty()
         })
-        .then(({mice, cage_type, cages}) => {
-            mice = mice.map((mouse)=>{
-                return {id: mouse.id, description: mouse.id}
+        .then(({ mice, cage_type, cages }) => {
+            mice = mice.map((mouse) => {
+                return { id: mouse.id, description: mouse.id }
             })
             mice = utils.select_json(mice, 'mouse_ids', 'mice')
             cage_type = utils.select_json(cage_type, 'cage_type')
@@ -25,7 +25,7 @@ router.get('/', function(req, res) {
                 mice,
                 cage_type,
                 cages,
-                extra_js:['cs-cage']
+                extra_js: ['cs-cage']
             })
         })
 });

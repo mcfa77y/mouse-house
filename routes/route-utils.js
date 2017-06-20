@@ -33,7 +33,7 @@ module.exports = {
             items
         }
     },
-    format_time:()=>{
+    format_time: () => {
 
     },
 

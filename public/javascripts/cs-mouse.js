@@ -1,6 +1,6 @@
 $(function() {
     function update_mouse_modal (data) {
-        utils.set_text('id', data.id)
+        utils.set_text('id_alias', data.id_alias)
         utils.set_text('ear_tag', data.ear_tag)
         utils.set_text('dob', data.dob)
         utils.set_text('notes', data.notes)
@@ -11,7 +11,7 @@ $(function() {
     }
 
     foo('mouse',
-        ['id', 'ear_tag', 'dob',
+        ['id_alias', 'ear_tag', 'dob',
         'genotype', 'sex', 'notes',
         'status', 'create_timestamp',
         'modify_timestamp'],

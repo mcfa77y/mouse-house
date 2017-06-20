@@ -44,7 +44,7 @@ router.get('/', function(req, res) {
                 cages,
                 sex,
                 mice,
-                extra_js:['cs-mouse']
+                extra_js: ['cs-mouse']
             })
         })
 
@@ -56,7 +56,7 @@ router.get('/:id', function(req, res) {
     mouse_controller.by_id(req.params.id).then((x) => {
             return mouse_controller.pretty(x)
         })
-        .then((y)=>{
+        .then((y) => {
             res.send(y)
 
         })

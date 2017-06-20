@@ -1,8 +1,8 @@
 const Base_Model = require('./base_model')
 
 class Cage extends Base_Model {
-    constructor({id, create_timestamp, modify_timestamp, soft_delete, type_id, setup_date,end_date,update_date, mouse_ids, notes,}) {
-        super({id, create_timestamp, modify_timestamp, soft_delete})
+    constructor({ id, id_alias, create_timestamp, modify_timestamp, soft_delete, type_id, setup_date, end_date, update_date, mouse_ids, notes, }) {
+        super({ id, create_timestamp, modify_timestamp, soft_delete })
         this.type_id = parseInt(type_id)
         this.setup_date = setup_date
         this.end_date = end_date

@@ -29,6 +29,7 @@ create table ENUM (
 
 CREATE TABLE MOUSE (
       id SERIAL not null,
+      id_alias SERIAL not null,
       genotype_id integer not null,
       dob date not null,
       sex_id integer not null,
@@ -53,6 +54,7 @@ CREATE TABLE MOUSE (
 
 CREATE TABLE CAGE (
       id SERIAL not null,
+      id_alias SERIAL not null,
       TYPE_ID integer not null,
       setup_date date not null,
       end_date date,
@@ -69,6 +71,7 @@ CREATE TABLE CAGE (
 
 CREATE TABLE BREED (
       id SERIAL not null,
+      id_alias SERIAL not null,
       pairing_date date not null,
       plug_date date,
       pup_check_date date,
@@ -148,7 +151,8 @@ insert into enum (enum_type_id, description, modify_timestamp) values((select id
 
 
 INSERT INTO public.mouse
-(id,
+     (id,
+      id_alias,
        genotype_id,
        dob,
        sex_id,
@@ -158,20 +162,21 @@ INSERT INTO public.mouse
        create_timestamp,
        modify_timestamp,
        soft_delete)
-VALUES(nextval('mouse_id_seq'::regclass), 
-      (select e.id from enum e where e.description like 'Goldenticket'), 
-      '2016-05-14 16:33:48', 
-      (select e.id from enum e where e.description like 'male'), 
+VALUES(nextval('mouse_id_seq'::regclass), 101,
+      (select e.id from enum e where e.description like 'Goldenticket'),
+      '2016-05-14 16:33:48',
+      (select e.id from enum e where e.description like 'male'),
       37,
       (select e.id from enum e where e.description like '0' and e.enum_type_id = (select et.id from enum_type et where et.code like 'MOUSE_STATUS')),
       'i am mikey mouse',
-      now(), 
-      now(), 
+      now(),
+      now(),
       0);
-      
-      
+
+
 INSERT INTO public.mouse
-(id,
+      (id,
+       id_alias,
        genotype_id,
        dob,
        sex_id,
@@ -181,13 +186,62 @@ INSERT INTO public.mouse
        create_timestamp,
        modify_timestamp,
        soft_delete)
-VALUES(nextval('mouse_id_seq'::regclass), 
-      (select e.id from enum e where e.description like 'Rag2'), 
-      '2016-05-14 16:33:48', 
-      (select e.id from enum e where e.description like 'female'), 
+VALUES(nextval('mouse_id_seq'::regclass), 102,
+      (select e.id from enum e where e.description like 'Rag2'),
+      '2016-05-14 16:33:48',
+      (select e.id from enum e where e.description like 'female'),
       37,
       (select e.id from enum e where e.description like '1' and e.enum_type_id = (select et.id from enum_type et where et.code like 'MOUSE_STATUS')),
       'i am minerva mouse',
-      now(), 
-      now(), 
+      now(),
+      now(),
+      0);
+
+INSERT INTO public.cage
+      (id,
+      id_alias,
+      type_id,
+      setup_date,
+      end_date,
+      update_date,
+      notes,
+      name,
+      create_timestamp,
+      modify_timestamp,
+      soft_delete)
+VALUES(nextval('cage_id_seq'::regclass),
+      301,
+      (select e.id from enum e where e.description like 'breeder'),
+      now(),
+      now(),
+      now(),
+      'viva la raza',
+      'Mexico City',
+      now(),
+      now(),
+      0);
+
+
+INSERT INTO public.cage
+      (id,
+      id_alias,
+      type_id,
+      setup_date,
+      end_date,
+      update_date,
+      notes,
+      name,
+      create_timestamp,
+      modify_timestamp,
+      soft_delete)
+VALUES(nextval('cage_id_seq'::regclass),
+      302,
+      (select e.id from enum e where e.description like 'stock'),
+      now(),
+      now(),
+      now(),
+      'Guten Tag',
+      'Munich',
+      now(),
+      now(),
       0);

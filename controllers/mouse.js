@@ -63,6 +63,16 @@ class Controller extends Base_Controller {
 
         return super.insert(model)
     }
+    update(model){
+        // do related things
+        if(model.cage_id){
+            console.log('add mouse to cage')
+        }
+        delete model.cage_id
+
+
+        return super.update(model)
+    }
 }
 
 module.exports = new Controller('mouse')

@@ -2,7 +2,7 @@
 // Constructor
 
 class Base_Model {
-    constructor({id, create_timestamp, modify_timestamp, soft_delete}) {
+    constructor({ id, create_timestamp, modify_timestamp, soft_delete }) {
         this.id = parseInt(id)
         this.create_timestamp = create_timestamp
         this.modify_timestamp = modify_timestamp
