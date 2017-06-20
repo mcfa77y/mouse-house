@@ -1,11 +1,13 @@
 $(function() {
     function update_mouse_modal (data) {
-        $('#id').val(data.id).change()
-        $('#ear_tag').val(data.ear_tag).change()
-        $('#dob').val(data.dob).change()
-        $('#cage_id')[0].selectize.setValue(""+data.cage_id)
-        $('#status_id')[0].selectize.setValue(""+data.status_id)
-        $('#genotype_id')[0].selectize.setValue(""+data.genotype_id)
+        utils.set_text('id', data.id)
+        utils.set_text('ear_tag', data.ear_tag)
+        utils.set_text('dob', data.dob)
+        utils.set_text('notes', data.notes)
+        utils.set_select('cage_id', data.cage_id)
+        utils.set_select('status_id', data.status_id)
+        utils.set_select('genotype_id', data.genotype_id)
+        utils.set_radio('sex_id', data.sex_id)
     }
 
     foo('mouse',

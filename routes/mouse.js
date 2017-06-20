@@ -83,6 +83,17 @@ router.get('/', function(req, res) {
         })
 });
 
+router.put('/', function(req, res) {
+    utils.log_json(req.body)
+    let model = new mouse_model(req.body)
+    mouse_controller.update(model).then((x) => {
+            res.send({ success: true })
+        })
+        .catch((err) => {
+            res.status(500).send({ success: false, err })
+        })
+});
+
 router.post('/', function(req, res) {
     utils.log_json(req.body)
     let model = new mouse_model(req.body)

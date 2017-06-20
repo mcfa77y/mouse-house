@@ -39,6 +39,16 @@ class Base_Controller {
             .toString()
         return db.any(query)
     }
+    update(row){
+        row.create_timestamp = utils.format_time(new Date())
+        row.modify_timestamp = row.create_timestamp
+        const query = squel.update()
+            .into(this.name)
+            .setFields(row)
+            .where('id = ' + row.id)
+            .toString()
+        return db.any(query)
+    }
     delete(_id){
         const query = squel.delete()
             .from(this.name)
@@ -46,6 +56,7 @@ class Base_Controller {
             .toString()
         return db.any(query)
     }
+
 }
 
 // export the class instance

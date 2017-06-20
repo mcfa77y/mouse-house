@@ -1,4 +1,4 @@
-var foo = (model_name, column_names) => {
+var foo = (model_name, column_names, fn_update_model) => {
     let columns = column_names.map((x) => {
         return { data: x }
     })
@@ -66,7 +66,9 @@ var foo = (model_name, column_names) => {
         axios.get('/' + model_name + '/' + get_selected_row_ids())
             .then((resp) => {
                 toastr["success"](utils.json_string(resp.data))
-                $('#test').html(html)
+                fn_update_model(resp.data)
+                //$('#test').html(html)
+
             })
             .catch((err) => {
                 toastr['error']('update something happened' + utils.json_string(err))
