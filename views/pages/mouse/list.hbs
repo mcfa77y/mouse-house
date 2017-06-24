@@ -1,4 +1,5 @@
-<table id='mouse-list' class="mdl-data-table" cellspacing="0" width="100%">
+<div class="well bs-component">
+    <table id='mouse-list' class="mdl-data-table" cellspacing="0" width="100%">
     <thead>
         <tr>
             <th>#</th>
@@ -15,7 +16,7 @@
     <tbody>
         {{#each mice}}
         <tr>
-            <td>{{id_alias}}</td>
+            <td><a href="mouse/{{id_alias}}">{{id_alias}}</a></td>
             <td>{{ear_tag}}</td>
             <td>{{dob}}</td>
             <td>{{genotype}}</td>
@@ -29,3 +30,9 @@
     </tbody>
 </table>
 {{>crud_buttons model_name='mouse'}}
+{{> mouse/mouse_create}}
+</div>
+
+<div id="test" class="well bs-component">
+
+</div>

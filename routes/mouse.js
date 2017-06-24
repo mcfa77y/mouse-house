@@ -38,7 +38,7 @@ router.get('/', function(req, res) {
             })
             sex = utils.select_json(sex, 'sex_id')
             cages = utils.select_json(cages, 'cage_id')
-            res.render('pages/mouse', {
+            res.render('pages/mouse/list', {
                 status,
                 genotype,
                 cages,
@@ -53,11 +53,12 @@ router.get('/', function(req, res) {
 
 router.get('/:id', function(req, res) {
     Logger.log('get0')
-    mouse_controller.by_id(req.params.id).then((x) => {
+    mouse_controller.by_id_alias(req.params.id).then((x) => {
             return mouse_controller.pretty(x)
         })
         .then((y) => {
-            res.send(y)
+            res.render('pages/mouse/update', y)
+            // res.send(y)
 
         })
         .catch((err) => {

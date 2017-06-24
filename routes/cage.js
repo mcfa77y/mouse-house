@@ -21,7 +21,7 @@ router.get('/', function(req, res) {
             mice = utils.select_json(mice, 'mouse_ids', 'mice')
             cage_type = utils.select_json(cage_type, 'cage_type')
             utils.log_json(cages)
-            res.render('pages/cage', {
+            res.render('pages/cage/cage', {
                 mice,
                 cage_type,
                 cages,
@@ -30,6 +30,19 @@ router.get('/', function(req, res) {
         })
 });
 
+
+router.get('/:id', function(req, res) {
+    cage_controller.by_id_alias(req.params.id).then((x) => {
+            return cage_controller.pretty(x)
+        })
+        .then((y) => {
+            res.send(y)
+
+        })
+        .catch((err) => {
+            res.status(500).send({ success: false, err })
+        })
+});
 
 router.delete('/:id', function(req, res) {
     cage_controller.delete(req.params.id).then((x) => {

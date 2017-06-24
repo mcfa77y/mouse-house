@@ -36,6 +36,13 @@ class Controller extends Base_Controller {
             })
 
     }
+    by_id_alias(_id_alias){
+        const query = squel.select()
+            .from(this.name)
+            .where('id_alias = ?', _id_alias)
+            .toString()
+        return db.one(query)
+    }
     insert(model){
         // remove empty params
         model = utils.remove_empty(model, true)
