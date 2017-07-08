@@ -31,7 +31,6 @@ class Controller extends Base_Controller {
                 mouse.sex = sex.description
                 mouse.genotype = genotype.description
                 mouse.status = status.description
-                    // convert to relative time
                 mouse.dob = utils.format_time(mouse.dob)
                 mouse.create_timestamp = utils.format_time(mouse.create_timestamp)
                 mouse.modify_timestamp = utils.format_time(mouse.modify_timestamp)

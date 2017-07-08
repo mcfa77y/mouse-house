@@ -1,3 +1,11 @@
+{{#eq 11 value }}
+<h3> '{{value}}' value == 11</h3>
+{{else}}
+<h3> '{{value}}' value != 11</h3>
+{{/eq}}
+{{#each items}}
+    <h3> item: {{this.id}} yyy</h3>
+{{/each}}
 <div class="form-group label-floating  col-md-3 col-sm-6">
     <label for="{{id}}" class=" control-label">{{description}}</label>
     <div class="">
@@ -7,7 +15,13 @@
         <select class="form-control foo-select" id="{{id}}">
         {{/if}}
             {{#each items}}
+            <h3> {{this.id}} yyy</h3>
+
+            {{#eq this.id value }}
+            <option value="{{this.id}}">{{this.description}} - xxxx</option>
+            {{else}}
             <option value="{{this.id}}">{{this.description}}</option>
+            {{/eq}}
             {{/each}}
         </select>
     </div>

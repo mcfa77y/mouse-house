@@ -52,18 +52,51 @@ router.get('/', function(req, res) {
 });
 
 router.get('/:id', function(req, res) {
-    Logger.log('get0')
-    mouse_controller.by_id_alias(req.params.id).then((x) => {
-            return mouse_controller.pretty(x)
+    BlueBird.props({
+            status: enum_controller.by_code('MOUSE_STATUS'),
+            genotype: enum_controller.by_code('MOUSE_GENOTYPE'),
+            cages: cage_controller.all(),
+            sex: enum_controller.by_code('SEX'),
+            mouse: mouse_controller.by_id_alias(req.params.id)
         })
-        .then((y) => {
-            res.render('pages/mouse/update', y)
-            // res.send(y)
+        .then(({ status, genotype, cages, sex, mouse }) => {
+            status = utils.select_json(status, 'status_id')
+            genotype = utils.select_json(genotype, 'genotype_id')
+            cages = cages.map((cage) => {
+                return {
+                    id: cage.id,
+                    description: cage.name
+                }
+            })
+            sex = utils.select_json(sex, 'sex_id')
+            cages = utils.select_json(cages, 'cage_id')
+            // utils.log_json(mouse)
+            
+            mouse_controller.pretty(mouse).then((x)=>{
+                utils.log_json(x)})
 
+            res.render('pages/mouse/update', {
+                status,
+                genotype,
+                cages,
+                sex,
+                mouse,
+                extra_js: ['cs-mouse']
+            })
         })
-        .catch((err) => {
+         .catch((err) => {
             res.status(500).send({ success: false, err })
         })
+
+    // mouse_controller.by_id_alias(req.params.id).then((x) => {
+    //         return mouse_controller.pretty(x)
+    //     })
+    //     .then((y) => {
+    //         res.render('pages/mouse/update', y)
+    //         // res.send(y)
+
+    //     })
+    //    
 });
 
 router.delete('/:id', function(req, res) {
