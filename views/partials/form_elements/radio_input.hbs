@@ -1,13 +1,24 @@
 <div class="form-group  label-floating col-md-3 col-sm-6">
-    <label class="control-label">{{description}}</label>
+    <label class="control-label">{{description}} - '{{value}}'</label>
     {{#forEach items}}
     <div class="radio radio-primary">
         <label>
-            {{#if isFirst}}
-            <input type="radio" id="{{../id}}_{{this.description}}"  checked="" name="{{../id}}" value="{{this.id}}">
+            {{#isFalsey ../value}}
+
+                {{#if isFirst}}
+                    <input type="radio" id="{{../id}}_{{this.description}}" name="{{../id}}" value="{{this.id}}" checked="">
+                {{else}}
+                    <input type="radio" id="{{../id}}_{{this.description}}" name="{{../id}}" value="{{this.id}}">
+                {{/if}}
+
             {{else}}
-            <input type="radio" id="{{../id}}_{{this.description}}" name="{{../id}}" value="{{this.id}}">
-            {{/if}}
+                {{#eq ../id this.id}}
+                    <input type="radio" id="{{../id}}_{{this.description}}" name="{{../id}}" value="{{this.id}}" checked="">
+                {{else}}
+                    <input type="radio" id="{{../id}}_{{this.description}}" name="{{../id}}" value="{{this.id}}">
+                {{/eq}}
+
+            {{/isFalsey}}
             {{this.description}}
         </label>
     </div>

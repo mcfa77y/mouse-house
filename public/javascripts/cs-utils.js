@@ -29,7 +29,7 @@
         },
         form_ids_vals: (form_id) => {
             const form = $('#'+form_id);
-            return [].concat(form.find(':text, select').toArray()
+            return [].concat(form.find(':text, select, :hidden').toArray()
                 .filter((el)=>{return $(el).attr('id') !== undefined})
                 .filter((el)=>{return $(el).attr('id').length > 0})
                 .filter((el)=>{return !$(el).attr('id').includes('-selectized')})

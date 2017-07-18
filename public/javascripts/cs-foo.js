@@ -8,13 +8,15 @@ let foo = (model_name, column_names, fn_update_model) => {
         columns
     });
 
-    let create_button = $('#open-create-' + model_name + '-modal-button')
-    let update_button = $('#open-update-' + model_name + '-modal-button')
+    let create_modal_button = $('#open-create-' + model_name + '-modal-button')
+    let update_modal_button = $('#open-update-' + model_name + '-modal-button')
     let delete_button = $('#open-delete-' + model_name + '-modal-button')
     let save_button = $('#save-' + model_name + '-button')
+    let update_button = $('#update-' + model_name + '-button')
+    let back_button = $('#back-' + model_name + '-button')
 
     function update_crud_buttons() {
-        let data = table.rows({ selected: true}).data().pluck('id');
+        let data = table.rows({ selected: true }).data().pluck('id');
 
         let disableDelete = true
         let disableUpdate = true
@@ -28,11 +30,11 @@ let foo = (model_name, column_names, fn_update_model) => {
         }
 
         delete_button.attr('disabled', disableDelete)
-        update_button.attr('disabled', disableUpdate)
+        update_modal_button.attr('disabled', disableUpdate)
     }
 
     function get_selected_row_ids() {
-        let data = table.rows({ selected: true}).data().pluck('id_alias');
+        let data = table.rows({ selected: true }).data().pluck('id_alias');
 
         return _.range(data.length).map((index) => {
             return data[index]
@@ -53,7 +55,7 @@ let foo = (model_name, column_names, fn_update_model) => {
 
     save_button.click(() => {
         const dt = utils.form_ids_vals(model_name + '-fields')
-        axios.post('/' + model_name, dt)
+        axios.put('/' + model_name, dt)
             .then(function(response) {
                 console.log(response);
             })
@@ -63,17 +65,18 @@ let foo = (model_name, column_names, fn_update_model) => {
     })
 
     update_button.click(() => {
-        axios.get('/' + model_name + '/' + get_selected_row_ids())
-            .then((resp) => {
-                toastr["success"](utils.json_string(resp.data))
-                fn_update_model(resp.data)
-                //$('#test').html(html)
-
+        const dt = utils.form_ids_vals(model_name + '-fields')
+        axios.post('/' + model_name, dt)
+            .then(function(response) {
+                console.log(response)
+                toastr['success']("updated")
             })
-            .catch((err) => {
-                toastr['error']('update something happened' + utils.json_string(err))
-            })
+            .catch(function(error) {
+                console.log(error);
+                toastr['error']("updated failed")
+            });
     })
+
 
     delete_button.click(() => {
         axios.delete('/' + model_name + '/' + get_selected_row_ids())
@@ -83,5 +86,10 @@ let foo = (model_name, column_names, fn_update_model) => {
             .catch((err) => {
                 toastr['error']('delete something happened' + utils.json_string(err))
             })
+    })
+
+    back_button.click(() => {
+        window.location.href = '/' + model_name
+        return false;
     })
 }

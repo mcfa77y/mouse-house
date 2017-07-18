@@ -70,10 +70,10 @@ router.get('/:id', function(req, res) {
             })
             sex = utils.select_json(sex, 'sex_id')
             cages = utils.select_json(cages, 'cage_id')
-            // utils.log_json(mouse)
-            
-            mouse_controller.pretty(mouse).then((x)=>{
-                utils.log_json(x)})
+            utils.log_json(mouse)
+
+            // mouse_controller.pretty(mouse).then((x)=>{
+            //     utils.log_json(x)})
 
             res.render('pages/mouse/update', {
                 status,
@@ -96,7 +96,7 @@ router.get('/:id', function(req, res) {
     //         // res.send(y)
 
     //     })
-    //    
+    //
 });
 
 router.delete('/:id', function(req, res) {
@@ -120,7 +120,7 @@ router.get('/', function(req, res) {
 router.put('/', function(req, res) {
     utils.log_json(req.body)
     let model = new mouse_model(req.body)
-    mouse_controller.update(model).then((x) => {
+    mouse_controller.insert(model).then((x) => {
             res.send({ success: true })
         })
         .catch((err) => {
@@ -131,7 +131,7 @@ router.put('/', function(req, res) {
 router.post('/', function(req, res) {
     utils.log_json(req.body)
     let model = new mouse_model(req.body)
-    mouse_controller.insert(model).then((x) => {
+    mouse_controller.update(model).then((x) => {
             res.send({ success: true })
         })
         .catch((err) => {

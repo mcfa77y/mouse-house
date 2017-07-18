@@ -7,10 +7,9 @@
   },
   "main": "index.js",
   "scripts": {
-    "build": "webpack-dev-server",
+    "build": "webpack",
     "build:prod": "webpack -p",
     "start": "node index.js",
-    "build": "webpack",
     "debug": "nodemon --inspect index.js"
   },
   "dependencies": {
@@ -24,8 +23,9 @@
     "d": "^1.0.0",
     "debug": "~2.2.0",
     "express": "~4.13.4",
+    "falsey": "^0.3.0",
     "googleapis": "^18.0.0",
-    "handlebars-helpers": "^0.8.2",
+    "handlebars-helpers": "^0.9.3",
     "hbs": "^4.0.1",
     "loopback": "^3.7.0",
     "loopback-connector-postgresql": "^3.0.0",
@@ -80,6 +80,5 @@
     "sass-loader": "^6.0.3",
     "webpack": "^2.4.1",
     "webpack-dev-server": "^2.4.2"
-
   }
 }

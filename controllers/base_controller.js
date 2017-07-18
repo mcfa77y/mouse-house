@@ -40,10 +40,9 @@ class Base_Controller {
         return db.any(query)
     }
     update(row){
-        row.create_timestamp = utils.format_time(new Date())
-        row.modify_timestamp = row.create_timestamp
+        row.modify_timestamp = utils.format_time(new Date())
         const query = squel.update()
-            .into(this.name)
+            .table(this.name)
             .setFields(row)
             .where('id = ' + row.id)
             .toString()
