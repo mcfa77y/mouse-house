@@ -21,26 +21,36 @@ router.get('/', function(req, res) {
             mice = utils.select_json(mice, 'mouse_ids', 'mice')
             cage_type = utils.select_json(cage_type, 'cage_type')
             utils.log_json(cages)
-            res.render('pages/cage/cage', {
+            res.render('pages/cage/list', {
                 mice,
                 cage_type,
                 cages,
-                extra_js: ['cs-cage']
+                extra_js: ['cs-cage'],
+                cool_face: utils.cool_face()
             })
         })
 });
 
-
 router.get('/:id', function(req, res) {
-    cage_controller.by_id_alias(req.params.id).then((x) => {
-            return cage_controller.pretty(x)
+    BlueBird.props({
+            mice: mouse_controller.all(),
+            cage_type: enum_controller.by_code('CAGE_TYPE'),
+            cage: cage_controller.by_id_alias(req.params.id)
         })
-        .then((y) => {
-            res.send(y)
-
-        })
-        .catch((err) => {
-            res.status(500).send({ success: false, err })
+        .then(({ mice, cage_type, cage }) => {
+            mice = mice.map((mouse) => {
+                return { id: mouse.id, description: mouse.id }
+            })
+            mice = utils.select_json(mice, 'mouse_ids', 'mice')
+            cage_type = utils.select_json(cage_type, 'cage_type')
+            utils.log_json(cage)
+            res.render('pages/cage/update', {
+                mice,
+                cage_type,
+                cage,
+                extra_js: ['cs-cage'],
+                cool_face: utils.cool_face()
+            })
         })
 });
 

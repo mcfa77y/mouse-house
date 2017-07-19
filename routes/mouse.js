@@ -44,7 +44,8 @@ router.get('/', function(req, res) {
                 cages,
                 sex,
                 mice,
-                extra_js: ['cs-mouse']
+                extra_js: ['cs-mouse'],
+                cool_face: utils.cool_face()
             })
         })
 
@@ -81,7 +82,8 @@ router.get('/:id', function(req, res) {
                 cages,
                 sex,
                 mouse,
-                extra_js: ['cs-mouse']
+                extra_js: ['cs-mouse'],
+                cool_face: utils.cool_face()
             })
         })
          .catch((err) => {
