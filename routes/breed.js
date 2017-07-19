@@ -17,7 +17,7 @@ router.get('/', function(req, res) {
             let mm = utils.select_json(male_mice, 'male_mouse')
             let fm = utils.select_json(female_mice, 'female_mouse')
 
-            res.render('pages/breed', { genotype_data: gt, male_mouse_data: mm, female_mouse_data: fm })
+            res.render('pages/breed/list', { genotype_data: gt, male_mouse_data: mm, female_mouse_data: fm })
         })
 
 

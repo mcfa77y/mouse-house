@@ -1,5 +1,7 @@
 const Logger = require('bug-killer');
 const moment = require('moment');
+const cool = require('cool-ascii-faces');
+
 String.prototype.toProperCase = function() {
     return this.replace(/\w\S*/g, function(txt) {
         return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
@@ -33,12 +35,15 @@ module.exports = {
             items
         }
     },
-    format_time: () => {
-
+    format_time: (date) => {
+        return moment(date, moment.ISO_8601)
     },
 
     relative_time: (date) => {
         return moment(date, moment.ISO_8601).fromNow()
+    },
+    cool_face:() => {
+        return cool();
     }
 }
 

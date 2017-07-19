@@ -1,17 +1,17 @@
-var cool = require('cool-ascii-faces');
-var express = require('express');
-var app = express();
-var pg = require('pg');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var cors = require('cors')
-    // var routes = require('./routes/index');
+const cool = require('cool-ascii-faces');
+const express = require('express');
+const app = express();
+const pg = require('pg');
+const path = require('path');
+const favicon = require('serve-favicon');
+const logger = require('morgan');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const cors = require('cors')
+    // const routes = require('./routes/index');
 const rp = require('request-promise');
-var router = express.Router();
-var app = express();
+const router = express.Router();
+
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
@@ -25,17 +25,15 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 
-var breed = require('./routes/breed');
+const breed = require('./routes/breed');
+const mouse = require('./routes/mouse');
+const cage = require('./routes/cage');
 
-var mouse = require('./routes/mouse');
-
-var cage = require('./routes/cage');
-
-// var routes = require('./routes/index');
+// const routes = require('./routes/index');
 // handel bars helpers
-var hbs = require('hbs');
-var hbsutils = require('hbs-utils')(hbs);
-var helpers = require('handlebars-helpers')({
+const hbs = require('hbs');
+const hbsutils = require('hbs-utils')(hbs);
+const helpers = require('handlebars-helpers')({
     handlebars: hbs.handlebars
 });
 //helpers.comparison({handlebars: hbs.handlebars});
@@ -66,42 +64,6 @@ app.get('/', function(request, response) {
 
 app.get('/cool', function(request, response) {
     response.send(cool());
-});
-app.get('/xxx', (req, res) => {
-
-    ds.discoverModelDefinitions({ views: false, limit: 20 })
-        .then((args) => {
-            let dmp = args.map((arg) => {
-                return arg.name
-            })
-            return BlueBird.reduce(dmp, (acc, tableName) => {
-                return ds.discoverModelProperties(tableName).then((args) => {
-                    return acc.add(args)
-                })
-            }, [])
-        })
-        .then((acc) => {
-            res.render('pages/add_enum', { data: acc })
-        })
-        .catch((err) => {
-            console.log("boo " + err)
-            res.send(err)
-        })
-
-})
-const db = require('./lib/database')
-const squel = require('squel')
-app.get('/db', function(request, response) {
-    db.any(squel.select().from('enum').toString())
-        .then((result) => {
-            response.render('pages/db', {
-                results: result
-            });
-        })
-        .catch((err) => {
-            console.error(err);
-            response.send("Error " + err);
-        })
 });
 
 app.listen(app.get('port'), function() {
