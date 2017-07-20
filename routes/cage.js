@@ -63,6 +63,22 @@ router.delete('/:id', function(req, res) {
         })
 });
 
+router.put('/', function(req, res) {
+    utils.log_json(req.body)
+    let model = new cage_model(req.body)
+    cage_controller.insert(model).then((x) => {
+            res.send({
+                success: true
+            })
+        })
+        .catch((err) => {
+            res.status(500).send({
+                success: false,
+                err
+            })
+        })
+});
+
 router.post('/', function(req, res) {
     let model = new cage_model(req.body)
     cage_controller.insert(model).then((x) => {

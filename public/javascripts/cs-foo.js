@@ -14,6 +14,9 @@ let foo = (model_name, column_names, fn_update_model) => {
     let save_button = $('#save-' + model_name + '-button')
     let update_button = $('#update-' + model_name + '-button')
     let back_button = $('#back-' + model_name + '-button')
+    let nav_button = $('a[href="/' + model_name + '"]')
+    
+    nav_button.parent().toggleClass('active')
 
     function update_crud_buttons() {
         let data = table.rows({ selected: true }).data().pluck('id');
@@ -48,6 +51,7 @@ let foo = (model_name, column_names, fn_update_model) => {
             // do something with the ID of the selected items
         }
     }
+
     table.on('select', on_select)
     table.on('deselect', on_select)
 

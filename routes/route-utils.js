@@ -1,6 +1,8 @@
 const Logger = require('bug-killer');
 const moment = require('moment');
 const cool = require('cool-ascii-faces');
+const readJson = require('r-json');
+const CREDENTIALS = readJson(`${__dirname}/../credentials.json`);
 
 String.prototype.toProperCase = function() {
     return this.replace(/\w\S*/g, function(txt) {
@@ -44,7 +46,27 @@ module.exports = {
     },
     cool_face:() => {
         return cool();
-    }
+    },
+    getErrorGif: () => {
+    const options = {
+        uri: 'http://api.giphy.com/v1/gifs/search',
+        qs: {
+            q: 'zoidberg',
+            api_key: CREDENTIALS.giphy.api_key
+
+        },
+        headers: {
+            'User-Agent': 'Request-Promise'
+        },
+        json: true // Automatically parses the JSON string in the response
+    };
+    return rp(options)
+        .then((json) => {
+            const randomIndex = _.random(0, json.data.length);
+            return json.data[randomIndex].images.original.url;
+        })
+
+}
 }
 
 // exports.log_json =(json)=>{Logger.log(JSON.stringify(json, null, 4))}

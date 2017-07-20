@@ -37,11 +37,12 @@ class Controller extends Base_Controller {
 
     }
     by_id_alias(_id_alias){
+        let self = this
         const query = squel.select()
             .from(this.name)
             .where('id_alias = ?', _id_alias)
             .toString()
-        return db.one(query)
+        return db.one(query).then((x)=>{return self.pretty(x)})
     }
     insert(model){
         // remove empty params

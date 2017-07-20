@@ -20,6 +20,7 @@ router.delete('/api/mice/:id', db.removePuppy);
 */
 
 router.get('/', function(req, res) {
+    
     BlueBird.props({
             status: enum_controller.by_code('MOUSE_STATUS'),
             genotype: enum_controller.by_code('MOUSE_GENOTYPE'),
@@ -27,7 +28,7 @@ router.get('/', function(req, res) {
             sex: enum_controller.by_code('SEX'),
             mice: mouse_controller.all_pretty()
         })
-        .then(({ status, genotype, cages, sex, mice }) => {
+        .then(({status, genotype, cages, sex, mice}) => {
             status = utils.select_json(status, 'status_id')
             genotype = utils.select_json(genotype, 'genotype_id')
             cages = cages.map((cage) => {
@@ -48,8 +49,13 @@ router.get('/', function(req, res) {
                 cool_face: utils.cool_face()
             })
         })
-
-
+        .catch((error) => {
+            getErrorGif().then((errorImageUrl) =>{
+                res.render('error', {
+                    error, errorImageUrl
+                })
+            })
+        })
 });
 
 router.get('/:id', function(req, res) {
@@ -86,8 +92,11 @@ router.get('/:id', function(req, res) {
                 cool_face: utils.cool_face()
             })
         })
-         .catch((err) => {
-            res.status(500).send({ success: false, err })
+        .catch((err) => {
+            res.status(500).send({
+                success: false,
+                err
+            })
         })
 
     // mouse_controller.by_id_alias(req.params.id).then((x) => {
@@ -103,30 +112,40 @@ router.get('/:id', function(req, res) {
 
 router.delete('/:id', function(req, res) {
     mouse_controller.delete(req.params.id).then((x) => {
-            res.send({ success: true })
+            res.send({
+                success: true
+            })
         })
         .catch((err) => {
-            res.status(500).send({ success: false, err })
-        })
-});
-
-router.get('/', function(req, res) {
-    mouse_controller.all_pretty()
-        .then((mouse_array) => {
-            res.send({
-                data: mouse_array
+            res.status(500).send({
+                success: false,
+                err
             })
         })
 });
+
+// router.get('/', function(req, res) {
+//     mouse_controller.all_pretty()
+//         .then((mouse_array) => {
+//             res.send({
+//                 data: mouse_array
+//             })
+//         })
+// });
 
 router.put('/', function(req, res) {
     utils.log_json(req.body)
     let model = new mouse_model(req.body)
     mouse_controller.insert(model).then((x) => {
-            res.send({ success: true })
+            res.send({
+                success: true
+            })
         })
         .catch((err) => {
-            res.status(500).send({ success: false, err })
+            res.status(500).send({
+                success: false,
+                err
+            })
         })
 });
 
@@ -134,10 +153,15 @@ router.post('/', function(req, res) {
     utils.log_json(req.body)
     let model = new mouse_model(req.body)
     mouse_controller.update(model).then((x) => {
-            res.send({ success: true })
+            res.send({
+                success: true
+            })
         })
         .catch((err) => {
-            res.status(500).send({ success: false, err })
+            res.status(500).send({
+                success: false,
+                err
+            })
         })
 });
 
