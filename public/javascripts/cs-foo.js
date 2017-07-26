@@ -40,8 +40,8 @@ let foo = (model_name, column_names, fn_update_model) => {
         let data = table.rows({ selected: true }).data().pluck('id_alias');
 
         return _.range(data.length).map((index) => {
-            return data[index]
-        })[0]
+            return $(data[index]).text()
+        })
     }
 
     function on_select(e, dt, type, indexes) {
@@ -86,6 +86,8 @@ let foo = (model_name, column_names, fn_update_model) => {
         axios.delete('/' + model_name + '/' + get_selected_row_ids())
             .then((resp) => {
                 toastr["success"](utils.json_string(resp))
+                window.location.href = '/' + model_name
+                return = false
             })
             .catch((err) => {
                 toastr['error']('delete something happened' + utils.json_string(err))

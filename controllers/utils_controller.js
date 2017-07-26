@@ -22,6 +22,9 @@ module.exports = {
         cache = null; // Enable garbage collection
         Logger.log(result)
     },
+    log: (message) => {
+        Logger.log(message)
+    },
 
     select_json: (items, id, description = '') => {
         if (description === '') {

@@ -111,7 +111,7 @@ router.get('/:id', function(req, res) {
 });
 
 router.delete('/:id', function(req, res) {
-    mouse_controller.delete(req.params.id).then((x) => {
+    mouse_controller.delete_by_id_alias(req.params.id).then((x) => {
             res.send({
                 success: true
             })

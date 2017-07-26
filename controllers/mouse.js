@@ -5,6 +5,7 @@ const enum_controller = require('./enum')
 const utils = require('./utils_controller')
 const mouse_model = require('../models/mouse')
 const _ = require('underscore')
+const cage_mouse_controller = new Base_Controller('cage_mouse')
 
 class Controller extends Base_Controller {
     by_sex(sex) {
@@ -64,18 +65,41 @@ class Controller extends Base_Controller {
         // do related things
         if(model.cage_id){
             console.log('add mouse to cage')
+            cage_mouse_controller
+                .insert({cage_id: model.cage_id, mouse_id: model.id})
+                .catch( (error) => {
+                    utils_controller.log_json(error)
+                })
+            delete model.cage_id
+    
         }
-        delete model.cage_id
-
 
         return super.insert(model)
     }
+
+    delete_by_id_alias(_id_alias){
+        const delete_mouse = squel.delete()
+            .from(this.name)
+            .where('id_alias = ?', _id_alias)
+            .toString()
+        const delete_mouse_cage = squel.delete()
+            .from('cage_mouse')
+            .where('mouse_id = ?', _id_alias)
+            .toString()
+        return db.any(query)
+    }
+
     update(model){
         // do related things
         if(model.cage_id){
             console.log('add mouse to cage')
+            cage_mouse_controller
+                .insert({cage_id: model.cage_id, mouse_id: model.id})
+                .catch( (error) => {
+                    utils_controller.log_json(error)
+                })
+            delete model.cage_id
         }
-        delete model.cage_id
 
 
         return super.update(model)
