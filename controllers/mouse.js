@@ -12,23 +12,22 @@ class Controller extends Base_Controller {
         return enum_controller.by_code_desc('SEX', sex)
             .then((sex_enum) => {
                 const query = squel.select()
-                    .field('id')
                     .field('id', 'description')
                     .from(this.name)
                     .where('sex_id = ?', sex_enum.id)
                     .toString()
-                console.log('get by sex: ' + query)
                 return db.any(query)
             })
     }
 
     pretty(mouse) {
         return BlueBird.props({
-                sex: enum_controller.by_id(mouse.sex_id),
-                genotype: enum_controller.by_id(mouse.genotype_id),
-                status: enum_controller.by_id(mouse.status_id)
+                sex: enum_controller.get(mouse.sex_id),
+                genotype: enum_controller.get(mouse.genotype_id),
+                status: enum_controller.get(mouse.status_id),
+                cage: cage_mouse_controller.get(mouse.id)
             })
-            .then(({ sex, genotype, status }) => {
+            .then(({ sex, genotype, status, cage }) => {
                 mouse.sex = sex.description
                 mouse.genotype = genotype.description
                 mouse.status = status.description
@@ -68,7 +67,7 @@ class Controller extends Base_Controller {
             cage_mouse_controller
                 .insert({cage_id: model.cage_id, mouse_id: model.id})
                 .catch( (error) => {
-                    utils_controller.log_json(error)
+                    utils.log_json(error)
                 })
             delete model.cage_id
     
@@ -96,7 +95,7 @@ class Controller extends Base_Controller {
             cage_mouse_controller
                 .insert({cage_id: model.cage_id, mouse_id: model.id})
                 .catch( (error) => {
-                    utils_controller.log_json(error)
+                    utils.log_json(error)
                 })
             delete model.cage_id
         }

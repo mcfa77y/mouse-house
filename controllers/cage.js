@@ -13,7 +13,7 @@ const city_names = require('../lib/data/city_names.json').city_names
 class Controller extends Base_Controller {
     pretty(model) {
         return BlueBird.props({
-                type: enum_controller.by_id(model.type_id),
+                type: enum_controller.get(model.type_id),
             })
             .then(({ type }) => {
                 model.type = type.description
@@ -32,7 +32,6 @@ class Controller extends Base_Controller {
             })
             .then((model_array) => {
                 return model_array
-
             })
 
     }

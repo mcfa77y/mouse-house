@@ -87,7 +87,7 @@ let foo = (model_name, column_names, fn_update_model) => {
             .then((resp) => {
                 toastr["success"](utils.json_string(resp))
                 window.location.href = '/' + model_name
-                return = false
+                return false
             })
             .catch((err) => {
                 toastr['error']('delete something happened' + utils.json_string(err))

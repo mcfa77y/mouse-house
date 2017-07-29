@@ -44,7 +44,7 @@ const memoize_methods = {
         async: true
     }),
 
-    by_id: d((_id) => {
+    get: d((_id) => {
         const query = squel.select()
             .field('description')
             .from(TABLE_NAME)

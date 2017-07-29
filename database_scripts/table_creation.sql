@@ -102,7 +102,10 @@ CREATE TABLE CAGE_MOUSE (
             ON UPDATE NO ACTION ON DELETE NO action,
        CONSTRAINT cm_cage_id_fkey FOREIGN KEY (cage_id)
             REFERENCES cage (id) MATCH SIMPLE
-            ON UPDATE NO ACTION ON DELETE NO action);
+            ON UPDATE NO ACTION ON DELETE NO action,
+       CONSTRAINT cage_mouse_uniq UNIQUE (mouse_id,cage_id)
+
+      );
 
 
 CREATE TABLE BREED_MOUSE (
@@ -122,7 +125,9 @@ CREATE TABLE BREED_MOUSE (
             ON UPDATE NO ACTION ON DELETE NO action,
        CONSTRAINT bm_breed_id_fkey FOREIGN KEY (breed_id)
             REFERENCES breed (id) MATCH SIMPLE
-            ON UPDATE NO ACTION ON DELETE NO action);
+            ON UPDATE NO ACTION ON DELETE NO action),
+       CONSTRAINT breed_mouse_uniq UNIQUE (mouse_male_id,mouse_female_id,breed_id)
+);
 
 insert into enum_type (code, modify_timestamp) values('SEX', current_timestamp);
 insert into enum (enum_type_id, description, modify_timestamp) values((select id from enum_type where code = 'SEX'), 'female', current_timestamp);
