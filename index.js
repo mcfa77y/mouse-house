@@ -27,7 +27,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 const breed = require('./routes/breed');
 const mouse = require('./routes/mouse');
+// const new_mouse = require('./routes/new_mouse');
 const cage = require('./routes/cage');
+const new_cage = require('./routes/new_cage');
 
 // const routes = require('./routes/index');
 // handel bars helpers
@@ -53,7 +55,9 @@ app.set('view engine', 'hbs');
 
 app.use('/breed', breed);
 app.use('/mouse', mouse);
+// app.use('/new_mouse', new_mouse);
 app.use('/cage', cage);
+app.use('/new_cage', new_cage);
 
 
 app.get('/', function(request, response) {

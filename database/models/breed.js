@@ -12,7 +12,7 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     classMethods: {
       associate: function(models) {
-        Breedl.belongsTo(models.Enum, {as: 'status', foreignKey : 'status_id'})
+        Breed.belongsTo(models.Enum, {as: 'status', foreignKey : 'status_id'})
       }
     },
       underscored: true,

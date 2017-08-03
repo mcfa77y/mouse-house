@@ -3,7 +3,7 @@ const { Base_Controller, db, squel } = require('./base_controller')
 const enum_type_controller = require('./enum_type')
 const enum_controller = require('./enum')
 const utils = require('./utils_controller')
-const mouse_model = require('../models/mouse')
+const models = require('../database/models')
 const _ = require('underscore')
 const cage_mouse_controller = new Base_Controller('cage_mouse')
 
