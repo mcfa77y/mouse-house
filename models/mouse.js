@@ -1,15 +1,24 @@
-const Base_Model = require('./base_model')
+'use strict';
+module.exports = function(sequelize, DataTypes) {
+  const Mouse = sequelize.define('Mouse', {
+    id_alias: DataTypes.STRING,
+    ear_tag: DataTypes.STRING,
+    dob: DataTypes.DATE,
+    notes: DataTypes.TEXT~
+  }, {
+    classMethods: {
+      associate: function(models) {
+        Mouse.belongsTo(models.Cage)
+        Mouse.belongsTo(models.Breed)
 
-class Mouse extends Base_Model {
-    constructor({ id, id_alias, genotype_id, dob, sex_id, ear_tag, status_id, notes, create_timestamp, modify_timestamp, cage_id, soft_delete }) {
-        super({ id, create_timestamp, modify_timestamp, soft_delete })
-        this.genotype_id = parseInt(genotype_id)
-        this.dob = dob
-        this.sex_id = parseInt(sex_id)
-        this.ear_tag = parseInt(ear_tag)
-        this.status_id = parseInt(status_id)
-        this.notes = notes
-        this.cage_id = parseInt(cage_id)
-    }
-}
-module.exports = Mouse;
+        Mouse.belongsTo(models.Enum, {as: 'sex', foreignKey : 'sex_id'})
+        Mouse.belongsTo(models.Enum, {as: 'genotype', foreignKey : 'genotype_id'})
+        Mouse.belongsTo(models.Enum, {as: 'status', foreignKey : 'status_id'})
+      }
+    },
+      underscored: true,
+      timestamps: true,
+      paranoid: true
+  });
+  return Mouse;
+};
