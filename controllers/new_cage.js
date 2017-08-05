@@ -1,20 +1,22 @@
 const BlueBird = require('bluebird')
-const {
-    Base_Controller,
-    db,
-    squel
-} = require('./base_controller')
-const enum_type_controller = require('./enum_type')
-const enum_controller = require('./enum')
+
 const utils = require('./utils_controller')
 const city_names = require('../lib/data/city_names.json').city_names
+
+
+const new_enum_controller = require('./new_enum')
 const models = require('../database/models')
 const Cage = models.Cage
 
-class Controller extends Base_Controller {
+class Controller {
+    create(_cage) {
+        return Cage.create(_cage)
+          
+          
+    }
     pretty(model) {
         return BlueBird.props({
-                type: enum_controller.get(model.type_id),
+                type: new_enum_controller.get(model.type_id),
             })
             .then(({ type }) => {
                 model.type = type.description
@@ -38,23 +40,19 @@ class Controller extends Base_Controller {
     }
     by_id_alias(_id_alias){
         let self = this
-        const query = squel.select()
-            .from(this.name)
-            .where('id_alias = ?', _id_alias)
-            .toString()
-        return db.one(query).then((x)=>{return self.pretty(x)})
+        return Cage.findOne({where: {id_alias: _id_alias}})
+            .then(x => {return self.pretty(x)})
     }
-    insert(model){
-        // remove empty params
-        model = utils.remove_empty(model, true)
-        // do related things
-        if(model.mouse_ids){
-            console.log('add mouse to cage' + model.mouse_ids)
-        }
-        delete model.mouse_ids
-        model.name = city_names[Math.floor(Math.random() * city_names.length)]
 
-        return super.insert(model)
+    insert(model){
+        model.name = city_names[Math.floor(Math.random() * city_names.length)]
+        return Cage.create(model)
+            .then(() => {
+                // link mouse up with cage
+                if (model.mouse_ids) {
+                    console.log('add mouse to cage' + model.mouse_ids)
+                }
+            })
     }
     update(model){
         // do related things
@@ -63,9 +61,8 @@ class Controller extends Base_Controller {
         }
         delete model.mouse_ids
 
-
-        return super.update(model)
+        return Cage.update(model, {where: {id: model.id}})
     }
 }
 
-module.exports = new Controller('cage')
+module.exports = new Controller()

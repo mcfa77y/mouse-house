@@ -5,14 +5,17 @@ const BlueBird = require('bluebird')
 const enum_controller = require(path.join(__dirname, '..', 'controllers/enum'))
 const mouse_controller = require(path.join(__dirname, '..', 'controllers/mouse'))
 const cage_controller = require(path.join(__dirname, '..', 'controllers/cage'))
-const new_cage_controller = require(path.join(__dirname, '..', 'controllers/new_cage'))
+
 const cage_model = require(path.join(__dirname, '..', 'models/cage'))
 const utils = require('./route-utils')
+
+const new_enum_controller = require(path.join(__dirname, '..', 'controllers/new_enum'))
+const new_cage_controller = require(path.join(__dirname, '..', 'controllers/new_cage'))
 
 router.get('/', function(req, res) {
     BlueBird.props({
             mice: mouse_controller.all(),
-            cage_type: enum_controller.by_code('CAGE_TYPE'),
+            cage_type: new_enum_controller.by_code('CAGE_TYPE'),
             cages: new_cage_controller.all_pretty()
         })
         .then(({ mice, cage_type, cages }) => {
@@ -35,7 +38,7 @@ router.get('/', function(req, res) {
 router.get('/:id', function(req, res) {
     BlueBird.props({
             mice: mouse_controller.all(),
-            cage_type: enum_controller.by_code('CAGE_TYPE'),
+            cage_type: new_enum_controller.by_code('CAGE_TYPE'),
             cage: cage_controller.by_id_alias(req.params.id)
         })
         .then(({ mice, cage_type, cage }) => {
@@ -66,10 +69,11 @@ router.delete('/:id', function(req, res) {
 
 router.put('/', function(req, res) {
     utils.log_json(req.body)
-    let model = new cage_model(req.body)
-    cage_controller.insert(model).then((x) => {
+    //let model = new cage_model(req.body)
+    new_cage_controller.create(req.body).then((x) => {
             res.send({
-                success: true
+                success: true,
+                x:x
             })
         })
         .catch((err) => {
@@ -82,6 +86,7 @@ router.put('/', function(req, res) {
 
 router.post('/', function(req, res) {
     let model = new cage_model(req.body)
+    new_cage_controller.create
     cage_controller.insert(model).then((x) => {
             res.send({ success: true })
         })

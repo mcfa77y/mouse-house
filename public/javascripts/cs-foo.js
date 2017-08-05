@@ -59,7 +59,7 @@ let foo = (model_name, column_names, fn_update_model) => {
 
     save_button.click(() => {
         const dt = utils.form_ids_vals(model_name + '-fields')
-        axios.put('/' + model_name, dt)
+        axios.put('/new_' + model_name, dt)
             .then(function(response) {
                 console.log(response);
             })
