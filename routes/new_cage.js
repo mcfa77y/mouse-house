@@ -58,8 +58,8 @@ router.get('/:id', function(req, res) {
         })
 });
 
-router.delete('/:id', function(req, res) {
-    cage_controller.delete(req.params.id).then((x) => {
+router.delete('/:id_alias', function(req, res) {
+    new_cage_controller.delete_where({id_alias: req.params.id_alias}).then((x) => {
             res.send({ success: true })
         })
         .catch((err) => {
@@ -70,7 +70,7 @@ router.delete('/:id', function(req, res) {
 router.put('/', function(req, res) {
     utils.log_json(req.body)
     //let model = new cage_model(req.body)
-    new_cage_controller.create(req.body).then((x) => {
+    new_cage_controller.insert(req.body).then((x) => {
             res.send({
                 success: true,
                 x:x

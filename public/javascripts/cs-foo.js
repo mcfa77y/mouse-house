@@ -15,7 +15,7 @@ let foo = (model_name, column_names, fn_update_model) => {
     let update_button = $('#update-' + model_name + '-button')
     let back_button = $('#back-' + model_name + '-button')
     let nav_button = $('a[href="/' + model_name + '"]')
-    
+
     nav_button.parent().toggleClass('active')
 
     function update_crud_buttons() {
@@ -70,7 +70,7 @@ let foo = (model_name, column_names, fn_update_model) => {
 
     update_button.click(() => {
         const dt = utils.form_ids_vals(model_name + '-fields')
-        axios.post('/' + model_name, dt)
+        axios.post('/new_' + model_name, dt)
             .then(function(response) {
                 console.log(response)
                 toastr['success']("updated")
@@ -83,10 +83,10 @@ let foo = (model_name, column_names, fn_update_model) => {
 
 
     delete_button.click(() => {
-        axios.delete('/' + model_name + '/' + get_selected_row_ids())
+        axios.delete('/new_' + model_name + '/' + get_selected_row_ids())
             .then((resp) => {
                 toastr["success"](utils.json_string(resp))
-                window.location.href = '/' + model_name
+                window.location.href = '/new_' + model_name
                 return false
             })
             .catch((err) => {
@@ -95,7 +95,7 @@ let foo = (model_name, column_names, fn_update_model) => {
     })
 
     back_button.click(() => {
-        window.location.href = '/' + model_name
+        window.location.href = '/new_' + model_name
         return false;
     })
 }

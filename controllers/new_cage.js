@@ -3,17 +3,11 @@ const BlueBird = require('bluebird')
 const utils = require('./utils_controller')
 const city_names = require('../lib/data/city_names.json').city_names
 
-
+const New_Base_Controller = require('./new_base_controller')
 const new_enum_controller = require('./new_enum')
-const models = require('../database/models')
-const Cage = models.Cage
+const Cage = require('../database/models').Cage
 
-class Controller {
-    create(_cage) {
-        return Cage.create(_cage)
-          
-          
-    }
+class Controller extends New_Base_Controller{
     pretty(model) {
         return BlueBird.props({
                 type: new_enum_controller.get(model.type_id),
@@ -28,7 +22,7 @@ class Controller {
     }
     all_pretty() {
         let self = this
-        return Cage.findAll().then((items) => {
+        return super.all().then((items) => {
                 return BlueBird.map(items, (item) => {
                     return self.pretty(item)
                 })
@@ -44,9 +38,9 @@ class Controller {
             .then(x => {return self.pretty(x)})
     }
 
-    insert(model){
-        model.name = city_names[Math.floor(Math.random() * city_names.length)]
-        return Cage.create(model)
+    insert(_model){
+        _model.name = city_names[Math.floor(Math.random() * city_names.length)]
+        return super.insert(model)
             .then(() => {
                 // link mouse up with cage
                 if (model.mouse_ids) {
@@ -54,15 +48,15 @@ class Controller {
                 }
             })
     }
-    update(model){
+    update(_model){
         // do related things
-        if(model.mouse_ids){
-            console.log('add mouse to cage' + model.mouse_ids)
+        if(_model.mouse_ids){
+            console.log('add mouse to cage' + _model.mouse_ids)
+            delete _model.mouse_ids
         }
-        delete model.mouse_ids
 
-        return Cage.update(model, {where: {id: model.id}})
+        return super.update(_model)
     }
 }
 
-module.exports = new Controller()
+module.exports = new Controller(Cage)
