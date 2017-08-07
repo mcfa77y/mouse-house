@@ -3,10 +3,10 @@ const router = express.Router();
 const path = require('path');
 const Logger = require('bug-killer');
 const BlueBird = require('bluebird')
-const enum_controller = require(path.join(__dirname, '..', 'controllers/enum'))
-const mouse_controller = require(path.join(__dirname, '..', 'controllers/mouse'))
-const cage_controller = require(path.join(__dirname, '..', 'controllers/cage'))
-const mouse_model = require(path.join(__dirname, '..', 'models/mouse'))
+const new_enum_controller = require(path.join(__dirname, '..', 'controllers/new_enum'))
+const new_mouse_controller = require(path.join(__dirname, '..', 'controllers/new_mouse'))
+const new_cage_controller = require(path.join(__dirname, '..', 'controllers/new_cage'))
+const mouse_model = require(path.join(__dirname, '..', 'database/models/mouse'))
 const utils = require('./route-utils')
 
 
@@ -20,16 +20,12 @@ router.delete('/api/mice/:id', db.removePuppy);
 */
 
 router.get('/', function(req, res) {
-    
-    
-
-
     BlueBird.props({
-            status: enum_controller.by_code('MOUSE_STATUS'),
-            genotype: enum_controller.by_code('MOUSE_GENOTYPE'),
-            cages: cage_controller.all(),
-            sex: enum_controller.by_code('SEX'),
-            mice: mouse_controller.all_pretty()
+            status: new_enum_controller.by_code('MOUSE_STATUS'),
+            genotype: new_enum_controller.by_code('MOUSE_GENOTYPE'),
+            cages: new_cage_controller.all(),
+            sex: new_enum_controller.by_code('SEX'),
+            mice: new_mouse_controller.all_pretty()
         })
         .then(({status, genotype, cages, sex, mice}) => {
             status = utils.select_json(status, 'status_id')
@@ -63,11 +59,11 @@ router.get('/', function(req, res) {
 
 router.get('/:id', function(req, res) {
     BlueBird.props({
-            status: enum_controller.by_code('MOUSE_STATUS'),
-            genotype: enum_controller.by_code('MOUSE_GENOTYPE'),
-            cages: cage_controller.all(),
-            sex: enum_controller.by_code('SEX'),
-            mouse: mouse_controller.by_id_alias(req.params.id)
+            status: new_enum_controller.by_code('MOUSE_STATUS'),
+            genotype: new_enum_controller.by_code('MOUSE_GENOTYPE'),
+            cages: new_cage_controller.all(),
+            sex: new_enum_controller.by_code('SEX'),
+            mouse: new_mouse_controller.by_id_alias(req.params.id)
         })
         .then(({ status, genotype, cages, sex, mouse }) => {
             status = utils.select_json(status, 'status_id')
@@ -80,6 +76,7 @@ router.get('/:id', function(req, res) {
             })
             sex = utils.select_json(sex, 'sex_id')
             cages = utils.select_json(cages, 'cage_id')
+            mouse = mouse[0]
             utils.log_json(mouse)
 
             // mouse_controller.pretty(mouse).then((x)=>{
@@ -114,7 +111,7 @@ router.get('/:id', function(req, res) {
 });
 
 router.delete('/:id', function(req, res) {
-    mouse_controller.delete_by_id_alias(req.params.id).then((x) => {
+    new_mouse_controller.delete_by_id_alias(req.params.id).then((x) => {
             res.send({
                 success: true
             })
@@ -138,8 +135,8 @@ router.delete('/:id', function(req, res) {
 
 router.put('/', function(req, res) {
     utils.log_json(req.body)
-    let model = new mouse_model(req.body)
-    mouse_controller.insert(model).then((x) => {
+    new_mouse_controller.insert(req.body)
+        .then((x) => {
             res.send({
                 success: true
             })
@@ -154,8 +151,8 @@ router.put('/', function(req, res) {
 
 router.post('/', function(req, res) {
     utils.log_json(req.body)
-    let model = new mouse_model(req.body)
-    mouse_controller.update(model).then((x) => {
+
+    new_mouse_controller.update(req.body).then((x) => {
             res.send({
                 success: true
             })

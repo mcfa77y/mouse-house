@@ -30,6 +30,7 @@ const mouse = require('./routes/mouse');
 // const new_mouse = require('./routes/new_mouse');
 const cage = require('./routes/cage');
 const new_cage = require('./routes/new_cage');
+const new_mouse = require('./routes/new_mouse');
 
 // const routes = require('./routes/index');
 // handel bars helpers
@@ -58,6 +59,7 @@ app.use('/mouse', mouse);
 // app.use('/new_mouse', new_mouse);
 app.use('/cage', cage);
 app.use('/new_cage', new_cage);
+app.use('/new_mouse', new_mouse);
 
 
 app.get('/', function(request, response) {
@@ -67,7 +69,7 @@ app.get('/', function(request, response) {
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-    var err = new Error('Not Found');   
+    var err = new Error('Not Found');
     err.status = 404;
     next(err);
 });

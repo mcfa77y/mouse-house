@@ -34,13 +34,13 @@ class Controller extends New_Base_Controller{
     }
     by_id_alias(_id_alias){
         let self = this
-        return Cage.findOne({where: {id_alias: _id_alias}})
+        return this.get_where({id_alias: _id_alias})
             .then(x => {return self.pretty(x)})
     }
 
     insert(_model){
         _model.name = city_names[Math.floor(Math.random() * city_names.length)]
-        return super.insert(model)
+        return super.insert(_model)
             .then(() => {
                 // link mouse up with cage
                 if (model.mouse_ids) {

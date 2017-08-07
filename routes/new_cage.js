@@ -39,7 +39,7 @@ router.get('/:id', function(req, res) {
     BlueBird.props({
             mice: mouse_controller.all(),
             cage_type: new_enum_controller.by_code('CAGE_TYPE'),
-            cage: cage_controller.by_id_alias(req.params.id)
+            cage: new_cage_controller.by_id_alias(req.params.id)
         })
         .then(({ mice, cage_type, cage }) => {
             mice = mice.map((mouse) => {
@@ -55,6 +55,9 @@ router.get('/:id', function(req, res) {
                 extra_js: ['cs-cage'],
                 cool_face: utils.cool_face()
             })
+        })
+        .catch((err) => {
+            res.status(500).send({ success: false, err })
         })
 });
 
