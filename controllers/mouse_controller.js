@@ -1,21 +1,21 @@
 const BlueBird = require('bluebird')
 const { Base_Controller, db, squel } = require('./base_controller')
-const new_enum_controller = require('./enum')
+const enum_controller = require('./enum_contoller')
 const utils = require('./utils_controller')
 const Mouse = require('../database/models').Mouse
 const _ = require('underscore')
-const New_Base_Controller = require('./new_base_controller')
+const Base_Controller = require('./base_controller')
 
-class Controller extends New_Base_Controller {
+class Controller extends Base_Controller {
     by_sex(sex) {
-        return new_enum_controller.by_code_desc('SEX', sex)
+        return enum_controller.by_code_desc('SEX', sex)
     }
 
     pretty(mouse) {
         return BlueBird.props({
-                sex: new_enum_controller.get(mouse.sex_id),
-                genotype: new_enum_controller.get(mouse.genotype_id),
-                status: new_enum_controller.get(mouse.status_id),
+                sex: enum_controller.get(mouse.sex_id),
+                genotype: enum_controller.get(mouse.genotype_id),
+                status: enum_controller.get(mouse.status_id),
             })
             .then(({ sex, genotype, status }) => {
                 mouse.sex = sex.description

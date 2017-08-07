@@ -3,14 +3,14 @@ const BlueBird = require('bluebird')
 const utils = require('./utils_controller')
 const city_names = require('../lib/data/city_names.json').city_names
 
-const New_Base_Controller = require('./new_base_controller')
-const new_enum_controller = require('./new_enum')
+const Base_Controller = require('./base_controller')
+const enum_controller = require('./enum_controller')
 const Cage = require('../database/models').Cage
 
-class Controller extends New_Base_Controller{
+class Controller extends Base_Controller{
     pretty(model) {
         return BlueBird.props({
-                type: new_enum_controller.get(model.type_id),
+                type: enum_controller.get(model.type_id),
             })
             .then(({ type }) => {
                 model.type = type.description

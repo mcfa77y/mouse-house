@@ -2,11 +2,15 @@ const express = require('express');
 const router = express.Router();
 const path = require('path');
 const BlueBird = require('bluebird')
-const enum_controller = require(path.join(__dirname, '..', 'controllers/enum'))
-const mouse_controller = require(path.join(__dirname, '..', 'controllers/mouse'))
-const cage_controller = require(path.join(__dirname, '..', 'controllers/cage'))
+const enum_controller = require(path.join(__dirname, '..', 'controllers/enum_contoller'))
+const mouse_controller = require(path.join(__dirname, '..', 'controllers/mouse_contoller'))
+const cage_controller = require(path.join(__dirname, '..', 'controllers/cage_contoller'))
+
 const cage_model = require(path.join(__dirname, '..', 'models/cage'))
 const utils = require('./route-utils')
+
+const enum_controller = require(path.join(__dirname, '..', 'controllers/enum'))
+const cage_controller = require(path.join(__dirname, '..', 'controllers/cage'))
 
 router.get('/', function(req, res) {
     BlueBird.props({
@@ -52,10 +56,13 @@ router.get('/:id', function(req, res) {
                 cool_face: utils.cool_face()
             })
         })
+        .catch((err) => {
+            res.status(500).send({ success: false, err })
+        })
 });
 
-router.delete('/:id', function(req, res) {
-    cage_controller.delete(req.params.id).then((x) => {
+router.delete('/:id_alias', function(req, res) {
+    cage_controller.delete_where({id_alias: req.params.id_alias}).then((x) => {
             res.send({ success: true })
         })
         .catch((err) => {
@@ -65,10 +72,11 @@ router.delete('/:id', function(req, res) {
 
 router.put('/', function(req, res) {
     utils.log_json(req.body)
-    let model = new cage_model(req.body)
-    cage_controller.insert(model).then((x) => {
+    //let model = new cage_model(req.body)
+    cage_controller.insert(req.body).then((x) => {
             res.send({
-                success: true
+                success: true,
+                x:x
             })
         })
         .catch((err) => {
@@ -81,6 +89,7 @@ router.put('/', function(req, res) {
 
 router.post('/', function(req, res) {
     let model = new cage_model(req.body)
+    cage_controller.create
     cage_controller.insert(model).then((x) => {
             res.send({ success: true })
         })

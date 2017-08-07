@@ -59,7 +59,7 @@ let foo = (model_name, column_names, fn_update_model) => {
 
     save_button.click(() => {
         const dt = utils.form_ids_vals(model_name + '-fields')
-        axios.put('/new_' + model_name, dt)
+        axios.put('/' + model_name, dt)
             .then(function(response) {
                 console.log(response);
             })
@@ -70,7 +70,7 @@ let foo = (model_name, column_names, fn_update_model) => {
 
     update_button.click(() => {
         const dt = utils.form_ids_vals(model_name + '-fields')
-        axios.post('/new_' + model_name, dt)
+        axios.post('/' + model_name, dt)
             .then(function(response) {
                 console.log(response)
                 toastr['success']("updated")
@@ -83,10 +83,10 @@ let foo = (model_name, column_names, fn_update_model) => {
 
 
     delete_button.click(() => {
-        axios.delete('/new_' + model_name + '/' + get_selected_row_ids())
+        axios.delete('/' + model_name + '/' + get_selected_row_ids())
             .then((resp) => {
                 toastr["success"](utils.json_string(resp))
-                window.location.href = '/new_' + model_name
+                window.location.href = '/' + model_name
                 return false
             })
             .catch((err) => {
@@ -95,7 +95,7 @@ let foo = (model_name, column_names, fn_update_model) => {
     })
 
     back_button.click(() => {
-        window.location.href = '/new_' + model_name
+        window.location.href = '/' + model_name
         return false;
     })
 }
