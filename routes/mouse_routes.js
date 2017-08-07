@@ -3,10 +3,10 @@ const router = express.Router();
 const path = require('path');
 const Logger = require('bug-killer');
 const BlueBird = require('bluebird')
-const enum_controller = require(path.join(__dirname, '..', 'controllers/enum_contoller'))
-const mouse_controller = require(path.join(__dirname, '..', 'controllers/mouse_contoller'))
-const cage_controller = require(path.join(__dirname, '..', 'controllers/cage_contoller'))
-const utils = require('./route-utils')
+const enum_controller = require(path.join(__dirname, '..', 'controllers/enum_controller'))
+const mouse_controller = require(path.join(__dirname, '..', 'controllers/mouse_controller'))
+const cage_controller = require(path.join(__dirname, '..', 'controllers/cage_controller'))
+const utils = require('./utils_routes')
 
 
 /*

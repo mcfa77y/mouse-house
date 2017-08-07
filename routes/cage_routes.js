@@ -2,15 +2,12 @@ const express = require('express');
 const router = express.Router();
 const path = require('path');
 const BlueBird = require('bluebird')
-const enum_controller = require(path.join(__dirname, '..', 'controllers/enum_contoller'))
-const mouse_controller = require(path.join(__dirname, '..', 'controllers/mouse_contoller'))
-const cage_controller = require(path.join(__dirname, '..', 'controllers/cage_contoller'))
 
+const enum_controller = require(path.join(__dirname, '..', 'controllers/enum_controller'))
+const mouse_controller = require(path.join(__dirname, '..', 'controllers/mouse_controller'))
+const cage_controller = require(path.join(__dirname, '..', 'controllers/cage_controller'))
 const cage_model = require(path.join(__dirname, '..', 'models/cage'))
-const utils = require('./route-utils')
-
-const enum_controller = require(path.join(__dirname, '..', 'controllers/enum'))
-const cage_controller = require(path.join(__dirname, '..', 'controllers/cage'))
+const utils = require('./utils_routes')
 
 router.get('/', function(req, res) {
     BlueBird.props({

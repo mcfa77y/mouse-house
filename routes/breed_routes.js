@@ -2,9 +2,10 @@ const express = require('express');
 const router = express.Router();
 var path = require('path');
 const BlueBird = require('bluebird')
-const enum_controller = require(path.join(__dirname, '..', 'controllers/enum'))
-const mouse_controller = require(path.join(__dirname, '..', 'controllers/mouse'))
-const utils = require('./route-utils')
+
+const enum_controller = require(path.join(__dirname, '..', 'controllers/enum_controller'))
+const mouse_controller = require('../controllers/mouse_controller')
+const utils = require('./utils_routes')
 
 router.get('/', function(req, res) {
     BlueBird.props({

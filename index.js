@@ -25,12 +25,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 
-const breed = require('./routes/breed');
-const mouse = require('./routes/mouse');
-const cage = require('./routes/cage');
+const breed = require('./routes/breed_routes');
+const mouse = require('./routes/mouse_routes');
+const cage = require('./routes/cage_routes');
 
 
-// const routes = require('./routes/index');
+
 // handel bars helpers
 const hbs = require('hbs');
 const hbsutils = require('hbs-utils')(hbs);

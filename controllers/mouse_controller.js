@@ -1,10 +1,10 @@
 const BlueBird = require('bluebird')
-const { Base_Controller, db, squel } = require('./base_controller')
-const enum_controller = require('./enum_contoller')
+const Base_Controller = require('./base_controller')
+const enum_controller = require('./enum_controller')
 const utils = require('./utils_controller')
 const Mouse = require('../database/models').Mouse
 const _ = require('underscore')
-const Base_Controller = require('./base_controller')
+
 
 class Controller extends Base_Controller {
     by_sex(sex) {
