@@ -13,8 +13,8 @@ $(function() {
     foo('mouse',
         ['id_alias', 'ear_tag', 'dob',
         'genotype', 'sex', 'notes',
-        'status', 'create_timestamp',
-        'modify_timestamp'],
+        'status', 'create_at',
+        'modify_at'],
         update_mouse_modal)
 
 

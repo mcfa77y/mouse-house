@@ -6,7 +6,7 @@ const BlueBird = require('bluebird')
 const enum_controller = require(path.join(__dirname, '..', 'controllers/enum_controller'))
 const mouse_controller = require(path.join(__dirname, '..', 'controllers/mouse_controller'))
 const cage_controller = require(path.join(__dirname, '..', 'controllers/cage_controller'))
-const cage_model = require(path.join(__dirname, '..', 'models/cage'))
+
 const utils = require('./utils_routes')
 
 router.get('/', function(req, res) {

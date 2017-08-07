@@ -18,13 +18,18 @@ class Controller extends Base_Controller {
                 status: enum_controller.get(mouse.status_id),
             })
             .then(({ sex, genotype, status }) => {
-                mouse.sex = sex.description
-                mouse.genotype = genotype.description
-                mouse.status = status.description
-                mouse.dob = utils.format_time(mouse.dob)
-                mouse.create_timestamp = utils.format_time(mouse.create_timestamp)
-                mouse.modify_timestamp = utils.format_time(mouse.modify_timestamp)
-                return mouse
+                let pretty_mouse = {}
+                pretty_mouse.id = mouse.id
+                pretty_mouse.id_alias = mouse.id_alias
+                pretty_mouse.ear_tag = mouse.ear_tag
+                pretty_mouse.notes = mouse.notes
+                pretty_mouse.sex = sex.description
+                pretty_mouse.genotype = genotype.description
+                pretty_mouse.status = status.description
+                pretty_mouse.dob = utils.format_time(mouse.dob)
+                pretty_mouse.create_at =     utils.format_time(mouse.create_at)
+                pretty_mouse.modify_at = utils.format_time(mouse.modify_at)
+                return pretty_mouse
             })
     }
     all_pretty() {
