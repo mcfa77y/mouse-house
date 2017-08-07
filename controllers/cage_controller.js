@@ -13,11 +13,18 @@ class Controller extends Base_Controller{
                 type: enum_controller.get(model.type_id),
             })
             .then(({ type }) => {
-                model.type = type.description
-                model.setup_date = utils.format_time(model.setup_date)
-                model.update_date = utils.format_time(model.update_date)
-                model.end_date = utils.format_time(model.end_date)
-                return model
+                let pretty_model = {}
+
+                pretty_model.id = model.id
+                pretty_model.id_alias = model.id_alias
+                pretty_model.name = model.name
+                pretty_model.notes = model.notes
+
+                pretty_model.type = type.description
+                pretty_model.setup_date = utils.format_time(model.setup_date)
+                pretty_model.update_date = utils.format_time(model.update_date)
+                pretty_model.end_date = utils.format_time(model.end_date)
+                return pretty_model
             })
     }
     all_pretty() {
@@ -35,7 +42,7 @@ class Controller extends Base_Controller{
     by_id_alias(_id_alias){
         let self = this
         return this.get_where({id_alias: _id_alias})
-            .then(x => {return self.pretty(x)})
+            .then(x => {return self.pretty(x[0])})
     }
 
     insert(_model){
@@ -43,8 +50,8 @@ class Controller extends Base_Controller{
         return super.insert(_model)
             .then(() => {
                 // link mouse up with cage
-                if (model.mouse_ids) {
-                    console.log('add mouse to cage' + model.mouse_ids)
+                if (_model.mouse_ids) {
+                    console.log('add mouse to cage' + _model.mouse_ids)
                 }
             })
     }

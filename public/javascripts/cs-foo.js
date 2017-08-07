@@ -61,10 +61,14 @@ let foo = (model_name, column_names, fn_update_model) => {
         const dt = utils.form_ids_vals(model_name + '-fields')
         axios.put('/' + model_name, dt)
             .then(function(response) {
-                console.log(response);
+                console.log(response)
+                toastr['success']("updated")
+                window.location.href = '/' + model_name
+                return false
             })
             .catch(function(error) {
                 console.log(error);
+                toastr['error']("updated failed")
             });
     })
 
@@ -74,6 +78,8 @@ let foo = (model_name, column_names, fn_update_model) => {
             .then(function(response) {
                 console.log(response)
                 toastr['success']("updated")
+                window.location.href = '/' + model_name
+                return false
             })
             .catch(function(error) {
                 console.log(error);
