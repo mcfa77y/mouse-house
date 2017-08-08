@@ -125,8 +125,8 @@ function setupDatePicker() {
             })
             .on('open', () => {
                 input.value = input.value||moment().format('MM/DD/YYYY')
-                picker.setDate(moment(input.value))
-                picker.setTime(moment(input.value))
+                picker.setDate(moment(input.value, 'MM/DD/YYYY'))
+                picker.setTime(moment(input.value, 'MM/DD/YYYY'))
                 // extra styling to make it look good and behave normally
                 $('.c-datepicker.c-datepicker--open').css('z-index', 1200)
                 $('.c-datepicker__clock').css('padding-top', '357px')

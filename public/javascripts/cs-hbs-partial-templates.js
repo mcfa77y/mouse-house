@@ -98,9 +98,9 @@ Handlebars.partials['mouse-list'] = template({"1":function(container,depth0,help
     + "</td>\n            <td>"
     + alias4(((helper = (helper = helpers.status || (depth0 != null ? depth0.status : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"status","hash":{},"data":data}) : helper)))
     + "</td>\n            <td>"
-    + alias4(((helper = (helper = helpers.create_timestamp || (depth0 != null ? depth0.create_timestamp : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"create_timestamp","hash":{},"data":data}) : helper)))
+    + alias4(((helper = (helper = helpers.create_at || (depth0 != null ? depth0.create_at : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"create_at","hash":{},"data":data}) : helper)))
     + "</td>\n            <td>"
-    + alias4(((helper = (helper = helpers.modify_timestamp || (depth0 != null ? depth0.modify_timestamp : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"modify_timestamp","hash":{},"data":data}) : helper)))
+    + alias4(((helper = (helper = helpers.modify_at || (depth0 != null ? depth0.modify_at : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"modify_at","hash":{},"data":data}) : helper)))
     + "</td>\n        </tr>\n";
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1;

@@ -2,6 +2,7 @@
     <table id='cage-list' class="mdl-data-table" cellspacing="0" width="100%">
         <thead>
             <tr>
+                <th>id</th>
                 <th>#</th>
                 <th>name</th>
                 <th>type</th>
@@ -15,6 +16,7 @@
         <tbody>
             {{#each cages}}
             <tr>
+                <td>{{id}}</a></td>
                 <td><a href="cage/{{id_alias}}">{{id_alias}}</a></td>
                 <td>{{name}}</td>
                 <td>{{type}}</td>

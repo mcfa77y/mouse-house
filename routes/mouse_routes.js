@@ -75,7 +75,6 @@ router.get('/:id', function(req, res) {
             })
             sex = utils.select_json(sex, 'sex_id')
             cages = utils.select_json(cages, 'cage_id')
-            mouse = mouse[0]
             utils.log_json(mouse)
 
             // mouse_controller.pretty(mouse).then((x)=>{
@@ -91,10 +90,11 @@ router.get('/:id', function(req, res) {
                 cool_face: utils.cool_face()
             })
         })
-        .catch((err) => {
-            res.status(500).send({
-                success: false,
-                err
+        .catch((error) => {
+            utils.getErrorGif().then((errorImageUrl) =>{
+                res.render('error', {
+                    error, errorImageUrl
+                })
             })
         })
 
@@ -110,7 +110,21 @@ router.get('/:id', function(req, res) {
 });
 
 router.delete('/:id', function(req, res) {
-    mouse_controller.delete_by_id_alias(req.params.id).then((x) => {
+    if (req.query.id_alias) {
+            mouse_controller.delete_by_id_alias(req.params.id).then((x) => {
+            res.send({
+                success: true
+            })
+        })
+        .catch((err) => {
+            res.status(500).send({
+                success: false,
+                err
+            })
+        })        
+    } 
+    else {
+        mouse_controller.delete(req.params.id).then((x) => {
             res.send({
                 success: true
             })
@@ -121,6 +135,8 @@ router.delete('/:id', function(req, res) {
                 err
             })
         })
+    }
+    
 });
 
 // router.get('/', function(req, res) {

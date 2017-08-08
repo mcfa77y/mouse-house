@@ -20,7 +20,7 @@ const memoize_methods = {
     by_code_desc: d((_code, _description) => {
         return Enum.findOne({
             attributes: ['id', 'description'],
-            where: { descriptions:  _description, type: _code }
+            where: { description:  _description, type: _code }
         })
     }, { promise: true }),
 

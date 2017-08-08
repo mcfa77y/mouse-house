@@ -29,13 +29,16 @@ module.exports = {
     },
 
     select_json: (items, id, description = '') => {
-        if (description === '') {
-            description = id.toProperCase()
-                .replace('_id', '')
-                .replace('_', ' ')
-        }
+        const result = items.map( x => 
+            {
+                if (x.description === '' || x.description === undefined) {
+                   x.description = x.id
+                }
+
+                return {id: x.id, description: x.description}
+            })
         return {
-            items
+            items: result
         }
     },
     format_time: (date) => {

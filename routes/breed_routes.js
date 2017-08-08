@@ -3,7 +3,7 @@ const router = express.Router();
 var path = require('path');
 const BlueBird = require('bluebird')
 
-const enum_controller = require(path.join(__dirname, '..', 'controllers/enum_controller'))
+const enum_controller = require('../controllers/enum_controller')
 const mouse_controller = require('../controllers/mouse_controller')
 const utils = require('./utils_routes')
 
@@ -18,7 +18,8 @@ router.get('/', function(req, res) {
             let mm = utils.select_json(male_mice, 'male_mouse')
             let fm = utils.select_json(female_mice, 'female_mouse')
 
-            res.render('pages/breed/list', { genotype_data: gt, male_mouse_data: mm, female_mouse_data: fm })
+            res.render('pages/breed/list', { genotype: gt, 
+                male_mouse: mm, female_mouse: fm })
         })
 
 
