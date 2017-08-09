@@ -1,7 +1,10 @@
 'use strict';
 module.exports = function(sequelize, DataTypes) {
   const Cage = sequelize.define('Cage', {
-    id_alias: DataTypes.STRING,
+    id_alias: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
     name: DataTypes.STRING,
     setup_date: DataTypes.DATE,
     update_date: DataTypes.DATE,

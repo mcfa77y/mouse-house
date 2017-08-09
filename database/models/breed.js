@@ -1,7 +1,10 @@
 'use strict';
 module.exports = function(sequelize, DataTypes) {
   const Breed = sequelize.define('Breed', {
-    id_alias: DataTypes.STRING,
+    id_alias: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
     pairing_date: DataTypes.DATE,
     plug_date: DataTypes.DATE,
     pup_check_date: DataTypes.DATE,

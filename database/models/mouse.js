@@ -1,7 +1,10 @@
 'use strict';
 module.exports = function(sequelize, DataTypes) {
   const Mouse = sequelize.define('Mouse', {
-    id_alias: DataTypes.STRING,
+    id_alias: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
     ear_tag: DataTypes.STRING,
     dob: DataTypes.DATE,
     notes: DataTypes.TEXT
