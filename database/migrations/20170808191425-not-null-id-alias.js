@@ -8,7 +8,7 @@ module.exports = {
       table,
       'id_alias',
       {
-        type: DataTypes.STRING,
+        type: Sequelize.STRING,
         allowNull: false,
       }
     )
