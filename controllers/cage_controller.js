@@ -1,4 +1,5 @@
 const BlueBird = require('bluebird')
+const isFalsey = require('falsey')
 
 const utils = require('./utils_controller')
 const city_names = require('../lib/data/city_names.json').city_names
@@ -20,7 +21,7 @@ class Controller extends Base_Controller{
                 pretty_model.name = model.name
                 pretty_model.notes = model.notes
 
-                pretty_model.type = type.description
+                pretty_model.type = isFalsey(type) ? '': type.description
                 pretty_model.setup_date = utils.format_time(model.setup_date)
                 pretty_model.update_date = utils.format_time(model.update_date)
                 pretty_model.end_date = utils.format_time(model.end_date)
@@ -47,6 +48,7 @@ class Controller extends Base_Controller{
 
     insert(_model){
         _model.name = city_names[Math.floor(Math.random() * city_names.length)]
+
         return super.insert(_model)
             .then(() => {
                 // link mouse up with cage

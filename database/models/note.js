@@ -1,15 +1,16 @@
 'use strict';
 module.exports = function(sequelize, DataTypes) {
-  var Enum2 = sequelize.define('Enum2', {
-    description: DataTypes.STRING,
-    type: DataTypes.STRING
+  var Note = sequelize.define('Note', {
+    note: DataTypes.TEXT
   }, {
-    underscored: true,
     classMethods: {
       associate: function(models) {
         // associations can be defined here
       }
-    }
+    },
+    underscored: true,
+    timestamps: true,
+    paranoid: true
   });
-  return Enum2;
+  return Note;
 };

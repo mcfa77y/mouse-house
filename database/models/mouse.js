@@ -4,10 +4,10 @@ module.exports = function(sequelize, DataTypes) {
     id_alias: {
         type: DataTypes.STRING,
         allowNull: false,
+        unique: true
       },
     ear_tag: DataTypes.STRING,
-    dob: DataTypes.DATE,
-    notes: DataTypes.TEXT
+    dob: DataTypes.DATE
   }, {
     classMethods: {
       associate: function(models) {
@@ -17,6 +17,8 @@ module.exports = function(sequelize, DataTypes) {
         Mouse.belongsTo(models.Enum, {as: 'sex', foreignKey : 'sex_id'})
         Mouse.belongsTo(models.Enum, {as: 'genotype', foreignKey : 'genotype_id'})
         Mouse.belongsTo(models.Enum, {as: 'status', foreignKey : 'status_id'})
+
+        Mouse.belongsTo(models.Note, {as: 'note', foreignKey : 'note_id'})
       }
     },
       underscored: true,

@@ -9,7 +9,9 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       id_alias: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false,
+        unique: true
       },
       name: {
         type: Sequelize.STRING
@@ -23,8 +25,12 @@ module.exports = {
       end_date: {
         type: Sequelize.DATE
       },
-      notes: {
-        type: Sequelize.TEXT
+      note_id: {
+        type: Sequelize.INTEGER,
+          references: {
+              model: "Notes",
+              key: "id"
+          }
       },
       type_id: {
           type: Sequelize.INTEGER,

@@ -1,9 +1,12 @@
 const BlueBird = require('bluebird')
+const _ = require('underscore')
+const isFalsey = require('falsey');
+
 const Base_Controller = require('./base_controller')
 const enum_controller = require('./enum_controller')
+const cage_controller = require('./cage_controller')
 const utils = require('./utils_controller')
 const Mouse = require('../database/models').Mouse
-const _ = require('underscore')
 
 
 class Controller extends Base_Controller {
@@ -19,22 +22,25 @@ class Controller extends Base_Controller {
                 sex: enum_controller.get(mouse.sex_id),
                 genotype: enum_controller.get(mouse.genotype_id),
                 status: enum_controller.get(mouse.status_id),
+                cage: cage_controller.get(mouse.cage_id)
             })
-            .then(({ sex, genotype, status }) => {
+            .then(({ sex, genotype, status, cage }) => {
                 let pretty_mouse = {}
                 pretty_mouse.id = mouse.id
                 pretty_mouse.id_alias = mouse.id_alias
                 pretty_mouse.ear_tag = mouse.ear_tag
                 pretty_mouse.notes = mouse.notes
-                pretty_mouse.sex = sex.description
-                pretty_mouse.genotype = genotype.description
-                pretty_mouse.status = status.description
+                pretty_mouse.sex = isFalsey(sex) ? '' : sex.description
+                pretty_mouse.genotype = isFalsey(genotype) ? '' : genotype.description
+                pretty_mouse.status = isFalsey(status) ? '' : status.description
                 pretty_mouse.sex_id = mouse.sex_id
                 pretty_mouse.genotype_id = mouse.genotype_id
                 pretty_mouse.status_id = mouse.status_id
                 pretty_mouse.dob = utils.format_time(mouse.dob)
                 pretty_mouse.create_at = utils.format_time(mouse.create_at)
                 pretty_mouse.modify_at = utils.format_time(mouse.modify_at)
+
+                pretty_mouse.cage = isFalsey(cage) ? '' : cage.name
                 return pretty_mouse
             })
     }

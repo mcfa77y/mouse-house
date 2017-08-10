@@ -1,4 +1,4 @@
-
+const utils = require('./utils_controller')
 // Constructor
 class Base_Controller {
     constructor(_Model) {
@@ -15,6 +15,7 @@ class Base_Controller {
        return this.Model.findAll({where: _where})
     }
     insert(_model_data) {
+        _model_data = utils.remove_empty(_model_data)
         return this.Model.create(_model_data)
     }
     update(_model_data) {

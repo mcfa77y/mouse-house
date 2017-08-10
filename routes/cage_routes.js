@@ -58,8 +58,8 @@ router.get('/:id', function(req, res) {
         })
 });
 
-router.delete('/:id_alias', function(req, res) {
-    cage_controller.delete_where({id_alias: req.params.id_alias}).then((x) => {
+router.delete('/:id', function(req, res) {
+    cage_controller.delete(req.params.id).then((x) => {
             res.send({ success: true })
         })
         .catch((err) => {

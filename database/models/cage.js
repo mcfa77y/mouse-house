@@ -4,16 +4,17 @@ module.exports = function(sequelize, DataTypes) {
     id_alias: {
         type: DataTypes.STRING,
         allowNull: false,
+        unique: true
       },
     name: DataTypes.STRING,
     setup_date: DataTypes.DATE,
     update_date: DataTypes.DATE,
-    end_date: DataTypes.DATE,
-    notes: DataTypes.TEXT
+    end_date: DataTypes.DATE
   }, {
     classMethods: {
       associate: function(models) {
         Cage.belongsTo(models.Enum, { as:'type', foreignKey : 'type_id'})
+        Cage.belongsTo(models.Note, {as: 'note', foreignKey : 'note_id'})
       }
     },
       underscored: true,

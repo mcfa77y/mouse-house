@@ -91,7 +91,7 @@ const foo = (model_name, column_names, use_hidden_id_col = true) => {
 
     const error = (error) => {
         console.log(error)
-        toastr['error']
+        toastr['error'](error)
     }
 
     save_button.click(() => {

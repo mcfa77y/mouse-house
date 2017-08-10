@@ -157,6 +157,7 @@ router.put('/', function(req, res) {
             })
         })
         .catch((err) => {
+            utils.log_json(err)
             res.status(500).send({
                 success: false,
                 err
