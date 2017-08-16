@@ -1,23 +1,25 @@
 'use strict';
 module.exports = {
     up: function(queryInterface, Sequelize) {
-       
+       let date = '2016-03-31T08:00:10.354Z'
 
         return queryInterface.bulkInsert('Enums', [
-                { description: 'breed_status_0', type: 'BREED_STATUS', created_at: '2016-03-31T08:00:10.354Z', updated_at: '2016-03-31T08:00:10.354Z' },
-                { description: 'breed_status_1', type: 'BREED_STATUS', created_at: '2016-03-31T08:00:10.354Z', updated_at: '2016-03-31T08:00:10.354Z' },
-                { description: 'male', type: 'SEX', created_at: '2016-03-31T08:00:10.354Z', updated_at: '2016-03-31T08:00:10.354Z' },
-                { description: 'female', type: 'SEX', created_at: '2016-03-31T08:00:10.354Z', updated_at: '2016-03-31T08:00:10.354Z' },
-                { description: 'mouse_status_0', type: 'MOUSE_STATUS', created_at: '2016-03-31T08:00:10.354Z', updated_at: '2016-03-31T08:00:10.354Z' },
-                { description: 'mouse_status_1', type: 'MOUSE_STATUS', created_at: '2016-03-31T08:00:10.354Z', updated_at: '2016-03-31T08:00:10.354Z' },
-                { description: 'Goldenticket', type: 'MOUSE_GENOTYPE', created_at: '2016-03-31T08:00:10.354Z', updated_at: '2016-03-31T08:00:10.354Z' },
-                { description: 'Rag2', type: 'MOUSE_GENOTYPE', created_at: '2016-03-31T08:00:10.354Z', updated_at: '2016-03-31T08:00:10.354Z' },
-                { description: 'B6', type: 'MOUSE_GENOTYPE', created_at: '2016-03-31T08:00:10.354Z', updated_at: '2016-03-31T08:00:10.354Z' },
-                { description: 'IRF 3/7 -/- dKO', type: 'MOUSE_GENOTYPE', created_at: '2016-03-31T08:00:10.354Z', updated_at: '2016-03-31T08:00:10.354Z' },
-                { description: 'stock', type: 'CAGE_TYPE', created_at: '2016-03-31T08:00:10.354Z', updated_at: '2016-03-31T08:00:10.354Z' },
-                { description: 'breeder', type: 'CAGE_TYPE', created_at: '2016-03-31T08:00:10.354Z', updated_at: '2016-03-31T08:00:10.354Z' },
-                { description: 'experimental', type: 'CAGE_TYPE', created_at: '2016-03-31T08:00:10.354Z', updated_at: '2016-03-31T08:00:10.354Z' },
-                { description: 'terminated', type: 'CAGE_TYPE', created_at: '2016-03-31T08:00:10.354Z', updated_at: '2016-03-31T08:00:10.354Z' }
+                { description: 'breed_status_0', type: 'BREED_STATUS', created_at: date, updated_at: date },
+                { description: 'breed_status_1', type: 'BREED_STATUS', created_at: date, updated_at: date },
+                { description: 'male', type: 'SEX', created_at: date, updated_at: date },
+                { description: 'female', type: 'SEX', created_at: date, updated_at: date },
+                { description: 'mouse_status_0', type: 'MOUSE_STATUS', created_at: date, updated_at: date },
+                { description: 'mouse_status_1', type: 'MOUSE_STATUS', created_at: date, updated_at: date },
+                { description: 'unkown', type: 'MOUSE_GENOTYPE', created_at: date, updated_at: date },
+                { description: 'Goldenticket', type: 'MOUSE_GENOTYPE', created_at: date, updated_at: date },
+                { description: 'Rag2', type: 'MOUSE_GENOTYPE', created_at: date, updated_at: date },
+                { description: 'B6', type: 'MOUSE_GENOTYPE', created_at: date, updated_at: date },
+                { description: 'IRF 3/7 -/- dKO', type: 'MOUSE_GENOTYPE', created_at: date, updated_at: date },
+                { description: 'none', type: 'CAGE_TYPE', created_at: date, updated_at: date },
+                { description: 'stock', type: 'CAGE_TYPE', created_at: date, updated_at: date },
+                { description: 'breeder', type: 'CAGE_TYPE', created_at: date, updated_at: date },
+                { description: 'experimental', type: 'CAGE_TYPE', created_at: date, updated_at: date },
+                { description: 'terminated', type: 'CAGE_TYPE', created_at: date, updated_at: date }
             ], {})
         /*
           Add altering commands here.

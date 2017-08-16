@@ -14,7 +14,7 @@ module.exports = function(sequelize, DataTypes) {
     classMethods: {
       associate: function(models) {
         Cage.belongsTo(models.Enum, { as:'type', foreignKey : 'type_id'})
-        Cage.belongsTo(models.Note, {as: 'note', foreignKey : 'note_id'})
+        Cage.Note = Cage.belongsTo(models.Note, {as: 'note', foreignKey : 'note_id'})
       }
     },
       underscored: true,

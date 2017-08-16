@@ -56,13 +56,23 @@ router.get('/', function(req, res) {
         })
 });
 
+function _get_mouse_inputs(){
+    return BlueBird.props({
+            status: enum_controller.by_code('MOUSE_STATUS'),
+            genotype: enum_controller.by_code('MOUSE_GENOTYPE'),
+            cages: cage_controller.all(),
+            sex: enum_controller.by_code('SEX'),
+        })
+}
+
 router.get('/:id', function(req, res) {
     BlueBird.props({
             status: enum_controller.by_code('MOUSE_STATUS'),
             genotype: enum_controller.by_code('MOUSE_GENOTYPE'),
             cages: cage_controller.all(),
             sex: enum_controller.by_code('SEX'),
-            mouse: mouse_controller.by_id_alias(req.params.id)
+            mouse: mouse_controller.by_id_alias(req.params.id),
+
         })
         .then(({ status, genotype, cages, sex, mouse }) => {
             status = utils.select_json(status, 'status_id')
@@ -149,7 +159,11 @@ router.delete('/:id', function(req, res) {
 // });
 
 router.put('/', function(req, res) {
+    req.body.note = {}
+    req.body.note.text = req.body.notes
+    delete req.body.notes
     utils.log_json(req.body)
+    
     mouse_controller.insert(req.body)
         .then((x) => {
             res.send({
@@ -166,6 +180,9 @@ router.put('/', function(req, res) {
 });
 
 router.post('/', function(req, res) {
+    req.body.note = {}
+    req.body.note.text = req.body.notes
+    delete req.body.notes
     utils.log_json(req.body)
 
     mouse_controller.update(req.body).then((x) => {

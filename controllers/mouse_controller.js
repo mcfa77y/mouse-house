@@ -58,16 +58,39 @@ class Controller extends Base_Controller {
             })
 
     }
-    by_id_alias(_id_alias){
+    by_id_alias(_id_alias) {
         const self = this;
-        return this.get_where({id_alias: _id_alias})
+        return this.get_where({
+                id_alias: _id_alias
+            })
             .then((mice) => {
                 return self.pretty(mice[0])
             })
     }
 
-    delete_by_id_alias(_id_alias){
-        return this.delete_where({id_alias: _id_alias})
+    delete_by_id_alias(_id_alias) {
+        return this.delete_where({
+            id_alias: _id_alias
+        })
+    }
+
+    insert(_model) {
+
+        _model = utils.remove_empty(_model)
+        Mouse.create(_model, {
+            include: [{
+                association: Mouse.Note
+            }]
+        })
+    }
+
+    update(_model) {
+         _model = utils.remove_empty(_model)
+        Mouse.update(_model, {
+            include: [{
+                association: Mouse.Note
+            }]
+        })
     }
 }
 
