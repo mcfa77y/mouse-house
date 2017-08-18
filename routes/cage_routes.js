@@ -12,15 +12,15 @@ const utils = require('./utils_routes')
 router.get('/', function(req, res) {
     BlueBird.props({
             mice: mouse_controller.all(),
-            cage_type: enum_controller.by_code('CAGE_TYPE'),
+            cage_type: enum_controller.by_type('CAGE_TYPE'),
             cages: cage_controller.all_pretty()
         })
         .then(({ mice, cage_type, cages }) => {
             mice = mice.map((mouse) => {
-                return { id: mouse.id, description: mouse.id }
+                return { id: mouse.id, description: mouse.id_alias }
             })
-            mice = utils.select_json(mice, 'mouse_ids', 'mice')
-            cage_type = utils.select_json(cage_type, 'cage_type')
+            mice = utils.select_json(mice)
+            cage_type = utils.select_json(cage_type)
             utils.log_json(cages)
             res.render('pages/cage/list', {
                 mice,
@@ -35,7 +35,7 @@ router.get('/', function(req, res) {
 router.get('/:id', function(req, res) {
     BlueBird.props({
             mice: mouse_controller.all(),
-            cage_type: enum_controller.by_code('CAGE_TYPE'),
+            cage_type: enum_controller.by_type('CAGE_TYPE'),
             cage: cage_controller.by_id_alias(req.params.id)
         })
         .then(({ mice, cage_type, cage }) => {
@@ -68,6 +68,9 @@ router.delete('/:id', function(req, res) {
 });
 
 router.put('/', function(req, res) {
+    req.body.note = {}
+    req.body.note.text = req.body.notes
+    delete req.body.notes
     utils.log_json(req.body)
     //let model = new cage_model(req.body)
     cage_controller.insert(req.body).then((x) => {
@@ -85,8 +88,6 @@ router.put('/', function(req, res) {
 });
 
 router.post('/', function(req, res) {
-    let model = new cage_model(req.body)
-    cage_controller.create
     cage_controller.insert(model).then((x) => {
             res.send({ success: true })
         })

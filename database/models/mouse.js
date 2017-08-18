@@ -11,8 +11,8 @@ module.exports = function(sequelize, DataTypes) {
         }, {
             classMethods: {
                 associate: function(models) {
-                    Mouse.belongsTo(models.Cage)
-                    Mouse.belongsTo(models.Breed)
+                    Mouse.Cage = Mouse.belongsTo(models.Cage)
+                    Mouse.Breed = Mouse.belongsTo(models.Breed)
 
                     Mouse.belongsTo(models.Enum, {
                         as: 'sex',

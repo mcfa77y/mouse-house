@@ -10,21 +10,39 @@ const Mouse = require('../database/models').Mouse
 
 
 class Controller extends Base_Controller {
+    inputs() {
+        return BlueBird.props({
+                sex: mouse.getSex(),
+                genotype: mouse.getGenotype(),
+                status: mouse.getStatus(),
+                cage: mouse.getCage(),
+                note: mouse.getNote(),
+            })
+    }
+
     by_sex(sex) {
-        return enum_controller.by_code_desc('SEX', sex)
+        return enum_controller.by_type_desc('SEX', sex)
             .then((sex_enum) => {
-                return super.get_where({sex_id: sex_enum.id})
+                return super.get_where({
+                    sex_id: sex_enum.id
+                })
             })
     }
 
     pretty(mouse) {
         return BlueBird.props({
-                sex: enum_controller.get(mouse.sex_id),
-                genotype: enum_controller.get(mouse.genotype_id),
-                status: enum_controller.get(mouse.status_id),
-                cage: cage_controller.get(mouse.cage_id)
+                sex: mouse.getSex(),
+                genotype: mouse.getGenotype(),
+                status: mouse.getStatus(),
+                cage: mouse.getCage(),
+                note: mouse.getNote(),
             })
-            .then(({ sex, genotype, status, cage }) => {
+            .then(({
+                sex,
+                genotype,
+                status,
+                cage, note
+            }) => {
                 let pretty_mouse = {}
                 pretty_mouse.id = mouse.id
                 pretty_mouse.id_alias = mouse.id_alias
@@ -75,7 +93,6 @@ class Controller extends Base_Controller {
     }
 
     insert(_model) {
-
         _model = utils.remove_empty(_model)
         Mouse.create(_model, {
             include: [{

@@ -10,14 +10,14 @@ class Controller {
 }
 
 const memoize_methods = {
-    by_code: d(_code => {
+    by_type: d(_code => {
         return Enum.findAll({
             attributes: ['id', 'description'],
             where: { type: _code }
         })
     }, { promise: true }),
 
-    by_code_desc: d((_code, _description) => {
+    by_type_desc: d((_code, _description) => {
         return Enum.findOne({
             attributes: ['id', 'description'],
             where: { description:  _description, type: _code }

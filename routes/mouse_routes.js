@@ -20,22 +20,19 @@ router.delete('/api/mice/:id', db.removePuppy);
 
 router.get('/', function(req, res) {
     BlueBird.props({
-            status: enum_controller.by_code('MOUSE_STATUS'),
-            genotype: enum_controller.by_code('MOUSE_GENOTYPE'),
-            cages: cage_controller.all(),
-            sex: enum_controller.by_code('SEX'),
+            input: _get_mouse_inputs(),
             mice: mouse_controller.all_pretty()
         })
-        .then(({status, genotype, cages, sex, mice}) => {
-            status = utils.select_json(status, 'status_id')
-            genotype = utils.select_json(genotype, 'genotype_id')
-            cages = cages.map((cage) => {
+        .then(({input, mice}) => {
+            const status = utils.select_json(input.status, 'status_id')
+            const genotype = utils.select_json(input.genotype, 'genotype_id')
+            let cages = input.cages.map((cage) => {
                 return {
                     id: cage.id,
                     description: cage.name
                 }
             })
-            sex = utils.select_json(sex, 'sex_id')
+            const sex = utils.select_json(input.sex, 'sex_id')
             cages = utils.select_json(cages, 'cage_id')
             res.render('pages/mouse/list', {
                 status,
@@ -58,32 +55,30 @@ router.get('/', function(req, res) {
 
 function _get_mouse_inputs(){
     return BlueBird.props({
-            status: enum_controller.by_code('MOUSE_STATUS'),
-            genotype: enum_controller.by_code('MOUSE_GENOTYPE'),
+            status: enum_controller.by_type('MOUSE_STATUS'),
+            genotype: enum_controller.by_type('MOUSE_GENOTYPE'),
             cages: cage_controller.all(),
-            sex: enum_controller.by_code('SEX'),
+            sex: enum_controller.by_type('SEX'),
         })
 }
 
-router.get('/:id', function(req, res) {
-    BlueBird.props({
-            status: enum_controller.by_code('MOUSE_STATUS'),
-            genotype: enum_controller.by_code('MOUSE_GENOTYPE'),
-            cages: cage_controller.all(),
-            sex: enum_controller.by_code('SEX'),
-            mouse: mouse_controller.by_id_alias(req.params.id),
-
+router.get('/:id_alias', function(req, res) {
+    let mouse
+        mouse_controller.by_id_alias(req.params.id_alias)
+        .then(_mouse => {
+            mouse = _mouse
+            return _get_mouse_inputs() 
         })
-        .then(({ status, genotype, cages, sex, mouse }) => {
-            status = utils.select_json(status, 'status_id')
-            genotype = utils.select_json(genotype, 'genotype_id')
-            cages = cages.map((cage) => {
+        .then(input => {
+            const status = utils.select_json(input.status, 'status_id')
+            const genotype = utils.select_json(input.genotype, 'genotype_id')
+            let cages = input.cages.map((cage) => {
                 return {
                     id: cage.id,
                     description: cage.name
                 }
             })
-            sex = utils.select_json(sex, 'sex_id')
+            const sex = utils.select_json(input.sex, 'sex_id')
             cages = utils.select_json(cages, 'cage_id')
             utils.log_json(mouse)
 

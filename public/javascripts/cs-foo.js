@@ -1,4 +1,4 @@
-const setup_table = (model_name, column_names, use_hidden_id_col) => {
+const setup_table = (model_name, column_names, use_hidden_id_col=false) => {
     const columns = column_names.map((x) => {
         return { data: x }
     })

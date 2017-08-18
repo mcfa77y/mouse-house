@@ -28,7 +28,7 @@ module.exports = {
         Logger.log(result)
     },
 
-    select_json: (items, id, description = '') => {
+    select_json: (items, _id, _description = '') => {
         const result = items.map( x => 
             {
                 if (x.description === '' || x.description === undefined) {
