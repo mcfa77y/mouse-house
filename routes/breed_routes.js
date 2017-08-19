@@ -9,7 +9,7 @@ const utils = require('./utils_routes')
 
 router.get('/', function(req, res) {
     BlueBird.props({
-            genotype: enum_controller.by_code('MOUSE_GENOTYPE'),
+            genotype: enum_controller.by_type('MOUSE_GENOTYPE'),
             male_mice: mouse_controller.by_sex('male'),
             female_mice: mouse_controller.by_sex('female')
         })

@@ -47,7 +47,7 @@ class Controller extends Base_Controller {
                 pretty_mouse.id = mouse.id
                 pretty_mouse.id_alias = mouse.id_alias
                 pretty_mouse.ear_tag = mouse.ear_tag
-                pretty_mouse.notes = mouse.notes
+                pretty_mouse.notes = note.text
                 pretty_mouse.sex = isFalsey(sex) ? '' : sex.description
                 pretty_mouse.genotype = isFalsey(genotype) ? '' : genotype.description
                 pretty_mouse.status = isFalsey(status) ? '' : status.description
@@ -59,6 +59,7 @@ class Controller extends Base_Controller {
                 pretty_mouse.modify_at = utils.format_time(mouse.modify_at)
 
                 pretty_mouse.cage = isFalsey(cage) ? '' : cage.name
+                pretty_mouse.cage_id = isFalsey(cage) ? '' : cage.id
                 return pretty_mouse
             })
     }
@@ -104,6 +105,9 @@ class Controller extends Base_Controller {
     update(_model) {
          _model = utils.remove_empty(_model)
         Mouse.update(_model, {
+            where:{
+                id: _model.id
+            },
             include: [{
                 association: Mouse.Note
             }]

@@ -34,7 +34,7 @@ router.get('/', function(req, res) {
             })
             const sex = utils.select_json(input.sex, 'sex_id')
             cages = utils.select_json(cages, 'cage_id')
-            res.render('pages/mouse/list', {
+            res.render('pages/mouse/mouse_list', {
                 status,
                 genotype,
                 cages,
@@ -85,7 +85,7 @@ router.get('/:id_alias', function(req, res) {
             // mouse_controller.pretty(mouse).then((x)=>{
             //     utils.log_json(x)})
 
-            res.render('pages/mouse/update', {
+            res.render('pages/mouse/mouse_update', {
                 status,
                 genotype,
                 cages,
@@ -107,7 +107,7 @@ router.get('/:id_alias', function(req, res) {
     //         return mouse_controller.pretty(x)
     //     })
     //     .then((y) => {
-    //         res.render('pages/mouse/update', y)
+    //         res.render('pages/mouse/mouse_update', y)
     //         // res.send(y)
 
     //     })

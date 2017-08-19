@@ -22,7 +22,30 @@ router.get('/', function(req, res) {
             mice = utils.select_json(mice)
             cage_type = utils.select_json(cage_type)
             utils.log_json(cages)
-            res.render('pages/cage/list', {
+            res.render('pages/cage/cage_list', {
+                mice,
+                cage_type,
+                cages,
+                extra_js: ['cs-cage'],
+                cool_face: utils.cool_face()
+            })
+        })
+});
+
+router.get('/create', function(req, res) {
+    BlueBird.props({
+            mice: mouse_controller.all(),
+            cage_type: enum_controller.by_type('CAGE_TYPE'),
+            cages: cage_controller.all_pretty()
+        })
+        .then(({ mice, cage_type, cages }) => {
+            mice = mice.map((mouse) => {
+                return { id: mouse.id, description: mouse.id_alias }
+            })
+            mice = utils.select_json(mice)
+            cage_type = utils.select_json(cage_type)
+            utils.log_json(cages)
+            res.render('pages/cage/cage_create', {
                 mice,
                 cage_type,
                 cages,
@@ -40,12 +63,12 @@ router.get('/:id', function(req, res) {
         })
         .then(({ mice, cage_type, cage }) => {
             mice = mice.map((mouse) => {
-                return { id: mouse.id, description: mouse.id }
+                return { id: mouse.id, description: mouse.id_alias }
             })
             mice = utils.select_json(mice, 'mouse_ids', 'mice')
             cage_type = utils.select_json(cage_type, 'cage_type')
             utils.log_json(cage)
-            res.render('pages/cage/update', {
+            res.render('pages/cage/cage_update', {
                 mice,
                 cage_type,
                 cage,
@@ -54,6 +77,7 @@ router.get('/:id', function(req, res) {
             })
         })
         .catch((err) => {
+            console.log(err)
             res.status(500).send({ success: false, err })
         })
 });
@@ -63,14 +87,15 @@ router.delete('/:id', function(req, res) {
             res.send({ success: true })
         })
         .catch((err) => {
+            console.log(err)
             res.status(500).send({ success: false, err })
         })
 });
 
 router.put('/', function(req, res) {
+    const note = req.body.note
     req.body.note = {}
-    req.body.note.text = req.body.notes
-    delete req.body.notes
+    req.body.note.text = note
     utils.log_json(req.body)
     //let model = new cage_model(req.body)
     cage_controller.insert(req.body).then((x) => {
@@ -88,7 +113,11 @@ router.put('/', function(req, res) {
 });
 
 router.post('/', function(req, res) {
-    cage_controller.insert(model).then((x) => {
+    const note = req.body.note
+    req.body.note = {}
+    req.body.note.text = note
+    utils.log_json(req.body)
+    cage_controller.update(req.body).then((x) => {
             res.send({ success: true })
         })
         .catch((err) => {

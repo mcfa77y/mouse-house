@@ -10,8 +10,9 @@
                 {{> form_elements/date_input id='setup_date' description='Setup date' value=cage.setup_date}} 
                 {{> form_elements/date_input id='update_date' description='Last update' value=cage.update_date}} 
                 {{> form_elements/date_input id='end_date' description='End date' value=cage.end_date}} 
-                {{> form_elements/select_input mice id='mouse_ids' isMultiple=true description='Mice'}} 
-                {{> form_elements/text_area_input id='notes' description='Notes' value=cage.notes}}
+                {{> form_elements/select_input mice id='mouse_ids' isMultiple=true description='Mice' value=cage.mouse_ids}} 
+                {{> form_elements/text_area_input id='note' description='Note' value=cage.note}}
+                <input type="hidden" id="id" value="{{cage.id}}"/>
             </div>
         </fieldset>
     </div>

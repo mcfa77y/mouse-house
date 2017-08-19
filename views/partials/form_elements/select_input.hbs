@@ -3,18 +3,33 @@
     <div class="">
 
     	{{#if isMultiple}}
-        <select class="form-control foo-select" id="{{id}}" multiple="multiple">
+        
+            <select class="form-control foo-select" id="{{id}}" multiple="multiple">
+            {{#each items}}
+                {{#contains ../value this.id  }}
+                <option value="{{this.id}}" selected>{{this.description}}</option>
+                {{else}}
+                <option value="{{this.id}}">{{this.description}}</option>
+                {{/contains}}
+            {{/each}}
+            </select>
+        
+
         {{else}}
-        <select class="form-control foo-select" id="{{id}}">
+        
+            <select class="form-control foo-select" id="{{id}}">
+            {{#each items}}
+                {{#eq this.id ../value }}
+                <option value="{{this.id}}" selected>{{this.description}}</option>
+                {{else}}
+                <option value="{{this.id}}">{{this.description}}</option>
+                {{/eq}}
+            {{/each}}
+            </select>
+        
+
         {{/if}}
 
-        {{#each items}}
-            {{#eq this.id ../value }}
-            <option value="{{this.id}}" selected>{{this.description}}</option>
-            {{else}}
-            <option value="{{this.id}}">{{this.description}}</option>
-            {{/eq}}
-        {{/each}}
-        </select>
+        
     </div>
 </div>

@@ -1,0 +1,25 @@
+<div class="well bs-component">
+<div class="page-header">
+    <h4>Add mouse</h4>
+</div>
+<div>
+    <fieldset id="mouse-fields">
+        <div class="row">
+            {{> form_elements/text_input id='id_alias' description='ID' placeholder='1234'}}
+            {{> form_elements/text_input id='ear_tag' description='Ear tag' placeholder='1234'}}
+            {{> form_elements/select_input status id='status_id' description='Status'}}
+            {{> form_elements/select_input cages id='cage_id' description='Cage'}}
+            {{> form_elements/select_input genotype id='genotype_id' description="Genotype"}}
+            {{> form_elements/date_input id='dob' description='D.O.B.'}}
+            {{> form_elements/radio_input sex id='sex_id' description='Sex'}}
+        </div>
+        {{> form_elements/text_area_input id='notes' description='Notes'}}
+        <input type="hidden" id="id" value="{{mouse.id}}"/>
+    </fieldset>
+</div>
+<div class="row">
+    <button id="update-mouse-button" type="button" class="btn btn-primary pull-right">Save</button>
+    <button id="back-mouse-button" type="button" class="btn btn-default pull-right">Back</button>
+</div>
+
+</div>
