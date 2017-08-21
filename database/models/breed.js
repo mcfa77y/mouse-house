@@ -18,7 +18,7 @@ module.exports = function(sequelize, DataTypes) {
         Breed.belongsTo(models.Enum, {as: 'status', foreignKey : 'status_id'})
         Breed.belongsTo(models.Mouse, {as: 'male_mouse', foreignKey : 'male_mouse_id'})
         Breed.belongsTo(models.Mouse, {as: 'female_mouse', foreignKey : 'female_mouse_id'})
-        Breed.belongsTo(models.Note, {as: 'note', foreignKey : 'note_id'})
+        Breed.Note = Breed.belongsTo(models.Note, {as: 'note', foreignKey : 'note_id'})
       }
     },
       underscored: true,

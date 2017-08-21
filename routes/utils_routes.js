@@ -51,6 +51,11 @@ module.exports = {
     cool_face: () => {
         return cool();
     },
+    move_note: (req) =>{
+        const note = req.body.note
+        req.body.note = {}
+        req.body.note.text = note
+    },
     getErrorGif: () => {
         const options = {
             uri: 'http://api.giphy.com/v1/gifs/search',

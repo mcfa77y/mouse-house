@@ -27,7 +27,9 @@ module.exports = {
     log: (message) => {
         Logger.log(message)
     },
+    generate_uuid: () => {
 
+    },
     relative_time: (date) => {
         return moment().diff(moment(date, moment.ISO_8601), 'week')
     },

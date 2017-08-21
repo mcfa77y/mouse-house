@@ -186,9 +186,7 @@ router.delete('/:id', function(req, res) {
 // });
 
 router.put('/', function(req, res) {
-    req.body.note = {}
-    req.body.note.text = req.body.notes
-    delete req.body.notes
+    utils.move_note(req)
     utils.log_json(req.body)
     
     mouse_controller.insert(req.body)
@@ -207,9 +205,7 @@ router.put('/', function(req, res) {
 });
 
 router.post('/', function(req, res) {
-    req.body.note = {}
-    req.body.note.text = req.body.notes
-    delete req.body.notes
+    utils.move_note(req)
     utils.log_json(req.body)
 
     mouse_controller.update(req.body).then((x) => {

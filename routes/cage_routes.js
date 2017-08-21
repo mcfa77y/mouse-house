@@ -86,9 +86,7 @@ router.delete('/:id', function(req, res) {
 });
 
 router.put('/', function(req, res) {
-    const note = req.body.note
-    req.body.note = {}
-    req.body.note.text = note
+    utils.move_note(req)
     utils.log_json(req.body)
     //let model = new cage_model(req.body)
     cage_controller.insert(req.body).then((x) => {
@@ -106,9 +104,7 @@ router.put('/', function(req, res) {
 });
 
 router.post('/', function(req, res) {
-    const note = req.body.note
-    req.body.note = {}
-    req.body.note.text = note
+    utils.move_note(req)
     utils.log_json(req.body)
     cage_controller.update(req.body).then((x) => {
             res.send({ success: true })
