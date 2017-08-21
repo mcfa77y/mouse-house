@@ -3,9 +3,9 @@ const setup_table = (model_name, column_names, use_hidden_id_col=false) => {
         return { data: x }
     })
 
-    let table
+    let table_options = {}
     if (use_hidden_id_col) {
-        table = $('#' + model_name + '-list').DataTable({
+        table_options = {
             select: { style: 'multi' },
             columns,
             columnDefs: [{
@@ -13,13 +13,15 @@ const setup_table = (model_name, column_names, use_hidden_id_col=false) => {
                 visible: false,
                 searchable: false
             }]
-        });
+        }
+        
     } else {
-        table = $('#' + model_name + '-list').DataTable({
+        table_options = {
             select: { style: 'multi' },
             columns
-        });
+        }
     }
+    table = $('#' + model_name + '-list').DataTable(table_options);
 
     const update_modal_button = $('#open-update-' + model_name + '-modal-button')
     const delete_button = $('#open-delete-' + model_name + '-modal-button')
@@ -77,7 +79,7 @@ const foo = (model_name, column_names, use_hidden_id_col = true) => {
     nav_button.parent().toggleClass('active')
 
     // const create_modal_button = $('#open-create-' + model_name + '-modal-button')
-    const delete_button = $('#open-delete-' + model_name + '-modal-button')
+    const delete_button = $('#delete-' + model_name + '-button')
     const save_button = $('#save-' + model_name + '-button')
     const update_button = $('#update-' + model_name + '-button')
     const back_button = $('#back-' + model_name + '-button')
@@ -85,8 +87,8 @@ const foo = (model_name, column_names, use_hidden_id_col = true) => {
     const success = (response) => {
         console.log(response)
         toastr['success']("updated")
-        window.location.href = '/' + model_name
-        return false
+        // window.location.href = '/' + model_name
+        // return false
     }
 
     const error = (error) => {
@@ -94,6 +96,7 @@ const foo = (model_name, column_names, use_hidden_id_col = true) => {
         toastr['error'](error)
     }
 
+    
     save_button.click(() => {
         const dt = utils.form_ids_vals(model_name + '-fields')
         axios.put('/' + model_name, dt)

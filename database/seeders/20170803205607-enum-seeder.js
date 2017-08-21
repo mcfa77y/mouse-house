@@ -8,6 +8,7 @@ module.exports = {
                 { description: 'breed_status_1', type: 'BREED_STATUS', created_at: date, updated_at: date },
                 { description: 'male', type: 'SEX', created_at: date, updated_at: date },
                 { description: 'female', type: 'SEX', created_at: date, updated_at: date },
+                { description: 'unknown', type: 'SEX', created_at: date, updated_at: date },
                 { description: 'mouse_status_0', type: 'MOUSE_STATUS', created_at: date, updated_at: date },
                 { description: 'mouse_status_1', type: 'MOUSE_STATUS', created_at: date, updated_at: date },
                 { description: 'unkown', type: 'MOUSE_GENOTYPE', created_at: date, updated_at: date },

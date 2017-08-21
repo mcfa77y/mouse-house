@@ -11,20 +11,11 @@ const utils = require('./utils_routes')
 
 router.get('/', function(req, res) {
     BlueBird.props({
-            mice: mouse_controller.all(),
-            cage_type: enum_controller.by_type('CAGE_TYPE'),
             cages: cage_controller.all_pretty()
         })
-        .then(({ mice, cage_type, cages }) => {
-            mice = mice.map((mouse) => {
-                return { id: mouse.id, description: mouse.id_alias }
-            })
-            mice = utils.select_json(mice)
-            cage_type = utils.select_json(cage_type)
+        .then(({ cages }) => {
             utils.log_json(cages)
             res.render('pages/cage/cage_list', {
-                mice,
-                cage_type,
                 cages,
                 extra_js: ['cs-cage'],
                 cool_face: utils.cool_face()
@@ -34,39 +25,41 @@ router.get('/', function(req, res) {
 
 router.get('/create', function(req, res) {
     BlueBird.props({
-            mice: mouse_controller.all(),
-            cage_type: enum_controller.by_type('CAGE_TYPE'),
-            cages: cage_controller.all_pretty()
+            input: _get_cage_inputs(),
         })
-        .then(({ mice, cage_type, cages }) => {
-            mice = mice.map((mouse) => {
+        .then(({input}) => {
+            let mice = input.mice.map((mouse) => {
                 return { id: mouse.id, description: mouse.id_alias }
             })
             mice = utils.select_json(mice)
-            cage_type = utils.select_json(cage_type)
-            utils.log_json(cages)
+            const cage_type = utils.select_json(input.cage_type)
             res.render('pages/cage/cage_create', {
                 mice,
                 cage_type,
-                cages,
                 extra_js: ['cs-cage'],
                 cool_face: utils.cool_face()
             })
         })
 });
 
-router.get('/:id', function(req, res) {
-    BlueBird.props({
+function _get_cage_inputs(){
+    return BlueBird.props({
             mice: mouse_controller.all(),
-            cage_type: enum_controller.by_type('CAGE_TYPE'),
-            cage: cage_controller.by_id_alias(req.params.id)
+            cage_type: enum_controller.by_type('CAGE_TYPE')            
         })
-        .then(({ mice, cage_type, cage }) => {
-            mice = mice.map((mouse) => {
+}
+
+router.get('/:id_alias', function(req, res) {
+    BlueBird.props({
+            input: _get_cage_inputs(),
+            cage: cage_controller.by_id_alias(req.params.id_alias)
+        })
+        .then(({ input, cage }) => {
+            let mice = input.mice.map((mouse) => {
                 return { id: mouse.id, description: mouse.id_alias }
             })
             mice = utils.select_json(mice, 'mouse_ids', 'mice')
-            cage_type = utils.select_json(cage_type, 'cage_type')
+            const cage_type = utils.select_json(input.cage_type, 'cage_type')
             utils.log_json(cage)
             res.render('pages/cage/cage_update', {
                 mice,

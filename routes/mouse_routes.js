@@ -53,6 +53,38 @@ router.get('/', function(req, res) {
         })
 });
 
+router.get('/create', function(req, res) {
+    BlueBird.props({
+            input: _get_mouse_inputs(),
+        })
+        .then(({input}) => {
+            const status = utils.select_json(input.status, 'status_id')
+            const genotype = utils.select_json(input.genotype, 'genotype_id')
+            let cages = input.cages.map((cage) => {
+                return {
+                    id: cage.id,
+                    description: cage.name
+                }
+            })
+            const sex = utils.select_json(input.sex, 'sex_id')
+            cages = utils.select_json(cages, 'cage_id')
+            res.render('pages/mouse/mouse_create', {
+                status,
+                genotype,
+                cages,
+                sex,
+                extra_js: ['cs-mouse'],
+                cool_face: utils.cool_face()
+            })
+        })
+        .catch((error) => {
+            utils.getErrorGif().then((errorImageUrl) =>{
+                res.render('error', {
+                    error, errorImageUrl
+                })
+            })
+        })
+});
 function _get_mouse_inputs(){
     return BlueBird.props({
             status: enum_controller.by_type('MOUSE_STATUS'),
