@@ -29,7 +29,7 @@ module.exports = {
     },
 
     relative_time: (date) => {
-        return moment(date, moment.ISO_8601).fromNow()
+        return moment().diff(moment(date, moment.ISO_8601), 'week')
     },
 
     format_time: (date, format = 'MM/DD/YY') => {

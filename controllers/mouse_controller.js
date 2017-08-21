@@ -55,6 +55,7 @@ class Controller extends Base_Controller {
                 pretty_mouse.genotype_id = mouse.genotype_id
                 pretty_mouse.status_id = mouse.status_id
                 pretty_mouse.dob = utils.format_time(mouse.dob)
+                pretty_mouse.age = utils.relative_time(mouse.dob)
                 pretty_mouse.create_at = utils.format_time(mouse.create_at)
                 pretty_mouse.modify_at = utils.format_time(mouse.modify_at)
 
