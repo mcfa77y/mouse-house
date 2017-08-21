@@ -5,7 +5,6 @@
     <title>{{title}}</title>
     {{> third_party_head}}
     <link rel="stylesheet" href="/stylesheets/style.css">
-    <script src="/javascripts/cs-hbs-partial-templates.js"></script>
     <script src="/javascripts/cs-utils.js"></script>
     <script src="/javascripts/cs-index.js"></script>
     <script src="/javascripts/cs-foo.js"></script>
@@ -19,6 +18,7 @@
     <div class='container'>
         {{{body}}}
     </div>
+    {{> third_party_js_body}}
 </body>
 
 </html>
