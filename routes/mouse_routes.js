@@ -3,6 +3,7 @@ const router = express.Router();
 const path = require('path');
 const Logger = require('bug-killer');
 const BlueBird = require('bluebird')
+const _ = require('underscore')
 const enum_controller = require(path.join(__dirname, '..', 'controllers/enum_controller'))
 const mouse_controller = require(path.join(__dirname, '..', 'controllers/mouse_controller'))
 const cage_controller = require(path.join(__dirname, '..', 'controllers/cage_controller'))
@@ -23,7 +24,7 @@ router.get('/', function(req, res) {
             input: _get_mouse_inputs(),
             mice: mouse_controller.all_pretty()
         })
-        .then(({input, mice}) => {
+        .then(({ input, mice }) => {
             const status = utils.select_json(input.status, 'status_id')
             const genotype = utils.select_json(input.genotype, 'genotype_id')
             let cages = input.cages.map((cage) => {
@@ -45,9 +46,10 @@ router.get('/', function(req, res) {
             })
         })
         .catch((error) => {
-            utils.getErrorGif().then((errorImageUrl) =>{
+            utils.getErrorGif().then((errorImageUrl) => {
                 res.render('error', {
-                    error, errorImageUrl
+                    error,
+                    errorImageUrl
                 })
             })
         })
@@ -57,7 +59,7 @@ router.get('/create', function(req, res) {
     BlueBird.props({
             input: _get_mouse_inputs(),
         })
-        .then(({input}) => {
+        .then(({ input }) => {
             const status = utils.select_json(input.status, 'status_id')
             const genotype = utils.select_json(input.genotype, 'genotype_id')
             let cages = input.cages.map((cage) => {
@@ -78,28 +80,30 @@ router.get('/create', function(req, res) {
             })
         })
         .catch((error) => {
-            utils.getErrorGif().then((errorImageUrl) =>{
+            utils.getErrorGif().then((errorImageUrl) => {
                 res.render('error', {
-                    error, errorImageUrl
+                    error,
+                    errorImageUrl
                 })
             })
         })
 });
-function _get_mouse_inputs(){
+
+function _get_mouse_inputs() {
     return BlueBird.props({
-            status: enum_controller.by_type('MOUSE_STATUS'),
-            genotype: enum_controller.by_type('MOUSE_GENOTYPE'),
-            cages: cage_controller.all(),
-            sex: enum_controller.by_type('SEX'),
-        })
+        status: enum_controller.by_type('MOUSE_STATUS'),
+        genotype: enum_controller.by_type('MOUSE_GENOTYPE'),
+        cages: cage_controller.all(),
+        sex: enum_controller.by_type('SEX'),
+    })
 }
 
 router.get('/:id_alias', function(req, res) {
     let mouse
-        mouse_controller.by_id_alias(req.params.id_alias)
+    mouse_controller.by_id_alias(req.params.id_alias)
         .then(_mouse => {
             mouse = _mouse
-            return _get_mouse_inputs() 
+            return _get_mouse_inputs()
         })
         .then(input => {
             const status = utils.select_json(input.status, 'status_id')
@@ -128,9 +132,10 @@ router.get('/:id_alias', function(req, res) {
             })
         })
         .catch((error) => {
-            utils.getErrorGif().then((errorImageUrl) =>{
+            utils.getErrorGif().then((errorImageUrl) => {
                 res.render('error', {
-                    error, errorImageUrl
+                    error,
+                    errorImageUrl
                 })
             })
         })
@@ -148,32 +153,31 @@ router.get('/:id_alias', function(req, res) {
 
 router.delete('/:id', function(req, res) {
     if (req.query.id_alias) {
-            mouse_controller.delete_by_id_alias(req.params.id).then((x) => {
-            res.send({
-                success: true
+        mouse_controller.delete_by_id_alias(req.params.id).then((x) => {
+                res.send({
+                    success: true
+                })
             })
-        })
-        .catch((err) => {
-            res.status(500).send({
-                success: false,
-                err
+            .catch((err) => {
+                res.status(500).send({
+                    success: false,
+                    err
+                })
             })
-        })        
-    } 
-    else {
+    } else {
         mouse_controller.delete(req.params.id).then((x) => {
-            res.send({
-                success: true
+                res.send({
+                    success: true
+                })
             })
-        })
-        .catch((err) => {
-            res.status(500).send({
-                success: false,
-                err
+            .catch((err) => {
+                res.status(500).send({
+                    success: false,
+                    err
+                })
             })
-        })
     }
-    
+
 });
 
 // router.get('/', function(req, res) {
@@ -188,7 +192,29 @@ router.delete('/:id', function(req, res) {
 router.put('/', function(req, res) {
     utils.move_note(req)
     utils.log_json(req.body)
-    
+    const slider_ids = ['male', 'female', 'unknown']
+    enum_controller.by_type('SEX')
+        .then(sex_types => {
+            let result = {}
+            sex_types.forEach(sex_type => {
+                result[sex_type.description] = sex_type.id
+            })
+            return result
+        })
+        .then(sex_id_map => {
+            slider_ids
+                .filter(id => parseInt(req.body[id]) > 0)
+                .forEach(id => {
+                    req.body.sex_id = sex_id_map[id]
+                    _.range(parseInt(req.body[id]))
+                        .forEach(x => {
+                            mouse_controller.insert(req.body)
+                        })
+                    
+                })
+        })
+
+
     mouse_controller.insert(req.body)
         .then((x) => {
             res.send({

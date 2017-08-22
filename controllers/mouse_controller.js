@@ -95,11 +95,18 @@ class Controller extends Base_Controller {
     }
 
     insert(_model) {
-        _model = utils.remove_empty(_model)
+        _model = utils.remove_empty(_model, true)
         Mouse.create(_model, {
             include: [{
                 association: Mouse.Note
-            }]
+            }],
+            returning: true
+        })
+        .then(model => {
+            return model.update({id_alias: model.id})
+        })
+        .catch(err => {
+            console.log(error)
         })
     }
 

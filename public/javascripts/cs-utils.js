@@ -22,6 +22,11 @@
             result[$(el).attr('id')] = $(el).val();
             return result;
         },
+        id_to_val_slider: (el) => {
+            var result = {};
+            result[$(el).attr('id')] = el.noUiSlider.get();
+            return result;
+        },
         name_to_val: (el) => {
             var result = {};
             result[$(el).attr('name')] = $(el).val();
@@ -35,6 +40,7 @@
                 .filter((el)=>{return !$(el).attr('id').includes('-selectized')})
                 .map(utils.id_to_val))
                 .concat(form.find('textarea').toArray().map(utils.id_to_val))
+                .concat(form.find('.slider').toArray().map(utils.id_to_val_slider))
                 .concat(form.find(':radio:checked').toArray().map(utils.name_to_val))
                 .reduce((accumulator, currentValue) => {
                     return Object.assign(accumulator, currentValue);

@@ -4,7 +4,6 @@ $(function() {
     setupDatePicker();
     setupDropDown();
     setupSelects();
-    setupSliders()
     setupTodayButton();
     var win;
     var checkConnect;
@@ -87,44 +86,13 @@ function setupTodayButton() {
 }
 
 function setupSelects() {
-
-
     $('.foo-select')
         .toArray()
         .forEach((s) => {
             $(s).selectize()
         })
-
-    // $(".js-example-basic-multiple").select2({
-    //     placeholder: "Select",
-    //     allowClear: true
-    // });
 }
 
-function setupSliders() {
-
-    Array.from(document.getElementsByClassName('slider'))
-        .forEach((s) => {
-            noUiSlider.create(s, {
-                start: 3,
-                connect: 'lower',
-                step: 1,
-                range: {
-                    min: 0,
-                    max: 15
-                },
-                format: wNumb({decimals:0})
-            })
-            s.noUiSlider.on('update', (values, handle) => {
-                $( $(s).siblings()[0]).text('male mice: ' + values[handle])
-            })
-        })
-
-    // $(".js-example-basic-multiple").select2({
-    //     placeholder: "Select",
-    //     allowClear: true
-    // });
-}
 
 function setupDropDown() {
     $(".dropdown-menu li a").click(function() {
