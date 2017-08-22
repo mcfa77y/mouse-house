@@ -1,25 +1,24 @@
-const setup_table = (model_name, column_names, use_hidden_id_col=false) => {
+const setup_table = (model_name, column_names, use_hidden_id_col = false) => {
     const columns = column_names.map((x) => {
         return { data: x }
     })
 
-    let table_options = {}
+    const base_table_options = {
+        select: { style: 'multi' },
+        columns,
+        buttons: ['selectAll','selectNone'],
+    }
     if (use_hidden_id_col) {
-        table_options = {
-            select: { style: 'multi' },
-            columns,
+        table_options = $.extend(base_table_options, {
             columnDefs: [{
                 targets: [0],
                 visible: false,
                 searchable: false
             }]
-        }
-        
+        })
+
     } else {
-        table_options = {
-            select: { style: 'multi' },
-            columns
-        }
+        table_options = base_table_options
     }
     table = $('#' + model_name + '-list').DataTable(table_options);
 
@@ -96,7 +95,7 @@ const foo = (model_name, column_names, use_hidden_id_col = true) => {
         toastr['error'](error)
     }
 
-    
+
     save_button.click(() => {
         const dt = utils.form_ids_vals(model_name + '-fields')
         axios.put('/' + model_name, dt)

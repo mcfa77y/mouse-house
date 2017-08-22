@@ -4,8 +4,8 @@ $(function() {
         'status', 'created_at',
         'updated_at'
     ]
-
-    foo('mouse', columns)
+    const hide_id_col = true
+    foo('mouse', columns, hide_id_col)
 
     setupSliders()
 })
@@ -21,17 +21,20 @@ function setupSliders() {
         },
         format: wNumb({ decimals: 0 })
     }
-    const slider_ids = ['male_mouse_count', 'female_mouse_count', 'unknown_mouse_count']
+    const slider_ids = ['male', 'female', 'unknown']
 
-    slider_ids.forEach(id => {
-        let s = document.getElementById(id)
-        noUiSlider.create(s, slider_options)
+    slider_ids
+        .filter(id => document.getElementById(id))
+        .forEach(id => {
+            let s = document.getElementById(id)
 
-        s.noUiSlider.on('update', (values, handle) => {
-        	const id = $(s).attr('id').split('_')[0]
-        	const label = $($(s).siblings()[0])
-            label.text( id +": " + values[handle])
+            noUiSlider.create(s, slider_options)
+
+            s.noUiSlider.on('update', (values, handle) => {
+                const id = $(s).attr('id').split('_')[0]
+                const label = $($(s).siblings()[0])
+                label.text(id + ": " + values[handle])
+            })
         })
-    })
 
 }

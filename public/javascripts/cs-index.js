@@ -1,9 +1,9 @@
 $(function() {
     $.material.init();
     setupToastr();
-    setupDatePicker();
     setupDropDown();
     setupSelects();
+    setupDatePicker();
     setupTodayButton();
     var win;
     var checkConnect;

@@ -5,12 +5,8 @@
     <title>{{title}}</title>
     {{> third_party_head}}
     <link rel="stylesheet" href="/stylesheets/style.css">
-    <script src="/javascripts/cs-utils.js"></script>
-    <script src="/javascripts/cs-index.js"></script>
-    <script src="/javascripts/cs-foo.js"></script>
-    {{#each extra_js}}
-    <script src="/javascripts/{{this}}.js"></script>
-    {{/each}}
+    
+    
 </head>
 
 <body>
@@ -19,6 +15,12 @@
         {{{body}}}
     </div>
     {{> third_party_js_body}}
+    {{#each extra_js}}
+    <script src="/javascripts/cs-utils.js"></script>
+    <script src="/javascripts/cs-index.js"></script>
+    <script src="/javascripts/cs-foo.js"></script>
+    <script src="/javascripts/{{this}}.js"></script>
+    {{/each}}
 </body>
 
 </html>

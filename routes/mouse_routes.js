@@ -4,6 +4,8 @@ const path = require('path');
 const Logger = require('bug-killer');
 const BlueBird = require('bluebird')
 const _ = require('underscore')
+const isFalsey = require('falsey');
+
 const enum_controller = require(path.join(__dirname, '..', 'controllers/enum_controller'))
 const mouse_controller = require(path.join(__dirname, '..', 'controllers/mouse_controller'))
 const cage_controller = require(path.join(__dirname, '..', 'controllers/cage_controller'))
@@ -152,32 +154,25 @@ router.get('/:id_alias', function(req, res) {
 });
 
 router.delete('/:id', function(req, res) {
-    if (req.query.id_alias) {
-        mouse_controller.delete_by_id_alias(req.params.id).then((x) => {
-                res.send({
-                    success: true
-                })
-            })
-            .catch((err) => {
-                res.status(500).send({
-                    success: false,
-                    err
-                })
-            })
-    } else {
-        mouse_controller.delete(req.params.id).then((x) => {
-                res.send({
-                    success: true
-                })
-            })
-            .catch((err) => {
-                res.status(500).send({
-                    success: false,
-                    err
-                })
-            })
-    }
+    debugger
+    const rm_ids = isFalsey(req.query.id_alias) ? req.params.id : req.params.id_alias
 
+    const rm_promises = rm_ids.split(',').map(id=>{
+        mouse_controller.delete(id)
+    })
+
+    return Promise.all(rm_promises)
+        .then((x) => {
+            res.send({
+                success: true
+            })
+        })
+        .catch((err) => {
+            res.status(500).send({
+                success: false,
+                err
+            })
+        })
 });
 
 // router.get('/', function(req, res) {
@@ -206,11 +201,11 @@ router.put('/', function(req, res) {
                 .filter(id => parseInt(req.body[id]) > 0)
                 .forEach(id => {
                     req.body.sex_id = sex_id_map[id]
-                    _.range(parseInt(req.body[id]))
+                    _.range(parseInt(req.body[id]) - 1)
                         .forEach(x => {
                             mouse_controller.insert(req.body)
                         })
-                    
+
                 })
         })
 
