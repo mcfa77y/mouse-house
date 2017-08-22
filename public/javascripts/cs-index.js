@@ -1,10 +1,11 @@
 $(function() {
+    $.material.init();
     setupToastr();
     setupDatePicker();
     setupDropDown();
     setupSelects();
+    setupSliders()
     setupTodayButton();
-    $.material.init();
     var win;
     var checkConnect;
     let counter = 0;
@@ -100,6 +101,31 @@ function setupSelects() {
     // });
 }
 
+function setupSliders() {
+
+    Array.from(document.getElementsByClassName('slider'))
+        .forEach((s) => {
+            noUiSlider.create(s, {
+                start: 3,
+                connect: 'lower',
+                step: 1,
+                range: {
+                    min: 0,
+                    max: 15
+                },
+                format: wNumb({decimals:0})
+            })
+            s.noUiSlider.on('update', (values, handle) => {
+                $( $(s).siblings()[0]).text('male mice: ' + values[handle])
+            })
+        })
+
+    // $(".js-example-basic-multiple").select2({
+    //     placeholder: "Select",
+    //     allowClear: true
+    // });
+}
+
 function setupDropDown() {
     $(".dropdown-menu li a").click(function() {
         var selText = $(this).text();
@@ -124,7 +150,7 @@ function setupDatePicker() {
                 $(input).change()
             })
             .on('open', () => {
-                input.value = input.value||moment().format('MM/DD/YYYY')
+                input.value = input.value || moment().format('MM/DD/YYYY')
                 picker.setDate(moment(input.value, 'MM/DD/YYYY'))
                 picker.setTime(moment(input.value, 'MM/DD/YYYY'))
                 // extra styling to make it look good and behave normally

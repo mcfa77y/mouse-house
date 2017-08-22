@@ -12,6 +12,22 @@
             {{> form_elements/select_input genotype id='genotype_id' description="Genotype"}}
             {{> form_elements/date_input id='dob' description='D.O.B.'}}
             {{> form_elements/radio_input sex id='sex_id' description='Sex'}}
+
+            
+            
+            <div class="form-group label-floating  col-md-3 col-sm-6">
+                <label for="foo" class="control-label">male: </label>
+                 <div id="foo" class="slider shor slider-material-orange"></div>
+            </div>
+            <div class="form-group label-floating  col-md-3 col-sm-6">
+                <label for="bar" class="control-label">female: </label>
+                 <div id="bar" class="slider shor slider-material-orange"></div>
+            </div>
+            <div class="form-group label-floating  col-md-3 col-sm-6">
+                <label for="fizz" class="control-label">unknown: </label>
+                 <div id="fizz" class="slider shor slider-material-orange"></div>
+            </div>
+
         </div>
         {{> form_elements/text_area_input id='notes' description='Notes'}}
         <input type="hidden" id="id" value="{{mouse.id}}"/>

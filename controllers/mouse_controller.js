@@ -47,7 +47,7 @@ class Controller extends Base_Controller {
                 pretty_mouse.id = mouse.id
                 pretty_mouse.id_alias = mouse.id_alias
                 pretty_mouse.ear_tag = mouse.ear_tag
-                pretty_mouse.notes = note.text
+                pretty_mouse.notes = isFalsey(note) ? '' : note.text
                 pretty_mouse.sex = isFalsey(sex) ? '' : sex.description
                 pretty_mouse.genotype = isFalsey(genotype) ? '' : genotype.description
                 pretty_mouse.status = isFalsey(status) ? '' : status.description
