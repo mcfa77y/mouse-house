@@ -154,7 +154,6 @@ router.get('/:id_alias', function(req, res) {
 });
 
 router.delete('/:id', function(req, res) {
-    debugger
     const rm_ids = isFalsey(req.query.id_alias) ? req.params.id : req.params.id_alias
 
     const rm_promises = rm_ids.split(',').map(id=>{
@@ -197,25 +196,16 @@ router.put('/', function(req, res) {
             return result
         })
         .then(sex_id_map => {
-            slider_ids
+            const create_mouse_promises = slider_ids
                 .filter(id => parseInt(req.body[id]) > 0)
-                .forEach(id => {
+                .map(id => {
                     req.body.sex_id = sex_id_map[id]
-                    _.range(parseInt(req.body[id]) - 1)
-                        .forEach(x => {
-                            mouse_controller.insert(req.body)
-                        })
-
+                    const create_mouse_count = _.range(parseInt(req.body[id]))
+                    return create_mouse_count.map(x => mouse_controller.insert(req.body))
                 })
+            return Promise.all(create_mouse_promises)      
         })
-
-
-    mouse_controller.insert(req.body)
-        .then((x) => {
-            res.send({
-                success: true
-            })
-        })
+        .then(() => res.send({success: true}))
         .catch((err) => {
             utils.log_json(err)
             res.status(500).send({

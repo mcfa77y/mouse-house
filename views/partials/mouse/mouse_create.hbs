@@ -1,28 +1,32 @@
-<div id="create-mouse-modal" class="modal fade">
-    <div class="modal-dialog  modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title">Add mouse</h4>
-            </div>
-            <div class="modal-body">
-                <fieldset id="mouse-fields">
-                    <div class="row">
-                    {{> form_elements/text_input id='id_alias' description='ID' placeholder='1234'}}
-                    {{> form_elements/text_input id='ear_tag' description='Ear tag' placeholder='1234'}}
-                    {{> form_elements/select_input status id='status_id' description='Status'}}
-                    {{> form_elements/select_input cages id='cage_id' description='Cage'}}
-                    {{> form_elements/select_input genotype id='genotype_id' description="Genotype"}}
-                    {{> form_elements/date_input id='dob' description='D.O.B.'}}
-                    {{> form_elements/radio_input sex id='sex_id' description='Sex'}}
-                    </div>
-                    {{> form_elements/text_area_input id='notes' description='Notes'}}
-                </fieldset>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button id="save-mouse-button" type="button" class="btn btn-primary">Save</button>
-            </div>
-        </div>
-    </div>
-</div>
+<table id='mouse-list' class="mdl-data-table" cellspacing="0" width="100%">
+    <thead>
+        <tr>
+            <th>id</th>
+            <th>#</th>
+            <th>Ear tag</th>
+            <th>Age (wks)</th>
+            <th>Genotype</th>
+            <th>Sex</th>
+            <th>Notes</th>
+            <th>Status</th>
+            <th>Cage</th>
+            <th>Breed</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each mice}}
+        <tr>
+            <td>{{id}}</a></td>
+            <td><a href="mouse/{{id_alias}}">{{id_alias}}</a></td>
+            <td>{{ear_tag}}</td>
+            <td>{{age}}</td>
+            <td>{{genotype}}</td>
+            <td>{{sex}}</td>
+            <td>{{ellipsis notes 32}}</td>
+            <td>{{status}}</td>
+            <td>{{cage}}</td>
+            <td>{{modify_timestamp}}</td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>

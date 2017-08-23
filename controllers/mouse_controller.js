@@ -31,9 +31,9 @@ class Controller extends Base_Controller {
 
     pretty(mouse) {
         return BlueBird.props({
-                sex: mouse.getSex(),
-                genotype: mouse.getGenotype(),
-                status: mouse.getStatus(),
+                sex: enum_controller.get(mouse.sex_id),
+                genotype: enum_controller.get(mouse.genotype_id),
+                status: enum_controller.get(mouse.status_id),
                 cage: mouse.getCage(),
                 note: mouse.getNote(),
             })
@@ -105,7 +105,7 @@ class Controller extends Base_Controller {
         .then(model => {
             return model.update({id_alias: model.id})
         })
-        .catch(err => {
+        .catch(error => {
             console.log(error)
         })
     }

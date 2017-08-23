@@ -1,0 +1,32 @@
+<table id='mouse-list' class="table table-striped " cellspacing="0" width="100%">
+    <thead>
+        <tr>
+            <th>id</th>
+            <th>#</th>
+            <th>Ear tag</th>
+            <th>Age (wks)</th>
+            <th>Genotype</th>
+            <th>Sex</th>
+            <th>Notes</th>
+            <th>Status</th>
+            <th>Cage</th>
+            <th>Breed</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each mice}}
+        <tr>
+            <td>{{id}}</a></td>
+            <td><a href="mouse/{{id_alias}}">{{id_alias}}</a></td>
+            <td>{{ear_tag}}</td>
+            <td>{{age}}</td>
+            <td>{{genotype}}</td>
+            <td>{{sex}}</td>
+            <td>{{ellipsis notes 32}}</td>
+            <td>{{status}}</td>
+            <td><a href="cage/{{cage_id}}">{{cage}}</a></td>
+            <td>{{modify_timestamp}}</td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>

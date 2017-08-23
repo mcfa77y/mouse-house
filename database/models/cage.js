@@ -3,7 +3,7 @@ module.exports = function(sequelize, DataTypes) {
   const Cage = sequelize.define('Cage', {
     id_alias: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
         unique: true
       },
     name: DataTypes.STRING,

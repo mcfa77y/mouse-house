@@ -3,7 +3,7 @@ module.exports = function(sequelize, DataTypes) {
     const Mouse = sequelize.define('Mouse', {
             id_alias: {
                 type: DataTypes.STRING,
-                allowNull: false,
+                allowNull: true,
                 unique: true
             },
             ear_tag: DataTypes.STRING,

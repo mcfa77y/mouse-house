@@ -28,15 +28,17 @@ router.get('/create', function(req, res) {
             input: _get_cage_inputs(),
         })
         .then(({input}) => {
-            let mice = input.mice.map((mouse) => {
+            let mice_select = input.mice.map((mouse) => {
                 return { id: mouse.id, description: mouse.id_alias }
             })
-            mice = utils.select_json(mice)
+            mice_select = utils.select_json(mice_select)
             const cage_type = utils.select_json(input.cage_type)
+            const mice = input.mice
             res.render('pages/cage/cage_create', {
                 mice,
+                mice_select,
                 cage_type,
-                extra_js: ['cs-cage'],
+                extra_js: ['cs-cage-create'],
                 cool_face: utils.cool_face()
             })
         })
@@ -44,7 +46,7 @@ router.get('/create', function(req, res) {
 
 function _get_cage_inputs(){
     return BlueBird.props({
-            mice: mouse_controller.all(),
+            mice: mouse_controller.all_pretty(),
             cage_type: enum_controller.by_type('CAGE_TYPE')            
         })
 }
@@ -76,12 +78,22 @@ router.get('/:id_alias', function(req, res) {
 });
 
 router.delete('/:id', function(req, res) {
-    cage_controller.delete(req.params.id).then((x) => {
-            res.send({ success: true })
+    const rm_ids = isFalsey(req.query.id_alias) ? req.params.id : req.params.id_alias
+    const rm_promises = rm_ids.split(',').map(id=>{
+        cage_controller.delete(id)
+    })
+
+    return Promise.all(rm_promises)
+        .then((x) => {
+            res.send({
+                success: true
+            })
         })
         .catch((err) => {
-            console.log(err)
-            res.status(500).send({ success: false, err })
+            res.status(500).send({
+                success: false,
+                err
+            })
         })
 });
 

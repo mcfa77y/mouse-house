@@ -16,7 +16,7 @@ module.exports = {
                 { description: 'Rag2', type: 'MOUSE_GENOTYPE', created_at: date, updated_at: date },
                 { description: 'B6', type: 'MOUSE_GENOTYPE', created_at: date, updated_at: date },
                 { description: 'IRF 3/7 -/- dKO', type: 'MOUSE_GENOTYPE', created_at: date, updated_at: date },
-                { description: 'none', type: 'CAGE_TYPE', created_at: date, updated_at: date },
+                { description: 'unknown', type: 'CAGE_TYPE', created_at: date, updated_at: date },
                 { description: 'stock', type: 'CAGE_TYPE', created_at: date, updated_at: date },
                 { description: 'breeder', type: 'CAGE_TYPE', created_at: date, updated_at: date },
                 { description: 'experimental', type: 'CAGE_TYPE', created_at: date, updated_at: date },

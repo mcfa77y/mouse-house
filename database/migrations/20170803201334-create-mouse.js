@@ -10,7 +10,7 @@ module.exports = {
       },
       id_alias: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
         unique: true  
       },
       ear_tag: {

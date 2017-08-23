@@ -57,8 +57,9 @@ class Controller extends Base_Controller {
                 include: [{ association: Cage.Note }],
                 returning: true
             })
-            .then(cage => {
-                return Mouse.update({ cage_id: cage.id }, { where: { id: { $in: _model.mouse_ids } } })
+            .then(model => {
+                model.update({id_alias: model.id})
+                return Mouse.update({ cage_id: model.id }, { where: { id: { $in: _model.mouse_ids } } })
             })
             .catch(err => {
                 console.log(err)

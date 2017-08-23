@@ -4,9 +4,11 @@ const setup_table = (model_name, column_names, use_hidden_id_col = false) => {
     })
 
     const base_table_options = {
-        select: { style: 'multi' },
+        select: {style: 'multi'},
+        responsive: true,
+        dom: 'Bfrtip',
+        buttons: ['selectAll','selectNone','copy', 'excel', 'pdf'],
         columns,
-        buttons: ['selectAll','selectNone'],
     }
     if (use_hidden_id_col) {
         table_options = $.extend(base_table_options, {
@@ -79,8 +81,8 @@ const foo = (model_name, column_names, use_hidden_id_col = true) => {
 
     // const create_modal_button = $('#open-create-' + model_name + '-modal-button')
     const delete_button = $('#delete-' + model_name + '-button')
-    const save_button = $('#save-' + model_name + '-button')
     const update_button = $('#update-' + model_name + '-button')
+    const save_button = $('#save-' + model_name + '-button')
     const back_button = $('#back-' + model_name + '-button')
 
     const success = (response) => {

@@ -3,7 +3,7 @@ module.exports = function(sequelize, DataTypes) {
   const Breed = sequelize.define('Breed', {
     id_alias: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
         unique: true
       },
     pairing_date: DataTypes.DATE,
