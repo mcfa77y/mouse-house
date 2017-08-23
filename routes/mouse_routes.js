@@ -216,7 +216,6 @@ router.put('/', function(req, res) {
 });
 
 router.post('/', function(req, res) {
-    utils.move_note(req)
     utils.log_json(req.body)
 
     mouse_controller.update(req.body).then((x) => {

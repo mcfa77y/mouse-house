@@ -116,9 +116,17 @@ class Controller extends Base_Controller {
             where:{
                 id: _model.id
             },
-            include: [{
-                association: Mouse.Note
-            }]
+            returning: true
+        })
+        .then(updated_model => {
+            const model = updated_model[1][0]
+                return BlueBird.props({
+                    note: model.getNote(),
+                    model
+                })
+        })
+        .then( ({note, model}) => {
+            isFalsey(note) ? model.createNote(_model.note) : note.update(_model.note)
         })
     }
 }

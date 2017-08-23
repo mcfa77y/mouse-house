@@ -1,5 +1,5 @@
 $(function() {
-    const columns = ['id', 'id_alias', 'ear_tag', 'dob',
+    const columns = ['id', 'id_alias', 'ear_tag', 'age', 'dob',
         'genotype', 'sex', 'notes',
         'status', 'created_at',
         'updated_at'
