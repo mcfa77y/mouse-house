@@ -29,21 +29,21 @@ router.get('/', function(req, res) {
         .then(({ input, mice }) => {
             const status = utils.select_json(input.status, 'status_id')
             const genotype = utils.select_json(input.genotype, 'genotype_id')
-            let cages = input.cages.map((cage) => {
-                return {
-                    id: cage.id,
-                    description: cage.name
-                }
-            })
+            // let cages = input.cages.map((cage) => {
+            //     return {
+            //         id: cage.id,
+            //         description: cage.name
+            //     }
+            // })
             const sex = utils.select_json(input.sex, 'sex_id')
-            cages = utils.select_json(cages, 'cage_id')
+            // cages = utils.select_json(cages, 'cage_id')
             res.render('pages/mouse/mouse_list', {
                 status,
                 genotype,
-                cages,
+                cages: input.cages,
                 sex,
                 mice,
-                extra_js: ['cs-mouse'],
+                extra_js: ['cs-mouse-list'],
                 cool_face: utils.cool_face()
             })
         })
@@ -77,7 +77,7 @@ router.get('/create', function(req, res) {
                 genotype,
                 cages,
                 sex,
-                extra_js: ['cs-mouse'],
+                extra_js: ['cs-mouse-create'],
                 cool_face: utils.cool_face()
             })
         })
@@ -95,7 +95,7 @@ function _get_mouse_inputs() {
     return BlueBird.props({
         status: enum_controller.by_type('MOUSE_STATUS'),
         genotype: enum_controller.by_type('MOUSE_GENOTYPE'),
-        cages: cage_controller.all(),
+        cages: cage_controller.all_pretty(),
         sex: enum_controller.by_type('SEX'),
     })
 }
@@ -129,7 +129,7 @@ router.get('/:id_alias', function(req, res) {
                 cages,
                 sex,
                 mouse,
-                extra_js: ['cs-mouse'],
+                extra_js: ['cs-mouse-update'],
                 cool_face: utils.cool_face()
             })
         })

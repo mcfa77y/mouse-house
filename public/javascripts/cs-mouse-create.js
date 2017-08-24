@@ -1,16 +1,9 @@
 $(function() {
-    const columns = ['id', 'id_alias', 'ear_tag', 'age', 'dob',
-        'genotype', 'sex', 'notes',
-        'status', 'created_at',
-        'updated_at'
-    ]
-    const hide_id_col = true
-    foo('mouse', columns, hide_id_col)
-
-    setupSliders()
+    setup_sliders()
+    setup_create_page_buttons('mouse')
 })
 
-function setupSliders() {
+function setup_sliders() {
     const slider_options = {
         start: 3,
         connect: 'lower',

@@ -17,7 +17,7 @@ router.get('/', function(req, res) {
             utils.log_json(cages)
             res.render('pages/cage/cage_list', {
                 cages,
-                extra_js: ['cs-cage'],
+                extra_js: ['cs-cage-list'],
                 cool_face: utils.cool_face()
             })
         })
@@ -67,7 +67,7 @@ router.get('/:id_alias', function(req, res) {
                 mice,
                 cage_type,
                 cage,
-                extra_js: ['cs-cage'],
+                extra_js: ['cs-cage-update'],
                 cool_face: utils.cool_face()
             })
         })
