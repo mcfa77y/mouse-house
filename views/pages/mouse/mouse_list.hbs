@@ -1,4 +1,16 @@
 <div class="well bs-component">
-{{> mouse/mouse_table}}
-{{> crud_buttons model_name='mouse'}}
+    <div class="page-header">
+        <h2>Mice <small>Subtext for header</small></h2>
+    </div>
+    {{> mouse/mouse_table}}
+    <div class="row">
+            <span class="pull-left">
+                <a href="{{model_name}}/create" class="btn btn-info" role="button"><i class="material-icons">add</i> </a>
+            </span>
+            <span class="pull-left">
+                <button id="delete-{{model_name}}-button"  type="button" class="btn btn-danger" ><i class="material-icons">delete</i></button>
+            </span>
+
+        {{> crud_buttons model_name='mouse'}}
+    </div>
 </div>

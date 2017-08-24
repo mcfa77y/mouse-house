@@ -6,9 +6,10 @@ const setup_table = (model_name, column_names, use_hidden_id_col = false) => {
     const base_table_options = {
         select: {style: 'multi'},
         responsive: true,
-        dom: 'Bfrtip',
-        buttons: ['selectAll','selectNone','copy', 'excel', 'pdf'],
+        // dom: 'Bfrtip',
+        // buttons: ['selectAll','selectNone','copy', 'excel', 'pdf'],
         columns,
+        lengthMenu: [ [10, 25, 50, -1], [10, 25, 50, "All"] ]
     }
     if (use_hidden_id_col) {
         table_options = $.extend(base_table_options, {

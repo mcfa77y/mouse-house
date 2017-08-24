@@ -1,4 +1,4 @@
-<table id='mouse-list' class="table table-striped " cellspacing="0" width="100%">
+<table id='mouse-list' class="mdl-data-table" cellspacing="0" width="100%">
     <thead>
         <tr>
             <th>id</th>
@@ -8,10 +8,10 @@
             <th>DOB</th>
             <th>Genotype</th>
             <th>Sex</th>
-            <th>Notes</th>
             <th>Status</th>
             <th>Cage</th>
             <th>Parents</th>
+            <th>Notes</th>
         </tr>
     </thead>
     <tbody>
@@ -24,10 +24,10 @@
             <td>{{dob}}</td>
             <td>{{genotype}}</td>
             <td>{{sex}}</td>
-            <td>{{ellipsis notes 32}}</td>
             <td>{{status}}</td>
             <td><a href="cage/{{cage_id}}">{{cage}}</a></td>
-            <td>{{modify_timestamp}}</td>
+            <td><a href="breed/{{breed_id}}">{{breed_id}}</a></td>
+            <td>{{ellipsis notes 32}}</td>
         </tr>
         {{/each}}
     </tbody>
