@@ -7,6 +7,7 @@ const _ = require('underscore')
 const isFalsey = require('falsey');
 
 const enum_controller = require(path.join(__dirname, '..', 'controllers/enum_controller'))
+const breed_controller = require(path.join(__dirname, '..', 'controllers/breed_controller'))
 const mouse_controller = require(path.join(__dirname, '..', 'controllers/mouse_controller'))
 const cage_controller = require(path.join(__dirname, '..', 'controllers/cage_controller'))
 const utils = require('./utils_routes')
@@ -236,31 +237,53 @@ router.post('/cage_mice_together', function(req, res) {
 router.post('/breed_mice_together', function(req, res) {
     utils.log_json(req.body)
     const mouse_ids = req.body.mouse_ids
-    mouse_controller.get_where({
+    let sex_map = {}
+    enum_controller.by_type('SEX').then(sex_enums =>{
+        sex_enums.forEach(sex => sex_map[sex.id] = sex.description)
+        return sex_map
+    })
+    .then((sex_map) => {
+        return mouse_controller.get_where({
             id: {
                 $in: mouse_ids
             }
         })
-        .then(mice => {
-            const mice_by_sex = _.groupBy(mice, (mouse) => {
-                return mouse.sex_id
-            })
-
-            mice_by_sex
-        })
-    const create_breed_promises =
-        const update_promises = req.body.mouse_ids
-            .map(id => mouse_controller.update({ id, cage_id }))
-
-    Promise.all(update_promises)
-        .then(() => res.send({ success: true }))
-        .catch((err) => {
-            utils.log_json(err)
-            res.status(500).send({
-                success: false,
-                err
+        .then(items => {
+            return _.groupBy(items, (item) => {
+                return sex_map[item.sex_id]
             })
         })
+        
+    })
+    .then((mouse_array) => {
+        debugger
+        const male_id = mouse_array.male[0].id
+        const female_ids = mouse_array.female.map(female => female.id)
+        female_ids.forEach(female_id => {
+            const model = {
+                male_mouse_id: male_id,
+                female_mouse_id: female_id
+            }
+            breed_controller.insert(model)
+        })
+        
+        return mouse_array
+
+    })
+    
+
+    // const update_promises = req.body.mouse_ids
+    //     .map(id => mouse_controller.update({ id, breed_id }))
+
+    // Promise.all(update_promises)
+    //     .then(() => res.send({ success: true }))
+    //     .catch((err) => {
+    //         utils.log_json(err)
+    //         res.status(500).send({
+    //             success: false,
+    //             err
+    //         })
+    //     })
 });
 
 router.post('/', function(req, res) {

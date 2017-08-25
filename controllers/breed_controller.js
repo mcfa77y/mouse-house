@@ -57,7 +57,7 @@ class Controller extends Base_Controller {
                 returning: true
             })
             .then(model => {
-                return Mouse.update({ breed_id: model.id }, { where: { id: { $in: _model.mouse_ids } } })
+                return Mouse.update({ breed_id: model.id }, { where: { id: { $in: [_model.male_mouse_id, _model.female_mouse_id] } } })
             })
             .catch(err => {
                 console.log(err)

@@ -50,7 +50,7 @@ const setup_aggregation_buttons = (table) => {
 
 
     pair_button.click(()=>{
-        const mouse_ids = mouse_table.get_selected_row_ids()
+        const mouse_ids = table.get_selected_row_ids()
         const data = {
             mouse_ids
         }
