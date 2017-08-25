@@ -156,7 +156,7 @@ router.get('/:id_alias', function(req, res) {
 router.delete('/:id', function(req, res) {
     const rm_ids = isFalsey(req.query.id_alias) ? req.params.id : req.params.id_alias
 
-    const rm_promises = rm_ids.split(',').map(id=>{
+    const rm_promises = rm_ids.split(',').map(id => {
         mouse_controller.delete(id)
     })
 
@@ -203,9 +203,57 @@ router.put('/', function(req, res) {
                     const create_mouse_count = _.range(parseInt(req.body[id]))
                     return create_mouse_count.map(x => mouse_controller.insert(req.body))
                 })
-            return Promise.all(create_mouse_promises)      
+            return Promise.all(create_mouse_promises)
         })
-        .then(() => res.send({success: true}))
+        .then(() => res.send({ success: true }))
+        .catch((err) => {
+            utils.log_json(err)
+            res.status(500).send({
+                success: false,
+                err
+            })
+        })
+});
+
+router.post('/cage_mice_together', function(req, res) {
+    utils.log_json(req.body)
+    const cage_id = req.body.cage_id[0]
+    const update_promises = req.body.mouse_ids
+        .map(id => mouse_controller.update({ id, cage_id }))
+
+    Promise.all(update_promises)
+        .then(() => res.send({ success: true }))
+        .catch((err) => {
+            utils.log_json(err)
+            res.status(500).send({
+                success: false,
+                err
+            })
+        })
+});
+
+
+router.post('/breed_mice_together', function(req, res) {
+    utils.log_json(req.body)
+    const mouse_ids = req.body.mouse_ids
+    mouse_controller.get_where({
+            id: {
+                $in: mouse_ids
+            }
+        })
+        .then(mice => {
+            const mice_by_sex = _.groupBy(mice, (mouse) => {
+                return mouse.sex_id
+            })
+
+            mice_by_sex
+        })
+    const create_breed_promises =
+        const update_promises = req.body.mouse_ids
+            .map(id => mouse_controller.update({ id, cage_id }))
+
+    Promise.all(update_promises)
+        .then(() => res.send({ success: true }))
         .catch((err) => {
             utils.log_json(err)
             res.status(500).send({

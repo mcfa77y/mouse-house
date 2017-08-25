@@ -1,5 +1,5 @@
 $(function() {
-	const columns = ['id_alias', 
+	const column_names = ['id_alias', 
                     'name', 
                     'type', 
                     'plug_date', 
@@ -10,7 +10,6 @@ $(function() {
                     'mice', 
                     'notes']
 
-    foo ('breed', columns)
-
-
+     setup_table({ model_name: 'mouse', column_names, hide_id_column: true })
+     setup_list_page_buttons('breed')
 })

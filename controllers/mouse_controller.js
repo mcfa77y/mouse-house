@@ -126,7 +126,9 @@ class Controller extends Base_Controller {
                 })
         })
         .then( ({note, model}) => {
-            isFalsey(note) ? model.createNote(_model.note) : note.update(_model.note)
+            if(!isFalsey(_model.note)){
+                    isFalsey(note) ? model.createNote(_model.note) : note.update(_model.note)
+            }
         })
     }
 }
