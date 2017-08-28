@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 var path = require('path');
 const BlueBird = require('bluebird')
+const isFalsey = require('falsey');
 
 const breed_controller = require('../controllers/breed_controller')
 const enum_controller = require('../controllers/enum_controller')
@@ -17,11 +18,12 @@ function _get_breed_inputs() {
 }
 
 router.get('/', function(req, res) {
-    debugger
     BlueBird.props({
             breeds: breed_controller.all_pretty()
         })
         .then(({ breeds }) => {
+            utils.log_json(breeds)
+
             res.render('pages/breed/breed_list', {
                 breeds,
                 extra_js: ['cs-breed-list']
@@ -66,19 +68,20 @@ router.get('/create', function(req, res) {
 
 router.get('/:id_alias', function(req, res) {
     BlueBird.props({
-            input: _get_cage_inputs(),
+            input: _get_breed_inputs(),
             breed: breed_controller.by_id_alias(req.params.id_alias)
         })
         .then(({ input, breed }) => {
+            debugger
             let genotype = utils.select_json(input.genotype, 'mouse_genotype', 'Genotype')
-            let male_mouse = utils.select_json(input.male_mice, 'male_mouse')
-            let female_mouse = utils.select_json(input.female_mice, 'female_mouse')
+            let male_mice = utils.select_json(input.male_mice, 'male_mouse')
+            let female_mice = utils.select_json(input.female_mice, 'female_mouse')
             utils.log_json(breed)
 
             res.render('pages/breed/breed_create', {
                 genotype,
-                male_mouse,
-                female_mouse,
+                male_mice,
+                female_mice,
                 breed,
                 extra_js: ['cs-breed']
             })
@@ -90,12 +93,23 @@ router.get('/:id_alias', function(req, res) {
 });
 
 router.delete('/:id', function(req, res) {
-    breed_controller.delete(req.params.id).then((x) => {
-            res.send({ success: true })
+    const rm_ids = isFalsey(req.query.id_alias) ? req.params.id : req.params.id_alias
+
+    const rm_promises = rm_ids.split(',').map(id => {
+        breed_controller.delete(id)
+    })
+
+    return Promise.all(rm_promises)
+        .then((x) => {
+            res.send({
+                success: true
+            })
         })
         .catch((err) => {
-            console.log(err)
-            res.status(500).send({ success: false, err })
+            res.status(500).send({
+                success: false,
+                err
+            })
         })
 });
 router.put('/', function(req, res) {

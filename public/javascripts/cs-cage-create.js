@@ -4,7 +4,7 @@ $(function() {
         'status', 'created_at',
         'updated_at'
     ]
-    setup_table('mouse', mouse_columns, true)
+    setup_table({model_name: 'mouse', column_names: mouse_columns, hide_id_column: true})
 
     setup_create_page_buttons('cage')
 })

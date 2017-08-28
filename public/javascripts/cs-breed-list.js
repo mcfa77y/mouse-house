@@ -1,15 +1,18 @@
 $(function() {
-	const column_names = ['id_alias', 
-                    'name', 
-                    'type', 
+	const column_names = ['id',
+                    'id_alias', 
+                    'genotype', 
+                    'male_mouse',
+                    'female_mouse',
+                    'pairing_date', 
                     'plug_date', 
                     'litter_date', 
-                    'ween_date', 
-                    'pairing_date', 
+                    'end_date', 
                     'pup_check_date', 
-                    'mice', 
+                    'male_count',
+                    'female_count',
                     'notes']
 
-     setup_table({ model_name: 'mouse', column_names, hide_id_column: true })
+     setup_table({ model_name: 'breed', column_names, hide_id_column: true })
      setup_list_page_buttons('breed')
 })

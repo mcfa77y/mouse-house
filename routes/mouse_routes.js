@@ -246,15 +246,12 @@ router.post('/breed_mice_together', function(req, res) {
             const male_mouse = mice_group_by_sex.male[0]
 
             const create_breed_promises = mice_group_by_sex.female.map(female_mouse => {
-                const new_id_alias = 'M' + male_mouse.id_alias + '-F' + female_mouse.id_alias
-                breed_controller.by_id_alias().then(breed =>{
-                    if(breed){
-                        
-                    }
+                
 
                 return breed_controller
-                    .insert({ id_alias:  new_id_alias})
+                    .insert({})
                     .then(breed => {
+                        breed.update({id_alias: breed.id, pairing_date:Date()})
                         return breed.addMice([male_mouse, female_mouse])
                     })
             })

@@ -53,13 +53,16 @@ class Cage_Controller extends Base_Controller {
     insert(_model) {
         _model = utils.remove_empty(_model, true)
         _model.name = city_names[Math.floor(Math.random() * city_names.length)]
-        Cage.create(_model, {
+        return Cage.create(_model, {
                 include: [{ association: Cage.Note }],
                 returning: true
             })
             .then(model => {
                 model.update({id_alias: model.id})
-                return Mouse.update({ cage_id: model.id }, { where: { id: { $in: _model.mouse_ids } } })
+                if(!isFalsey(_model.mouse_ids)){
+                    return Mouse.update({ cage_id: model.id }, { where: { id: { $in: _model.mouse_ids } } })
+                }
+                 
             })
             .catch(err => {
                 console.log(err)
