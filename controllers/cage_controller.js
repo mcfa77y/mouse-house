@@ -8,7 +8,7 @@ const Base_Controller = require('./base_controller')
 const Cage = require('../database/models').Cage
 const Mouse = require('../database/models').Mouse
 
-class Controller extends Base_Controller {
+class Cage_Controller extends Base_Controller {
     pretty(model) {
         return BlueBird.props({
                 type: model.getType(),
@@ -108,4 +108,4 @@ class Controller extends Base_Controller {
     }
 }
 
-module.exports = new Controller(Cage)
+module.exports = new Cage_Controller(Cage)

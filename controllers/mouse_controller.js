@@ -9,7 +9,7 @@ const utils = require('./utils_controller')
 const Mouse = require('../database/models').Mouse
 
 
-class Controller extends Base_Controller {
+class Mouse_Controller extends Base_Controller {
     inputs() {
         return BlueBird.props({
                 sex: mouse.getSex(),
@@ -133,4 +133,4 @@ class Controller extends Base_Controller {
     }
 }
 
-module.exports = new Controller(Mouse)
+module.exports = new Mouse_Controller(Mouse)

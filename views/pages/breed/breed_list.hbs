@@ -1,5 +1,5 @@
 <div class="well bs-component">
-    <table id='cage-list' class="mdl-data-table" cellspacing="0" width="100%">
+    <table id='breed-list' class="mdl-data-table" cellspacing="0" width="100%">
         <thead>
             <tr>
                 <th>#</th>
@@ -14,9 +14,9 @@
             </tr>
         </thead>
         <tbody>
-            {{#each cages}}
+            {{#each breeds}}
             <tr>
-                <td><a href="cage/{{id_alias}}">{{id_alias}}</a></td>
+                <td><a href="breed/{{id_alias}}">{{id_alias}}</a></td>
                 <td>{{genotype}}</td>
                 <td>{{male}}</td>
                 <td>{{female}}</td>

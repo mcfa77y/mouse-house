@@ -45,6 +45,13 @@ module.exports = {
               key: "id"
           }
       },
+      genotype_id: {
+          type: Sequelize.INTEGER,
+          references: {
+              model: "Enums",
+              key: "id"
+          }
+      },
       created_at: {
         allowNull: false,
         type: Sequelize.DATE

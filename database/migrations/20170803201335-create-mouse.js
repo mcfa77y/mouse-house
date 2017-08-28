@@ -54,13 +54,6 @@ module.exports = {
               key: "id"
           }
       },
-      breed_id: {
-          type: Sequelize.INTEGER,
-          references: {
-              model: "Breeds",
-              key: "id"
-          }
-      },
       created_at: {
         allowNull: false,
         type: Sequelize.DATE

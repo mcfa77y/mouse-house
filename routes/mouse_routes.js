@@ -28,21 +28,8 @@ router.get('/', function(req, res) {
             mice: mouse_controller.all_pretty()
         })
         .then(({ input, mice }) => {
-            const status = utils.select_json(input.status, 'status_id')
-            const genotype = utils.select_json(input.genotype, 'genotype_id')
-            // let cages = input.cages.map((cage) => {
-            //     return {
-            //         id: cage.id,
-            //         description: cage.name
-            //     }
-            // })
-            const sex = utils.select_json(input.sex, 'sex_id')
-            // cages = utils.select_json(cages, 'cage_id')
             res.render('pages/mouse/mouse_list', {
-                status,
-                genotype,
                 cages: input.cages,
-                sex,
                 mice,
                 extra_js: ['cs-mouse-list'],
                 cool_face: utils.cool_face()
@@ -237,53 +224,52 @@ router.post('/cage_mice_together', function(req, res) {
 router.post('/breed_mice_together', function(req, res) {
     utils.log_json(req.body)
     const mouse_ids = req.body.mouse_ids
-    let sex_map = {}
-    enum_controller.by_type('SEX').then(sex_enums =>{
-        sex_enums.forEach(sex => sex_map[sex.id] = sex.description)
-        return sex_map
-    })
-    .then((sex_map) => {
-        return mouse_controller.get_where({
-            id: {
-                $in: mouse_ids
-            }
+    return enum_controller.by_type('SEX').then(sex_enums => {
+            let sex_map = {}
+            sex_enums.forEach(sex => sex_map[sex.id] = sex.description)
+            return sex_map
         })
-        .then(items => {
-            return _.groupBy(items, (item) => {
-                return sex_map[item.sex_id]
+        .then((sex_map) => {
+            return mouse_controller.get_where({
+                    id: {
+                        $in: mouse_ids
+                    }
+                })
+                .then(items => {
+                    return _.groupBy(items, (item) => {
+                        return sex_map[item.sex_id]
+                    })
+                })
+
+        })
+        .then((mice_group_by_sex) => {
+            const male_mouse = mice_group_by_sex.male[0]
+
+            const create_breed_promises = mice_group_by_sex.female.map(female_mouse => {
+                const new_id_alias = 'M' + male_mouse.id_alias + '-F' + female_mouse.id_alias
+                breed_controller.by_id_alias().then(breed =>{
+                    if(breed){
+                        
+                    }
+
+                return breed_controller
+                    .insert({ id_alias:  new_id_alias})
+                    .then(breed => {
+                        return breed.addMice([male_mouse, female_mouse])
+                    })
             })
+
+            return Promise.all(create_breed_promises)
+                .then(() => res.send({ success: true }))
+                .catch((err) => {
+                    utils.log_json(err)
+                    res.status(500).send({
+                        success: false,
+                        err
+                    })
+                })
+
         })
-        
-    })
-    .then((mouse_array) => {
-        debugger
-        const male_id = mouse_array.male[0].id
-        const female_ids = mouse_array.female.map(female => female.id)
-        female_ids.forEach(female_id => {
-            const model = {
-                male_mouse_id: male_id,
-                female_mouse_id: female_id
-            }
-            breed_controller.insert(model)
-        })
-        
-        return mouse_array
-
-    })
-    
-
-    // const update_promises = req.body.mouse_ids
-    //     .map(id => mouse_controller.update({ id, breed_id }))
-
-    // Promise.all(update_promises)
-    //     .then(() => res.send({ success: true }))
-    //     .catch((err) => {
-    //         utils.log_json(err)
-    //         res.status(500).send({
-    //             success: false,
-    //             err
-    //         })
-    //     })
 });
 
 router.post('/', function(req, res) {

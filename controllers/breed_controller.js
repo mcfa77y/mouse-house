@@ -5,10 +5,11 @@ const utils = require('./utils_controller')
 const city_names = require('../lib/data/city_names.json').city_names
 
 const Base_Controller = require('./base_controller')
+const Breed = require('../database/models').Breed
 const Cage = require('../database/models').Cage
 const Mouse = require('../database/models').Mouse
 
-class Controller extends Base_Controller {
+class Breed_Controller extends Base_Controller {
     pretty(model) {
         return BlueBird.props({
                 type: model.getType(),
@@ -52,12 +53,9 @@ class Controller extends Base_Controller {
 
     insert(_model) {
         _model = utils.remove_empty(_model, true)
-        Breed.create(_model, {
+        return Breed.create(_model, {
                 include: [{ association: Breed.Note }],
                 returning: true
-            })
-            .then(model => {
-                return Mouse.update({ breed_id: model.id }, { where: { id: { $in: [_model.male_mouse_id, _model.female_mouse_id] } } })
             })
             .catch(err => {
                 console.log(err)
@@ -100,4 +98,4 @@ class Controller extends Base_Controller {
     }
 }
 
-module.exports = new Controller(Cage)
+module.exports = new Breed_Controller(Breed)

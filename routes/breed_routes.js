@@ -3,7 +3,7 @@ const router = express.Router();
 var path = require('path');
 const BlueBird = require('bluebird')
 
-const breed_controller = require('../controllers/enum_controller')
+const breed_controller = require('../controllers/breed_controller')
 const enum_controller = require('../controllers/enum_controller')
 const mouse_controller = require('../controllers/mouse_controller')
 const utils = require('./utils_routes')
@@ -17,19 +17,14 @@ function _get_breed_inputs() {
 }
 
 router.get('/', function(req, res) {
+    debugger
     BlueBird.props({
-            input: _get_breed_inputs()
+            breeds: breed_controller.all_pretty()
         })
-        .then(({ input }) => {
-            let gt = utils.select_json(input.genotype, 'mouse_genotype', 'Genotype')
-            let mm = utils.select_json(input.male_mice, 'male_mouse')
-            let fm = utils.select_json(input.female_mice, 'female_mouse')
-
+        .then(({ breeds }) => {
             res.render('pages/breed/breed_list', {
-                genotype: gt,
-                male_mouse: mm,
-                female_mouse: fm,
-                extra_js: ['cs-breed']
+                breeds,
+                extra_js: ['cs-breed-list']
             })
         })
         .catch(error => {
