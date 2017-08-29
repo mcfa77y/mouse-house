@@ -33,7 +33,7 @@ module.exports = {
     select_json: (items, _id, _description = '') => {
         const result = items.map(x => {
             const description = isFalsey(x.description) ? x.id : x.description
-            return { id: x.id, description }
+            return { id: x.id+"", description: description+"" }
         })
         return {
             items: result

@@ -34,7 +34,7 @@ module.exports = {
         return moment().diff(moment(date, moment.ISO_8601), 'week')
     },
 
-    format_time: (date, format = 'MM/DD/YY') => {
+    format_time: (date, format = 'MM/DD/YYYY') => {
         return moment(date, moment.ISO_8601).format(format)
     },
 

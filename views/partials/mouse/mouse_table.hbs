@@ -26,7 +26,11 @@
             <td>{{sex}}</td>
             <td>{{status}}</td>
             <td><a href="cage/{{cage_id}}">{{cage}}</a></td>
-            <td><a href="breed/{{breed_id}}">{{breed_id}}</a></td>
+            <td>
+                {{#each breeds}}
+                <a href="breed/{{this}}">{{this}}</a>
+                {{/each}}
+            </td>
             <td>{{ellipsis notes 32}}</td>
         </tr>
         {{/each}}

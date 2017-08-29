@@ -35,9 +35,9 @@ class Breed_Controller extends Base_Controller {
                 }
 
 
-                pretty_model.id = model.id
-                pretty_model.id_alias = model.id_alias
-                pretty_model.end_date = isFalsey(model.end_date) ? '' : utils.format_time(model.end_date)
+                pretty_model.id = parseInt(model.id)
+                pretty_model.id_alias = parseInt(model.id_alias)
+                pretty_model.ween_date = isFalsey(model.ween_date) ? '' : utils.format_time(model.ween_date)
                 pretty_model.female_count = model.female_count
                 pretty_model.genotype = isFalsey(genotype) ? '' : genotype.description
                 pretty_model.genotype_id = isFalsey(genotype) ? '' : genotype.id
@@ -84,36 +84,18 @@ class Breed_Controller extends Base_Controller {
     }
     update(_model) {
         _model = utils.remove_empty(_model, true)
-
         return Breed.update(_model, {
                 where: { id: _model.id },
                 returning: true
             })
             .then(updated_model => {
                 return BlueBird.props({
-                    mice: model.getMice(),
-                    note: model.getNote(),
+                    note: updated_model[1][0].getNote(),
                     model: updated_model[1][0]
                 })
             })
             .then(({ mice, note, model }) => {
-                if (note == null) {
-                    model.createNote(_model.note)
-                } else {
-                    note.update(_model.note)
-                }
-
-                if (!isFalsey(mice)) {
-                    // remove old mouse-cage connections
-                    mice.filter(mouse => {
-                        return !_model.mouse_ids.includes(mouse.id + "")
-                    }).forEach(mouse => {
-                        mouse.update({ cage_id: null })
-                    })
-                }
-
-                // add new mouse-cage connections
-                Mouse.update({ breed_id: model.id }, { where: { id: { $in: _model.mouse_ids } } })
+                isFalsey(note) ? model.createNote(_model.note) : note.update(_model.note)
             })
 
     }

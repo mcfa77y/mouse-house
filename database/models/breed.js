@@ -9,6 +9,7 @@ module.exports = function(sequelize, DataTypes) {
         pairing_date: DataTypes.DATE,
         plug_date: DataTypes.DATE,
         pup_check_date: DataTypes.DATE,
+        litter_date: DataTypes.DATE,
         ween_date: DataTypes.DATE,
         male_count: { type: DataTypes.INTEGER, defaultValue: 0 },
         female_count: { type: DataTypes.INTEGER, defaultValue: 0 }

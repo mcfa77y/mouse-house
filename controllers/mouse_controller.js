@@ -34,14 +34,15 @@ class Mouse_Controller extends Base_Controller {
                 sex: enum_controller.get(mouse.sex_id),
                 genotype: enum_controller.get(mouse.genotype_id),
                 status: enum_controller.get(mouse.status_id),
-                cage: mouse.getCage(),
-                note: mouse.getNote(),
+                cage: mouse.getCage({attributes: ['id', 'name'] }),
+                note: mouse.getNote({attributes: ['id', 'text'] }),
+                breeds: mouse.getBreeds({attributes: ['id'] }),
             })
             .then(({
                 sex,
                 genotype,
                 status,
-                cage, note
+                cage, note, breeds
             }) => {
                 let pretty_mouse = {}
                 pretty_mouse.id = mouse.id
@@ -58,7 +59,7 @@ class Mouse_Controller extends Base_Controller {
                 pretty_mouse.age = utils.relative_time(mouse.dob)
                 pretty_mouse.create_at = utils.format_time(mouse.create_at)
                 pretty_mouse.modify_at = utils.format_time(mouse.modify_at)
-
+                pretty_mouse.breeds = isFalsey(breeds) ? [] : breeds.map(breed => breed.id)
                 pretty_mouse.cage = isFalsey(cage) ? '' : cage.name
                 pretty_mouse.cage_id = isFalsey(cage) ? '' : cage.id
                 return pretty_mouse

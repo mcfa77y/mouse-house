@@ -23,12 +23,12 @@ class Cage_Controller extends Base_Controller {
                 pretty_model.name = model.name
                 pretty_model.note = isFalsey(note) ? '' : note.text
                 pretty_model.type = isFalsey(type) ? '' : type.description
-                pretty_model.type_id = isFalsey(type) ? '' : type.id
+                pretty_model.type_id = isFalsey(type) ? '' : type.id + ""
                 pretty_model.setup_date = utils.format_time(model.setup_date)
                 pretty_model.update_date = utils.format_time(model.update_date)
                 pretty_model.end_date = utils.format_time(model.end_date)
                 pretty_model.mice = mice
-                pretty_model.mouse_ids = mice.map(m => m.id)
+                pretty_model.mouse_ids = mice.map(m => m.id + "")
                 return pretty_model
             })
     }
@@ -58,7 +58,9 @@ class Cage_Controller extends Base_Controller {
                 returning: true
             })
             .then(model => {
-                model.update({id_alias: model.id})
+                if(isFalsey(_model.id_alias)){
+                    model.update({id_alias: model.id})
+                }
                 if(!isFalsey(_model.mouse_ids)){
                     return Mouse.update({ cage_id: model.id }, { where: { id: { $in: _model.mouse_ids } } })
                 }

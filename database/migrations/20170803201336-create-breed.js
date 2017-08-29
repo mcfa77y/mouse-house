@@ -22,6 +22,9 @@ module.exports = {
       pup_check_date: {
         type: Sequelize.DATE
       },
+      litter_date: {
+        type: Sequelize.DATE
+      },
       ween_date: {
         type: Sequelize.DATE
       },

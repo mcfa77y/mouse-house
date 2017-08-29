@@ -1,4 +1,4 @@
-const setup_table = ({ model_name, column_names, hide_id_column = false }) => {
+const setup_table = ({model_name, column_names, hide_id_column = false}) => {
     const columns = column_names.map((x) => {
         return { data: x }
     })
@@ -14,7 +14,7 @@ const setup_table = ({ model_name, column_names, hide_id_column = false }) => {
             [5, 10, 25, "All"]
         ]
     }
-
+    
     if (hide_id_column) {
         table_options = $.extend(table_options, {
             columnDefs: [{
@@ -24,7 +24,7 @@ const setup_table = ({ model_name, column_names, hide_id_column = false }) => {
             }]
         })
 
-    }
+    } 
 
     table = $('#' + model_name + '-list').DataTable(table_options);
 
@@ -89,7 +89,6 @@ const error = (error) => {
 }
 
 const setup_create_page_buttons = (model_name) => {
-    setup_nav_buttons(model_name)
     const save_button = $('#save-' + model_name + '-button')
     const back_button = $('#back-' + model_name + '-button')
 
@@ -111,6 +110,7 @@ const setup_update_page_buttons = (model_name) => {
 
     update_button.click(() => {
         const dt = utils.form_ids_vals(model_name + '-fields')
+        utils.json_string(dt)
         axios.post('/' + model_name, dt)
             .then(success)
             .catch(error);
@@ -120,7 +120,6 @@ const setup_update_page_buttons = (model_name) => {
         window.location.href = '/' + model_name
         return false;
     })
-    setup_nav_buttons(model_name)
 }
 const setup_list_page_buttons = (model_name) => {
     const delete_button = $('#delete-' + model_name + '-button')
@@ -130,9 +129,10 @@ const setup_list_page_buttons = (model_name) => {
             .then(success)
             .catch(error)
     })
-    setup_nav_buttons(model_name)
 }
-const setup_nav_buttons = (model_name) => {
+const foo = (model_name, column_names, hide_id_column = true) => {
+    const table = setup_table(model_name, column_names, hide_id_column)
+
     // activate nav button icon
     const nav_button = $('a[href="/' + model_name + '"]')
     nav_button.parent().toggleClass('active')
