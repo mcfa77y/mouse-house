@@ -53,7 +53,7 @@ router.get('/create', function(req, res) {
                 genotype: gt,
                 male_mouse: mm,
                 female_mouse: fm,
-                extra_js: ['cs-breed']
+                extra_js: ['cs-breed-create']
             })
         })
         .catch(error => {
@@ -78,12 +78,12 @@ router.get('/:id_alias', function(req, res) {
             let female_mice = utils.select_json(input.female_mice, 'female_mouse')
             utils.log_json(breed)
 
-            res.render('pages/breed/breed_create', {
+            res.render('pages/breed/breed_update', {
                 genotype,
                 male_mice,
                 female_mice,
                 breed,
-                extra_js: ['cs-breed']
+                extra_js: ['cs-breed-update']
             })
         })
         .catch((err) => {
@@ -112,6 +112,7 @@ router.delete('/:id', function(req, res) {
             })
         })
 });
+
 router.put('/', function(req, res) {
     utils.move_note(req)
     utils.log_json(req.body)
