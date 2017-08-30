@@ -6,7 +6,7 @@ const isFalsey = require('falsey');
 const rp = require('request-promise')
 const _ = require('underscore')
 
-const CREDENTIALS = readJson(`${__dirname}/../config/credentials.json`);
+// const CREDENTIALS = readJson(`${__dirname}/../config/credentials.json`);
 String.prototype.toProperCase = function() {
     return this.replace(/\w\S*/g, function(txt) {
         return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
@@ -59,7 +59,7 @@ module.exports = {
             uri: 'http://api.giphy.com/v1/gifs/search',
             qs: {
                 q: 'zoidberg',
-                api_key: CREDENTIALS.giphy.api_key
+                api_key: process.env.GIPHY_API_KEY
 
             },
             headers: {
