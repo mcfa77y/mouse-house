@@ -5,6 +5,7 @@ $(function() {
     setupSelects();
     setupDatePicker();
     setupTodayButton();
+    setupToolTip();
     var win;
     var checkConnect;
     let counter = 0;
@@ -59,6 +60,9 @@ $(function() {
     })
 
 });
+function setupToolTip(){
+    $('[data-toggle="tooltip"]').tooltip();
+}
 
 function setupTodayButton() {
 
