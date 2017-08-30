@@ -13,6 +13,7 @@ function setup_mouse_table() {
     ]
     const table = setup_table({ model_name: 'mouse', column_names: mouse_columns, hide_id_column: true })
     const selected_mice_input = $('#mouse_ids')[0].selectize
+    selected_mice_input.disable()
     function on_select(e, dt, type, indexes) {
         console.log('\n\n')
         const row_data = table.rows(indexes).data().toArray();
@@ -32,7 +33,6 @@ function setup_mouse_table() {
             const id_index = prev_ids.indexOf(row.id)
             prev_ids.splice(id_index, 1)
         })
-        debugger
         prev_ids.length == 0 ? selected_mice_input.clear() : selected_mice_input.setValue(prev_ids)
 
         console.log('indexes: ' +indexes )

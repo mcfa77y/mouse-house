@@ -93,7 +93,7 @@ function setupSelects() {
     $('.foo-select')
         .toArray()
         .forEach((s) => {
-            $(s).selectize()
+            $(s).selectize({create: true, persist: true})
         })
 }
 

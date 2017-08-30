@@ -72,12 +72,11 @@ router.get('/:id_alias', function(req, res) {
             breed: breed_controller.by_id_alias(req.params.id_alias)
         })
         .then(({ input, breed }) => {
-            debugger
             let genotype = utils.select_json(input.genotype, 'mouse_genotype', 'Genotype')
             let male_mice = utils.select_json(input.male_mice, 'male_mouse')
             let female_mice = utils.select_json(input.female_mice, 'female_mouse')
             utils.log_json(breed)
-
+            
             res.render('pages/breed/breed_update', {
                 genotype,
                 male_mice,
