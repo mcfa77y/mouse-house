@@ -1,0 +1,41 @@
+<div class="well bs-component">
+    <div class="page-header">
+        <h2>Add Breed</h2> {{mouse}}
+    </div>
+
+    <div >
+        <fieldset>
+            <div class="row">
+            {{> form_elements/text_input id='id_alias' description='ID' placeholder='1234'}}
+            {{> form_elements/select_input genotype id='genotype_id' description='Genotype'}}
+            {{> form_elements/select_input male_mouse id='male_mouse' description='Male'}}
+            {{> form_elements/select_input female_mouse id='female_mouse' description='Female'}}
+
+            {{> form_elements/date_input id='pairing-date' description='Pairing'}}
+            {{> form_elements/date_input id='plug-date' description='Plug'}}
+            {{> form_elements/date_input id='pup-check-date' description='Pup check'}}
+
+            </div>
+            {{> form_elements/text_area_input id='note' description='Note'}}
+            <div class="col-md-12">
+            <button data-toggle="collapse" data-target="#demo" type="button" class="btn btn-default">
+                Add offspring</button>
+                </div>
+            <div id="demo" class="collapse">
+                <div class="row">
+                {{> form_elements/date_input id='pup-check-date' description='Pup check'}}
+                {{> form_elements/date_input id='litter-date-of-birth' description='Litter D.O.B.'}}
+                {{> form_elements/date_input id='ween-date' description='Ween'}}
+                {{> form_elements/text_input id='male-count' description='Male count' placeholder='3'}}
+                {{> form_elements/text_input id='female-count' description='Female count' placeholder='3'}}
+                </div>
+                {{> form_elements/text_area_input id='note2' description='Note'}}
+            </div>
+        </fieldset>
+    </div>
+    <div class="row">
+        <button id="save-breed-button" type="button" class="btn btn-primary pull-right">Save</button>
+        <button id="back-breed-button" type="button" class="btn btn-default pull-right">Back</button>
+    </div>
+</div>
+   

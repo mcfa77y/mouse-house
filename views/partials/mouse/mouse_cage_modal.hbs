@@ -1,0 +1,21 @@
+<div id="cage-mice-together-modal" class="modal fade">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Cage mice together</h4>
+            </div>
+            <div class="modal-body">
+                <fieldset>
+                    {{> cage/cage_table}}
+                </fieldset>
+            </div>
+            <div class="modal-footer">
+                <a href="cage/create" class="btn btn-default pull-left" role="button">New Cage</a>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button id="cage-mice-together-button" type="button" class="btn btn-primary">Update</button>
+            </div>
+        </div>
+    </div>
+</div>
+

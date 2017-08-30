@@ -1,0 +1,28 @@
+<div id="create-cage-modal" class="modal fade">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Add cage</h4>
+            </div>
+            <div class="modal-body">
+                <fieldset id="cage-fields">
+                <div class="row">
+                    {{> form_elements/text_input id='id_alias' description='ID' placeholder='1234'}}
+                    {{> form_elements/select_input cage_type id='type_id' description='Type'}}
+                    {{> form_elements/date_input id='setup_date' description='Setup date'}}
+                    {{> form_elements/date_input id='update_date' description='Last update'}}
+                    {{> form_elements/date_input id='end_date' description='End date'}}
+                    {{> form_elements/select_input mice id='mouse_ids' isMultiple=true description='Mice'}}
+                    {{> form_elements/text_area_input id='notes' description='Notes'}}
+                </div>
+
+                </fieldset>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button id="save-cage-button" type="button" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+</div>

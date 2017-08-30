@@ -1,0 +1,41 @@
+<div class="form-group label-floating  col-md-3 col-sm-6">
+    <label for="{{id}}" class=" control-label">{{description}}</label>
+    <div class="">
+
+    	{{#if isMultiple}}
+        
+            <select class="form-control foo-select" id="{{id}}" multiple="multiple">
+            {{#each items}}
+                {{#contains ../value this.id  }}
+                <option value="{{this.id}}" selected>{{this.description}}</option>
+                {{else}}
+                <option value="{{this.id}}">{{this.description}}</option>
+                {{/contains}}
+            {{/each}}
+            </select>
+        
+
+        {{else}}
+        
+            <select class="form-control foo-select" id="{{id}}">
+            {{#each items}}
+                {{#eq this.id ../value }}
+                <option value="{{this.id}}" selected>{{this.description}}</option>
+                {{else}}
+                <option value="{{this.id}}">{{this.description}}</option>
+                {{/eq}}
+            {{/each}}
+            </select>
+        
+
+        {{/if}}
+    </div>
+</div>
+{{!-- 
+{{#each items}}
+                {{#contains ../value this.id  }}
+                {{../value}} contains {{this.id}}<br/>
+                {{else}}
+                {{../value}} not contains {{this.id}}<br/>
+                {{/contains}}
+            {{/each}} --}}

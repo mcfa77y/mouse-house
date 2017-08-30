@@ -1,0 +1,25 @@
+<div class="form-group  label-floating col-md-3 col-sm-6">
+    <label class="control-label">{{description}}</label>
+    {{#forEach items}}
+    <div class="radio radio-primary">
+        <label>
+            {{#is ../value null}}
+                {{#if isFirst}}
+                    <input type="radio" id="{{../id}}_{{this.description}}" name="{{../id}}" value="{{this.id}}" checked="">
+                {{else}}
+                    <input type="radio" id="{{../id}}_{{this.description}}" name="{{../id}}" value="{{this.id}}">
+                {{/if}}
+
+            {{else}}
+                {{#eq ../value this.id}}
+                    <input type="radio" id="{{../id}}_{{this.description}}" name="{{../id}}" value="{{this.id}}" checked="">
+                {{else}}
+                    <input type="radio" id="{{../id}}_{{this.description}}" name="{{../id}}" value="{{this.id}}">
+                {{/eq}}
+
+            {{/is}}
+            {{this.description}}
+        </label>
+    </div>
+    {{/forEach}}
+</div>

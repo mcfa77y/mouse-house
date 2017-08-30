@@ -1,0 +1,24 @@
+<div class="well bs-component">
+    <div class="page-header">
+        <h4>Update cage</h4> {{mouse}}
+    </div>
+    <div>
+        <fieldset id="cage-fields">
+            <div class="row">
+                {{> form_elements/text_input id='id_alias' description='ID' value=cage.id_alias}} 
+                {{> form_elements/text_input id='name' description='Name' value=cage.name}} 
+                {{> form_elements/select_input cage_type id='type_id' description='Type' value=cage.type_id}} 
+                {{> form_elements/date_input id='setup_date' description='Setup date' value=cage.setup_date}} 
+                {{> form_elements/date_input id='update_date' description='Last update' value=cage.update_date}} 
+                {{> form_elements/date_input id='end_date' description='End date' value=cage.end_date}} 
+                {{> form_elements/select_input mice id='mouse_ids' isMultiple=true description='Mice' value=cage.mouse_ids}} 
+                {{> form_elements/text_area_input id='note' description='Note' value=cage.note}}
+                <input type="hidden" id="id" value="{{cage.id}}"/>
+            </div>
+        </fieldset>
+    </div>
+    <div class="row">
+        <button id="update-cage-button" type="button" class="btn btn-primary pull-right">Update</button>
+        <button id="back-cage-button" type="button" class="btn btn-default pull-right">Back</button>
+    </div>
+</div>

@@ -1,9 +1,11 @@
 $(function() {
+    $.material.init();
     setupToastr();
-    setupDatePicker();
     setupDropDown();
     setupSelects();
-    $.material.init();
+    setupDatePicker();
+    setupTodayButton();
+    setupToolTip();
     var win;
     var checkConnect;
     let counter = 0;
@@ -58,13 +60,43 @@ $(function() {
     })
 
 });
+function setupToolTip(){
+    $('[data-toggle="tooltip"]').tooltip();
+}
+
+function setupTodayButton() {
+
+
+    $('.today-btn')
+        .toArray()
+        .forEach((s) => {
+            let f = s
+
+            $(s).click(() => {
+                let d = new Date()
+                let foo = $(f)
+                var datestring = ("0" + (d.getMonth() + 1)).slice(-2) + "/" + ("0" + d.getDate()).slice(-2) + "/" +
+                    d.getFullYear();
+                let input = foo.parent().parent().find('.form-control.c-datepicker-input')
+                input.val(datestring)
+                input.change()
+            })
+        })
+
+    // $(".js-example-basic-multiple").select2({
+    //     placeholder: "Select",
+    //     allowClear: true
+    // });
+}
 
 function setupSelects() {
-    $(".js-example-basic-multiple").select2({
-        placeholder: "Select a mouse",
-        allowClear: true
-    });
+    $('.foo-select')
+        .toArray()
+        .forEach((s) => {
+            $(s).selectize()
+        })
 }
+
 
 function setupDropDown() {
     $(".dropdown-menu li a").click(function() {
@@ -75,11 +107,35 @@ function setupDropDown() {
 
 function setupDatePicker() {
     const inputs = document.querySelectorAll('.c-datepicker-input');
+
     inputs.forEach((input) => {
-        const picker = new MaterialDatetimePicker()
+        // const _container = input.parentElement.children[1]
+        // const _container = document.body
+        // _container.style.zIndex=1000
+        // const picker = new MaterialDatetimePicker({container: _container})
+        
+        const picker = new MaterialDatetimePicker({
+                default: moment(),
+                value: moment()
+            })
             .on('submit', (val) => {
-                input.value = val.format("MM/DD/YYYY");
-            });
+                input.value = val.format('MM/DD/YYYY');
+                $(input).change()
+            })
+            .on('open', () => {
+                input.value = input.value || moment().format('MM/DD/YYYY')
+                picker.setDate(moment(input.value, 'MM/DD/YYYY'))
+                picker.setTime(moment(input.value, 'MM/DD/YYYY'))
+                // extra styling to make it look good and behave normally
+                $('.c-datepicker.c-datepicker--open').css('z-index', 1200)
+                $('.c-datepicker__clock').css('padding-top', '357px')
+                $('.btn.btn-fab.btn-fab-mini.today-btn, .form-control.c-datepicker-input').prop('disabled', true)
+
+            })
+            .on('close', (val) => {
+                $('.btn.btn-fab.btn-fab-mini.today-btn, .form-control.c-datepicker-input').prop('disabled', false)
+
+            })
         input.addEventListener('focus', () => picker.open());
     })
 }
