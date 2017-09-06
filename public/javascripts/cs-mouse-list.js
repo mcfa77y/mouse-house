@@ -23,7 +23,7 @@ const setup_aggregation_buttons = (table) => {
         let disable_cage = true
 
         // todo: create validation for M1 : F*
-        if (selected_row_count > 2){
+        if (selected_row_count >= 2){
             disable_pair = false
         }
 

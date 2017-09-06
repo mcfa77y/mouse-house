@@ -15,10 +15,10 @@
         {{{body}}}
     </div>
     {{> third_party_js_body}}
-    {{#each extra_js}}
     <script src="/javascripts/cs-utils.js"></script>
     <script src="/javascripts/cs-index.js"></script>
     <script src="/javascripts/cs-foo.js"></script>
+    {{#each extra_js}}
     <script src="/javascripts/{{this}}.js"></script>
     {{/each}}
 </body>

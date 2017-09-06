@@ -26,7 +26,7 @@ const setup_table = ({model_name, column_names, hide_id_column = false}) => {
 
     } 
 
-    table = $('#' + model_name + '-list').DataTable(table_options);
+    const table = $('#' + model_name + '-list').DataTable(table_options);
 
     const update_modal_button = $('#open-update-' + model_name + '-modal-button')
     const delete_button = $('#open-delete-' + model_name + '-modal-button')
@@ -60,10 +60,6 @@ const setup_table = ({model_name, column_names, hide_id_column = false}) => {
 
     function on_select(e, dt, type, indexes) {
         update_crud_buttons()
-        if (type === 'row') {
-
-            // do something with the ID of the selected items
-        }
     }
 
     table.on('select', on_select)
