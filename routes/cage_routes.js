@@ -38,7 +38,7 @@ router.get('/create', function(req, res) {
                 mice,
                 mice_select,
                 cage_type,
-                extra_js: ['cs-cage-create'],
+                extra_js: ['cs-cage-create', 'cs-cage-common'],
                 cool_face: utils.cool_face()
             })
         })
@@ -57,17 +57,18 @@ router.get('/:id_alias', function(req, res) {
             cage: cage_controller.by_id_alias(req.params.id_alias)
         })
         .then(({ input, cage }) => {
-            let mice = input.mice.map((mouse) => {
+            let mice = input.mice
+            let mice_select = utils.select_json(input.mice.map((mouse) => {
                 return { id: mouse.id, description: mouse.id_alias }
-            })
-            mice = utils.select_json(mice, 'mouse_ids', 'mice')
+            }), 'mouse_ids', 'mice')
             const cage_type = utils.select_json(input.cage_type, 'cage_type')
             utils.log_json(cage)
             res.render('pages/cage/cage_update', {
                 mice,
+                mice_select,
                 cage_type,
                 cage,
-                extra_js: ['cs-cage-update'],
+                extra_js: ['cs-cage-update', 'cs-cage-common'],
                 cool_face: utils.cool_face()
             })
         })
