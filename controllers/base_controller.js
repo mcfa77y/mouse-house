@@ -18,6 +18,10 @@ class Base_Controller {
         _model_data = utils.remove_empty(_model_data)
         return this.Model.create(_model_data)
     }
+    upsert(_model_data) {
+        _model_data = utils.remove_empty(_model_data)
+        return this.Model.upsert(_model_data)
+    }
     update(_model_data) {
         _model_data = utils.remove_empty(_model_data)
         return this.Model.update(_model_data, {where: {id: _model_data.id}} )

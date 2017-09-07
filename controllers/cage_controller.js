@@ -24,9 +24,9 @@ class Cage_Controller extends Base_Controller {
                 pretty_model.note = isFalsey(note) ? '' : note.text
                 pretty_model.type = isFalsey(type) ? '' : type.description
                 pretty_model.type_id = isFalsey(type) ? '' : type.id + ""
-                pretty_model.setup_date = utils.format_time(model.setup_date)
-                pretty_model.update_date = utils.format_time(model.update_date)
-                pretty_model.end_date = utils.format_time(model.end_date)
+                pretty_model.setup_date = utils.format_date(model.setup_date)
+                pretty_model.update_date = utils.format_date(model.update_date)
+                pretty_model.end_date = utils.format_date(model.end_date)
                 pretty_model.mice = mice
                 pretty_model.mouse_ids = mice.map(m => m.id + "")
                 return pretty_model

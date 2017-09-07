@@ -37,18 +37,18 @@ class Breed_Controller extends Base_Controller {
 
                 pretty_model.id = parseInt(model.id)
                 pretty_model.id_alias = parseInt(model.id_alias)
-                pretty_model.ween_date = isFalsey(model.ween_date) ? '' : utils.format_time(model.ween_date)
+                pretty_model.ween_date = isFalsey(model.ween_date) ? '' : utils.format_date(model.ween_date)
                 pretty_model.female_count = model.female_count
                 pretty_model.genotype = isFalsey(genotype) ? '' : genotype.description
                 pretty_model.genotype_id = isFalsey(genotype) ? '' : genotype.id
-                pretty_model.litter_date = isFalsey(model.litter_date) ? '' : utils.format_time(model.litter_date)
+                pretty_model.litter_date = isFalsey(model.litter_date) ? '' : utils.format_date(model.litter_date)
                 pretty_model.male_count = model.male_count
                 pretty_model.note = isFalsey(note) ? '' : note.text
-                pretty_model.pairing_date = isFalsey(model.pairing_date) ? '' : utils.format_time(model.pairing_date)
-                pretty_model.plug_date = isFalsey(model.plug_date) ? '' : utils.format_time(model.plug_date)
-                pretty_model.pup_check_date = isFalsey(model.pup_check_date) ? '' : utils.format_time(model.pup_check_date)
-                pretty_model.setup_date = isFalsey(model.setup_date) ? '' : utils.format_time(model.setup_date)
-                pretty_model.update_date = isFalsey(model.update_date) ? '' : utils.format_time(model.update_date)
+                pretty_model.pairing_date = isFalsey(model.pairing_date) ? '' : utils.format_date(model.pairing_date)
+                pretty_model.plug_date = isFalsey(model.plug_date) ? '' : utils.format_date(model.plug_date)
+                pretty_model.pup_check_date = isFalsey(model.pup_check_date) ? '' : utils.format_date(model.pup_check_date)
+                pretty_model.setup_date = isFalsey(model.setup_date) ? '' : utils.format_date(model.setup_date)
+                pretty_model.update_date = isFalsey(model.update_date) ? '' : utils.format_date(model.update_date)
 
 
                 return pretty_model

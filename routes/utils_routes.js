@@ -39,10 +39,12 @@ module.exports = {
             items: result
         }
     },
-    format_time: (date) => {
+    format_date: (date) => {
         return moment(date, moment.ISO_8601)
     },
-
+    today: (format = 'MM/DD/YYYY') => {
+        return moment().format(format)
+    },
     relative_time: (date) => {
         return moment(date, moment.ISO_8601).fromNow()
     },

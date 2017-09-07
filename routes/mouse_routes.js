@@ -173,15 +173,36 @@ router.delete('/:id', function(req, res) {
 
 router.put('/', function(req, res) {
     utils.move_note(req)
+    // if not null and doesn't parse to a number
+    const is_new_alias_id = (id) => !isFalsey(id) && isFalsey(parseInt(id))
+    if (is_new_alias_id(req.body.cage_id)) {
+        req.body.cage = {}
+        req.body.cage.id_alias = req.body.cage_id
+        req.body.cage.setup_date = utils.today()
+        delete req.body.cage_id
+    }
+    if (is_new_alias_id(req.body.status_id)) {
+        req.body.status = {}
+        req.body.status.description = req.body.status_id
+        req.body.status.type = 'MOUSE_STATUS'
+        delete req.body.status_id
+    }
+    if (is_new_alias_id(req.body.genotype_id)) {
+        req.body.genotype = {}
+        req.body.genotype.description = req.body.genotype_id
+        req.body.genotype.type = 'MOUSE_GENOTYPE'
+        delete req.body.genotype_id
+    }
+
     utils.log_json(req.body)
     const slider_ids = ['male', 'female', 'unknown']
     enum_controller.by_type('SEX')
         .then(sex_types => {
-            let result = {}
+            let sex_id_map = {}
             sex_types.forEach(sex_type => {
-                result[sex_type.description] = sex_type.id
+                sex_id_map[sex_type.description] = sex_type.id
             })
-            return result
+            return sex_id_map
         })
         .then(sex_id_map => {
             const create_mouse_promises = slider_ids
@@ -246,12 +267,12 @@ router.post('/breed_mice_together', function(req, res) {
             const male_mouse = mice_group_by_sex.male[0]
 
             const create_breed_promises = mice_group_by_sex.female.map(female_mouse => {
-                
+
 
                 return breed_controller
                     .insert({})
                     .then(breed => {
-                        breed.update({id_alias: breed.id, pairing_date:Date()})
+                        breed.update({ id_alias: breed.id, pairing_date: Date() })
                         return breed.addMice([male_mouse, female_mouse])
                     })
             })
