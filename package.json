@@ -27,6 +27,7 @@
     "googleapis": "^18.0.0",
     "handlebars-helpers": "^0.9.3",
     "hbs": "^4.0.1",
+    "helmet": "^3.8.1",
     "loopback": "^3.7.0",
     "loopback-connector-postgresql": "^3.0.0",
     "material-datetime-picker": "^2.3.0",

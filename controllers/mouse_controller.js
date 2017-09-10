@@ -100,7 +100,7 @@ class Mouse_Controller extends Base_Controller {
 
     insert(_model) {
         _model = utils.remove_empty(_model, true)
-        Mouse.create(_model, {
+        return Mouse.create(_model, {
                 include: [
                     { association: Mouse.Note },
                     { association: Mouse.Sex },
@@ -120,7 +120,7 @@ class Mouse_Controller extends Base_Controller {
 
     update(_model) {
         _model = utils.remove_empty(_model)
-        Mouse.update(_model, {
+        return Mouse.update(_model, {
                 where: {
                     id: _model.id
                 },
