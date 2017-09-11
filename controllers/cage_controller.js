@@ -62,8 +62,9 @@ class Cage_Controller extends Base_Controller {
                     model.update({id_alias: model.id})
                 }
                 if(!isFalsey(_model.mouse_ids)){
-                    return Mouse.update({ cage_id: model.id }, { where: { id: { $in: _model.mouse_ids } } })
+                    Mouse.update({ cage_id: model.id }, { where: { id: { $in: _model.mouse_ids } } })
                 }
+                return model
                  
             })
             .catch(err => {

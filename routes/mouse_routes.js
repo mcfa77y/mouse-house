@@ -173,37 +173,37 @@ router.delete('/:id', function(req, res) {
 
 router.put('/', function(req, res) {
     utils.move_note(req)
+    let foo_promises = []
     // if not null and doesn't parse to a number
     const is_new_alias_id = (id) => !isFalsey(id) && isFalsey(parseInt(id))
     if (is_new_alias_id(req.body.cage_id)) {
-        req.body.cage = {}
-        req.body.cage.id_alias = req.body.cage_id
-        req.body.cage.setup_date = utils.today()
-        delete req.body.cage_id
+        const cage = {}
+        cage.id_alias = req.body.cage_id
+        cage.setup_date = utils.today()
+        foo_promises.push(cage_controller.create(cage)
+            .then(c => req.body.cage_id = c.id))
     }
     if (is_new_alias_id(req.body.status_id)) {
-        req.body.status = {}
-        req.body.status.description = req.body.status_id
-        req.body.status.type = 'MOUSE_STATUS'
-        delete req.body.status_id
+        const status = {}
+        status.description = req.body.status_id
+        status.type = 'MOUSE_STATUS'
+        foo_promises.push(enum_controller.insert(status)
+            .then(enum => req.body.status_id = enum.id))
     }
     if (is_new_alias_id(req.body.genotype_id)) {
         req.body.genotype = {}
         req.body.genotype.description = req.body.genotype_id
         req.body.genotype.type = 'MOUSE_GENOTYPE'
-        delete req.body.genotype_id
+        foo_promises.push(enum_controller.insert(genotype)
+            .then(enum => req.body.genotype_id = enum.id))
     }
 
     utils.log_json(req.body)
     const slider_ids = ['male', 'female', 'unknown']
-    enum_controller.by_type('SEX')
-        .then(sex_types => {
-            let sex_id_map = {}
-            sex_types.forEach(sex_type => {
-                sex_id_map[sex_type.description] = sex_type.id
-            })
-            return sex_id_map
-        })
+    Promise.all(foo_promises)
+        .then(() =>
+            return enum_controller.by_type_map('SEX')
+        )
         .then(sex_id_map => {
             const create_mouse_promises = slider_ids
                 .filter(id => parseInt(req.body[id]) > 0)

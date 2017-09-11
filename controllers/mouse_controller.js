@@ -54,16 +54,16 @@ class Mouse_Controller extends Base_Controller {
                 pretty_mouse.sex = isFalsey(sex) ? '' : sex.description
                 pretty_mouse.genotype = isFalsey(genotype) ? '' : genotype.description
                 pretty_mouse.status = isFalsey(status) ? '' : status.description
-                pretty_mouse.sex_id = mouse.sex_id
-                pretty_mouse.genotype_id = mouse.genotype_id
-                pretty_mouse.status_id = mouse.status_id
+                pretty_mouse.sex_id = mouse.sex_id + ''
+                pretty_mouse.genotype_id = mouse.genotype_id + ''
+                pretty_mouse.status_id = mouse.status_id + ''
                 pretty_mouse.dob = utils.format_date(mouse.dob)
                 pretty_mouse.age = utils.relative_time(mouse.dob)
                 pretty_mouse.create_at = utils.format_date(mouse.create_at)
                 pretty_mouse.modify_at = utils.format_date(mouse.modify_at)
-                pretty_mouse.breeds = isFalsey(breeds) ? [] : breeds.map(breed => breed.id)
+                pretty_mouse.breeds = isFalsey(breeds) ? [] : breeds.map(breed => breed.id + '')
                 pretty_mouse.cage = isFalsey(cage) ? '' : cage.name
-                pretty_mouse.cage_id = isFalsey(cage) ? '' : cage.id
+                pretty_mouse.cage_id = isFalsey(cage) ? '' : cage.id + ''
                 pretty_mouse.cage_id_alias = isFalsey(cage) ? '' : cage.id_alias
                 return pretty_mouse
             })

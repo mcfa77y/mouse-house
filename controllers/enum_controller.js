@@ -17,10 +17,22 @@ const memoize_methods = {
         })
     }, { promise: true }),
 
+    by_type_map: d(_code => {
+        return this.by_type(_code)
+            .then(enums => {
+                let enum_id_map = {}
+                enums.forEach(enum => {
+                    enum_id_map[enum.description] = enum.id
+                })
+                return enum_id_map
+            })
+
+    }, { promise: true }),
+
     by_type_desc: d((_code, _description) => {
         return Enum.findOne({
             attributes: ['id', 'description'],
-            where: { description:  _description, type: _code }
+            where: { description: _description, type: _code }
         })
     }, { promise: true }),
 

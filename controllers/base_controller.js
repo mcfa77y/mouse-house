@@ -16,7 +16,7 @@ class Base_Controller {
     }
     insert(_model_data) {
         _model_data = utils.remove_empty(_model_data)
-        return this.Model.create(_model_data)
+        return this.Model.create(_model_data, {returning: true}).then(model => return model)
     }
     upsert(_model_data) {
         _model_data = utils.remove_empty(_model_data)
