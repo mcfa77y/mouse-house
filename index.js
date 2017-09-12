@@ -35,7 +35,7 @@ const cage = require('./routes/cage_routes');
 
 // handel bars helpers
 const hbs = require('hbs');
-// const hbsutils = require('hbs-utils')(hbs);
+const hbsutils = require('hbs-utils')(hbs);
 const helpers = require('handlebars-helpers')({
     handlebars: hbs.handlebars
 });
@@ -45,7 +45,7 @@ app.set('port', (process.env.PORT || 5000));
 
 // reg partials
 hbs.registerPartials(__dirname + '/views/partials');
-// hbsutils.registerWatchedPartials(__dirname + '/views/partials');
+hbsutils.registerWatchedPartials(__dirname + '/views/partials');
 
 // hbs.registerPartials(__dirname + '/views/partials/form-elements');
 // hbsutils.registerWatchedPartials(__dirname + '/views/partials/form-elements');

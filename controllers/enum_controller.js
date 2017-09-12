@@ -21,8 +21,8 @@ const memoize_methods = {
         return this.by_type(_code)
             .then(enums => {
                 let enum_id_map = {}
-                enums.forEach(enum => {
-                    enum_id_map[enum.description] = enum.id
+                enums.forEach(enoom => {
+                    enum_id_map[enoom.description] = enoom.id
                 })
                 return enum_id_map
             })
@@ -43,4 +43,4 @@ const memoize_methods = {
 
 Object.defineProperties(Controller.prototype, memoizeMethods(memoize_methods))
 
-module.exports = new Controller()
+module.exports = new Controller(Enum)

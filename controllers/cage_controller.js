@@ -49,7 +49,10 @@ class Cage_Controller extends Base_Controller {
         return this.get_where({ id_alias: _id_alias })
             .then(x => { return self.pretty(x[0]) })
     }
-
+    // upsert(_model) {
+    //     _model = utils.remove_empty(_model, true)
+    //     return Cage.upsert(_model, {returning: true})
+    // }
     insert(_model) {
         _model = utils.remove_empty(_model, true)
         _model.name = city_names[Math.floor(Math.random() * city_names.length)]

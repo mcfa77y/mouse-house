@@ -180,7 +180,7 @@ router.put('/', function(req, res) {
         const cage = {}
         cage.id_alias = req.body.cage_id
         cage.setup_date = utils.today()
-        foo_promises.push(cage_controller.create(cage)
+        foo_promises.push(cage_controller.upsert(cage)
             .then(c => req.body.cage_id = c.id))
     }
     if (is_new_alias_id(req.body.status_id)) {
@@ -188,21 +188,20 @@ router.put('/', function(req, res) {
         status.description = req.body.status_id
         status.type = 'MOUSE_STATUS'
         foo_promises.push(enum_controller.insert(status)
-            .then(enum => req.body.status_id = enum.id))
+            .then(enoom => req.body.status_id = enoom.id))
     }
     if (is_new_alias_id(req.body.genotype_id)) {
-        req.body.genotype = {}
-        req.body.genotype.description = req.body.genotype_id
-        req.body.genotype.type = 'MOUSE_GENOTYPE'
+        const genotype = {}
+        genotype.description = req.body.genotype_id
+        genotype.type = 'MOUSE_GENOTYPE'
         foo_promises.push(enum_controller.insert(genotype)
-            .then(enum => req.body.genotype_id = enum.id))
+            .then(enoom => req.body.genotype_id = enoom.id))
     }
 
     utils.log_json(req.body)
     const slider_ids = ['male', 'female', 'unknown']
     Promise.all(foo_promises)
-        .then(() =>
-            return enum_controller.by_type_map('SEX')
+        .then(() => enum_controller.by_type_map('SEX')
         )
         .then(sex_id_map => {
             const create_mouse_promises = slider_ids
@@ -216,6 +215,7 @@ router.put('/', function(req, res) {
         })
         .then(() => res.send({ success: true }))
         .catch((err) => {
+            debugger
             utils.log_json(err)
             res.status(500).send({
                 success: false,
