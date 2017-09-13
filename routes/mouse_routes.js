@@ -180,7 +180,7 @@ router.put('/', function(req, res) {
         const cage = {}
         cage.id_alias = req.body.cage_id
         cage.setup_date = utils.today()
-        foo_promises.push(cage_controller.upsert(cage)
+        foo_promises.push(cage_controller.insert(cage)
             .then(c => req.body.cage_id = c.id))
     }
     if (is_new_alias_id(req.body.status_id)) {

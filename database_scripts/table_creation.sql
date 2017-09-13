@@ -129,124 +129,28 @@ CREATE TABLE BREED_MOUSE (
        CONSTRAINT breed_mouse_uniq UNIQUE (mouse_male_id,mouse_female_id,breed_id)
 );
 
-insert into enum_type (code, modify_timestamp) values('SEX', current_timestamp);
-insert into enum (enum_type_id, description, modify_timestamp) values((select id from enum_type where code = 'SEX'), 'female', current_timestamp);
-insert into enum ( enum_type_id, description, modify_timestamp) values((select id from enum_type where code = 'SEX'), 'male', current_timestamp);
+-- insert into enum_type (code, modify_timestamp) values('SEX', current_timestamp);
+insert into  public."Enums" ("type", description, updated_at) values('SEX', 'female', current_timestamp);
+insert into  public."Enums" ( "type", description, updated_at) values('SEX', 'male', current_timestamp);
+insert into  public."Enums" ( "type", description, updated_at) values('SEX', 'unknown', current_timestamp);
 
-insert into enum_type (code, modify_timestamp) values('BREED_STATUS', current_timestamp);
-insert into enum (enum_type_id, description, modify_timestamp) values((select id from enum_type where code = 'BREED_STATUS'), '0', current_timestamp);
-insert into enum (enum_type_id, description, modify_timestamp) values((select id from enum_type where code = 'BREED_STATUS'), '1', current_timestamp);
+-- insert into enum_"type" (code, modify_timestamp) values('BREED_STATUS', current_timestamp);
+insert into  public."Enums" ("type", description, updated_at) values('BREED_STATUS', 'breed_status_0', current_timestamp);
+insert into  public."Enums" ("type", description, updated_at) values('BREED_STATUS', 'breed_status_1', current_timestamp);
 
-insert into enum_type (code, modify_timestamp) values('CAGE_TYPE', current_timestamp);
-insert into enum (enum_type_id, description, modify_timestamp) values((select id from enum_type where code = 'CAGE_TYPE'), 'stock', current_timestamp);
-insert into enum (enum_type_id, description, modify_timestamp) values((select id from enum_type where code = 'CAGE_TYPE'), 'breeder', current_timestamp);
-insert into enum (enum_type_id, description, modify_timestamp) values((select id from enum_type where code = 'CAGE_TYPE'), 'experimental', current_timestamp);
-insert into enum (enum_type_id, description, modify_timestamp) values((select id from enum_type where code = 'CAGE_TYPE'), 'terminated', current_timestamp);
+-- insert into enum_"type" (code, modify_timestamp) values('CAGE_TYPE', current_timestamp);
+insert into  public."Enums" ("type", description, updated_at) values('CAGE_TYPE', 'stock', current_timestamp);
+insert into  public."Enums" ("type", description, updated_at) values('CAGE_TYPE', 'breeder', current_timestamp);
+insert into  public."Enums" ("type", description, updated_at) values('CAGE_TYPE', 'experimental', current_timestamp);
+insert into  public."Enums" ("type", description, updated_at) values('CAGE_TYPE', 'terminated', current_timestamp);
+insert into  public."Enums" ("type", description, updated_at) values('CAGE_TYPE', 'unknown', current_timestamp);
 
-insert into enum_type (code, modify_timestamp) values('MOUSE_STATUS', current_timestamp);
-      insert into enum (enum_type_id, description, modify_timestamp) values((select id from enum_type where code = 'MOUSE_STATUS'), '0', current_timestamp);
-insert into enum (enum_type_id, description, modify_timestamp) values((select id from enum_type where code = 'MOUSE_STATUS'), '1', current_timestamp);
+-- insert into enum_"type" (code, modify_timestamp) values('MOUSE_STATUS', current_timestamp);
+      insert into  public."Enums" ("type", description, updated_at) values('MOUSE_STATUS', 'mouse_status_0', current_timestamp);
+insert into  public."Enums" ("type", description, updated_at) values('MOUSE_STATUS', 'mouse_status_1', current_timestamp);
 
-insert into enum_type (code, modify_timestamp) values('MOUSE_GENOTYPE', current_timestamp);
-insert into enum (enum_type_id, description, modify_timestamp) values((select id from enum_type where code = 'MOUSE_GENOTYPE'), 'Goldenticket', current_timestamp);
-insert into enum (enum_type_id, description, modify_timestamp) values((select id from enum_type where code = 'MOUSE_GENOTYPE'), 'Rag2', current_timestamp);
-insert into enum (enum_type_id, description, modify_timestamp) values((select id from enum_type where code = 'MOUSE_GENOTYPE'), 'B6', current_timestamp);
-insert into enum (enum_type_id, description, modify_timestamp) values((select id from enum_type where code = 'MOUSE_GENOTYPE'), 'IRF 3/7 -/- dKO', current_timestamp);
-
-
-
-INSERT INTO public.mouse
-     (id,
-      id_alias,
-       genotype_id,
-       dob,
-       sex_id,
-       ear_tag,
-       status_id,
-       notes,
-       create_timestamp,
-       modify_timestamp,
-       soft_delete)
-VALUES(nextval('mouse_id_seq'::regclass), 101,
-      (select e.id from enum e where e.description like 'Goldenticket'),
-      '2016-05-14 16:33:48',
-      (select e.id from enum e where e.description like 'male'),
-      37,
-      (select e.id from enum e where e.description like '0' and e.enum_type_id = (select et.id from enum_type et where et.code like 'MOUSE_STATUS')),
-      'i am mikey mouse',
-      now(),
-      now(),
-      0);
-
-
-INSERT INTO public.mouse
-      (id,
-       id_alias,
-       genotype_id,
-       dob,
-       sex_id,
-       ear_tag,
-       status_id,
-       notes,
-       create_timestamp,
-       modify_timestamp,
-       soft_delete)
-VALUES(nextval('mouse_id_seq'::regclass), 102,
-      (select e.id from enum e where e.description like 'Rag2'),
-      '2016-05-14 16:33:48',
-      (select e.id from enum e where e.description like 'female'),
-      37,
-      (select e.id from enum e where e.description like '1' and e.enum_type_id = (select et.id from enum_type et where et.code like 'MOUSE_STATUS')),
-      'i am minerva mouse',
-      now(),
-      now(),
-      0);
-
-INSERT INTO public.cage
-      (id,
-      id_alias,
-      type_id,
-      setup_date,
-      end_date,
-      update_date,
-      notes,
-      name,
-      create_timestamp,
-      modify_timestamp,
-      soft_delete)
-VALUES(nextval('cage_id_seq'::regclass),
-      301,
-      (select e.id from enum e where e.description like 'breeder'),
-      now(),
-      now(),
-      now(),
-      'viva la raza',
-      'Mexico City',
-      now(),
-      now(),
-      0);
-
-
-INSERT INTO public.cage
-      (id,
-      id_alias,
-      type_id,
-      setup_date,
-      end_date,
-      update_date,
-      notes,
-      name,
-      create_timestamp,
-      modify_timestamp,
-      soft_delete)
-VALUES(nextval('cage_id_seq'::regclass),
-      302,
-      (select e.id from enum e where e.description like 'stock'),
-      now(),
-      now(),
-      now(),
-      'Guten Tag',
-      'Munich',
-      now(),
-      now(),
-      0);
+-- insert into enum_"type" (code, modify_timestamp) values('MOUSE_GENOTYPE', current_timestamp);
+insert into  public."Enums" ("type", description, updated_at) values('MOUSE_GENOTYPE', 'Goldenticket', current_timestamp);
+insert into  public."Enums" ("type", description, updated_at) values('MOUSE_GENOTYPE', 'Rag2', current_timestamp);
+insert into  public."Enums" ("type", description, updated_at) values('MOUSE_GENOTYPE', 'B6', current_timestamp);
+insert into  public."Enums" ("type", description, updated_at) values('MOUSE_GENOTYPE', 'IRF 3/7 -/- dKO', current_timestamp);

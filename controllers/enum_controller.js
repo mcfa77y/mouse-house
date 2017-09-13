@@ -1,10 +1,11 @@
 const d = require('d');
 const memoizeMethods = require('memoizee/methods');
 
+const Base_Controller = require('./base_controller')
 const utils = require('./utils_controller')
 const Enum = require('../database/models').Enum
 
-class Controller {
+class Controller extends Base_Controller {
 
 
 }
@@ -18,7 +19,10 @@ const memoize_methods = {
     }, { promise: true }),
 
     by_type_map: d(_code => {
-        return this.by_type(_code)
+        return Enum.findAll({
+                attributes: ['id', 'description'],
+                where: { type: _code }
+            })
             .then(enums => {
                 let enum_id_map = {}
                 enums.forEach(enoom => {
