@@ -7,12 +7,12 @@ $(function() {
     const mouse_table = setup_table({ model_name: 'mouse', column_names, hide_id_column: true })
 
     setup_aggregation_buttons(mouse_table)
-    setup_list_page_buttons('mouse')
+    setup_list_page_buttons('mouse', mouse_table)
     setup_cage_mice_modal(mouse_table)
 })
 
 const setup_aggregation_buttons = (table) => {
-    
+
     const pair_button = $('#breed-mouse-button')
     const cage_button = $('#cage-mouse-button')
 
@@ -30,7 +30,7 @@ const setup_aggregation_buttons = (table) => {
         if (selected_row_count > 0){
             disable_cage = false
         }
-        
+
 
         pair_button.attr('disabled', disable_pair)
         cage_button.attr('disabled', disable_cage)

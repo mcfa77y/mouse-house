@@ -178,7 +178,7 @@ router.put('/', function(req, res) {
     const is_new_alias_id = (id) => !isFalsey(id) && isFalsey(parseInt(id))
     if (is_new_alias_id(req.body.cage_id)) {
         const cage = {}
-        cage.id_alias = req.body.cage_id
+        cage.name = req.body.cage_id
         cage.setup_date = utils.today()
         foo_promises.push(cage_controller.insert(cage)
             .then(c => req.body.cage_id = c.id))
@@ -208,6 +208,7 @@ router.put('/', function(req, res) {
                 .filter(id => parseInt(req.body[id]) > 0)
                 .map(id => {
                     req.body.sex_id = sex_id_map[id]
+                    utils.log_json(req.body)
                     const create_mouse_count = _.range(parseInt(req.body[id]))
                     return create_mouse_count.map(x => mouse_controller.insert(req.body))
                 })

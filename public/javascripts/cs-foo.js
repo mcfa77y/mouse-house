@@ -1,4 +1,4 @@
-const setup_table = ({model_name, column_names, hide_id_column = false}) => {
+const setup_table = ({ model_name, column_names, hide_id_column = false }) => {
     const columns = column_names.map((x) => {
         return { data: x }
     })
@@ -14,7 +14,7 @@ const setup_table = ({model_name, column_names, hide_id_column = false}) => {
             [5, 10, 25, "All"]
         ]
     }
-    
+
     if (hide_id_column) {
         table_options = $.extend(table_options, {
             columnDefs: [{
@@ -24,12 +24,12 @@ const setup_table = ({model_name, column_names, hide_id_column = false}) => {
             }]
         })
 
-    } 
+    }
 
     const table = $('#' + model_name + '-list').DataTable(table_options);
 
-    const update_modal_button = $('#open-update-' + model_name + '-modal-button')
-    const delete_button = $('#open-delete-' + model_name + '-modal-button')
+    const update_modal_button = $('#update-' + model_name + '-button')
+    const delete_button = $('#delete-' + model_name + '-button')
 
     function get_selected_row_ids() {
         const data = table.rows({ selected: true }).data().pluck('id');
@@ -45,7 +45,7 @@ const setup_table = ({model_name, column_names, hide_id_column = false}) => {
         let disableDelete = true
         let disableUpdate = true
 
-        if (data.length === 1) {
+        if (data.length == 1) {
             disableDelete = false
             disableUpdate = false
         } else if (data.length > 1) {
@@ -83,8 +83,14 @@ const error = (error) => {
     console.log(error)
     toastr['error'](error)
 }
+const nav_button = (model_name) => {
+    // activate nav button icon
+    const nav_button = $('a[href="/' + model_name + '"]')
+    nav_button.parent().toggleClass('active')
 
+}
 const setup_create_page_buttons = (model_name) => {
+    nav_button(model_name)
     const save_button = $('#save-' + model_name + '-button')
     const back_button = $('#back-' + model_name + '-button')
 
@@ -101,6 +107,7 @@ const setup_create_page_buttons = (model_name) => {
     })
 }
 const setup_update_page_buttons = (model_name) => {
+    nav_button(model_name)
     const update_button = $('#update-' + model_name + '-button')
     const back_button = $('#back-' + model_name + '-button')
 
@@ -117,20 +124,18 @@ const setup_update_page_buttons = (model_name) => {
         return false;
     })
 }
-const setup_list_page_buttons = (model_name) => {
+const setup_list_page_buttons = (model_name, table) => {
+    nav_button(model_name)
     const delete_button = $('#delete-' + model_name + '-button')
 
     delete_button.click(() => {
         axios.delete('/' + model_name + '/' + table.get_selected_row_ids())
-            .then(success)
+            .then((response) => {
+                console.log(response)
+                toastr['success']("delete succesful")
+                window.location.href = '/' + model_name
+                return false
+            })
             .catch(error)
     })
-}
-const foo = (model_name, column_names, hide_id_column = true) => {
-    const table = setup_table(model_name, column_names, hide_id_column)
-
-    // activate nav button icon
-    const nav_button = $('a[href="/' + model_name + '"]')
-    nav_button.parent().toggleClass('active')
-
 }

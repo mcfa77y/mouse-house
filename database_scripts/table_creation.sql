@@ -130,27 +130,27 @@ CREATE TABLE BREED_MOUSE (
 );
 
 -- insert into enum_type (code, modify_timestamp) values('SEX', current_timestamp);
-insert into  public."Enums" ("type", description, updated_at) values('SEX', 'female', current_timestamp);
-insert into  public."Enums" ( "type", description, updated_at) values('SEX', 'male', current_timestamp);
-insert into  public."Enums" ( "type", description, updated_at) values('SEX', 'unknown', current_timestamp);
+insert into  public."Enums" ("type", description, updated_at, created_at) values('SEX', 'female', current_timestamp, current_timestamp);
+insert into  public."Enums" ( "type", description, updated_at, created_at) values('SEX', 'male', current_timestamp, current_timestamp);
+insert into  public."Enums" ( "type", description, updated_at, created_at) values('SEX', 'unknown', current_timestamp, current_timestamp);
 
 -- insert into enum_"type" (code, modify_timestamp) values('BREED_STATUS', current_timestamp);
-insert into  public."Enums" ("type", description, updated_at) values('BREED_STATUS', 'breed_status_0', current_timestamp);
-insert into  public."Enums" ("type", description, updated_at) values('BREED_STATUS', 'breed_status_1', current_timestamp);
+insert into  public."Enums" ("type", description, updated_at, created_at) values('BREED_STATUS', 'breed_status_0', current_timestamp, current_timestamp);
+insert into  public."Enums" ("type", description, updated_at, created_at) values('BREED_STATUS', 'breed_status_1', current_timestamp, current_timestamp);
 
 -- insert into enum_"type" (code, modify_timestamp) values('CAGE_TYPE', current_timestamp);
-insert into  public."Enums" ("type", description, updated_at) values('CAGE_TYPE', 'stock', current_timestamp);
-insert into  public."Enums" ("type", description, updated_at) values('CAGE_TYPE', 'breeder', current_timestamp);
-insert into  public."Enums" ("type", description, updated_at) values('CAGE_TYPE', 'experimental', current_timestamp);
-insert into  public."Enums" ("type", description, updated_at) values('CAGE_TYPE', 'terminated', current_timestamp);
-insert into  public."Enums" ("type", description, updated_at) values('CAGE_TYPE', 'unknown', current_timestamp);
+insert into  public."Enums" ("type", description, updated_at, created_at) values('CAGE_TYPE', 'stock', current_timestamp, current_timestamp);
+insert into  public."Enums" ("type", description, updated_at, created_at) values('CAGE_TYPE', 'breeder', current_timestamp, current_timestamp);
+insert into  public."Enums" ("type", description, updated_at, created_at) values('CAGE_TYPE', 'experimental', current_timestamp, current_timestamp);
+insert into  public."Enums" ("type", description, updated_at, created_at) values('CAGE_TYPE', 'terminated', current_timestamp, current_timestamp);
+insert into  public."Enums" ("type", description, updated_at, created_at) values('CAGE_TYPE', 'unknown', current_timestamp, current_timestamp);
 
 -- insert into enum_"type" (code, modify_timestamp) values('MOUSE_STATUS', current_timestamp);
-      insert into  public."Enums" ("type", description, updated_at) values('MOUSE_STATUS', 'mouse_status_0', current_timestamp);
-insert into  public."Enums" ("type", description, updated_at) values('MOUSE_STATUS', 'mouse_status_1', current_timestamp);
+      insert into  public."Enums" ("type", description, updated_at, created_at) values('MOUSE_STATUS', 'mouse_status_0', current_timestamp, current_timestamp);
+insert into  public."Enums" ("type", description, updated_at, created_at) values('MOUSE_STATUS', 'mouse_status_1', current_timestamp, current_timestamp);
 
 -- insert into enum_"type" (code, modify_timestamp) values('MOUSE_GENOTYPE', current_timestamp);
-insert into  public."Enums" ("type", description, updated_at) values('MOUSE_GENOTYPE', 'Goldenticket', current_timestamp);
-insert into  public."Enums" ("type", description, updated_at) values('MOUSE_GENOTYPE', 'Rag2', current_timestamp);
-insert into  public."Enums" ("type", description, updated_at) values('MOUSE_GENOTYPE', 'B6', current_timestamp);
-insert into  public."Enums" ("type", description, updated_at) values('MOUSE_GENOTYPE', 'IRF 3/7 -/- dKO', current_timestamp);
+insert into  public."Enums" ("type", description, updated_at, created_at) values('MOUSE_GENOTYPE', 'Goldenticket', current_timestamp, current_timestamp);
+insert into  public."Enums" ("type", description, updated_at, created_at) values('MOUSE_GENOTYPE', 'Rag2', current_timestamp, current_timestamp);
+insert into  public."Enums" ("type", description, updated_at, created_at) values('MOUSE_GENOTYPE', 'B6', current_timestamp, current_timestamp);
+insert into  public."Enums" ("type", description, updated_at, created_at) values('MOUSE_GENOTYPE', 'IRF 3/7 -/- dKO', current_timestamp, current_timestamp);
