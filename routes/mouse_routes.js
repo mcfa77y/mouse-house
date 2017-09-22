@@ -149,7 +149,7 @@ router.delete('/:id', function(req, res) {
     })
 
     return Promise.all(rm_promises)
-        .then((x) => {
+        .then(() => {
             res.send({
                 success: true
             })
@@ -162,41 +162,36 @@ router.delete('/:id', function(req, res) {
         })
 });
 
-// router.get('/', function(req, res) {
-//     mouse_controller.all_pretty()
-//         .then((mouse_array) => {
-//             res.send({
-//                 data: mouse_array
-//             })
-//         })
-// });
+function do_enums(model){
+    const is_new_alias_id = (id) => !isFalsey(id) && isFalsey(parseInt(id))
+    if (is_new_alias_id(model.cage_id)) {
+        const cage = {}
+        cage.id_alias = model.cage_id
+        cage.setup_date = utils.today()
+        foo_promises.push(cage_controller.insert(cage)
+            .then(c => model.cage_id = c.id))
+    }
+    if (is_new_alias_id(model.status_id)) {
+        const status = {}
+        status.description = model.status_id
+        status.type = 'MOUSE_STATUS'
+        foo_promises.push(enum_controller.insert(status)
+            .then(enoom => model.status_id = enoom.id))
+    }
+    if (is_new_alias_id(model.genotype_id)) {
+        const genotype = {}
+        genotype.description = model.genotype_id
+        genotype.type = 'MOUSE_GENOTYPE'
+        foo_promises.push(enum_controller.insert(genotype)
+            .then(enoom => model.genotype_id = enoom.id))
+    }
+}
 
 router.put('/', function(req, res) {
     utils.move_note(req)
     let foo_promises = []
     // if not null and doesn't parse to a number
-    const is_new_alias_id = (id) => !isFalsey(id) && isFalsey(parseInt(id))
-    if (is_new_alias_id(req.body.cage_id)) {
-        const cage = {}
-        cage.name = req.body.cage_id
-        cage.setup_date = utils.today()
-        foo_promises.push(cage_controller.insert(cage)
-            .then(c => req.body.cage_id = c.id))
-    }
-    if (is_new_alias_id(req.body.status_id)) {
-        const status = {}
-        status.description = req.body.status_id
-        status.type = 'MOUSE_STATUS'
-        foo_promises.push(enum_controller.insert(status)
-            .then(enoom => req.body.status_id = enoom.id))
-    }
-    if (is_new_alias_id(req.body.genotype_id)) {
-        const genotype = {}
-        genotype.description = req.body.genotype_id
-        genotype.type = 'MOUSE_GENOTYPE'
-        foo_promises.push(enum_controller.insert(genotype)
-            .then(enoom => req.body.genotype_id = enoom.id))
-    }
+    
 
     utils.log_json(req.body)
     const slider_ids = ['male', 'female', 'unknown']
@@ -208,15 +203,13 @@ router.put('/', function(req, res) {
                 .filter(id => parseInt(req.body[id]) > 0)
                 .map(id => {
                     req.body.sex_id = sex_id_map[id]
-                    utils.log_json(req.body)
                     const create_mouse_count = _.range(parseInt(req.body[id]))
-                    return create_mouse_count.map(x => mouse_controller.insert(req.body))
+                    return create_mouse_count.map(() => mouse_controller.insert(req.body))
                 })
             return Promise.all(create_mouse_promises)
         })
         .then(() => res.send({ success: true }))
         .catch((err) => {
-            debugger
             utils.log_json(err)
             res.status(500).send({
                 success: false,
@@ -225,9 +218,22 @@ router.put('/', function(req, res) {
         })
 });
 
-router.post('/cage_mice_together', function(req, res) {
+router.post('/cage_mice_together', async function(req, res) {
     utils.log_json(req.body)
-    const cage_id = req.body.cage_id[0]
+    debugger
+    let cage_id;
+    let foo;
+    if(isFalsey(req.body.cage_id[0])){
+        const cage = {}
+        cage.name = req.body.cage_name
+        cage.setup_date = utils.today()
+        cage_id = await cage_controller.insert(cage)
+            .then(c => c.id)
+    } else {
+        cage_id = req.body.cage_id[0]
+    }
+    
+
     const update_promises = req.body.mouse_ids
         .map(id => mouse_controller.update({ id, cage_id }))
 
@@ -294,7 +300,7 @@ router.post('/breed_mice_together', function(req, res) {
 router.post('/', function(req, res) {
     utils.log_json(req.body)
 
-    mouse_controller.update(req.body).then((x) => {
+    mouse_controller.update(req.body).then(() => {
             res.send({
                 success: true
             })

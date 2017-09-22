@@ -7,7 +7,11 @@ const setup_table = ({ model_name, column_names, hide_id_column = false }) => {
         select: { style: 'multi' },
         responsive: true,
         dom: 'lBfrtip',
-        buttons: ['selectAll', 'selectNone', 'copy', 'excel', 'pdf'],
+        // buttons: ['selectAll', 'selectNone', 'copy', 'excel', 'pdf','colvis'],
+        buttons: ['selectAll', 'selectNone', 'excel', 'colvis'],
+        scrollY: "100%",
+        paging: false,
+        info: false,
         columns,
         lengthMenu: [
             [5, 10, 25, -1],

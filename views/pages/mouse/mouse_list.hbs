@@ -3,7 +3,7 @@
         <h4>Mice</h4>
     </div>
     {{> mouse/mouse_table}}
-    <div class="row">
+    <div class="row footer">
         <div class="col-md-6">
             <span class="pull-left" data-toggle="tooltip" data-placement="top" title="Assign Cage">
                 <button id="cage-mouse-button" type="button" class="btn btn-primary" data-toggle="modal"  data-target="#cage-mice-together-modal" >
@@ -16,7 +16,7 @@
                 </button>
             </span>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6 ">
             {{> crud_buttons model_name='mouse'}}
         </div>
     </div>

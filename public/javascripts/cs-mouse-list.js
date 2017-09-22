@@ -73,17 +73,31 @@ const setup_cage_mice_modal = (mouse_table) => {
     const table_options = {
         select: true,
         responsive: true,
-        // dom: 'lBfrtip',
-        // buttons: ['selectAll', 'selectNone', 'copy', 'excel', 'pdf'],
+        dom: 'lBfrtip',
+        buttons: ['colvis'],
         columns,
-        lengthMenu: [
-            [5, 10, 25, -1],
-            [5, 10, 25, "All"]
-        ]
+        scrollY: "100%",
+        paging: false,
+        info: false,
+        columnDefs: [{
+                targets: [0],
+                visible: false,
+                searchable: false
+            }]
     }
+    
 
+    let cage_name_input =  $('#cage_name')
     let table = $('#cage-list').DataTable(table_options);
 
+    function on_select(e, dt, type, indexes) {
+        cage_name_input.val('')
+    }
+    table.on('select', on_select)
+
+    cage_name_input.change(()=>{
+        table.rows().deselect()
+    })
     function get_selected_row_ids() {
         const data = table.rows({ selected: true }).data().pluck('id');
 
@@ -108,12 +122,17 @@ const setup_cage_mice_modal = (mouse_table) => {
 
     const cage_mice_together_button = $('#cage-mice-together-button')
     cage_mice_together_button.click(()=>{
+
         const mouse_ids = mouse_table.get_selected_row_ids()
         const cage_id = table.get_selected_row_ids()
-        const data = {
+        let data = {
             mouse_ids,
             cage_id
         }
+        const dt = utils.form_ids_vals('mouse-cage-fields')
+        utils.json_string(dt)
+
+        data = $.extend(data, dt);
         axios.post('/mouse/cage_mice_together', data)
             .then(success)
             .catch(error);
