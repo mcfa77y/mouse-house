@@ -1,0 +1,16 @@
+<div class="modal fade" id="confirm-delete-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4>Delete {{model_name}}</h4>
+            </div>
+            <div class="modal-body">
+                Are you sure?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button id="delete-{{model_name}}-button" type="button" class="btn btn-danger">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>

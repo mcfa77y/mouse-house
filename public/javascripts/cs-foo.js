@@ -9,7 +9,7 @@ const setup_table = ({ model_name, column_names, hide_id_column = false }) => {
         dom: 'lBfrtip',
         // buttons: ['selectAll', 'selectNone', 'copy', 'excel', 'pdf','colvis'],
         buttons: ['selectAll', 'selectNone', 'excel', 'colvis'],
-        scrollY: "100%",
+        scrollY: 450,
         paging: false,
         info: false,
         columns,
@@ -33,7 +33,7 @@ const setup_table = ({ model_name, column_names, hide_id_column = false }) => {
     const table = $('#' + model_name + '-list').DataTable(table_options);
 
     const update_modal_button = $('#update-' + model_name + '-button')
-    const delete_button = $('#delete-' + model_name + '-button')
+    const delete_button = $('#open-delete-' + model_name + '-modal-button')
 
     function get_selected_row_ids() {
         const data = table.rows({ selected: true }).data().pluck('id');

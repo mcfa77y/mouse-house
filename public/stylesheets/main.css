@@ -3,9 +3,9 @@ z-index: 2002 !important;
 }
 
 .footer {
-    position: relative; 
+    position: fixed; 
     bottom: 0;
-    left: 10%;
+    left: 50%;
     right: 0;
     height: 60px;
     width: 800px;

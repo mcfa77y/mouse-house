@@ -56,7 +56,7 @@ app.set('view engine', 'hbs');
 
 app.use('/breed', breed);
 app.use('/mouse', mouse);
-app.use('/cage', cage);
+app.use('/cage', cage); 
 
 
 
