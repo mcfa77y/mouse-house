@@ -218,34 +218,34 @@ router.put('/', function(req, res) {
         })
 });
 
-router.post('/cage_mice_together', async function(req, res) {
+router.post('/cage_mice_together', function(req, res) {
     utils.log_json(req.body)
-    debugger
-    let cage_id;
+    let cage_id_promise;
     let foo;
     if(isFalsey(req.body.cage_id[0])){
         const cage = {}
         cage.name = req.body.cage_name
         cage.setup_date = utils.today()
-        cage_id = await cage_controller.insert(cage)
+        cage_id_promise = cage_controller.insert(cage)
             .then(c => c.id)
     } else {
-        cage_id = req.body.cage_id[0]
+        cage_id_promise = Promise.resolve(req.body.cage_id[0])
     }
-    
+   
+    cage_id_promise.then(cage_id =>{
+        const update_promises = req.body.mouse_ids
+            .map(id => mouse_controller.update({ id, cage_id }))
 
-    const update_promises = req.body.mouse_ids
-        .map(id => mouse_controller.update({ id, cage_id }))
-
-    Promise.all(update_promises)
-        .then(() => res.send({ success: true }))
-        .catch((err) => {
-            utils.log_json(err)
-            res.status(500).send({
-                success: false,
-                err
+        Promise.all(update_promises)
+            .then(() => res.send({ success: true }))
+            .catch((err) => {
+                utils.log_json(err)
+                res.status(500).send({
+                    success: false,
+                    err
+                })
             })
-        })
+    })
 });
 
 
