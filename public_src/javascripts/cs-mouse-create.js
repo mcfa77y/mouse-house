@@ -1,3 +1,7 @@
+import {setup_create_page_buttons} from './cs-model-common'
+import * as wNumb from 'wnumb'
+import * as noUiSlider from 'noUiSlider'
+
 $(function() {
     setup_sliders()
     setup_create_page_buttons('mouse')

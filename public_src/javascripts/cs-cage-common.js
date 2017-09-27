@@ -1,4 +1,7 @@
-function setup_mouse_table() {
+import _ from 'lodash'
+import { setup_table } from './cs-model-common'
+
+export function setup_mouse_table() {
     const mouse_columns = ['id', 'id_alias', 'ear_tag', 'age', 'dob',
         'genotype', 'sex', 'notes',
         'status', 'created_at',
@@ -10,13 +13,9 @@ function setup_mouse_table() {
     selected_mice_input.disable()
     const selected_ids = selected_mice_input.getValue()
 
-    table.rows( function ( idx, data, node ) {
-        return _.contains(selected_ids, data.id +"")
-    } )
-    .select();
-    
-
-
+    table.rows(function(idx, data) {
+        return _.contains(selected_ids, data.id + "")
+    }).select();
 
     function on_select(e, dt, type, indexes) {
         console.log('\n\n')

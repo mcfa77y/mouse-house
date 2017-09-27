@@ -1,3 +1,10 @@
+import * as Toastr from 'toastr'
+import _ from 'lodash'
+import * as Axios from 'Axios'
+
+import { setup_table, setup_list_page_buttons } from './cs-model-common'
+import { form_ids_vals, json_string } from  './cs-form-helper'
+
 $(function() {
     const column_names = ['id', 'id_alias', 'ear_tag', 'age', 'dob',
         'genotype', 'sex', 'notes',
@@ -23,11 +30,11 @@ const setup_aggregation_buttons = (table) => {
         let disable_cage = true
 
         // todo: create validation for M1 : F*
-        if (selected_row_count >= 2){
+        if (selected_row_count >= 2) {
             disable_pair = false
         }
 
-        if (selected_row_count > 0){
+        if (selected_row_count > 0) {
             disable_cage = false
         }
 
@@ -49,14 +56,22 @@ const setup_aggregation_buttons = (table) => {
     table.on('deselect', on_select)
 
 
-    pair_button.click(()=>{
+    pair_button.click(() => {
         const mouse_ids = table.get_selected_row_ids()
         const data = {
             mouse_ids
         }
-        axios.post('/mouse/breed_mice_together', data)
-            .then(success)
-            .catch(error);
+        Axios.post('/mouse/breed_mice_together', data)
+            .then((response) => {
+                console.log(response)
+                Toastr.success("paired")
+                window.location.href = '/mouse'
+                return false
+            })
+            .catch((error) => {
+                console.log(error)
+                Toastr.error(error)
+            });
     })
 
 }
@@ -80,14 +95,14 @@ const setup_cage_mice_modal = (mouse_table) => {
         paging: false,
         info: false,
         columnDefs: [{
-                targets: [0],
-                visible: false,
-                searchable: false
-            }]
+            targets: [0],
+            visible: false,
+            searchable: false
+        }]
     }
-    
 
-    let cage_name_input =  $('#cage_name')
+
+    let cage_name_input = $('#cage_name')
     let table = $('#cage-list').DataTable(table_options);
 
     function on_select(e, dt, type, indexes) {
@@ -95,9 +110,10 @@ const setup_cage_mice_modal = (mouse_table) => {
     }
     table.on('select', on_select)
 
-    cage_name_input.change(()=>{
+    cage_name_input.change(() => {
         table.rows().deselect()
     })
+
     function get_selected_row_ids() {
         const data = table.rows({ selected: true }).data().pluck('id');
 
@@ -110,18 +126,18 @@ const setup_cage_mice_modal = (mouse_table) => {
 
     const success = (response) => {
         console.log(response)
-        toastr['success']("updated")
+        Toastr.success("updated")
         window.location.href = '/mouse'
         return false
     }
 
     const error = (error) => {
         console.log(error)
-        toastr['error'](error)
+        Toastr.error(error)
     }
 
     const cage_mice_together_button = $('#cage-mice-together-button')
-    cage_mice_together_button.click(()=>{
+    cage_mice_together_button.click(() => {
 
         const mouse_ids = mouse_table.get_selected_row_ids()
         const cage_id = table.get_selected_row_ids()
@@ -129,11 +145,11 @@ const setup_cage_mice_modal = (mouse_table) => {
             mouse_ids,
             cage_id
         }
-        const dt = utils.form_ids_vals('mouse-cage-fields')
-        utils.json_string(dt)
+        const dt = form_ids_vals('mouse-cage-fields')
+        json_string(dt)
 
         data = $.extend(data, dt);
-        axios.post('/mouse/cage_mice_together', data)
+        Axios.post('/mouse/cage_mice_together', data)
             .then(success)
             .catch(error);
     })

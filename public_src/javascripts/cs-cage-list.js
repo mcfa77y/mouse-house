@@ -1,3 +1,5 @@
+import {setup_table, setup_list_page_buttons} from './cs-model-common'
+
 $(function() {
     const column_names = ['id', 'id_alias', 'name',
         'type', 'setup_date', 'update_date',
