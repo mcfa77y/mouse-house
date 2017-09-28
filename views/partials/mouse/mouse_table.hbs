@@ -4,12 +4,15 @@
             <th>id</th>
             <th>#</th>
             <th>Ear tag</th>
+
             <th>Age (wks)</th>
             <th>DOB</th>
             <th>Genotype</th>
+
             <th>Sex</th>
             <th>Status</th>
             <th>Cage</th>
+
             <th>Parents</th>
             <th>Notes</th>
         </tr>
@@ -20,12 +23,15 @@
             <td>{{id}}</a></td>
             <td><a href="/mouse/{{id_alias}}">{{id_alias}}</a></td>
             <td>{{ear_tag}}</td>
+            
             <td>{{age}}</td>
             <td>{{dob}}</td>
             <td>{{genotype}}</td>
+            
             <td>{{sex}}</td>
             <td>{{status}}</td>
             <td><a href="/cage/{{cage_id_alias}}">{{cage}}</a></td>
+            
             <td>
                 {{#each breeds}}
                 <a href="/breed/{{this}}">{{this}}</a>

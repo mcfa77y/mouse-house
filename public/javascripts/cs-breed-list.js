@@ -1,7 +1,6 @@
 $(function() {
 	const column_names = ['id',
                     'id_alias',
-                    'genotype',
                     'male_mouse',
                     'female_mouse',
                     'pairing_date',
