@@ -13,10 +13,10 @@ import { setup_table, setup_list_page_buttons } from './cs-model-common'
 import { form_ids_vals, json_string } from  './cs-form-helper'
 
 $(function() {
-    const column_names = ['id', 'id_alias', 'ear_tag', 'age', 'dob',
-        'genotype', 'sex', 'notes',
-        'status', 'created_at',
-        'updated_at'
+    const column_names = ['id', 'id_alias', 'ear_tag', 
+        'age', 'dob', 'genotype', 
+        'sex', 'status', 'cage', 
+        'parents', 'notes'
     ]
     const mouse_table = setup_table({ model_name: 'mouse', column_names, hide_id_column: true })
 
@@ -84,9 +84,8 @@ const setup_aggregation_buttons = (table) => {
 }
 
 const setup_cage_mice_modal = (mouse_table) => {
-    let columns = ['id', 'id_alias', 'name',
-        'type', 'setup_date', 'update_date',
-        'end_date', 'mice', 'notes'
+    let columns = ['id', 'id_alias', 'type', 
+    'end_date', 'mice', 'notes'
     ]
     columns = columns.map((x) => {
         return { data: x }

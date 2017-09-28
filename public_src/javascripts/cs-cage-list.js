@@ -1,10 +1,9 @@
 import {setup_table, setup_list_page_buttons} from './cs-model-common'
 
 $(function() {
-    const column_names = ['id', 'id_alias', 'name',
-        'type', 'setup_date', 'update_date',
+    const column_names = ['id', 'id_alias', 'type',
         'end_date', 'mice', 'notes'
     ]
-    const table = setup_table({model_name: 'cage', column_names, hide_id_column: true})
+    const table = setup_table({ model_name: 'cage', column_names, hide_id_column: true })
     setup_list_page_buttons('cage', table)
 })
