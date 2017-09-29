@@ -31,7 +31,7 @@ router.get('/', function(req, res) {
             res.render('pages/mouse/mouse_list', {
                 cages: input.cages,
                 mice,
-                extra_js: ['cs-mouse-list'],
+                extra_js: ['mouse_list.bundle.js'],
                 cool_face: utils.cool_face()
             })
         })
@@ -65,7 +65,7 @@ router.get('/create', function(req, res) {
                 genotype,
                 cages,
                 sex,
-                extra_js: ['cs-mouse-create'],
+                extra_js: ['mouse_create.bundle.js'],
                 cool_face: utils.cool_face()
             })
         })
@@ -117,7 +117,7 @@ router.get('/:id_alias', function(req, res) {
                 cages,
                 sex,
                 mouse,
-                extra_js: ['cs-mouse-update'],
+                extra_js: ['mouse_update.bundle.js'],
                 cool_face: utils.cool_face()
             })
         })

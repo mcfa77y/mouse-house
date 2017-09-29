@@ -2,6 +2,13 @@ import * as Toastr from 'toastr'
 import _ from 'lodash'
 import * as Axios from 'Axios'
 
+import 'bootstrap'
+import 'datatables.net'
+import 'datatables.net-select';
+import 'datatables.net-select-dt/css/select.dataTables.css';
+import 'datatables.net-responsive';
+import 'datatables.net-responsive-dt/css/responsive.dataTables.min.css';
+
 import { setup_table, setup_list_page_buttons } from './cs-model-common'
 import { form_ids_vals, json_string } from  './cs-form-helper'
 

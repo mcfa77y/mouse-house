@@ -1,1 +1,0 @@
-webpackJsonp([5],{295:function(e,t,a){"use strict";var n=a(4);$(function(){var e=["id","id_alias","name","type","setup_date","update_date","end_date","mice","notes"],t=(0,n.setup_table)({model_name:"cage",column_names:e,hide_id_column:!0});(0,n.setup_list_page_buttons)("cage",t)})}},[295]);

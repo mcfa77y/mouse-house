@@ -1,7 +1,7 @@
 const path = require('path');
 // const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-const UglifyJSPlugin =require('uglifyjs-webpack-plugin');
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const webpack = require('webpack');
 
 const JS_DIR = './public_src/javascripts';
@@ -20,12 +20,12 @@ module.exports = {
         mouse_list: path.resolve(JS_DIR, 'cs-mouse-list.js'),
         mouse_update: path.resolve(JS_DIR, 'cs-mouse-update.js'),
     },
-    devtool: 'inline-source-map',
+    devtool: 'cheap-module-eval-source-map',
     // devServer: {
     //     contentBase: './dist'
     // },
     plugins: [
-        new CleanWebpackPlugin(['dist']),
+        new CleanWebpackPlugin(['public/javascripts']),
         // new HtmlWebpackPlugin({
         //     title: 'Output Management'
         // }),
@@ -37,12 +37,21 @@ module.exports = {
         }),
         new webpack.optimize.CommonsChunkPlugin({
             name: 'common' // Specify the common bundle's name.
-        })
+        }),
+        // new webpack.ProvidePlugin({
+        //     $: "jquery",
+        //     jQuery: "jquery",
+        //     "window.jQuery": "jquery"
+        // })
     ],
     output: {
         filename: '[name].bundle.js',
-        path: path.resolve(__dirname, 'dist'),
+        path: path.resolve(__dirname, 'public', 'javascripts'),
         publicPath: '/'
+    },
+    externals: {
+        jquery: 'jQuery',
+        selectize: ''
     },
     module: {
         rules: [{
@@ -83,16 +92,16 @@ module.exports = {
                     options: '$'
                 }]
             },
-             {
-                 test: /\.js$/,
-                 exclude: /(node_modules|bower_components)/,
-                 use: {
+            {
+                test: /\.js$/,
+                exclude: /(node_modules|bower_components)/,
+                use: {
                     loader: 'babel-loader',
-                    options:{                       
-                     presets: ['env']
+                    options: {
+                        presets: ['env']
                     }
-                 }
-             }
+                }
+            }
         ]
     },
 };

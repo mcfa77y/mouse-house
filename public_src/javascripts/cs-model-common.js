@@ -1,10 +1,20 @@
 import * as Toastr from 'toastr'
 import _ from 'lodash'
 import * as Axios from 'Axios'
-import * as Moment from 'moment'
-import MaterialDatetimePicker from 'material-datetime-picker';
-import {form_ids_vals, json_string} from './cs-form-helper'
+import {default as Moment} from 'moment'
+import MaterialDatetimePicker from 'material-datetime-picker'
 
+import 'bootstrap'
+import 'datatables.net'
+import 'datatables.net-select'
+import 'datatables.net-select-dt/css/select.dataTables.css'
+import 'datatables.net-responsive'
+import 'datatables.net-responsive-dt/css/responsive.dataTables.min.css'
+import 'datatables.net-buttons'
+import 'datatables.net-buttons/js/buttons.colVis.js'
+import 'datatables.net-buttons/js/buttons.html5.js'
+
+import {form_ids_vals, json_string} from './cs-form-helper'
 
 export function setup_table ({ model_name, column_names, hide_id_column = false }) {
     const columns = column_names.map((x) => {
@@ -222,7 +232,7 @@ export function setupDatePicker() {
         // _container.style.zIndex=1000
         // const picker = new MaterialDatetimePicker({container: _container})
         
-        const picker = MaterialDatetimePicker({
+        const picker = new MaterialDatetimePicker({
                 default: Moment(),
                 value: Moment()
             })
