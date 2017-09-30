@@ -165,7 +165,7 @@ router.delete('/:id', function(req, res) {
 function do_enums(model){
     // if not null and doesn't parse to a number
     const is_new_alias_id = (id) => !isFalsey(id) && isFalsey(parseInt(id))
-    
+    let foo_promises = []
     if (is_new_alias_id(model.cage_id)) {
         const cage = {}
         cage.id_alias = model.cage_id
