@@ -15,13 +15,14 @@ const setup_aggregation_buttons = (table) => {
 
     const pair_button = $('#breed-mouse-button')
     const cage_button = $('#cage-mouse-button')
+    const status_button = $('#status-mouse-button')
 
     function update_buttons() {
         const selected_row_count = table.rows({ selected: true }).data().pluck('id').length
 
         let disable_pair = true
         let disable_cage = true
-
+        let disable_status = true
         // todo: create validation for M1 : F*
         if (selected_row_count >= 2){
             disable_pair = false
@@ -29,11 +30,13 @@ const setup_aggregation_buttons = (table) => {
 
         if (selected_row_count > 0){
             disable_cage = false
+            disable_status = false
         }
 
 
         pair_button.attr('disabled', disable_pair)
         cage_button.attr('disabled', disable_cage)
+        status_button.attr('disabled', disable_status)
     }
 
 
