@@ -11,17 +11,14 @@ import 'datatables.net-responsive-dt/css/responsive.dataTables.min.css';
 
 import { setup_table, setup_list_page_buttons } from './cs-model-common'
 import { form_ids_vals, json_string } from  './cs-form-helper'
+import { cage_columns as cage_column_names} from './cs-cage-common'
+import {column_names, model_name} from './cs-mouse-common'
 
 $(function() {
-    const column_names = ['id', 'id_alias', 'ear_tag', 
-        'age', 'dob', 'genotype', 
-        'sex', 'status', 'cage', 
-        'parents', 'notes'
-    ]
-    const mouse_table = setup_table({ model_name: 'mouse', column_names, hide_id_column: true })
+    const mouse_table = setup_table({ model_name, column_names, hide_id_column: true })
 
     setup_aggregation_buttons(mouse_table)
-    setup_list_page_buttons('mouse', mouse_table)
+    setup_list_page_buttons(model_name, mouse_table)
     setup_cage_mice_modal(mouse_table)
 })
 
@@ -29,13 +26,14 @@ const setup_aggregation_buttons = (table) => {
 
     const pair_button = $('#breed-mouse-button')
     const cage_button = $('#cage-mouse-button')
+    const status_button = $('#status-mouse-button')
 
     function update_buttons() {
         const selected_row_count = table.rows({ selected: true }).data().pluck('id').length
 
         let disable_pair = true
         let disable_cage = true
-
+        let disable_status = true
         // todo: create validation for M1 : F*
         if (selected_row_count >= 2) {
             disable_pair = false
@@ -43,13 +41,14 @@ const setup_aggregation_buttons = (table) => {
 
         if (selected_row_count > 0) {
             disable_cage = false
+            disable_status = false
         }
 
 
         pair_button.attr('disabled', disable_pair)
         cage_button.attr('disabled', disable_cage)
+        status_button.attr('disabled', disable_status)
     }
-
 
     function on_select(e, dt, type, indexes) {
         update_buttons()
@@ -58,6 +57,7 @@ const setup_aggregation_buttons = (table) => {
             // do something with the ID of the selected items
         }
     }
+
     update_buttons()
     table.on('select', on_select)
     table.on('deselect', on_select)
@@ -84,9 +84,8 @@ const setup_aggregation_buttons = (table) => {
 }
 
 const setup_cage_mice_modal = (mouse_table) => {
-    let columns = ['id', 'id_alias', 'type', 
-    'end_date', 'mice', 'notes'
-    ]
+    let columns = cage_column_names
+
     columns = columns.map((x) => {
         return { data: x }
     })

@@ -38,7 +38,7 @@ router.get('/create', function(req, res) {
                 mice,
                 mice_select,
                 cage_type,
-                extra_js: ['cage_create', 'cs-cage-common.bundle.js'],
+                extra_js: ['cage_create.bundle.js'],
                 cool_face: utils.cool_face()
             })
         })
@@ -68,7 +68,7 @@ router.get('/:id_alias', function(req, res) {
                 mice_select,
                 cage_type,
                 cage,
-                extra_js: ['cage_update', 'cs-cage-common.bundle.js'],
+                extra_js: ['cage_update.bundle.js'],
                 cool_face: utils.cool_face()
             })
         })

@@ -55,9 +55,9 @@ class Cage_Controller extends Base_Controller {
     // }
     insert(_model) {
         _model = utils.remove_empty(_model, true)
-        if(isFalsey(_model.name)){
-            _model.name = city_names[Math.floor(Math.random() * city_names.length)]
-        }
+        // if(isFalsey(_model.name)){
+        //     _model.name = city_names[Math.floor(Math.random() * city_names.length)]
+        // }
         return Cage.create(_model, {
                 include: [{ association: Cage.Note }],
                 returning: true

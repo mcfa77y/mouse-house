@@ -16,6 +16,8 @@ import 'datatables.net-buttons/js/buttons.html5.js'
 
 import {form_ids_vals, json_string} from './cs-form-helper'
 
+
+
 export function setup_table ({ model_name, column_names, hide_id_column = false }) {
     const columns = column_names.map((x) => {
         return { data: x }
@@ -27,7 +29,8 @@ export function setup_table ({ model_name, column_names, hide_id_column = false 
         dom: 'lBfrtip',
         // buttons: ['selectAll', 'selectNone', 'copy', 'excel', 'pdf','colvis'],
         buttons: ['selectAll', 'selectNone', 'excel', 'colvis'],
-        scrollY: 450,
+        scrollY: "375px",
+        scrollCollapse: true,
         paging: false,
         info: false,
         columns,

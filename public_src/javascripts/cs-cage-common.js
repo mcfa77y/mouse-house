@@ -1,13 +1,16 @@
-import _ from 'lodash'
+import _ from 'underscore'
 import { setup_table } from './cs-model-common'
+import {column_names as mouse_column_names, model_name as mouse_model_name} from './cs-mouse-common'
+
+export const model_name = 'cage'
+
+export const column_names = ['id', 'id_alias', 'type',
+        'end_date', 'mice', 'notes'
+    ]
 
 export function setup_mouse_table() {
-    const mouse_columns = ['id', 'id_alias', 'ear_tag', 'age', 'dob',
-        'genotype', 'sex', 'notes',
-        'status', 'created_at',
-        'updated_at'
-    ]
-    const table = setup_table({ model_name: 'mouse', column_names: mouse_columns, hide_id_column: true })
+    
+    const table = setup_table({ model_name: mouse_model_name, column_names: mouse_column_names, hide_id_column: true })
 
     const selected_mice_input = $('#mouse_ids')[0].selectize
     selected_mice_input.disable()

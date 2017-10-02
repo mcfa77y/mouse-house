@@ -28,9 +28,11 @@ router.get('/', function(req, res) {
             mice: mouse_controller.all_pretty()
         })
         .then(({ input, mice }) => {
+            const status = utils.select_json(input.status, 'status_id')
             res.render('pages/mouse/mouse_list', {
                 cages: input.cages,
                 mice,
+                status,
                 extra_js: ['mouse_list.bundle.js'],
                 cool_face: utils.cool_face()
             })
@@ -226,7 +228,7 @@ router.post('/cage_mice_together', function(req, res) {
     let foo;
     if(isFalsey(req.body.cage_id[0])){
         const cage = {}
-        cage.name = req.body.cage_name
+        cage.id_alias = req.body.cage_id_alias
         cage.setup_date = utils.today()
         cage_id_promise = cage_controller.insert(cage)
             .then(c => c.id)
