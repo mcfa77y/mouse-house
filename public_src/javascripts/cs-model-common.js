@@ -1,7 +1,6 @@
 import * as Toastr from 'toastr'
-import _ from 'lodash'
+import range from 'lodash/range'
 import * as Axios from 'Axios'
-import {default as Moment} from 'moment'
 import MaterialDatetimePicker from 'material-datetime-picker'
 
 import 'bootstrap'
@@ -14,11 +13,11 @@ import 'datatables.net-buttons'
 import 'datatables.net-buttons/js/buttons.colVis.js'
 import 'datatables.net-buttons/js/buttons.html5.js'
 
-import {form_ids_vals, json_string} from './cs-form-helper'
+import { form_ids_vals, json_string } from './cs-form-helper'
 
 
 
-export function setup_table ({ model_name, column_names, hide_id_column = false }) {
+export function setup_table({ model_name, column_names, hide_id_column = false }) {
     const columns = column_names.map((x) => {
         return { data: x }
     })
@@ -37,7 +36,10 @@ export function setup_table ({ model_name, column_names, hide_id_column = false 
         lengthMenu: [
             [5, 10, 25, -1],
             [5, 10, 25, "All"]
-        ]
+        ],
+        initComplete: function() {
+            this.api().columns.adjust()
+        }
     }
 
     if (hide_id_column) {
@@ -59,7 +61,7 @@ export function setup_table ({ model_name, column_names, hide_id_column = false 
     function get_selected_row_ids() {
         const data = table.rows({ selected: true }).data().pluck('id');
 
-        return _.range(data.length).map((index) => {
+        return range(data.length).map((index) => {
             return data[index]
         })
     }
@@ -133,7 +135,7 @@ export function setup_create_page_buttons(model_name) {
     })
 }
 
-export function setup_update_page_buttons(model_name){
+export function setup_update_page_buttons(model_name) {
     init_page(model_name)
     const update_button = $('#update-' + model_name + '-button')
     const back_button = $('#back-' + model_name + '-button')
@@ -152,7 +154,7 @@ export function setup_update_page_buttons(model_name){
     })
 }
 
-export function setup_list_page_buttons(model_name, table){
+export function setup_list_page_buttons(model_name, table) {
     init_page(model_name)
     const delete_button = $('#delete-' + model_name + '-button')
 
@@ -161,8 +163,10 @@ export function setup_list_page_buttons(model_name, table){
             .then((response) => {
                 console.log(response)
                 Toastr.success("delete succesful")
-                window.location.href = '/' + model_name
-                return false
+                // window.location.href = '/' + model_name
+                // return false
+                table.rows({ selected: true }).remove().draw(false)
+
             })
             .catch(error)
     })
@@ -170,7 +174,7 @@ export function setup_list_page_buttons(model_name, table){
 
 
 
-export function init_page(model_name){
+export function init_page(model_name) {
     nav_button(model_name)
     setupToastr()
     setupDropDown()
@@ -183,7 +187,7 @@ export function init_page(model_name){
 
 
 
-export function setupToolTip(){
+export function setupToolTip() {
     $('[data-toggle="tooltip"]').tooltip();
 }
 
@@ -214,7 +218,7 @@ export function setupSelects() {
     $('.foo-select')
         .toArray()
         .forEach((s) => {
-            $(s).selectize({create: true, persist: true})
+            $(s).selectize({ create: true, persist: true })
         })
 }
 
@@ -225,7 +229,20 @@ export function setupDropDown() {
         $(this).parents('.btn-group').find('.dropdown-toggle').html(selText + ' <span class="caret"></span>');
     });
 }
+export function format_date(date) {
+    date = new Date(date)
+    console.log('\ndate: ' + date + '\n');
+    const year = date.getFullYear();
 
+    let month = (1 + date.getMonth()).toString();
+    month = month.length > 1 ? month : '0' + month;
+
+    let day = date.getDate().toString();
+    day = day.length > 1 ? day : '0' + day;
+
+    return month + '/' + day + '/' + year;
+
+}
 export function setupDatePicker() {
     const inputs = document.querySelectorAll('.c-datepicker-input');
 
@@ -234,19 +251,16 @@ export function setupDatePicker() {
         // const _container = document.body
         // _container.style.zIndex=1000
         // const picker = new MaterialDatetimePicker({container: _container})
-        
-        const picker = new MaterialDatetimePicker({
-                default: Moment(),
-                value: Moment()
-            })
+        const date_format = 'MM/DD/YYYY'
+        const picker = new MaterialDatetimePicker()
             .on('submit', (val) => {
-                input.value = val.format('MM/DD/YYYY');
+                input.value = format_date(val) //.format('MM/DD/YYYY');
                 $(input).change()
             })
             .on('open', () => {
-                input.value = input.value || Moment().format('MM/DD/YYYY')
-                picker.setDate(Moment(input.value, 'MM/DD/YYYY'))
-                picker.setTime(Moment(input.value, 'MM/DD/YYYY'))
+                input.value = input.value || format_date(new Date(), 'MM/DD/YYYY')
+                picker.setDate(format_date(input.value, 'MM/DD/YYYY'))
+                picker.setTime(format_date(input.value, 'MM/DD/YYYY'))
                 // extra styling to make it look good and behave normally
                 $('.c-datepicker.c-datepicker--open').css('z-index', 1200)
                 $('.c-datepicker__clock').css('padding-top', '357px')

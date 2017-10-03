@@ -1,5 +1,5 @@
 import * as Toastr from 'toastr'
-import _ from 'lodash'
+import range from 'lodash/range'
 import * as Axios from 'Axios'
 
 import 'bootstrap'
@@ -10,9 +10,9 @@ import 'datatables.net-responsive';
 import 'datatables.net-responsive-dt/css/responsive.dataTables.min.css';
 
 import { setup_table, setup_list_page_buttons } from './cs-model-common'
-import { form_ids_vals, json_string } from  './cs-form-helper'
-import { cage_columns as cage_column_names} from './cs-cage-common'
-import {column_names, model_name} from './cs-mouse-common'
+import { form_ids_vals, json_string } from './cs-form-helper'
+import { column_names as cage_column_names } from './cs-cage-common'
+import { column_names, model_name } from './cs-mouse-common'
 
 $(function() {
     const mouse_table = setup_table({ model_name, column_names, hide_id_column: true })
@@ -80,7 +80,24 @@ const setup_aggregation_buttons = (table) => {
                 Toastr.error(error)
             });
     })
-
+    
+    $('#set-status-mouse-button').click(()=>{
+        const mouse_ids = table.get_selected_row_ids()
+        const data = {
+            mouse_ids
+        }
+        Axios.post('/mouse/update_mice_status', data)
+            .then((response) => {
+                console.log(response)
+                Toastr.success("paired")
+                window.location.href = '/mouse'
+                return false
+            })
+            .catch((error) => {
+                console.log(error)
+                Toastr.error(error)
+            });
+    })
 }
 
 const setup_cage_mice_modal = (mouse_table) => {
@@ -103,7 +120,10 @@ const setup_cage_mice_modal = (mouse_table) => {
             targets: [0],
             visible: false,
             searchable: false
-        }]
+        }],
+        initComplete: function() {
+            this.api().columns.adjust()
+        }
     }
 
 
@@ -122,7 +142,7 @@ const setup_cage_mice_modal = (mouse_table) => {
     function get_selected_row_ids() {
         const data = table.rows({ selected: true }).data().pluck('id');
 
-        return _.range(data.length).map((index) => {
+        return range(data.length).map((index) => {
             return data[index]
         })
     }

@@ -1,29 +1,40 @@
-import _ from 'underscore'
+import contains from 'underscore-es/contains'
 import { setup_table } from './cs-model-common'
-import {column_names as mouse_column_names, model_name as mouse_model_name} from './cs-mouse-common'
+import { column_names as mouse_column_names, model_name as mouse_model_name } from './cs-mouse-common'
 
 export const model_name = 'cage'
 
 export const column_names = ['id', 'id_alias', 'type',
-        'end_date', 'mice', 'notes'
-    ]
+    'end_date', 'mice', 'notes'
+]
 
 export function setup_mouse_table() {
-    
+
     const table = setup_table({ model_name: mouse_model_name, column_names: mouse_column_names, hide_id_column: true })
 
     const selected_mice_input = $('#mouse_ids')[0].selectize
     selected_mice_input.disable()
 
-    const show_mouse_table_button = $('#show-mouse-table-buton')[0]
-    show_mouse_table_button.click(()=>{
-        $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
+    const show_mouse_table_button = $('#show-mouse-table-button2')
+    show_mouse_table_button.click(() => {
+        table.columns.adjust()
+            .responsive.recalc().draw();
     })
+    $(document).on('shown.bs.modal', function(e) {
+        console.log('\nshowN : ' + '\n')
+
+        $.fn.dataTable.tables({ visible: true, api: true }).columns.adjust();
+    });
+    $(document).on('show.bs.modal', function(e) {
+        console.log('\nshow: ' + '\n')
+
+        $.fn.dataTable.tables({ visible: true, api: true }).columns.adjust();
+    });
 
     const selected_ids = selected_mice_input.getValue()
 
     table.rows(function(idx, data) {
-        return _.contains(selected_ids, data.id + "")
+        return contains(selected_ids, data.id + "")
     }).select();
 
     function on_select(e, dt, type, indexes) {

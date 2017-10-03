@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const path = require('path');
-const Logger = require('bug-killer');
+// const Logger = require('bug-killer');
 const BlueBird = require('bluebird')
 const _ = require('underscore')
 const isFalsey = require('falsey');
@@ -225,7 +225,7 @@ router.put('/', function(req, res) {
 router.post('/cage_mice_together', function(req, res) {
     utils.log_json(req.body)
     let cage_id_promise;
-    let foo;
+
     if(isFalsey(req.body.cage_id[0])){
         const cage = {}
         cage.id_alias = req.body.cage_id_alias
@@ -252,6 +252,35 @@ router.post('/cage_mice_together', function(req, res) {
     })
 });
 
+router.post('/update_mice_status', function(req, res) {
+    utils.log_json(req.body)
+    let cage_id_promise;
+
+    // if(isFalsey(req.body.cage_id[0])){
+    //     const cage = {}
+    //     cage.id_alias = req.body.cage_id_alias
+    //     cage.setup_date = utils.today()
+    //     cage_id_promise = cage_controller.insert(cage)
+    //         .then(c => c.id)
+    // } else {
+        cage_id_promise = Promise.resolve(req.body.status_id[0])
+    // }
+   
+    cage_id_promise.then(statu_id =>{
+        const update_promises = req.body.mouse_ids
+            .map(id => mouse_controller.update({ id, statu_id }))
+
+        Promise.all(update_promises)
+            .then(() => res.send({ success: true }))
+            .catch((err) => {
+                utils.log_json(err)
+                res.status(500).send({
+                    success: false,
+                    err
+                })
+            })
+    })
+});
 
 router.post('/breed_mice_together', function(req, res) {
     utils.log_json(req.body)
