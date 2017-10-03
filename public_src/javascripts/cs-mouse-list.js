@@ -83,9 +83,8 @@ const setup_aggregation_buttons = (table) => {
     
     $('#set-status-mouse-button').click(()=>{
         const mouse_ids = table.get_selected_row_ids()
-        const data = {
-            mouse_ids
-        }
+
+        const data = $.extend({mouse_ids}, form_ids_vals('mouse-status-fields'))
         Axios.post('/mouse/update_mice_status', data)
             .then((response) => {
                 console.log(response)

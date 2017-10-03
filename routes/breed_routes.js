@@ -53,7 +53,7 @@ router.get('/create', function(req, res) {
                 genotype: gt,
                 male_mouse: mm,
                 female_mouse: fm,
-                extra_js: ['breed_create.bundle.js']
+                extra_js: ['breed_update.bundle.js']
             })
         })
         .catch(error => {
