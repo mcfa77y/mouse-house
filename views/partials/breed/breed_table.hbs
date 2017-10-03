@@ -4,7 +4,9 @@
             <th>id</th>
             <th>#</th>
             <th>male</th>
+            <th>age (wks)</th>
             <th>female</th>
+            <th>age (wks)</th>
             <th>pairing</th>
             <th>plug</th>
             <th>litter</th>
@@ -20,8 +22,10 @@
         <tr>
             <td>{{id}}</td>
             <td><a href="breed/{{id_alias}}">{{id_alias}}</a></td>
-            <td>{{male_mouse}}</td>
-            <td>{{female_mouse}}</td>
+            <td>{{male_mouse.id}}</td>
+            <td>{{male_mouse.age}}</td>
+            <td>{{female_mouse.id}}</td>
+            <td>{{female_mouse.age}}</td>
             <td>{{pairing_date}}</td>
             <td>{{plug_date}}</td>
             <td>{{litter_date}}</td>
