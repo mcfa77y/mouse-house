@@ -6,12 +6,17 @@
                 <h4 class="modal-title">Cage mice together</h4>
             </div>
             <div class="modal-body">
-                <fieldset>
+                <fieldset id="mouse-cage-fields">
                     {{> cage/cage_table}}
+                    <h5>or</h5>
+                    {{> form_elements/text_input id='cage_id_alias' description='New Cage' placeholder='321' }}
                 </fieldset>
+            
+
             </div>
+
+
             <div class="modal-footer">
-                <a href="cage/create" class="btn btn-default pull-left" role="button">New Cage</a>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 <button id="cage-mice-together-button" type="button" class="btn btn-primary">Update</button>
             </div>

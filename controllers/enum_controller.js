@@ -1,26 +1,62 @@
 const d = require('d');
 const memoizeMethods = require('memoizee/methods');
 
+const Base_Controller = require('./base_controller')
 const utils = require('./utils_controller')
 const Enum = require('../database/models').Enum
 
-class Controller {
+class Controller extends Base_Controller {
 
-
-}
-
-const memoize_methods = {
-    by_type: d(_code => {
+    by_type(_code) {
         return Enum.findAll({
             attributes: ['id', 'description'],
             where: { type: _code }
         })
-    }, { promise: true }),
+    }
+
+   by_type_map(_code) {
+        return Enum.findAll({
+                attributes: ['id', 'description'],
+                where: { type: _code }
+            })
+            .then(enums => {
+                let enum_id_map = {}
+                enums.forEach(enoom => {
+                    enum_id_map[enoom.description] = enoom.id
+                })
+                return enum_id_map
+            })
+ca
+    }
+}
+
+const memoize_methods = {
+    // by_type: d(_code => {
+    //     return Enum.findAll({
+    //         attributes: ['id', 'description'],
+    //         where: { type: _code }
+    //     })
+    // }, { promise: true }),
+
+    // by_type_map: d(_code => {
+    //     return Enum.findAll({
+    //             attributes: ['id', 'description'],
+    //             where: { type: _code }
+    //         })
+    //         .then(enums => {
+    //             let enum_id_map = {}
+    //             enums.forEach(enoom => {
+    //                 enum_id_map[enoom.description] = enoom.id
+    //             })
+    //             return enum_id_map
+    //         })
+
+    // }, { promise: true }),
 
     by_type_desc: d((_code, _description) => {
         return Enum.findOne({
             attributes: ['id', 'description'],
-            where: { description:  _description, type: _code }
+            where: { description: _description, type: _code }
         })
     }, { promise: true }),
 
@@ -31,4 +67,4 @@ const memoize_methods = {
 
 Object.defineProperties(Controller.prototype, memoizeMethods(memoize_methods))
 
-module.exports = new Controller()
+module.exports = new Controller(Enum)

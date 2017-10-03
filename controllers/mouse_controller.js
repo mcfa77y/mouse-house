@@ -1,24 +1,15 @@
 const BlueBird = require('bluebird')
-const _ = require('underscore')
+// const _ = require('underscore')
 const isFalsey = require('falsey');
 
 const Base_Controller = require('./base_controller')
 const enum_controller = require('./enum_controller')
-const cage_controller = require('./cage_controller')
+// const cage_controller = require('./cage_controller')
 const utils = require('./utils_controller')
 const Mouse = require('../database/models').Mouse
 
 
 class Mouse_Controller extends Base_Controller {
-    inputs() {
-        return BlueBird.props({
-            sex: mouse.getSex(),
-            genotype: mouse.getGenotype(),
-            status: mouse.getStatus(),
-            cage: mouse.getCage(),
-            note: mouse.getNote(),
-        })
-    }
 
     by_sex(sex) {
         return enum_controller.by_type_desc('SEX', sex)
@@ -54,16 +45,16 @@ class Mouse_Controller extends Base_Controller {
                 pretty_mouse.sex = isFalsey(sex) ? '' : sex.description
                 pretty_mouse.genotype = isFalsey(genotype) ? '' : genotype.description
                 pretty_mouse.status = isFalsey(status) ? '' : status.description
-                pretty_mouse.sex_id = mouse.sex_id
-                pretty_mouse.genotype_id = mouse.genotype_id
-                pretty_mouse.status_id = mouse.status_id
+                pretty_mouse.sex_id = mouse.sex_id + ''
+                pretty_mouse.genotype_id = mouse.genotype_id + ''
+                pretty_mouse.status_id = mouse.status_id + ''
                 pretty_mouse.dob = utils.format_date(mouse.dob)
                 pretty_mouse.age = utils.relative_time(mouse.dob)
                 pretty_mouse.create_at = utils.format_date(mouse.create_at)
                 pretty_mouse.modify_at = utils.format_date(mouse.modify_at)
-                pretty_mouse.breeds = isFalsey(breeds) ? [] : breeds.map(breed => breed.id)
+                pretty_mouse.breeds = isFalsey(breeds) ? [] : breeds.map(breed => breed.id + '')
                 pretty_mouse.cage = isFalsey(cage) ? '' : cage.name
-                pretty_mouse.cage_id = isFalsey(cage) ? '' : cage.id
+                pretty_mouse.cage_id = isFalsey(cage) ? '' : cage.id + ''
                 pretty_mouse.cage_id_alias = isFalsey(cage) ? '' : cage.id_alias
                 return pretty_mouse
             })
@@ -100,7 +91,7 @@ class Mouse_Controller extends Base_Controller {
 
     insert(_model) {
         _model = utils.remove_empty(_model, true)
-        Mouse.create(_model, {
+        return Mouse.create(_model, {
                 include: [
                     { association: Mouse.Note },
                     { association: Mouse.Sex },
@@ -120,7 +111,7 @@ class Mouse_Controller extends Base_Controller {
 
     update(_model) {
         _model = utils.remove_empty(_model)
-        Mouse.update(_model, {
+        return Mouse.update(_model, {
                 where: {
                     id: _model.id
                 },

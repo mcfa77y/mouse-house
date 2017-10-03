@@ -9,10 +9,12 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       description: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        unique: 'compositeIndex'
       },
       type: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        unique: 'compositeIndex'
       },
       created_at: {
         allowNull: false,

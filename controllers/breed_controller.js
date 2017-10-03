@@ -2,12 +2,12 @@ const BlueBird = require('bluebird')
 const isFalsey = require('falsey')
 const _ = require('underscore')
 const utils = require('./utils_controller')
-const city_names = require('../lib/data/city_names.json').city_names
+// const city_names = require('../lib/data/city_names.json').city_names
 
 const Base_Controller = require('./base_controller')
 const enum_controller = require('./enum_controller')
 const Breed = require('../database/models').Breed
-const Mouse = require('../database/models').Mouse
+// const Mouse = require('../database/models').Mouse
 
 class Breed_Controller extends Base_Controller {
     pretty(model) {

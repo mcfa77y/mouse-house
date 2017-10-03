@@ -1,6 +1,10 @@
 <div class="well bs-component">
+    <div class="page-header">
+        <h4>Cages</h4>
+    </div>
     {{> cage/cage_table}}
     <div class="row">
         {{>crud_buttons model_name='cage'}}
     </div>
 </div>
+{{> common/delete_confirmation_modal model_name='cage'}}

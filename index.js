@@ -8,12 +8,14 @@ const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const cors = require('cors')
+const helmet = require('helmet')
     // const routes = require('./routes/index');
 const rp = require('request-promise');
 const router = express.Router();
 
 
 app.use(logger('dev'));
+app.use(helmet())
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
@@ -54,7 +56,7 @@ app.set('view engine', 'hbs');
 
 app.use('/breed', breed);
 app.use('/mouse', mouse);
-app.use('/cage', cage);
+app.use('/cage', cage); 
 
 
 
