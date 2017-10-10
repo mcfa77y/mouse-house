@@ -34,7 +34,8 @@ router.get('/', function(req, res) {
                 mice,
                 status,
                 extra_js: ['mouse_list.bundle.js'],
-                cool_face: utils.cool_face()
+                cool_face: utils.cool_face(),
+                model_name: 'mouse'
             })
         })
         .catch((error) => {
@@ -254,24 +255,27 @@ router.post('/cage_mice_together', function(req, res) {
 
 router.post('/update_mice_status', function(req, res) {
     utils.log_json(req.body)
-    let cage_id_promise;
+    let status_id_promise;
 
     // if(isFalsey(req.body.cage_id[0])){
     //     const cage = {}
     //     cage.id_alias = req.body.cage_id_alias
     //     cage.setup_date = utils.today()
-    //     cage_id_promise = cage_controller.insert(cage)
+    //     status_id_promise = cage_controller.insert(cage)
     //         .then(c => c.id)
     // } else {
-        cage_id_promise = Promise.resolve(req.body.status_id[0])
+        status_id_promise = Promise.resolve(req.body.status_id[0])
     // }
    
-    cage_id_promise.then(statu_id =>{
+    status_id_promise.then(status_id =>{
         const update_promises = req.body.mouse_ids
-            .map(id => mouse_controller.update({ id, statu_id }))
+            .map(id => mouse_controller.update({ id, status_id }))
+
 
         Promise.all(update_promises)
-            .then(() => res.send({ success: true }))
+            .then(() => enum_controller.get(status_id))
+            .then((status) => res.send({ success: true,
+            status:  status.description}))
             .catch((err) => {
                 utils.log_json(err)
                 res.status(500).send({

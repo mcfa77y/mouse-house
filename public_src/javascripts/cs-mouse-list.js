@@ -26,7 +26,7 @@ const setup_aggregation_buttons = (table) => {
 
     const pair_button = $('#breed-mouse-button')
     const cage_button = $('#cage-mouse-button')
-    const status_button = $('#status-mouse-button')
+    const status_button = $('#open-status-mouse-modal-button')
 
     function update_buttons() {
         const selected_row_count = table.rows({ selected: true }).data().pluck('id').length
@@ -65,9 +65,7 @@ const setup_aggregation_buttons = (table) => {
 
     pair_button.click(() => {
         const mouse_ids = table.get_selected_row_ids()
-        const data = {
-            mouse_ids
-        }
+        const data = { mouse_ids }
         Axios.post('/mouse/breed_mice_together', data)
             .then((response) => {
                 console.log(response)
@@ -80,17 +78,24 @@ const setup_aggregation_buttons = (table) => {
                 Toastr.error(error)
             });
     })
-    
-    $('#set-status-mouse-button').click(()=>{
-        const mouse_ids = table.get_selected_row_ids()
 
-        const data = $.extend({mouse_ids}, form_ids_vals('mouse-status-fields'))
+    $('#set-status-mouse-button').click(() => {
+        const mouse_ids = table.get_selected_row_ids()
+        const dt = form_ids_vals('mouse-status-fields')
+        const data = $.extend({ mouse_ids }, dt)
         Axios.post('/mouse/update_mice_status', data)
             .then((response) => {
-                console.log(response)
-                Toastr.success("paired")
-                window.location.href = '/mouse'
-                return false
+                Toastr.success("status updated")
+                table.rows({ selected: true })
+                    .every(idx => {
+                        const row = table.row(idx)
+                        const d = row.data()
+                        d.status = response.data.status
+                        row.data(d).invalidate()
+                    })
+                table.draw()
+                // window.location.href = '/mouse'
+                // return false
             })
             .catch((error) => {
                 console.log(error)
