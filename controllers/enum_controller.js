@@ -12,7 +12,7 @@ class Controller extends Base_Controller {
         })
     }
 
-   by_type_map(_code) {
+    by_type_map(_code) {
         return Enum.findAll({
                 attributes: ['id', 'description'],
                 where: { type: _code }
@@ -24,6 +24,9 @@ class Controller extends Base_Controller {
                 })
                 return enum_id_map
             })
+    }
+    get model(){
+        return Enum
     }
 }
 
