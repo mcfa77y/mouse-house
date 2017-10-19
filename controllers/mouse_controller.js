@@ -10,7 +10,12 @@ const Mouse = require('../database/models').Mouse
 
 
 class Mouse_Controller extends Base_Controller {
-
+    get STATUS (){
+        return 'MOUSE_STATUS'
+    }
+    get GENOTYPE (){
+        return 'MOUSE_GENOTYPE'
+    }
     by_sex(sex) {
         return enum_controller.by_type_desc('SEX', sex)
             .then((sex_enum) => {

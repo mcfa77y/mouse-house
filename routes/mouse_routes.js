@@ -104,8 +104,8 @@ router.get('/create', function(req, res) {
 
 function _get_inputs() {
     return BlueBird.props({
-        status: enum_controller.by_type('MOUSE_STATUS'),
-        genotype: enum_controller.by_type('MOUSE_GENOTYPE'),
+        status: enum_controller.by_type(mouse_controller.STATUS),
+        genotype: enum_controller.by_type(mouse_controller.GENOTYPE),
         cages: cage_controller.all_pretty(),
         sex: enum_controller.by_type('SEX'),
     })
@@ -186,8 +186,8 @@ router.delete('/:id', function(req, res) {
 });
 
 function _do_cage_upsert(model) {
-    return cage_controller.model.findOrCreate({ id_alias: model.cage_id })
-        .then(c => {
+    return cage_controller.model.findOrCreate({ where: { id_alias: model.cage_id } })
+        .spread((c, created) => {
             model.cage_id = c.id
             return model
         })
@@ -196,23 +196,23 @@ function _do_cage_upsert(model) {
 function _do_status_upsert(model) {
     const status = {}
     status.description = model.status_id
-    status.type = 'MOUSE_STATUS'
+    status.type = mouse_controller.STATUS
 
-    return enum_controller.model.findOrCreate(status)
-        .then(enum => {
-            model.status_id = enum.id
+    return enum_controller.model.findOrCreate({where: status})
+        .spread((enoom, created) => {
+            model.status_id = enoom.id
             return model
         })
 }
 
-function _do_status_upsert(model) {
+function _do_genotype_upsert(model) {
     const genotype = {}
     genotype.description = model.genotype_id
-    genotype.type = 'MOUSE_GENOTYPE'
+    genotype.type = mouse_controller.GENOTYPE
 
-    return enum_controller.model.findOrCreate(genotype)
-        .then(enum => {
-            model.genotype_id = enum.id
+    return enum_controller.model.findOrCreate({where: genotype})
+        .spread((enoom, created) => {
+            model.genotype_id = enoom.id
             return model
         })
 }

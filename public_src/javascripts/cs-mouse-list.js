@@ -85,7 +85,7 @@ const setup_aggregation_buttons = (table) => {
         const data = $.extend({ mouse_ids }, dt)
         Axios.post('/mouse/update_mice_status', data)
             .then((response) => {
-                Toastr.success("status updated")
+                Toastr.success(table.rows({ selected: true }).length + ' statuses updated')
                 table.rows({ selected: true })
                     .every(idx => {
                         const row = table.row(idx)

@@ -169,7 +169,7 @@ export function setup_list_page_buttons(model_name, table) {
                 // window.location.href = '/' + model_name
                 // return false
                 table.rows({ selected: true }).remove().draw(false)
-
+                $('#confirm-delete-modal').modal('toggle')
             })
             .catch(error)
     })
