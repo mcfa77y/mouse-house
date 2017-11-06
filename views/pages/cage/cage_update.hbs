@@ -5,17 +5,15 @@
     <div>
         <fieldset id='cage-fields'>
             <div class='row'>
-                {{> form_elements/text_input id='id_alias' description='ID' value=cage.id_alias}} 
-                {{> form_elements/select_input cage_type id='type_id' description='Type' value=cage.type_id}} 
-                {{> form_elements/date_input id='end_date' description='End date' value=cage.end_date}} 
-                
+                {{> form_elements/text_input id='id_alias' description='ID' value=cage.id_alias}}
+                {{> form_elements/select_input cage_type id='type_id' description='Type' value=cage.type_id}}
+                {{> form_elements/date_input id='end_date' description='End date' value=cage.end_date}}
+
             </div>
             <div class='row'>
-                cage mouse ids: {{cage.mouse_ids}}
-                {{> form_elements/select_input mice_select id='mouse_ids' isMultiple=true description='Mice' value=cage.mouse_ids}} 
+                {{> form_elements/select_input mice_select id='mouse_ids' isMultiple=true description='Mice' value=cage.mouse_ids}}
                 <div class='col-md-3 col-sm-6'>
                     <button id='show-mouse-table-buton' data-toggle='collapse' data-target='#mouse-table' type='button' class='btn btn-default'>Add mice</button>
-                    <button id='show-mouse-table-button2' type='button' class='btn btn-default'>recalc</button>
                 </div>
             </div>
             <div class='row'>
@@ -25,13 +23,6 @@
                     </div>
                 </div>
             </div>
-
-
-
-
-
-
-            
             <div class='row'>
                 {{> form_elements/text_area_input id='note' description='Note' value=cage.note}}
                 <input type='hidden' id='id' value='{{cage.id}}'/>

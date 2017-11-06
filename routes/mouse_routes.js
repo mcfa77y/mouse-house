@@ -83,10 +83,10 @@ router.get('/create', function(req, res) {
 
 function _get_mouse_inputs() {
     return BlueBird.props({
-        status: enum_controller.by_type('MOUSE_STATUS'),
-        genotype: enum_controller.by_type('MOUSE_GENOTYPE'),
+        status: enum_controller.by_type(mouse_controller.STATUS),
+        genotype: enum_controller.by_type(mouse_controller.GENOTYPE),
         cages: cage_controller.all_pretty(),
-        sex: enum_controller.by_type('SEX'),
+        sex: enum_controller.by_type(mouse_controller.SEX),
     })
 }
 
@@ -178,14 +178,14 @@ function do_enums(model){
     if (is_new_alias_id(model.status_id)) {
         const status = {}
         status.description = model.status_id
-        status.type = 'MOUSE_STATUS'
+        status.type = mouse_controller.STATUS
         foo_promises.push(enum_controller.insert(status)
             .then(enoom => model.status_id = enoom.id))
     }
     if (is_new_alias_id(model.genotype_id)) {
         const genotype = {}
         genotype.description = model.genotype_id
-        genotype.type = 'MOUSE_GENOTYPE'
+        genotype.type = mouse_controller.GENOTYPE
         foo_promises.push(enum_controller.insert(genotype)
             .then(enoom => model.genotype_id = enoom.id))
     }
@@ -195,12 +195,12 @@ function do_enums(model){
 router.put('/', function(req, res) {
     utils.move_note(req)
     let foo_promises = do_enums(req.body)
-    
+
 
     utils.log_json(req.body)
     const slider_ids = ['male', 'female', 'unknown']
     Promise.all(foo_promises)
-        .then(() => enum_controller.by_type_map('SEX')
+        .then(() => enum_controller.by_type_map(mouse_controller.SEX)
         )
         .then(sex_id_map => {
             const create_mouse_promises = slider_ids
@@ -235,7 +235,7 @@ router.post('/cage_mice_together', function(req, res) {
     } else {
         cage_id_promise = Promise.resolve(req.body.cage_id[0])
     }
-   
+
     cage_id_promise.then(cage_id =>{
         const update_promises = req.body.mouse_ids
             .map(id => mouse_controller.update({ id, cage_id }))
@@ -254,21 +254,23 @@ router.post('/cage_mice_together', function(req, res) {
 
 router.post('/update_mice_status', function(req, res) {
     utils.log_json(req.body)
-    let cage_id_promise;
+    let status_id_promise;
 
     // if(isFalsey(req.body.cage_id[0])){
     //     const cage = {}
     //     cage.id_alias = req.body.cage_id_alias
     //     cage.setup_date = utils.today()
-    //     cage_id_promise = cage_controller.insert(cage)
+    //     status_id_promise = cage_controller.insert(cage)
     //         .then(c => c.id)
     // } else {
-        cage_id_promise = Promise.resolve(req.body.status_id[0])
+
+    status_id_promise = enum_controller.get_or_create(req.body.status_description, mouse_controller.STATUS)
+         // status_id_promise= Promise.resolve(req.body.status_id)
     // }
-   
-    cage_id_promise.then(statu_id =>{
+
+    status_id_promise.then(status_id =>{
         const update_promises = req.body.mouse_ids
-            .map(id => mouse_controller.update({ id, statu_id }))
+            .map(id => mouse_controller.update({ id, status_id }))
 
         Promise.all(update_promises)
             .then(() => res.send({ success: true }))
@@ -280,12 +282,19 @@ router.post('/update_mice_status', function(req, res) {
                 })
             })
     })
+    .catch((err) => {
+                    utils.log_json(err)
+                    res.status(500).send({
+                        success: false,
+                        err
+                    })
+                })
 });
 
 router.post('/breed_mice_together', function(req, res) {
     utils.log_json(req.body)
     const mouse_ids = req.body.mouse_ids
-    return enum_controller.by_type('SEX').then(sex_enums => {
+    return enum_controller.by_type(mouse_controller.SEX).then(sex_enums => {
             let sex_map = {}
             sex_enums.forEach(sex => sex_map[sex.id] = sex.description)
             return sex_map

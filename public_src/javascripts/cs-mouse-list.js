@@ -1,6 +1,6 @@
 import * as Toastr from 'toastr'
 import range from 'lodash/range'
-import * as Axios from 'Axios'
+import * as Axios from 'axios'
 
 import 'bootstrap'
 import 'datatables.net'
@@ -26,7 +26,7 @@ const setup_aggregation_buttons = (table) => {
 
     const pair_button = $('#breed-mouse-button')
     const cage_button = $('#cage-mouse-button')
-    const status_button = $('#status-mouse-button')
+    const status_button = $('#open-status-mouse-modal')
 
     function update_buttons() {
         const selected_row_count = table.rows({ selected: true }).data().pluck('id').length
@@ -34,7 +34,7 @@ const setup_aggregation_buttons = (table) => {
         let disable_pair = true
         let disable_cage = true
         let disable_status = true
-        // todo: create validation for M1 : F*
+        // todo: create validation for M 1 : F*
         if (selected_row_count >= 2) {
             disable_pair = false
         }
@@ -80,7 +80,7 @@ const setup_aggregation_buttons = (table) => {
                 Toastr.error(error)
             });
     })
-    
+
     $('#set-status-mouse-button').click(()=>{
         const mouse_ids = table.get_selected_row_ids()
 
@@ -88,7 +88,7 @@ const setup_aggregation_buttons = (table) => {
         Axios.post('/mouse/update_mice_status', data)
             .then((response) => {
                 console.log(response)
-                Toastr.success("paired")
+                Toastr.success("status updated")
                 window.location.href = '/mouse'
                 return false
             })

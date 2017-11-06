@@ -26,7 +26,18 @@ class Controller extends Base_Controller {
                 })
                 return enum_id_map
             })
-ca
+    }
+
+    get_or_create(_description, _code){
+        return Enum.findOrCreate({
+            attributes: ['id', 'description'],
+            where: {type: _code, description: _description}
+        })
+        .spread((enoom, is_created) =>{
+            console.log("new enum created: " + is_created)
+            return enoom.get({plain: true}).id
+        })
+
     }
 }
 

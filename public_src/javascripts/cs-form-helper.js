@@ -2,7 +2,7 @@ export function set_text (id, value = ''){
     $('#'+id).val(value).change()
 }
 export function set_select (id, value=''){
-    $('#'+id)[0].selectize.setValue(""+value)
+    $('#'+id)[0].selectize.setValue(''+value)
 }
 export function set_radio (id, value='') {
     // turn off all previous checks
@@ -19,6 +19,15 @@ export function id_to_val (el){
     result[$(el).attr('id')] = $(el).val();
     return result;
 }
+export function id_to_val_select (el){
+    let result = {};
+    result[$(el).attr('id')] = $(el).val();
+    let s = el.selectize
+    let v = s.getValue()
+    let description = s.getItem(v).text()
+    result[$(el).attr('id').replace('_id', '') + '_description'] = description;
+    return result;
+}
 export function id_to_val_slider (el){
     let result = {};
     result[$(el).attr('id')] = el.noUiSlider.get();
@@ -31,11 +40,13 @@ export function name_to_val (el){
 }
 export function form_ids_vals (form_id){
     const form = $('#'+form_id);
-    return [].concat(form.find(':text, select, :hidden').toArray()
+    return [].concat(form.find(':text, select, :hidden, input').toArray()
         .filter((el)=>{return $(el).attr('id') !== undefined})
         .filter((el)=>{return $(el).attr('id').length > 0})
         .filter((el)=>{return !$(el).attr('id').includes('-selectized')})
+        .filter((el)=>{return !$(el).attr('class') || $(el).attr('class') && !$(el).attr('class').includes('selectized')})
         .map(id_to_val))
+        .concat(form.find('select').toArray().map(id_to_val_select))
         .concat(form.find('textarea').toArray().map(id_to_val))
         .concat(form.find('.slider').toArray().map(id_to_val_slider))
         .concat(form.find(':radio:checked').toArray().map(name_to_val))

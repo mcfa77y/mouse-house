@@ -1,6 +1,6 @@
 import * as Toastr from 'toastr'
 import range from 'lodash/range'
-import * as Axios from 'Axios'
+import * as Axios from 'axios'
 import MaterialDatetimePicker from 'material-datetime-picker'
 
 import 'bootstrap'
@@ -175,6 +175,7 @@ export function setup_list_page_buttons(model_name, table) {
 
 
 export function init_page(model_name) {
+    $.material.init()
     nav_button(model_name)
     setupToastr()
     setupDropDown()
