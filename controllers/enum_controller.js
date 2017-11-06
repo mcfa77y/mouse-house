@@ -1,8 +1,6 @@
 const d = require('d');
 const memoizeMethods = require('memoizee/methods');
-
 const Base_Controller = require('./base_controller')
-const utils = require('./utils_controller')
 const Enum = require('../database/models').Enum
 
 class Controller extends Base_Controller {
@@ -14,7 +12,7 @@ class Controller extends Base_Controller {
         })
     }
 
-   by_type_map(_code) {
+    by_type_map(_code) {
         return Enum.findAll({
                 attributes: ['id', 'description'],
                 where: { type: _code }
@@ -27,17 +25,8 @@ class Controller extends Base_Controller {
                 return enum_id_map
             })
     }
-
-    get_or_create(_description, _code){
-        return Enum.findOrCreate({
-            attributes: ['id', 'description'],
-            where: {type: _code, description: _description}
-        })
-        .spread((enoom, is_created) =>{
-            console.log("new enum created: " + is_created)
-            return enoom.get({plain: true}).id
-        })
-
+    get model(){
+        return Enum
     }
 }
 

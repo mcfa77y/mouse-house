@@ -82,6 +82,20 @@ class Mouse_Controller extends Base_Controller {
             })
 
     }
+    some_pretty(limit, offset=0) {
+        const self = this
+        return Mouse.findAll({limit, offset})
+            .then((items) => {
+                return BlueBird.map(items, (item) => {
+                    return self.pretty(item)
+                })
+            })
+            .then((mouse_array) => {
+                return mouse_array
+
+            })
+
+    }
     by_id_alias(_id_alias) {
         const self = this;
         return this.get_where({

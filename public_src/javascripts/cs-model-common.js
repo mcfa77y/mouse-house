@@ -96,6 +96,9 @@ export function setup_table({ model_name, column_names, hide_id_column = false }
     table.get_selected_row_ids = get_selected_row_ids
 
     update_crud_buttons()
+    function get_more_rows(){
+        
+    }
     return table;
 
 }
@@ -166,7 +169,7 @@ export function setup_list_page_buttons(model_name, table) {
                 // window.location.href = '/' + model_name
                 // return false
                 table.rows({ selected: true }).remove().draw(false)
-
+                $('#confirm-delete-modal').modal('toggle')
             })
             .catch(error)
     })

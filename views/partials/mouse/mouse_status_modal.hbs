@@ -1,5 +1,5 @@
 <div id="set-mice-status-modal" class="modal fade">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-sm">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -7,7 +7,9 @@
             </div>
             <div class="modal-body">
                 <fieldset id="mouse-status-fields">
-                    {{> form_elements/select_input status id='status_id' description='Status'}}
+                <row>
+                    {{> form_elements/select_input status id='status_id' description='Status' class="col-md-12"}}
+                </row>
                 </fieldset>
             
 

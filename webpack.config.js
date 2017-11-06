@@ -38,6 +38,7 @@ module.exports = {
         new webpack.optimize.CommonsChunkPlugin({
             name: 'common' // Specify the common bundle's name.
         }),
+        new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
         // new webpack.ProvidePlugin({
         //     $: "jquery",
         //     jQuery: "jquery",
