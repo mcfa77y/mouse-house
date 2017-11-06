@@ -1,4 +1,4 @@
- fconst cool = require('cool-ascii-faces');
+const cool = require('cool-ascii-faces');
 const express = require('express');
 const app = express();
 const pg = require('pg');
