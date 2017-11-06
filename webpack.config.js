@@ -29,12 +29,12 @@ module.exports = {
         // new HtmlWebpackPlugin({
         //     title: 'Output Management'
         // }),
-        new UglifyJSPlugin({
-            uglifyOptions: {
-                ie8: false,
-                ecma: 6
-            }
-        }),
+        // new UglifyJSPlugin({
+        //     uglifyOptions: {
+        //         ie8: false,
+        //         ecma: 6
+        //     }
+        // }),
         new webpack.optimize.CommonsChunkPlugin({
             name: 'common' // Specify the common bundle's name.
         }),
