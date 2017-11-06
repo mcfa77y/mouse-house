@@ -1,8 +1,8 @@
 $(function() {
-    const column_names = ['id', 'id_alias', 'ear_tag', 
-        'age', 'dob', 'genotype', 
-        'sex', 'status', 'cage', 
-        'parents', 'notes'
+    const column_names = ['id', 'id_alias', 'ear_tag', 'age', 'dob',
+        'genotype', 'sex', 'notes',
+        'status', 'created_at',
+        'updated_at'
     ]
     const mouse_table = setup_table({ model_name: 'mouse', column_names, hide_id_column: true })
 
@@ -15,14 +15,13 @@ const setup_aggregation_buttons = (table) => {
 
     const pair_button = $('#breed-mouse-button')
     const cage_button = $('#cage-mouse-button')
-    const status_button = $('#status-mouse-button')
 
     function update_buttons() {
         const selected_row_count = table.rows({ selected: true }).data().pluck('id').length
 
         let disable_pair = true
         let disable_cage = true
-        let disable_status = true
+
         // todo: create validation for M1 : F*
         if (selected_row_count >= 2){
             disable_pair = false
@@ -30,13 +29,11 @@ const setup_aggregation_buttons = (table) => {
 
         if (selected_row_count > 0){
             disable_cage = false
-            disable_status = false
         }
 
 
         pair_button.attr('disabled', disable_pair)
         cage_button.attr('disabled', disable_cage)
-        status_button.attr('disabled', disable_status)
     }
 
 
@@ -65,8 +62,9 @@ const setup_aggregation_buttons = (table) => {
 }
 
 const setup_cage_mice_modal = (mouse_table) => {
-    let columns = ['id', 'id_alias', 'type', 
-    'end_date', 'mice', 'notes'
+    let columns = ['id', 'id_alias', 'name',
+        'type', 'setup_date', 'update_date',
+        'end_date', 'mice', 'notes'
     ]
     columns = columns.map((x) => {
         return { data: x }

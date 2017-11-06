@@ -9,18 +9,20 @@ module.exports = {
                 { description: 'male', type: 'SEX', created_at: date, updated_at: date },
                 { description: 'female', type: 'SEX', created_at: date, updated_at: date },
                 { description: 'unknown', type: 'SEX', created_at: date, updated_at: date },
-                { description: 'mouse_status_0', type: 'MOUSE_STATUS', created_at: date, updated_at: date },
-                { description: 'mouse_status_1', type: 'MOUSE_STATUS', created_at: date, updated_at: date },
-                { description: 'unkown', type: 'MOUSE_GENOTYPE', created_at: date, updated_at: date },
+                { description: 'breeder', type: 'MOUSE_STATUS', created_at: date, updated_at: date },
+                { description: 'experimental', type: 'MOUSE_STATUS', created_at: date, updated_at: date },
+                { description: 'stock', type: 'MOUSE_STATUS', created_at: date, updated_at: date },
+                { description: 'terminated', type: 'MOUSE_STATUS', created_at: date, updated_at: date },
+                { description: 'unkown', type: 'MOUSE_STATUS', created_at: date, updated_at: date },
                 { description: 'Goldenticket', type: 'MOUSE_GENOTYPE', created_at: date, updated_at: date },
                 { description: 'Rag2', type: 'MOUSE_GENOTYPE', created_at: date, updated_at: date },
                 { description: 'B6', type: 'MOUSE_GENOTYPE', created_at: date, updated_at: date },
                 { description: 'IRF 3/7 -/- dKO', type: 'MOUSE_GENOTYPE', created_at: date, updated_at: date },
-                { description: 'unknown', type: 'CAGE_TYPE', created_at: date, updated_at: date },
-                { description: 'stock', type: 'CAGE_TYPE', created_at: date, updated_at: date },
                 { description: 'breeder', type: 'CAGE_TYPE', created_at: date, updated_at: date },
                 { description: 'experimental', type: 'CAGE_TYPE', created_at: date, updated_at: date },
-                { description: 'terminated', type: 'CAGE_TYPE', created_at: date, updated_at: date }
+                { description: 'stock', type: 'CAGE_TYPE', created_at: date, updated_at: date },
+                { description: 'terminated', type: 'CAGE_TYPE', created_at: date, updated_at: date },
+                { description: 'unknown', type: 'CAGE_TYPE', created_at: date, updated_at: date },
             ], {})
         /*
           Add altering commands here.

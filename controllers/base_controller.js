@@ -20,7 +20,7 @@ class Base_Controller {
     }
     upsert(_model_data) {
         _model_data = utils.remove_empty(_model_data)
-        return this.Model.upsert(_model_data, {returning: true})
+        return this.Model.upsert(_model_data)
     }
     update(_model_data) {
         _model_data = utils.remove_empty(_model_data)

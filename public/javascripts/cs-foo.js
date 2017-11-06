@@ -9,7 +9,7 @@ const setup_table = ({ model_name, column_names, hide_id_column = false }) => {
         dom: 'lBfrtip',
         // buttons: ['selectAll', 'selectNone', 'copy', 'excel', 'pdf','colvis'],
         buttons: ['selectAll', 'selectNone', 'excel', 'colvis'],
-        scrollY: 325,
+        scrollY: 450,
         paging: false,
         info: false,
         columns,

@@ -4,12 +4,14 @@
             <th>id</th>
             <th>#</th>
             <th>male</th>
+            <th>age (wks)</th>
             <th>female</th>
+            <th>age (wks)</th>
             <th>pairing</th>
             <th>plug</th>
+            <th>pup check</th>
             <th>litter</th>
             <th>ween</th>
-            <th>pup check</th>
             <th>male count</th>
             <th>female count</th>
             <th>Notes</th>
@@ -20,13 +22,15 @@
         <tr>
             <td>{{id}}</td>
             <td><a href="breed/{{id_alias}}">{{id_alias}}</a></td>
-            <td>{{male_mouse}}</td>
-            <td>{{female_mouse}}</td>
+            <td><a href="/mouse/{{male_mouse.id}}">{{male_mouse.id}}</a></td>
+            <td>{{male_mouse.age}}</td>
+            <td><a href="/mouse/{{female_mouse.id}}">{{female_mouse.id}}</td>
+            <td>{{female_mouse.age}}</td>
             <td>{{pairing_date}}</td>
             <td>{{plug_date}}</td>
+            <td>{{pup_check_date}}</td>
             <td>{{litter_date}}</td>
             <td>{{ween_date}}</td>
-            <td>{{pup_check_date}}</td>
             <td>{{male_count}}</td>
             <td>{{female_count}}</td>
             <td>{{ellipsis note 32}}</td>

@@ -17,15 +17,16 @@
             </span>
             
              <span class="pull-left" data-toggle="tooltip" data-placement="top" title="Assign status">
-                <button id="status-mouse-button"  type="button" class="btn btn-primary" >
+                <button id="open-status-mouse-modal-button"  type="button" class="btn btn-primary" data-toggle="modal"  data-target="#set-mice-status-modal">
                     <i class="fa fa-meh-o fa-2x" aria-hidden="true"></i>
                 </button>
             </span>
         </div>
         <div class="col-md-6 ">
-            {{> crud_buttons model_name='mouse'}}
+            {{> crud_buttons }}
         </div>
     </div>
 </div>
 {{> mouse/mouse_cage_modal}}
-{{> common/delete_confirmation_modal model_name='mouse'}}
+{{> mouse/mouse_status_modal}}
+{{> common/delete_confirmation_modal }}

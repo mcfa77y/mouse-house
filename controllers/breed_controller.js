@@ -2,12 +2,12 @@ const BlueBird = require('bluebird')
 const isFalsey = require('falsey')
 const _ = require('underscore')
 const utils = require('./utils_controller')
-const city_names = require('../lib/data/city_names.json').city_names
+// const city_names = require('../lib/data/city_names.json').city_names
 
 const Base_Controller = require('./base_controller')
 const enum_controller = require('./enum_controller')
 const Breed = require('../database/models').Breed
-const Mouse = require('../database/models').Mouse
+// const Mouse = require('../database/models').Mouse
 
 class Breed_Controller extends Base_Controller {
     pretty(model) {
@@ -23,13 +23,20 @@ class Breed_Controller extends Base_Controller {
                 let sex_map = {}
                 sex_enums.forEach(sex => sex_map[sex.id] = sex.description)
                 const mice_group_by_sex = _.groupBy(mice, (mouse) => {
-                        return sex_map[mouse.sex_id]
-                    })
+                    return sex_map[mouse.sex_id]
+                })
                 if (!isFalsey(mice_group_by_sex)) {
-                    pretty_model.male_mouse = mice_group_by_sex.male[0].id_alias
-                    pretty_model.female_mouse = mice_group_by_sex.female[0].id_alias
-                } 
-                else {
+                    const male = mice_group_by_sex.male[0]
+                    pretty_model.male_mouse = {
+                        id: male.id_alias,
+                        age: utils.relative_time(male.dob)}
+                    
+                    const female = mice_group_by_sex.female[0]
+                    pretty_model.female_mouse = {
+                        id: female.id_alias,
+                        age: utils.relative_time(female.dob)
+                    }
+                } else {
                     pretty_model.male_mouse = ''
                     pretty_model.female_mouse = ''
                 }

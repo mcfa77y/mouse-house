@@ -26,7 +26,7 @@ router.get('/', function(req, res) {
 
             res.render('pages/breed/breed_list', {
                 breeds,
-                extra_js: ['cs-breed-list']
+                extra_js: ['breed_list.bundle.js']
             })
         })
         .catch(error => {
@@ -53,7 +53,7 @@ router.get('/create', function(req, res) {
                 genotype: gt,
                 male_mouse: mm,
                 female_mouse: fm,
-                extra_js: ['cs-breed-create']
+                extra_js: ['breed_update.bundle.js']
             })
         })
         .catch(error => {
@@ -82,7 +82,7 @@ router.get('/:id_alias', function(req, res) {
                 male_mice,
                 female_mice,
                 breed,
-                extra_js: ['cs-breed-update']
+                extra_js: ['breed_update.bundle.js']
             })
         })
         .catch((err) => {
