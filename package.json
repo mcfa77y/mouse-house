@@ -11,7 +11,8 @@
     "build:prod": "webpack -p",
     "start": "node index.js",
     "watch": "webpack --watch",
-    "debug": "nodemon --inspect index.js && webpack --watch"
+    "debug": "nodemon --inspect index.js && webpack --watch",
+    "postinstall": "webpack -p  --progress"
   },
   "dependencies": {
     "ajv": "^5.2.3",
