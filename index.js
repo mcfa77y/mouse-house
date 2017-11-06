@@ -1,7 +1,5 @@
-const cool = require('cool-ascii-faces');
 const express = require('express');
 const app = express();
-const pg = require('pg');
 const path = require('path');
 const favicon = require('serve-favicon');
 const logger = require('morgan');
@@ -10,7 +8,6 @@ const bodyParser = require('body-parser');
 const cors = require('cors')
 const helmet = require('helmet')
     // const routes = require('./routes/index');
-const rp = require('request-promise');
 const router = express.Router();
 
 
@@ -45,7 +42,7 @@ app.set('port', (process.env.PORT || 5000));
 
 // reg partials
 hbs.registerPartials(__dirname + '/views/partials');
-hbsutils.registerWatchedPartials(__dirname + '/views/partials');
+// hbsutils.registerWatchedPartials(__dirname + '/views/partials');
 
 // hbs.registerPartials(__dirname + '/views/partials/form-elements');
 // hbsutils.registerWatchedPartials(__dirname + '/views/partials/form-elements');
