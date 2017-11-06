@@ -1,4 +1,4 @@
-const cool = require('cool-ascii-faces');
+ fconst cool = require('cool-ascii-faces');
 const express = require('express');
 const app = express();
 const pg = require('pg');
@@ -35,7 +35,7 @@ const cage = require('./routes/cage_routes');
 
 // handel bars helpers
 const hbs = require('hbs');
-const hbsutils = require('hbs-utils')(hbs);
+// const hbsutils = require('hbs-utils')(hbs);
 const helpers = require('handlebars-helpers')({
     handlebars: hbs.handlebars
 });
