@@ -195,7 +195,7 @@ function _do_cage_upsert(model) {
 
 function _do_status_upsert(model) {
     const status = {}
-    status.description = model.status_id
+    status.description = model.description
     status.type = mouse_controller.STATUS
 
     return enum_controller.model.findOrCreate({where: status})
@@ -298,17 +298,18 @@ router.post('/update_mice_status', function(req, res) {
     //     status_id_promise = cage_controller.insert(cage)
     //         .then(c => c.id)
     // } else {
-
-    status_id_promise = enum_controller.get_or_create(req.body.status_description, mouse_controller.STATUS)
+    const status = {description: req.body.status_description,
+        type: mouse_controller.STATUS}
+    status_id_promise = _do_status_upsert(status)
          // status_id_promise= Promise.resolve(req.body.status_id)
     // }
 
-    status_id_promise.then(status_id =>{
+    status_id_promise.then(status =>{
         const update_promises = req.body.mouse_ids
-            .map(id => mouse_controller.update({ id, status_id }))
+            .map(id => mouse_controller.update({ id, status_id: status.status_id }))
 
         Promise.all(update_promises)
-            .then(() => enum_controller.get(status_id))
+            .then(() => enum_controller.get(status.status_id))
             .then((status) => res.send({
                 success: true,
                 status: status.description
