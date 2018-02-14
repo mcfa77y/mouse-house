@@ -12,3 +12,4 @@ Dockerfile
 docker-compose.yml
 *.bundle.js
 public/javascripts/*.bundle.js
+
