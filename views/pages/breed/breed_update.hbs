@@ -12,7 +12,7 @@
             </div>
             <div class="row">
                 {{> form_elements/date_input id='plug_date' description='Plug' value=breed.plug_date}}
-                {{> form_elements/date_input id='pup_check_date' description='Pup check' value=breed.pup_check_date}}
+                {{> form_elements/text_input id='pup_check_date' description='Pup check' value=breed.pup_check_date isReadOnly=true}}
             </div>
 
             {{> form_elements/text_area_input id='note' description='Note' value=breed.note}}

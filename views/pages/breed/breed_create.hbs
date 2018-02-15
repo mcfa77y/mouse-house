@@ -10,10 +10,9 @@
             {{> form_elements/select_input male_mouse id='male_mouse' description='Male'}}
             {{> form_elements/select_input female_mouse id='female_mouse' description='Female'}}
 
-            {{> form_elements/date_input id='pairing-date' description='Pairing'}}
-            {{> form_elements/date_input id='plug-date' description='Plug'}}
-            {{> form_elements/date_input id='pup-check-date' description='Pup check'}}
-
+            {{> form_elements/date_input id='pairing_date' description='Pairing'}}
+            {{> form_elements/date_input id='plug_date' description='Plug'}}
+            {{> form_elements/text_input id='pup_check_date' description='Pup check' isReadOnly=true}}
             </div>
             {{> form_elements/text_area_input id='note' description='Note'}}
             <div class="col-md-12">
@@ -22,11 +21,10 @@
                 </div>
             <div id="demo" class="collapse">
                 <div class="row">
-                {{> form_elements/date_input id='pup-check-date' description='Pup check'}}
-                {{> form_elements/date_input id='litter-date-of-birth' description='Litter D.O.B.'}}
-                {{> form_elements/date_input id='ween-date' description='Ween'}}
-                {{> form_elements/text_input id='male-count' description='Male count' placeholder='3'}}
-                {{> form_elements/text_input id='female-count' description='Female count' placeholder='3'}}
+                {{> form_elements/date_input id='litter_date_of_birth' description='Litter D.O.B.'}}
+                {{> form_elements/date_input id='ween_date' description='Ween'}}
+                {{> form_elements/text_input id='male_count' description='Male count' placeholder='3'}}
+                {{> form_elements/text_input id='female_count' description='Female count' placeholder='3'}}
                 </div>
                 {{> form_elements/text_area_input id='note2' description='Note'}}
             </div>

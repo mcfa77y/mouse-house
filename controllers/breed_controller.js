@@ -1,16 +1,15 @@
 const BlueBird = require('bluebird');
 const isFalsey = require('falsey');
-const _ = require('underscore');
 const utils = require('./utils_controller');
 // const city_names = require('../lib/data/city_names.json').city_names
 
 const Base_Controller = require('./base_controller');
 const enum_controller = require('./enum_controller');
-const Breed = require('../database/models').Breed;
+const { Breed } = require('../database/models');
 // const Mouse = require('../database/models').Mouse
 
 class Breed_Controller extends Base_Controller {
-    pretty(model) {
+    static pretty(model) {
         return BlueBird.props({
             genotype: model.getGenotype(),
             mice: model.getMice(),
@@ -73,9 +72,9 @@ class Breed_Controller extends Base_Controller {
             .then(x => self.pretty(x[0]));
     }
 
-    insert(_model) {
-        _model = utils.remove_empty(_model, true);
-        return Breed.create(_model, {
+    static insert(model_original) {
+        const model = utils.remove_empty(model_original, true);
+        return Breed.create(model, {
             include: [{ association: Breed.Note }],
             returning: true,
         })
@@ -83,18 +82,18 @@ class Breed_Controller extends Base_Controller {
                 console.log(err);
             });
     }
-    update(_model) {
-        _model = utils.remove_empty(_model, true);
-        return Breed.update(_model, {
-            where: { id: _model.id },
+    static update(model_original) {
+        const model_clean = utils.remove_empty(model_original, true);
+        return Breed.update(model_clean, {
+            where: { id: model_clean.id },
             returning: true,
         })
             .then(updated_model => BlueBird.props({
                 note: updated_model[1][0].getNote(),
                 model: updated_model[1][0],
             }))
-            .then(({ mice, note, model }) => {
-                isFalsey(note) ? model.createNote(_model.note) : note.update(_model.note);
+            .then(({ note, model }) => {
+                isFalsey(note) ? model.createNote(model.note) : note.update(model.note);
             });
     }
 }

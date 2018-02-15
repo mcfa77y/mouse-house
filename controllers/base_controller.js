@@ -1,4 +1,4 @@
-const utils = require('./utils_controller')
+const utils = require('./utils_controller');
 // Constructor
 class Base_Controller {
     constructor(_Model) {
@@ -6,31 +6,31 @@ class Base_Controller {
         this.Model = _Model;
     }
     all() {
-        return this.Model.findAll()
+        return this.Model.findAll();
     }
     get(_id) {
-        return this.Model.findById(_id)
+        return this.Model.findById(_id);
     }
     get_where(_where) {
-       return this.Model.findAll({where: _where})
+        return this.Model.findAll({ where: _where });
     }
-    insert(_model_data) {
-        _model_data = utils.remove_empty(_model_data)
-        return this.Model.create(_model_data, {returning: true})
+    insert(model_data_original) {
+        const model_data = utils.remove_empty(model_data_original);
+        return this.Model.create(model_data, { returning: true });
     }
-    upsert(_model_data) {
-        _model_data = utils.remove_empty(_model_data)
-        return this.Model.upsert(_model_data)
+    upsert(model_data_original) {
+        const model_data = utils.remove_empty(model_data_original);
+        return this.Model.upsert(model_data);
     }
-    update(_model_data) {
-        _model_data = utils.remove_empty(_model_data)
-        return this.Model.update(_model_data, {where: {id: _model_data.id}} )
+    update(model_data_original) {
+        const model_data = utils.remove_empty(model_data_original);
+        return this.Model.update(model_data, { where: { id: model_data.id } });
     }
     delete(_id) {
-        return this.delete_where({id: _id})
+        return this.delete_where({ id: _id });
     }
-    delete_where(_where){
-        return this.Model.destroy({where: _where})
+    delete_where(_where) {
+        return this.Model.destroy({ where: _where });
     }
 }
 

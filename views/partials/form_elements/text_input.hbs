@@ -1,7 +1,11 @@
 <div class="form-group label-floating  col-md-3 col-sm-6">
     <label for="{{id}}" class=" control-label">{{description}}</label>
     <div >
-    	<input type="text" class="form-control" id="{{id}}" value="{{value}}" placeholder="{{placeholder}}"/>
+        {{#if isReadOnly}}
+    	<input type="text" class="form-control" id="{{id}}" value="{{value}}" placeholder="{{placeholder}}" disabled/>
+        {{else}}
+        <input type="text" class="form-control" id="{{id}}" value="{{value}}" placeholder="{{placeholder}}"/>
+        {{/if}}
     </div>
 </div>
 

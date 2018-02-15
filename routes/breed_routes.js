@@ -51,7 +51,7 @@ router.get('/create', (req, res) => {
                 genotype: gt,
                 male_mouse: mm,
                 female_mouse: fm,
-                extra_js: ['breed_update.bundle.js'],
+                extra_js: ['breed_create.bundle.js'],
             });
         })
         .catch((error) => {
@@ -97,7 +97,7 @@ router.delete('/:id', (req, res) => {
     });
 
     return Promise.all(rm_promises)
-        .then((x) => {
+        .then(() => {
             res.send({
                 success: true,
             });
