@@ -5,6 +5,7 @@
         "indent": ["error", 4]
       },
       "env": {
-          "jquery": true
+          "jquery": true,
+          "browser": true
       }
 }

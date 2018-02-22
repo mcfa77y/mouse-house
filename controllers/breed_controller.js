@@ -1,5 +1,6 @@
 const BlueBird = require('bluebird');
 const isFalsey = require('falsey');
+const _ = require('underscore');
 const utils = require('./utils_controller');
 // const city_names = require('../lib/data/city_names.json').city_names
 
@@ -9,7 +10,7 @@ const { Breed } = require('../database/models');
 // const Mouse = require('../database/models').Mouse
 
 class Breed_Controller extends Base_Controller {
-    static pretty(model) {
+    pretty(model) {
         return BlueBird.props({
             genotype: model.getGenotype(),
             mice: model.getMice(),
@@ -42,8 +43,8 @@ class Breed_Controller extends Base_Controller {
                 }
 
 
-                pretty_model.id = parseInt(model.id);
-                pretty_model.id_alias = parseInt(model.id_alias);
+                pretty_model.id = parseInt(model.id, 10);
+                pretty_model.id_alias = parseInt(model.id_alias, 10);
                 pretty_model.ween_date = isFalsey(model.ween_date) ? '' : utils.format_date(model.ween_date);
                 pretty_model.female_count = model.female_count;
                 pretty_model.genotype = isFalsey(genotype) ? '' : genotype.description;
@@ -72,7 +73,7 @@ class Breed_Controller extends Base_Controller {
             .then(x => self.pretty(x[0]));
     }
 
-    static insert(model_original) {
+    insert(model_original) {
         const model = utils.remove_empty(model_original, true);
         return Breed.create(model, {
             include: [{ association: Breed.Note }],
@@ -82,7 +83,7 @@ class Breed_Controller extends Base_Controller {
                 console.log(err);
             });
     }
-    static update(model_original) {
+    update(model_original) {
         const model_clean = utils.remove_empty(model_original, true);
         return Breed.update(model_clean, {
             where: { id: model_clean.id },

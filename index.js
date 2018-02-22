@@ -32,7 +32,8 @@ const cage = require('./routes/cage_routes');
 
 // handel bars helpers
 const hbs = require('hbs');
-// const hbsutils = require('hbs-utils')(hbs);
+require('hbs-utils')(hbs);
+
 const helpers = require('handlebars-helpers')({
     handlebars: hbs.handlebars
 });
