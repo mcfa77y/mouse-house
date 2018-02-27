@@ -12,6 +12,7 @@ import 'datatables.net-responsive-dt/css/responsive.dataTables.min.css';
 import 'datatables.net-buttons';
 import 'datatables.net-buttons/js/buttons.colVis';
 import 'datatables.net-buttons/js/buttons.html5';
+import 'bootstrap-material-design';
 
 import { form_ids_vals, json_string } from './cs-form-helper';
 
@@ -135,7 +136,8 @@ export function setupDatePicker() {
 }
 
 export function init_page(model_name) {
-    $.material.init();
+    // $.material.init();
+    // $('body').bootstrapMaterialDesign();
     nav_button(model_name);
     setupToastr();
     setupDropDown();
