@@ -1,10 +1,11 @@
-<div class="well bs-component">
-    <div class="page-header">
-        <h4>Cages</h4>
-    </div>
-    {{> cage/cage_table}}
-    <div class="row">
-        {{>crud_buttons model_name='cage'}}
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">Cages</h4>
+        
+        {{> cage/cage_table}}
+        <div class="row">
+            {{>crud_buttons model_name='cage'}}
+        </div>
     </div>
 </div>
 {{> common/delete_confirmation_modal model_name='cage'}}

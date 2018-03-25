@@ -1,9 +1,7 @@
-<div class="well bs-component">
-    <div class="page-header">
-        <h4>Add Breed</h4> {{mouse}}
-    </div>
-
-    <div >
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">Add Breed</h4> {{mouse}}
+        
         <fieldset>
             <div class="row">
             {{> form_elements/text_input id='id_alias' description='ID' placeholder='1234'}}
@@ -29,10 +27,10 @@
                 {{> form_elements/text_area_input id='note2' description='Note'}}
             </div>
         </fieldset>
-    </div>
-    <div class="row">
-        <button id="save-breed-button" type="button" class="btn btn-primary pull-right">Save</button>
-        <button id="back-breed-button" type="button" class="btn btn-default pull-right">Back</button>
+        
+        <div class="row">
+            <button id="save-breed-button" type="button" class="btn btn-primary pull-right">Save</button>
+            <button id="back-breed-button" type="button" class="btn btn-default pull-right">Back</button>
+        </div>
     </div>
 </div>
-   
