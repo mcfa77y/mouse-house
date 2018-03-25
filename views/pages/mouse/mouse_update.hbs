@@ -1,8 +1,6 @@
-<div class="well bs-component">
-    <div class="page-header">
-        <h4>Update mouse</h4>
-    </div>
-    <div>
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">Update mouse</h4>
         <fieldset id="mouse-fields">
             {{> form_elements/text_input id='id_alias' description='ID' placeholder='1234' value=mouse.id_alias }}
             {{> form_elements/text_input id='ear_tag' description='Ear tag' placeholder='1234' value=mouse.ear_tag}}
@@ -14,10 +12,10 @@
             {{> form_elements/text_area_input id='note' description='note' value=mouse.notes}}
             <input type="hidden" id="id" value="{{mouse.id}}"/>
         </fieldset>
+    
+        <div class="row">
+            <button id="update-mouse-button" type="button" class="btn btn-primary pull-right">Update</button>
+            <button id="back-mouse-button" type="button" class="btn btn-default pull-right">Back</button>
+        </div>
     </div>
-    <div class="row">
-        <button id="update-mouse-button" type="button" class="btn btn-primary pull-right">Update</button>
-        <button id="back-mouse-button" type="button" class="btn btn-default pull-right">Back</button>
-    </div>
-
 </div>

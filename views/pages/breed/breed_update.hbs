@@ -1,9 +1,7 @@
-<div class="well bs-component">
-    <div class="page-header">
-        <h4>Update Breed</h4>
-    </div>
-
-    <div >
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title"> Update Breed</h4>
+    
         <fieldset id="breed-fields">
             <div class="row">
                 {{> form_elements/select_input male_mice id='male_mouse' description='Male' value=breed.male_mouse}}
@@ -31,10 +29,10 @@
                 <input type="hidden" id="id" value="{{breed.id}}"/>
             </div>
         </fieldset>
-    </div>
-    <div class="row">
-        <button id="update-breed-button" type="button" class="btn btn-primary pull-right">Save</button>
-        <button id="back-breed-button" type="button" class="btn btn-default pull-right">Back</button>
+    
+        <div class="row">
+            <button id="update-breed-button" type="button" class="btn btn-primary pull-right">Save</button>
+            <button id="back-breed-button" type="button" class="btn btn-default pull-right">Back</button>
+        </div>
     </div>
 </div>
-
