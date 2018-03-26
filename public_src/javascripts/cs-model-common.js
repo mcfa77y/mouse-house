@@ -154,9 +154,13 @@ export function setup_table({ model_name, column_names, hide_id_column = false }
         select: { style: 'multi' },
         responsive: true,
         dom: 'lBfrtip',
-        // buttons: ['selectAll', 'selectNone', 'copy', 'excel', 'pdf','colvis'],
-        buttons: ['selectAll', 'selectNone', 'excel', 'colvis'],
-        scrollY: '375px',
+        buttons: [
+            { extend: 'selectAll', className: 'btn btn-secondary' },
+            { extend: 'selectNone', className: 'btn btn-secondary' },
+            { extend: 'excel', className: 'btn btn-secondary' },
+            { extend: 'colvis', className: 'btn btn-secondary' },
+        ],
+        scrollY: '500px',
         scrollCollapse: true,
         paging: false,
         info: false,
@@ -181,6 +185,9 @@ export function setup_table({ model_name, column_names, hide_id_column = false }
     }
 
     const table = $(`#${model_name}-list`).DataTable(table_options);
+    debugger
+    table.buttons().container()
+        .appendTo(`#${model_name}-list_wrapper .col-md-6:eq(0)`);
 
     const update_modal_button = $(`#update-${model_name}-button`);
     const delete_button = $(`#open-delete-${model_name}-modal-button`);

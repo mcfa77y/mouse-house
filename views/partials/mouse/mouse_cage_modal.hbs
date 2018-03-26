@@ -1,14 +1,14 @@
-<div id="cage-mice-together-modal" class="modal fade">
+<div id="cage-mice-together-modal" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
+                <h4 class="modal-title">Cage mice together - select cage</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title">Cage mice together</h4>
             </div>
             <div class="modal-body">
                 <fieldset id="mouse-cage-fields">
                     {{> cage/cage_table}}
-                    <h5>or</h5>
+                    <h5 class="mt-3">or</h5>
                     {{> form_elements/text_input id='cage_id_alias' description='New Cage' placeholder='321' }}
                 </fieldset>
             

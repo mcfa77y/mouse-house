@@ -105,7 +105,7 @@ const setup_cage_mice_modal = (mouse_table) => {
         select: true,
         responsive: true,
         dom: 'lBfrtip',
-        buttons: ['colvis'],
+        buttons: [{ extend: 'colvis', className: 'btn btn-secondary' }],
         columns,
         scrollY: '100%',
         paging: false,
@@ -148,9 +148,9 @@ const setup_cage_mice_modal = (mouse_table) => {
         return false;
     };
 
-    const error = (error) => {
-        console.log(error);
-        Toastr.error(error);
+    const error = (error_msg) => {
+        console.log(error_msg);
+        Toastr.error(error_msg);
     };
 
     const cage_mice_together_button = $('#cage-mice-together-button');
@@ -169,7 +169,10 @@ const setup_cage_mice_modal = (mouse_table) => {
             .then(success)
             .catch(error);
     });
-    // setup_table({model_name: 'cage', column_names, hide_id_column:true })
+
+    $('#cage-mice-together-modal').on('shown.bs.modal', () => {
+        $('#cage-list').DataTable().columns.adjust();
+    });
 };
 
 $(() => {
