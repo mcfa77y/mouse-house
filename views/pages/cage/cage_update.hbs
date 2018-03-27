@@ -12,15 +12,14 @@
             </div>
             <div class='row'>
                 {{> form_elements/select_input mice_select id='mouse_ids' isMultiple=true description='Mice' value=cage.mouse_ids}}
-                <div class='col-md-3 col-sm-6'>
-                    <button id='show-mouse-table-buton' data-toggle='collapse' data-target='#mouse-table' type='button' class='btn btn-default'>Add mice</button>
+                <div class='col-md-3 col-sm-6 d-flex align-items-center '>
+                        <button id='show-mouse-table-button' data-toggle='collapse' data-target='#mouse-table' type='button' class='btn btn-default'>Add mice</button>
+                    
                 </div>
             </div>
-            <div class='row'>
-                <div id='mouse-table' class='collapse'>
-                    <div class='row'>
-                        {{> mouse/mouse_table}}
-                    </div>
+            <div class='row d-flex flex-column'>
+                <div id='mouse-table' class='collapse '>
+                    {{> mouse/mouse_table}}
                 </div>
             </div>
             <div class='row'>

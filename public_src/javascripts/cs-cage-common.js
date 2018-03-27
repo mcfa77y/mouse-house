@@ -14,10 +14,11 @@ export function setup_mouse_table() {
     const selected_mice_input = $('#mouse_ids')[0].selectize;
     selected_mice_input.disable();
 
-    const show_mouse_table_button = $('#show-mouse-table-button2');
-    show_mouse_table_button.click(() => {
-        table.columns.adjust()
-            .responsive.recalc().draw();
+    // const show_mouse_table_button = $('#show-mouse-table-button');
+    $('#mouse-table').on('shown.bs.collapse', () => {
+        table.columns.adjust();
+        // table.columns.adjust()
+        //     .responsive.recalc().draw();
     });
     $(document).on('shown.bs.modal', (e) => {
         console.log('\nshowN : ' + '\n');
