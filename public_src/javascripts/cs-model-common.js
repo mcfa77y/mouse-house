@@ -185,7 +185,6 @@ export function setup_table({ model_name, column_names, hide_id_column = false }
     }
 
     const table = $(`#${model_name}-list`).DataTable(table_options);
-    debugger
     table.buttons().container()
         .appendTo(`#${model_name}-list_wrapper .col-md-6:eq(0)`);
 

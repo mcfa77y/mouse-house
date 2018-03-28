@@ -25,7 +25,7 @@ router.delete('/api/mice/:id', db.removePuppy);
 router.get('/', function(req, res) {
     BlueBird.props({
             input: _get_inputs(),
-            mice: mouse_controller.some_pretty(BATCH_SIZE)
+            mice: mouse_controller.all_pretty()
         })
         .then(({ input, mice }) => {
             const status = utils.select_json(input.status, 'status_id')
