@@ -262,7 +262,7 @@ export function setup_create_page_buttons(model_name) {
 
 export function setup_update_page_buttons(model_name) {
     init_page(model_name);
-    const update_button = $(`#update-${model_name}-button`);
+    const update_button = $(`#save-${model_name}-button`);
     const back_button = $(`#back-${model_name}-button`);
 
     update_button.click(() => {
