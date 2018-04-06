@@ -124,6 +124,7 @@ export function setupDatePicker() {
                 picker.setDate(format_date_from_string(input.value, date_format));
                 picker.setTime(format_date_from_string(input.value, date_format));
                 // extra styling to make it look good and behave normally
+                $('.c-scrim.c-scrim--shown').css('z-index', 1199);
                 $('.c-datepicker.c-datepicker--open').css('z-index', 1200);
                 $('.c-datepicker__clock').css('padding-top', '357px');
                 $('.btn.btn-fab.btn-fab-mini.today-btn, .form-control.c-datepicker-input').prop('disabled', true);

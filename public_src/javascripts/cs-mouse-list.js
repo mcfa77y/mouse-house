@@ -86,8 +86,6 @@ const setup_aggregation_buttons = (table) => {
                     });
                 table.draw();
                 $('#set-mice-status-modal').modal('toggle');
-                // window.location.href = '/mouse'
-                // return false
             })
             .catch((error) => {
                 console.log(error);
