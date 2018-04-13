@@ -9,7 +9,7 @@ const enum_controller = require('../controllers/enum_controller');
 const mouse_controller = require('../controllers/mouse_controller');
 const utils = require('./utils_routes');
 
-function _get_breed_inputs() {
+function get_breed_inputs() {
     return BlueBird.props({
         genotype: enum_controller.by_type('MOUSE_GENOTYPE'),
         male_mice: mouse_controller.by_sex('male'),
@@ -17,6 +17,7 @@ function _get_breed_inputs() {
     });
 }
 
+// list
 router.get('/', (req, res) => {
     BlueBird.props({
         breeds: breed_controller.all_pretty(),
@@ -40,17 +41,17 @@ router.get('/', (req, res) => {
 });
 router.get('/create', (req, res) => {
     BlueBird.props({
-        input: _get_breed_inputs(),
+        input: get_breed_inputs(),
     })
         .then(({ input: { genotype, male_mice, female_mice } }) => {
             const gt = utils.select_json(genotype, 'mouse_genotype', 'Genotype');
             const mm = utils.select_json(male_mice, 'male_mouse');
             const fm = utils.select_json(female_mice, 'female_mouse');
 
-            res.render('pages/breed/breed_create', {
+            res.render('pages/breed/breed_update', {
                 genotype: gt,
-                male_mouse: mm,
-                female_mouse: fm,
+                male_mice: mm,
+                female_mice: fm,
                 extra_js: ['breed_create.bundle.js'],
             });
         })
@@ -66,7 +67,7 @@ router.get('/create', (req, res) => {
 
 router.get('/:id_alias', (req, res) => {
     BlueBird.props({
-        input: _get_breed_inputs(),
+        input: get_breed_inputs(),
         breed: breed_controller.by_id_alias(req.params.id_alias),
     })
         .then(({ input, breed }) => {
@@ -92,9 +93,7 @@ router.get('/:id_alias', (req, res) => {
 router.delete('/:id', (req, res) => {
     const rm_ids = isFalsey(req.query.id_alias) ? req.params.id : req.params.id_alias;
 
-    const rm_promises = rm_ids.split(',').map((id) => {
-        breed_controller.delete(id);
-    });
+    const rm_promises = rm_ids.split(',').map(id => breed_controller.delete(id));
 
     return Promise.all(rm_promises)
         .then(() => {
@@ -114,12 +113,12 @@ router.put('/', (req, res) => {
     utils.move_note(req);
     utils.log_json(req.body);
     // let model = new cage_model(req.body)
-    breed_controller.insert(req.body).then((x) => {
-        res.send({
-            success: true,
-            x,
-        });
-    })
+    breed_controller.insert(req.body)
+        .then(() => {
+            res.send({
+                success: true,
+            });
+        })
         .catch((err) => {
             res.status(500).send({
                 success: false,
@@ -128,12 +127,14 @@ router.put('/', (req, res) => {
         });
 });
 
+// update
 router.post('/', (req, res) => {
     utils.move_note(req);
     utils.log_json(req.body);
-    breed_controller.update(req.body).then((x) => {
-        res.send({ success: true });
-    })
+    breed_controller.update(req.body)
+        .then(() => {
+            res.send({ success: true });
+        })
         .catch((err) => {
             res.status(500).send({ success: false, err });
         });

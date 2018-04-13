@@ -31,7 +31,12 @@ function setup_sliders() {
         });
 }
 
+function set_DOB_today() {
+    $('.today-btn').click();
+}
+
 $(() => {
     setup_sliders();
     setup_create_page_buttons('mouse');
+    set_DOB_today();
 });
