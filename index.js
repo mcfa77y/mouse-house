@@ -38,7 +38,8 @@ const hbsutils = hbs_utils(hbs);
 const helpers = require('handlebars-helpers')({
     handlebars: hbs.handlebars,
 });
-// helpers.comparison({handlebars: hbs.handlebars});
+
+// helpers.comparison({ handlebars: hbs.handlebars });
 
 app.set('port', (process.env.PORT || 5000));
 
@@ -46,8 +47,8 @@ app.set('port', (process.env.PORT || 5000));
 hbsutils.registerPartials(`${__dirname}/views/partials`);
 hbsutils.registerWatchedPartials(`${__dirname}/views/partials`);
 
-// hbs.registerPartials(__dirname + '/views/partials/form-elements');
-// hbsutils.registerWatchedPartials(__dirname + '/views/partials/form-elements');
+hbs.registerPartials(`${__dirname}/views/partials/form-elements`);
+hbsutils.registerWatchedPartials(`${__dirname}/views/partials/form-elements`);
 
 // views is directory for all template files
 app.set('views', `${__dirname}/views`);

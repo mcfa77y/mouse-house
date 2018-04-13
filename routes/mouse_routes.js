@@ -107,6 +107,9 @@ function _get_inputs() {
         genotype: enum_controller.by_type(mouse_controller.GENOTYPE),
         cages: cage_controller.all_pretty(),
         sex: enum_controller.by_type(mouse_controller.SEX),
+    })
+    .catch((error) => {
+        utils.log_json(error);
     });
 }
 
