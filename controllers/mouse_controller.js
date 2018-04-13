@@ -33,7 +33,7 @@ class Mouse_Controller extends Base_Controller {
             sex: enum_controller.get(mouse.sex_id),
             genotype: enum_controller.get(mouse.genotype_id),
             status: enum_controller.get(mouse.status_id),
-            cage: mouse.getCage({ attributes: ['id', 'name', 'id_alias'] }),
+            cage: mouse.getCage({ attributes: ['id', 'id_alias'] }),
             note: mouse.getNote({ attributes: ['id', 'text'] }),
             breeds: mouse.getBreeds({ attributes: ['id'] }),
         })
@@ -112,39 +112,38 @@ class Mouse_Controller extends Base_Controller {
             });
     }
 
-    update(_model) {
+    update(model) {
         const self = this;
-        const _model = utils.remove_empty(_model);
-        return Mouse.update(_model, {
+        return Mouse.update(utils.remove_empty(model), {
             where: {
-                id: _model.id,
+                id: model.id,
             },
             returning: true,
         })
             .then((updated_model) => {
-                const model = updated_model[1][0];
+                const nu_model = updated_model[1][0];
                 return BlueBird.props({
-                    note: model.getNote(),
-                    status: model.getStatus(),
-                    genotype: model.getGenotype(),
-                    cage: model.getCage(),
-                    model,
+                    note: nu_model.getNote(),
+                    status: nu_model.getStatus(),
+                    genotype: nu_model.getGenotype(),
+                    cage: nu_model.getCage(),
+                    nu_model,
                 });
             })
             .then(({
-                note, status, genotype, cage, model,
+                note, status, genotype, cage, nu_model,
             }) => {
-                if (!isFalsey(_model.note)) {
-                    isFalsey(note) ? model.createNote(_model.note) : note.update(_model.note);
+                if (!isFalsey(nu_model.note)) {
+                    isFalsey(note) ? nu_model.createNote(nu_model.note) : note.update(nu_model.note);
                 }
-                if (!isFalsey(_model.status)) {
-                    isFalsey(status) ? model.createStatus(_model.status) : status.update(_model.status);
+                if (!isFalsey(nu_model.status)) {
+                    isFalsey(status) ? nu_model.createStatus(nu_model.status) : status.update(nu_model.status);
                 }
-                if (!isFalsey(_model.genotype)) {
-                    isFalsey(genotype) ? model.createGenotype(_model.genotype) : genotype.update(_model.genotype);
+                if (!isFalsey(nu_model.genotype)) {
+                    isFalsey(genotype) ? nu_model.createGenotype(nu_model.genotype) : genotype.update(nu_model.genotype);
                 }
-                if (!isFalsey(_model.cage)) {
-                    isFalsey(cage) ? model.createCage(_model.cage) : cage.update(_model.cage);
+                if (!isFalsey(nu_model.cage)) {
+                    isFalsey(cage) ? nu_model.createCage(nu_model.cage) : cage.update(nu_model.cage);
                 }
             });
     }

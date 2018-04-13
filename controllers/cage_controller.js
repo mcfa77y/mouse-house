@@ -21,16 +21,16 @@ class Cage_Controller extends Base_Controller {
 
                 pretty_model.id = model.id;
                 pretty_model.id_alias = model.id_alias;
-                pretty_model.name = model.name;
                 pretty_model.note = isFalsey(note) ? '' : note.text;
                 pretty_model.type = isFalsey(type) ? '' : type.description;
                 pretty_model.type_id = isFalsey(type) ? '' : `${type.id}`;
-                pretty_model.setup_date = utils.format_date(model.setup_date);
-                pretty_model.update_date = utils.format_date(model.update_date);
                 pretty_model.end_date = utils.format_date(model.end_date);
                 pretty_model.mice = mice;
                 pretty_model.mouse_ids = mice.map(m => `${m.id}`);
                 return pretty_model;
+            })
+            .catch((err) => {
+                utils.log_json(err);
             });
     }
     all_pretty() {
@@ -41,11 +41,12 @@ class Cage_Controller extends Base_Controller {
     by_id_alias(_id_alias) {
         const self = this;
         return this.get_where({ id_alias: _id_alias })
-            .then(x => self.pretty(x[0]));
+            .then(x => self.pretty(x[0]))
+            .catch(err => utils.log_json(err));
     }
-    insert(_model) {
+    insert(model) {
         const self = this;
-        _model = utils.remove_empty(_model, true);
+        const _model = utils.remove_empty(model, true);
         // if(isFalsey(_model.name)){
         //     _model.name = city_names[Math.floor(Math.random() * city_names.length)]
         // }
@@ -53,22 +54,22 @@ class Cage_Controller extends Base_Controller {
             include: [{ association: Cage.Note }],
             returning: true,
         })
-            .then((model) => {
+            .then((nu_model) => {
                 if (isFalsey(_model.id_alias)) {
-                    model.update({ id_alias: model.id });
+                    nu_model.update({ id_alias: nu_model.id });
                 }
                 if (!isFalsey(_model.mouse_ids)) {
-                    Mouse.update({ cage_id: model.id }, { where: { id: { $in: _model.mouse_ids } } });
+                    Mouse.update({ cage_id: nu_model.id }, { where: { id: { $in: _model.mouse_ids } } });
                 }
-                return model;
+                return nu_model;
             })
             .catch((err) => {
                 console.log(err);
             });
     }
-    update(_model) {
+    update(model) {
         const self = this;
-        _model = utils.remove_empty(_model, true);
+        const _model = utils.remove_empty(model, true);
 
         return Cage.update(_model, {
             where: { id: _model.id },
