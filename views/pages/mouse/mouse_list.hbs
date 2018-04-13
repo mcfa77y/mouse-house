@@ -1,29 +1,32 @@
-<div class="well bs-component">
-    <div class="page-header">
-        <h4>Mice</h4>
-    </div>
-    {{> mouse/mouse_table}}
-    <div class="row">
-        <div class="col-md-6">
-            <span class="pull-left" data-toggle="tooltip" data-placement="top" title="Assign cage">
-                <button id="cage-mouse-button" type="button" class="btn btn-primary" data-toggle="modal"  data-target="#cage-mice-together-modal" >
-                    <i class="fa fa-home fa-2x" aria-hidden="true"></i>
-                </button>
-            </span>
-            <span class="pull-left" data-toggle="tooltip" data-placement="top" title="Create breeding">
-                <button id="breed-mouse-button"  type="button" class="btn btn-danger" >
-                    <i class="fa fa-heart fa-2x" aria-hidden="true"></i>
-                </button>
-            </span>
-            
-             <span class="pull-left" data-toggle="tooltip" data-placement="top" title="Assign status">
-                <button id="open-status-mouse-modal-button"  type="button" class="btn btn-primary" data-toggle="modal"  data-target="#set-mice-status-modal">
-                    <i class="fa fa-meh-o fa-2x" aria-hidden="true"></i>
-                </button>
-            </span>
-        </div>
-        <div class="col-md-6 ">
-            {{> crud_buttons }}
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">Mice</h4>
+    
+        {{> mouse/mouse_table}}
+        <div class="row mt-3">
+            <div class="col-md-6">
+                <div class="btn-group">
+                <span class="pull-left" data-toggle="tooltip" data-placement="top" title="Assign cage">
+                    <button id="cage-mouse-button" type="button" class="btn btn-primary" data-toggle="modal"  data-target="#cage-mice-together-modal" >
+                        <i class="fa fa-home fa-2x" aria-hidden="true"></i>
+                    </button>
+                </span>
+                <span class="pull-left" data-toggle="tooltip" data-placement="top" title="Create breeding">
+                    <button id="breed-mouse-button"  type="button" class="btn btn-danger" >
+                        <i class="fa fa-heart fa-2x" aria-hidden="true"></i>
+                    </button>
+                </span>
+                
+                <span class="pull-left" data-toggle="tooltip" data-placement="top" title="Assign status">
+                    <button id="open-status-mouse-modal-button"  type="button" class="btn btn-primary" data-toggle="modal"  data-target="#set-mice-status-modal">
+                        <i class="fa fa-meh-o fa-2x" aria-hidden="true"></i>
+                    </button>
+                </span>
+            </div>
+            </div>
+            <div class="col-md-6 ">
+                {{> crud_buttons }}
+            </div>
         </div>
     </div>
 </div>

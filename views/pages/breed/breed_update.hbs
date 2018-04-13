@@ -1,40 +1,42 @@
-<div class="well bs-component">
-    <div class="page-header">
-        <h4>Update Breed</h4>
-    </div>
-
-    <div >
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">Update Breed</h4>
         <fieldset id="breed-fields">
             <div class="row">
+                {{> form_elements/text_input id='id_alias' description='ID' placeholder='1234' value=breed.id_alias}}
                 {{> form_elements/select_input male_mice id='male_mouse' description='Male' value=breed.male_mouse}}
                 {{> form_elements/select_input female_mice id='female_mouse' description='Female' value=breed.female_mouse}}
+                
                 {{> form_elements/date_input id='pairing_date' description='Pairing' value=breed.pairing_date}}
-            </div>
-            <div class="row">
                 {{> form_elements/date_input id='plug_date' description='Plug' value=breed.plug_date}}
-                {{> form_elements/date_input id='pup_check_date' description='Pup check' value=breed.pup_check_date}}
+                {{> form_elements/text_input id='pup_check_date' description='Pup check' value=breed.pup_check_date extra_attr='disabled'}}
             </div>
 
-            {{> form_elements/text_area_input id='note' description='Note' value=breed.note}}
-            <div class="col-md-12">
-            <button data-toggle="collapse" data-target="#demo" type="button" class="btn btn-default">
-                Add offspring</button>
-                </div>
+            <div class="row">
+                {{> form_elements/text_area_input id='note' description='Note' value=breed.note}}
+            </div>
+            <div class="row">
+                <button data-toggle="collapse" data-target="#demo" type="button" class="btn btn-default mb-3">
+                    Add offspring
+                </button>
+            </div>
             <div id="demo" class="collapse">
                 <div class="row">
-                {{> form_elements/date_input id='litter_date' description='Litter D.O.B.' value=breed.litter_date}}
-                {{> form_elements/date_input id='ween_date' description='Ween' value=breed.ween_date}}
-                {{> form_elements/text_input id='male_count' description='Male count' placeholder='3' value=breed.male_count}}
-                {{> form_elements/text_input id='female_count' description='Female count' placeholder='3' value=breed.female_count}}
+                    {{> form_elements/date_input id='litter_date' description='Litter D.O.B.' value=breed.litter_date}}
+                    {{> form_elements/text_input id='ween_date' description='Ween' value=breed.ween_date extra_attr='disabled'}}
+                    {{> form_elements/text_input id='male_count' description='Male count' placeholder='3' value=breed.male_count}}
+                    {{> form_elements/text_input id='female_count' description='Female count' placeholder='3' value=breed.female_count}}
                 </div>
-                {{> form_elements/text_area_input id='note2' description='Note'}}
+                <div class="row">
+                    {{> form_elements/text_area_input id='note2' description='Note'}}
+                </div>
                 <input type="hidden" id="id" value="{{breed.id}}"/>
             </div>
         </fieldset>
-    </div>
-    <div class="row">
-        <button id="update-breed-button" type="button" class="btn btn-primary pull-right">Save</button>
-        <button id="back-breed-button" type="button" class="btn btn-default pull-right">Back</button>
+    
+        <div class="row">
+            <button id="save-breed-button" type="button" class="btn btn-primary float-right">Save</button>
+            <button id="back-breed-button" type="button" class="btn btn-default float-right">Back</button>
+        </div>
     </div>
 </div>
-

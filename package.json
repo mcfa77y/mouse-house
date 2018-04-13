@@ -10,8 +10,9 @@
     "build": "webpack",
     "build:prod": "webpack -p",
     "start": "node index.js",
-    "watch": "webpack --watch",
-    "debug": "nodemon --inspect index.js && webpack --watch"
+    "watch": "nvm use 6.10.2; webpack --watch",
+    "debug": "nvm use 6.10.2; nodemon --inspect index.js",
+    "postinstall": "webpack -p  --progress"
   },
   "dependencies": {
     "ajv": "^5.2.3",
@@ -20,6 +21,7 @@
     "bluebird": "^3.4.7",
     "body-parser": "~1.15.1",
     "bootstrap": "^3.3.7",
+    "bootstrap-material-design": "^4.1.1",
     "bug-killer": "^4.4.4",
     "child_process": "^1.0.2",
     "clean-webpack-plugin": "^0.1.16",
@@ -37,25 +39,29 @@
     "datatables.net-select": "^1.2.3",
     "datatables.net-select-dt": "^1.2.3",
     "debug": "~2.2.0",
+    "eslint-config-airbnb": "^16.1.0",
     "express": "^4.15.4",
-    "falsey": "^0.3.0",
+    "falsey": "^0.3.2",
     "file-loader": "^0.11.2",
     "googleapis": "^18.0.0",
     "handlebars-helpers": "^0.9.3",
     "hbs": "^4.0.1",
+    "hbs-utils": "^0.0.4",
     "helmet": "^3.8.1",
     "html-webpack-plugin": "^2.30.1",
     "jquery": "^3.2.1",
+    "lodash": "^4.17.5",
     "loopback": "^3.7.0",
     "loopback-connector-postgresql": "^3.0.0",
     "material-datetime-picker": "^2.3.0",
     "memoizee": "^0.4.5",
     "moment": "^2.18.1",
-    "morgan": "~1.7.0",
+    "morgan": "^1.7.0",
     "nouislider": "^10.1.0",
     "pg": "^6.1.5",
     "pg-hstore": "^2.3.2",
     "pg-promise": "^5.6.8",
+    "popper.js": "^1.12.9",
     "querystring": "^0.2.0",
     "r-json": "^1.2.5",
     "request": "^2.79.0",
@@ -65,6 +71,7 @@
     "squel": "^5.9.1",
     "style-loader": "^0.18.2",
     "toastr": "^2.1.2",
+    "underscore": "^1.8.3",
     "underscore-es": "^1.9.8",
     "url": "^0.11.0",
     "util": "^0.10.3",
@@ -78,7 +85,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/heroku/node-js-getting-started"
+    "url": "git+https://github.com/heroku/node-js-getting-started.git"
   },
   "keywords": [
     "node",
@@ -94,11 +101,19 @@
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
+    "eslint": "^4.17.0",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-jsx-a11y": "^6.0.2",
+    "eslint-plugin-react": "^7.4.0",
     "expose-loader": "^0.7.3",
-    "hbs-utils": "0.0.4",
+    
+    "nodemon": "^1.14.12",
     "sequelize-cli": "^2.7.0",
     "uglify-es": "^3.1.2",
     "uglifyjs-webpack-plugin": "^0.4.6",
-    "webpack": "^3.6.0"
+    "webpack": "^3.11.0",
+    "webpack-bundle-analyzer": "^2.11.0"
   }
 }

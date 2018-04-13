@@ -1,10 +1,15 @@
-<div class="well bs-component">
-    <div class="page-header">
-        <h4>Breeds</h4>
-    </div>
-    {{> breed/breed_table}}
-    <div class="row">
-        {{>crud_buttons model_name='breed'}}
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">Breeds</h4>
+        <div class="row">
+            {{> breed/breed_table}}
+        </div>
+        
+        <div class="row mt-3">
+            <div class="col-md-12">
+            {{>crud_buttons model_name='breed'}}
+            </div>
+        </div>
     </div>
 </div>
 {{> common/delete_confirmation_modal model_name='breed'}}

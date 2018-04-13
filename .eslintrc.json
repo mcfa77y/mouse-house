@@ -1,0 +1,11 @@
+{
+    "extends": "airbnb-base",
+    "rules": {
+        "camelcase": "off",
+        "indent": ["error", 4]
+      },
+      "env": {
+          "jquery": true,
+          "browser": true
+      }
+}

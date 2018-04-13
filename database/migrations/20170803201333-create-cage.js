@@ -1,6 +1,6 @@
 'use strict';
 module.exports = {
-  up: function(queryInterface, Sequelize) {
+  up: (queryInterface, Sequelize) => {
     return queryInterface.createTable('Cages', {
       id: {
         allowNull: false,
@@ -12,15 +12,6 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: true,
         unique: true
-      },
-      name: {
-        type: Sequelize.STRING
-      },
-      setup_date: {
-        type: Sequelize.DATE
-      },
-      update_date: {
-        type: Sequelize.DATE
       },
       end_date: {
         type: Sequelize.DATE
@@ -52,7 +43,7 @@ module.exports = {
        }
     });
   },
-  down: function(queryInterface, Sequelize) {
+  down: (queryInterface, Sequelize) => {
     return queryInterface.dropTable('Cages');
   }
 };
