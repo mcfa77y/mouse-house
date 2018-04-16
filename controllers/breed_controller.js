@@ -78,7 +78,9 @@ class Breed_Controller extends Base_Controller {
         const self = this;
         const model = utils.remove_empty(model_original, true);
         return Breed.create(model, {
-            include: [{ association: Breed.Note }],
+            include: [{ 
+                association: Breed.Note,
+                association: Breed.Mice }],
             returning: true,
         })
             .catch((err) => {

@@ -214,10 +214,10 @@ function do_status_upsert(model) {
 }
 
 function do_genotype_upsert(model) {
-    const genotype = {};
-    genotype.description = model.genotype_id;
-    genotype.type = mouse_controller.GENOTYPE;
-
+    const genotype = {
+        description: model.genotype_id,
+        type: mouse_controller.GENOTYPE,
+    };
     return enum_controller.model.findOrCreate({ where: genotype })
         .spread((enoom, created) => {
             model.genotype_id = enoom.id;
