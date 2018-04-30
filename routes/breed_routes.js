@@ -48,7 +48,7 @@ router.get('/create', (req, res) => {
             const mm = utils.select_json(male_mice, 'male_mouse');
             const fm = utils.select_json(female_mice, 'female_mouse');
 
-            res.render('pages/breed/breed_update', {
+            res.render('pages/breed/breed_create', {
                 genotype: gt,
                 male_mice: mm,
                 female_mice: fm,
@@ -131,6 +131,7 @@ router.put('/', (req, res) => {
 router.post('/', (req, res) => {
     utils.move_note(req);
     utils.log_json(req.body);
+    req.body.mice = [{id: req.body.male_mouse}, {id:req.body.female_mouse}];
     breed_controller.update(req.body)
         .then(() => {
             res.send({ success: true });

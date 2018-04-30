@@ -92,6 +92,9 @@ class Breed_Controller extends Base_Controller {
         const _model = utils.remove_empty(model_original, true);
         return Breed.update(_model, {
             where: { id: _model.id },
+            include: [{ 
+                association: Breed.Note,
+                association: Breed.Mice }],
             returning: true,
         })
             .then((updated_model) => {
