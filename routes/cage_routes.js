@@ -52,7 +52,7 @@ function _get_cage_inputs() {
     });
 }
 
-// update
+// update page
 router.get('/:id_alias', (req, res) => {
     BlueBird.props({
         input: _get_cage_inputs(),
@@ -60,7 +60,9 @@ router.get('/:id_alias', (req, res) => {
     })
         .then(({ input, cage }) => {
             const mice = input.mice;
-            const mice_select = utils.select_json(input.mice.map(mouse => ({ id: mouse.id, description: mouse.id_alias })), 'mouse_ids', 'mice');
+            const mice_select = utils
+                .select_json(input.mice
+                    .map(mouse => ({ id: mouse.id, description: mouse.id_alias })), 'mouse_ids', 'mice');
             const cage_type = utils.select_json(input.cage_type, 'cage_type');
             const verb = 'Update';
             utils.log_json(cage);

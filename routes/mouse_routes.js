@@ -332,7 +332,8 @@ router.post('/update_mice_status', (req, res) => {
 
 router.post('/breed_mice_together', (req, res) => {
     utils.log_json(req.body);
-    const mouse_ids = req.body.mouse_ids;
+    const mouse_group_by_sex = req.body.mouse_group_by_sex;
+    debugger
     return enum_controller.by_type(mouse_controller.SEX).then((sex_enums) => {
         const sex_map = {};
         sex_enums.forEach(sex => sex_map[sex.id] = sex.description);

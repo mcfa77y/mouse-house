@@ -55,8 +55,13 @@ const setup_aggregation_buttons = (table) => {
 
 
     pair_button.click(() => {
-        const mouse_ids = table.get_selected_row_ids();
-        const data = { mouse_ids };
+        const selected_rows = table.rows({ selected: true }).data().toArray();
+        const mouse_sex_ids = selected_rows.map((mouse) =>{ return {id: mouse.id, sex: mouse.sex} })
+        const mouse_group_by_sex = {
+            male: mouse_sex_ids.filter(mouse => mouse.sex === 'male').map(mouse => mouse.id), 
+            female: mouse_sex_ids.filter(mouse => mouse.sex === 'female').map(mouse => mouse.id), 
+        }
+        const data = { mouse_group_by_sex };
         Axios.post('/mouse/breed_mice_together', data)
             .then((response) => {
                 console.log(response);

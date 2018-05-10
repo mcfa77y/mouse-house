@@ -80,7 +80,8 @@ class Breed_Controller extends Base_Controller {
         return Breed.create(model, {
             include: [{ 
                 association: Breed.Note,
-                association: Breed.Mice }],
+                association: Breed.Male,
+                association: Breed.Female }],
             returning: true,
         })
             .catch((err) => {
