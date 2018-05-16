@@ -14,35 +14,25 @@ class Breed_Controller extends Base_Controller {
         const self = this;
         return BlueBird.props({
             genotype: model.getGenotype(),
-            mice: model.getMice(),
+            male: model.getMale(),
+            female: model.getFemale(),
             note: model.getNote(),
-            sex_enums: enum_controller.by_type('SEX'),
         })
             .then(({
-                genotype, mice, note, sex_enums,
+                genotype, male, female, note,
             }) => {
                 const pretty_model = {};
 
-                const sex_map = {};
-                sex_enums.forEach(sex => sex_map[sex.id] = sex.description);
-                const mice_group_by_sex = _.groupBy(mice, mouse => sex_map[mouse.sex_id]);
-                if (!isFalsey(mice_group_by_sex)) {
-                    const male = mice_group_by_sex.male[0];
-                    pretty_model.male_mouse = {
-                        id: male.id_alias,
-                        age: utils.relative_time(male.dob),
-                    };
+                pretty_model.male_mouse = {
+                    id: male.id_alias,
+                    age: utils.relative_time(male.dob),
+                };
 
-                    const female = mice_group_by_sex.female[0];
-                    pretty_model.female_mouse = {
-                        id: female.id_alias,
-                        age: utils.relative_time(female.dob),
-                    };
-                } else {
-                    pretty_model.male_mouse = '';
-                    pretty_model.female_mouse = '';
-                }
-
+                pretty_model.female_mouse = {
+                    id: female.id_alias,
+                    age: utils.relative_time(female.dob),
+                };
+                
 
                 pretty_model.id = parseInt(model.id, 10);
                 pretty_model.id_alias = model.id_alias;
@@ -95,7 +85,7 @@ class Breed_Controller extends Base_Controller {
             where: { id: _model.id },
             include: [{ 
                 association: Breed.Note,
-                association: Breed.Mice }],
+                association: Breed.Mouse }],
             returning: true,
         })
             .then((updated_model) => {
