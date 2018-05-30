@@ -38,14 +38,16 @@ module.exports = {
             .forEach((key) => {
                 const is_id_key = (key.indexOf('id') === 0 || key.indexOf('_id') > 0);
                 const is_value_empty = isFalsey(obj[key]);
-                console.log(`remove key: ${key}`);
+                
                 // delete empty ids
                 if (is_id_key && is_value_empty) {
+                    console.log(`empty - remove key: ${key}`);
                     delete obj[key];
                 }
 
                 // delete empty values
                 if (remove_emptyStrings) {
+                    console.log(`empty - remove key: ${key}`);
                     is_value_empty && delete obj[key];
                 }
             });

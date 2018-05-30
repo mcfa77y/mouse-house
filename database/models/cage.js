@@ -5,6 +5,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: true,
             unique: true,
         },
+        end_date: DataTypes.DATE,
     }, {
         classMethods: {
             associate(models) {

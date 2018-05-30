@@ -6,7 +6,7 @@ const Base_Controller = require('./base_controller');
 const enum_controller = require('./enum_controller');
 // const cage_controller = require('./cage_controller')
 const utils = require('./utils_controller');
-const Mouse = require('../database/models').Mouse;
+const { Mouse } = require('../database/models');
 
 
 class Mouse_Controller extends Base_Controller {
@@ -35,7 +35,7 @@ class Mouse_Controller extends Base_Controller {
             status: enum_controller.get(mouse.status_id),
             cage: mouse.getCage({ attributes: ['id', 'id_alias'] }),
             note: mouse.getNote({ attributes: ['id', 'text'] }),
-            breeds: mouse.getBreeds({ attributes: ['id'] }),
+            breeds: mouse.getBreeds({ attributes: ['id_alias'] }),
         })
             .then(({
                 sex,
@@ -60,7 +60,7 @@ class Mouse_Controller extends Base_Controller {
                 pretty_mouse.age = utils.relative_time(mouse.dob);
                 pretty_mouse.create_at = utils.format_date(mouse.create_at);
                 pretty_mouse.modify_at = utils.format_date(mouse.modify_at);
-                pretty_mouse.breeds = isFalsey(breeds) ? [] : breeds.map(breed => `${breed.id}`);
+                pretty_mouse.breeds = isFalsey(breeds) ? [] : breeds.map(breed => `${breed.id_alias}`);
                 pretty_mouse.cage = isFalsey(cage) ? '' : cage.name;
                 pretty_mouse.cage_id = isFalsey(cage) ? '' : `${cage.id}`;
                 pretty_mouse.cage_id_alias = isFalsey(cage) ? '' : cage.id_alias;

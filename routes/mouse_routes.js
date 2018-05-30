@@ -50,7 +50,7 @@ router.get('/', (req, res) => {
 });
 
 router.get('/more_rows', (req, res) => {
-    req.body.offset;
+    // req.body.offset;
     BlueBird.props({
         mice: mouse_controller.some_pretty(BATCH_SIZE, req.body.offset),
     })
