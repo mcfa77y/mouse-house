@@ -131,7 +131,8 @@ router.put('/', (req, res) => {
 router.post('/', (req, res) => {
     utils.move_note(req);
     utils.log_json(req.body);
-    req.body.mice = [{id: req.body.male_mouse}, {id:req.body.female_mouse}];
+    req.body.male_id = req.body.male_mouse;
+    req.body.female_id = req.body.female_mouse;
     breed_controller.update(req.body)
         .then(() => {
             res.send({ success: true });

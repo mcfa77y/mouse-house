@@ -16,7 +16,8 @@ module.exports = function(sequelize, DataTypes) {
     }, {
         classMethods: {
             associate: function(models) {
-                Breed.Mice = Breed.belongsToMany(models.Mouse, { through: 'Breed_Mouse' })
+                Breed.Male = Breed.belongsTo(models.Mouse, {as: 'male', foreignKey: 'male_id'})
+                Breed.Female = Breed.belongsTo(models.Mouse, {as: 'female', foreignKey: 'female_id'})
                 Breed.Note = Breed.belongsTo(models.Note, { as: 'note', foreignKey: 'note_id' })
                 Breed.belongsTo(models.Enum, { as: 'status', foreignKey: 'status_id' })
                 Breed.belongsTo(models.Enum, { as: 'genotype', foreignKey: 'genotype_id' })

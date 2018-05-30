@@ -332,37 +332,39 @@ router.post('/update_mice_status', (req, res) => {
 
 router.post('/breed_mice_together', (req, res) => {
     utils.log_json(req.body);
-    const mouse_ids = req.body.mouse_ids;
-    return enum_controller.by_type(mouse_controller.SEX).then((sex_enums) => {
-        const sex_map = {};
-        sex_enums.forEach(sex => sex_map[sex.id] = sex.description);
-        return sex_map;
-    })
-        .then(sex_map => mouse_controller.get_where({
-            id: {
-                $in: mouse_ids,
-            },
+    const mouse_group_by_sex = req.body.mouse_group_by_sex;
+    const female_id_list = mouse_group_by_sex.female
+    const male_id_list = mouse_group_by_sex.male
+    const create_breed_promises = female_id_list.map((female_id) => {
+        return male_id_list.map((male_id) => {
+            const new_breed = {
+                pairing_date: Date(),
+                male_id,
+                female_id
+            }
+            return breed_controller.insert(new_breed)
+            .then((breed) => {
+                const updated_breed = {
+                    id_alias: 'b'+breed.id, 
+                }
+                const update_breed = breed.update(updated_breed);
+                const update_male = mouse_controller.get(male_id)
+                    .then((mouse) => mouse.addBreed(breed))
+                const update_female = mouse_controller.get(female_id)
+                    .then((mouse) => mouse.addBreed(breed))
+
+                return Promise.all([update_breed, update_male, update_female])
+            });
         })
-            .then(items => _.groupBy(items, item => sex_map[item.sex_id])))
-        .then((mice_group_by_sex) => {
-            const male_mouse = mice_group_by_sex.male[0];
-
-            const create_breed_promises = mice_group_by_sex.female.map(female_mouse => breed_controller
-                .insert({})
-                .then((breed) => {
-                    breed.update({ id_alias: breed.id, pairing_date: Date() });
-                    return breed.addMice([male_mouse, female_mouse]);
-                }));
-
-            return Promise.all(create_breed_promises)
-                .then(() => res.send({ success: true }))
-                .catch((err) => {
-                    utils.log_json(err);
-                    res.status(500).send({
-                        success: false,
-                        err,
-                    });
-                });
+    });
+    return Promise.all(create_breed_promises)
+        .then(() => res.send({ success: true }))
+        .catch((err) => {
+            utils.log_json(err);
+            res.status(500).send({
+                success: false,
+                err,
+            });
         });
 });
 
