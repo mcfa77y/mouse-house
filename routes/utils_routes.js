@@ -28,7 +28,7 @@ module.exports = {
         Logger.log(result);
     },
 
-    select_json: (items, _id, _description = '') => {
+    select_json: (items) => {
         const result = items.map((x) => {
             const description = isFalsey(x.description) ? x.id : x.description;
             return { id: `${x.id}`, description: `${description}` };
@@ -45,6 +45,10 @@ module.exports = {
         const note = isFalsey(req.body.note) ? '' : req.body.note;
         req.body.note = {};
         req.body.note.text = note;
+    },
+    build_note: (req) => {
+        const note = isFalsey(req.body.note) ? '' : req.body.note;
+        return { text: note };
     },
     getErrorGif: () => {
         const options = {
@@ -64,7 +68,7 @@ module.exports = {
                 const randomIndex = _.random(0, json.data.length);
                 return json.data[randomIndex].images.original.url;
             })
-            .catch(error => 'https://media3.giphy.com/media/OOYbBXVUDzBCw/giphy.gif');
+            .catch(() => 'https://media3.giphy.com/media/OOYbBXVUDzBCw/giphy.gif');
     },
 };
 

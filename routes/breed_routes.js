@@ -8,14 +8,7 @@ const breed_controller = require('../controllers/breed_controller');
 const enum_controller = require('../controllers/enum_controller');
 const mouse_controller = require('../controllers/mouse_controller');
 const utils = require('./utils_routes');
-
-function get_breed_inputs() {
-    return BlueBird.props({
-        genotype: enum_controller.by_type('MOUSE_GENOTYPE'),
-        male_mice: mouse_controller.by_sex('male'),
-        female_mice: mouse_controller.by_sex('female'),
-    });
-}
+const { get_breed_inputs, create_model } = require('./utils_breed_routes');
 
 // list
 router.get('/', (req, res) => {
@@ -110,10 +103,8 @@ router.delete('/:id', (req, res) => {
 });
 
 router.put('/', (req, res) => {
-    utils.move_note(req);
-    utils.log_json(req.body);
-    // let model = new cage_model(req.body)
-    breed_controller.insert(req.body)
+    const model = create_model(req);
+    breed_controller.insert(model)
         .then(() => {
             res.send({
                 success: true,
@@ -129,11 +120,8 @@ router.put('/', (req, res) => {
 
 // update
 router.post('/', (req, res) => {
-    utils.move_note(req);
-    utils.log_json(req.body);
-    req.body.male_id = req.body.male_mouse;
-    req.body.female_id = req.body.female_mouse;
-    breed_controller.update(req.body)
+    const model = create_model(req);
+    breed_controller.update(model)
         .then(() => {
             res.send({ success: true });
         })
