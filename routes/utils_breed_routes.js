@@ -1,14 +1,8 @@
-const express = require('express');
-
-const router = express.Router();
 const BlueBird = require('bluebird');
-const isFalsey = require('falsey');
 
-const breed_controller = require('../controllers/breed_controller');
 const enum_controller = require('../controllers/enum_controller');
 const mouse_controller = require('../controllers/mouse_controller');
 const utils = require('./utils_routes');
-
 
 module.exports = {
 

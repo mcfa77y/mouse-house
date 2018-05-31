@@ -5,9 +5,7 @@ const BlueBird = require('bluebird');
 const isFalsey = require('falsey');
 
 const breed_controller = require('../controllers/breed_controller');
-const enum_controller = require('../controllers/enum_controller');
-const mouse_controller = require('../controllers/mouse_controller');
-const utils = require('./utils_routes');
+const { select_json, log_json, getErrorGif } = require('./utils_routes');
 const { get_breed_inputs, create_model } = require('./utils_breed_routes');
 
 // list
@@ -16,7 +14,7 @@ router.get('/', (req, res) => {
         breeds: breed_controller.all_pretty(),
     })
         .then(({ breeds }) => {
-            utils.log_json(breeds);
+            log_json(breeds);
 
             res.render('pages/breed/breed_list', {
                 breeds,
@@ -24,7 +22,7 @@ router.get('/', (req, res) => {
             });
         })
         .catch((error) => {
-            utils.getErrorGif().then((errorImageUrl) => {
+            getErrorGif().then((errorImageUrl) => {
                 res.render('error', {
                     error,
                     errorImageUrl,
@@ -37,9 +35,9 @@ router.get('/create', (req, res) => {
         input: get_breed_inputs(),
     })
         .then(({ input: { genotype, male_mice, female_mice } }) => {
-            const gt = utils.select_json(genotype, 'mouse_genotype', 'Genotype');
-            const mm = utils.select_json(male_mice, 'male_mouse');
-            const fm = utils.select_json(female_mice, 'female_mouse');
+            const gt = select_json(genotype, 'mouse_genotype', 'Genotype');
+            const mm = select_json(male_mice, 'male_mouse');
+            const fm = select_json(female_mice, 'female_mouse');
 
             res.render('pages/breed/breed_create', {
                 genotype: gt,
@@ -49,7 +47,7 @@ router.get('/create', (req, res) => {
             });
         })
         .catch((error) => {
-            utils.getErrorGif().then((errorImageUrl) => {
+            getErrorGif().then((errorImageUrl) => {
                 res.render('error', {
                     error,
                     errorImageUrl,
@@ -64,10 +62,10 @@ router.get('/:id_alias', (req, res) => {
         breed: breed_controller.by_id_alias(req.params.id_alias),
     })
         .then(({ input, breed }) => {
-            const genotype = utils.select_json(input.genotype, 'mouse_genotype', 'Genotype');
-            const male_mice = utils.select_json(input.male_mice, 'male_mouse');
-            const female_mice = utils.select_json(input.female_mice, 'female_mouse');
-            utils.log_json(breed);
+            const genotype = select_json(input.genotype, 'mouse_genotype', 'Genotype');
+            const male_mice = select_json(input.male_mice, 'male_mouse');
+            const female_mice = select_json(input.female_mice, 'female_mouse');
+            log_json(breed);
 
             res.render('pages/breed/breed_update', {
                 genotype,
