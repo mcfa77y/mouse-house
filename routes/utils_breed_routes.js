@@ -2,7 +2,7 @@ const BlueBird = require('bluebird');
 
 const enum_controller = require('../controllers/enum_controller');
 const mouse_controller = require('../controllers/mouse_controller');
-const utils = require('./utils_routes');
+const { build_note } = require('./utils_routes');
 
 module.exports = {
 
@@ -12,11 +12,11 @@ module.exports = {
         female_mice: mouse_controller.by_sex('female'),
     }),
 
-    create_model: (req) => {
-        const model = req.body;
-        model.note = utils.build_note(req);
-        model.male_id = req.body.male_mouse;
-        model.female_id = req.body.female_mouse;
+    create_model: (_model) => {
+        const model = _model;
+        model.note = build_note(_model);
+        model.male_id = _model.male_mouse;
+        model.female_id = _model.female_mouse;
         return model;
     },
 };

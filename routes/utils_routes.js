@@ -46,8 +46,8 @@ module.exports = {
         req.body.note = {};
         req.body.note.text = note;
     },
-    build_note: (req) => {
-        const note = isFalsey(req.body.note) ? '' : req.body.note;
+    build_note: (_model) => {
+        const note = isFalsey(_model.note) ? '' : _model.note;
         return { text: note };
     },
     getErrorGif: () => {
