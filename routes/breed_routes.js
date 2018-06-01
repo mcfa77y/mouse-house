@@ -101,7 +101,7 @@ router.delete('/:id', (req, res) => {
 });
 
 router.put('/', (req, res) => {
-    const model = create_model(req);
+    const model = create_model(req.body);
     breed_controller.insert(model)
         .then(() => {
             res.send({
@@ -118,7 +118,7 @@ router.put('/', (req, res) => {
 
 // update
 router.post('/', (req, res) => {
-    const model = create_model(req);
+    const model = create_model(req.body);
     breed_controller.update(model)
         .then(() => {
             res.send({ success: true });
