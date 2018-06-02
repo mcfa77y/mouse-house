@@ -51,7 +51,10 @@ class Cage_Controller extends Base_Controller {
         //     _model.name = city_names[Math.floor(Math.random() * city_names.length)]
         // }
         return Cage.create(_model, {
-            include: [{ association: Cage.Note }],
+            include: [
+                { association: Cage.Note },
+                { association: Cage.Type },
+                { association: Cage.Mice }],
             returning: true,
         })
             .then((nu_model) => {
@@ -73,7 +76,10 @@ class Cage_Controller extends Base_Controller {
 
         return Cage.update(_model, {
             where: { id: _model.id },
-            include: [{ association: Cage.Notes }],
+            include: [
+                { association: Cage.Note },
+                { association: Cage.Mice },
+                { association: Cage.Type }],
             returning: true,
         })
             .then((updated_cage) => {

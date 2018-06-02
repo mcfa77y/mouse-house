@@ -8,6 +8,7 @@ const enum_controller = require('../controllers/enum_controller');
 const mouse_controller = require('../controllers/mouse_controller');
 const cage_controller = require('../controllers/cage_controller');
 
+const { create_model } = require('./utils_cage_routes');
 const utils = require('./utils_routes');
 
 router.get('/', (req, res) => {
@@ -104,15 +105,17 @@ router.delete('/:id', (req, res) => {
 });
 
 router.put('/', (req, res) => {
-    utils.move_note(req);
-    utils.log_json(req.body);
+    // utils.move_note(req);
+    // utils.log_json(req.body);
+    const model = create_model(req.body);
     // let model = new cage_model(req.body)
-    cage_controller.insert(req.body).then((x) => {
-        res.send({
-            success: true,
-            x,
-        });
-    })
+    cage_controller.insert(model)
+        .then((x) => {
+            res.send({
+                success: true,
+                x,
+            });
+        })
         .catch((err) => {
             res.status(500).send({
                 success: false,
@@ -122,8 +125,10 @@ router.put('/', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-    utils.move_note(req);
-    utils.log_json(req.body);
+    // utils.move_note(req);
+    // utils.log_json(req.body);
+    const model = create_model(req.body);
+
     cage_controller.update(req.body).then((x) => {
         res.send({ success: true });
     })
