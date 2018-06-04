@@ -13,3 +13,5 @@ docker-compose.yml
 *.bundle.js
 public/javascripts/*.bundle.js
 
+
+\.vscode/launch\.json
