@@ -1,25 +1,100 @@
 $(() => {
 
-    const infection_card_list = [
-        { city: "Atlanta", color: "blue", instances: 1 },
-        { city: "Bogota", color: "yellow", instances: 1 },
-        { city: "Buenos Aires", color: "yellow", instances: 2 },
-        { city: "Cairo", color: "black", instances: 3 },
-        { city: "Chicago", color: "blue", instances: 2 },
-        { city: "Denver", color: "blue", instances: 1 },
-        { city: "Istanbul", color: "black", instances: 2 },
-        { city: "Jacksonville", color: "yellow", instances: 3 },
-        { city: "Lagos", color: "yellow", instances: 3 },
-        { city: "Lima", color: "yellow", instances: 1 },
-        { city: "London", color: "blue", instances: 3 },
-        { city: "Los Angeles", color: "yellow", instances: 1 },
-        { city: "Mexico City", color: "yellow", instances: 1 },
-        { city: "New York", color: "blue", instances: 3 },
-        { city: "San Francisco", color: "blue", instances: 2 },
-        { city: "Santiago", color: "yellow", instances: 1 },
-        { city: "Sao Paulo", color: "yellow", instances: 2 },
-        { city: "Tripoli", color: "black", instances: 2 },
-        { city: "Washington", color: "blue", instances: 3 },
+    const infection_card_list = [{
+            city: "Atlanta",
+            color: "blue",
+            instances: 1
+        },
+        {
+            city: "Bogota",
+            color: "yellow",
+            instances: 1
+        },
+        {
+            city: "Buenos Aires",
+            color: "yellow",
+            instances: 2
+        },
+        {
+            city: "Cairo",
+            color: "black",
+            instances: 3
+        },
+        {
+            city: "Chicago",
+            color: "blue",
+            instances: 2
+        },
+        {
+            city: "Denver",
+            color: "blue",
+            instances: 1
+        },
+        {
+            city: "Istanbul",
+            color: "black",
+            instances: 2
+        },
+        {
+            city: "Jacksonville",
+            color: "yellow",
+            instances: 3
+        },
+        {
+            city: "Lagos",
+            color: "yellow",
+            instances: 3
+        },
+        {
+            city: "Lima",
+            color: "yellow",
+            instances: 1
+        },
+        {
+            city: "London",
+            color: "blue",
+            instances: 3
+        },
+        {
+            city: "Los Angeles",
+            color: "yellow",
+            instances: 1
+        },
+        {
+            city: "Mexico City",
+            color: "yellow",
+            instances: 1
+        },
+        {
+            city: "New York",
+            color: "blue",
+            instances: 3
+        },
+        {
+            city: "San Francisco",
+            color: "blue",
+            instances: 2
+        },
+        {
+            city: "Santiago",
+            color: "yellow",
+            instances: 1
+        },
+        {
+            city: "Sao Paulo",
+            color: "yellow",
+            instances: 2
+        },
+        {
+            city: "Tripoli",
+            color: "black",
+            instances: 2
+        },
+        {
+            city: "Washington",
+            color: "blue",
+            instances: 3
+        },
     ]
     console.log('pandemic index');
     const city_select = $('.city_select');
@@ -67,13 +142,34 @@ $(() => {
         const button = `<button type="button" class="close" aria-label="Close">
   <span aria-hidden="true">&times;</span>
 </button>`
-        $(`#${group}`).append(`<li class="list-group-item">${value}${button}</li>`);
-    	sortUnorderedList(group);
+        $(`#${group}`).append(`<li class="list-group-item" value="${value}">${value}${button}</li>`);
+        sortUnorderedList(group);
 
     }
-$(document).on('click', '.close', function() {
-    $(this).parent().remove();
-});
+    $('#infect_button').click(()=>{
+        const city_name_list = $('.list-group-item').toArray().map(x=> x.getAttribute('value'));
+        const group_city_name_count = city_name_list.reduce((acc, cur) => { 
+            if (acc[cur] != null) { 
+              console.log('found: ' + cur);
+              acc[cur] = acc[cur] + 1; } 
+            else {
+              console.log('new: ' + cur);
+              acc[cur] = 1; }
+           return acc;}, {}
+          ).map((x) => {
+              
+          })
+
+          for (var property in group_city_name_count) {
+            if (object.hasOwnProperty(property)) {
+                group_city_name_count[property]
+            }
+        }
+
+    })
+    $(document).on('click', '.close', function () {
+        $(this).parent().remove();
+    });
     city_select.selectize({
         maxItems: null,
         valueField: 'city',
@@ -82,5 +178,6 @@ $(document).on('click', '.close', function() {
         options: infection_card_list,
         create: false,
         onChange: change_fn,
+        hideSelected: false,
     });
 })
