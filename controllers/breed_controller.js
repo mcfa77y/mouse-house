@@ -22,16 +22,20 @@ class Breed_Controller extends Base_Controller {
                 genotype, male, female, note,
             }) => {
                 const pretty_model = {};
-
-                pretty_model.male_mouse = {
-                    id: male.id_alias,
-                    age: utils.relative_time(male.dob),
-                };
-
-                pretty_model.female_mouse = {
-                    id: female.id_alias,
-                    age: utils.relative_time(female.dob),
-                };
+                if (!isFalsey(male)){
+                    pretty_model.male_mouse = {
+                        id: male.id_alias,
+                        age: utils.relative_time(male.dob),
+                    };
+                }
+                
+                if (!isFalsey(female)){
+                    pretty_model.female_mouse = {
+                        id: female.id_alias,
+                        age: utils.relative_time(female.dob),
+                    };
+                }
+                
                 
 
                 pretty_model.id = parseInt(model.id, 10);
@@ -55,7 +59,8 @@ class Breed_Controller extends Base_Controller {
     }
     all_pretty() {
         const self = this;
-        return super.all().then(items => BlueBird.map(items, item => self.pretty(item)))
+        return super.all()
+            .then(items => BlueBird.map(items, item => self.pretty(item)))
             .then(model_array => model_array);
     }
     by_id_alias(_id_alias) {
