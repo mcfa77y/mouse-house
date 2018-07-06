@@ -146,25 +146,25 @@ $(() => {
         sortUnorderedList(group);
 
     }
-    $('#infect_button').click(()=>{
-        const city_name_list = $('.list-group-item').toArray().map(x=> x.getAttribute('value'));
-        const group_city_name_count = city_name_list.reduce((acc, cur) => { 
-            if (acc[cur] != null) { 
-              console.log('found: ' + cur);
-              acc[cur] = acc[cur] + 1; } 
-            else {
-              console.log('new: ' + cur);
-              acc[cur] = 1; }
-           return acc;}, {}
-          ).map((x) => {
-              
-          })
-
-          for (var property in group_city_name_count) {
-            if (object.hasOwnProperty(property)) {
-                group_city_name_count[property]
+    $('#infect_button').click(() => {
+        const city_name_list = $('.list-group-item').toArray().map(x => x.getAttribute('value'));
+        const group_city_name_count = city_name_list.reduce((acc, cur) => {
+            if (acc[cur] != null) {
+                console.log('found: ' + cur);
+                acc[cur] = acc[cur] + 1.0;
+            } else {
+                console.log('new: ' + cur);
+                acc[cur] = 1.0;
             }
+            return acc;
+        }, {})
+
+        for (const key of Object.keys(group_city_name_count)) {
+            const percent = parseFloat(Math.round(group_city_name_count[key]  * 100) / city_name_list.length).toFixed(1);
+            group_city_name_count[key] = percent;
         }
+        console.log(JSON.stringify(group_city_name_count, null, 2));
+
 
     })
     $(document).on('click', '.close', function () {
