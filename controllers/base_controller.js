@@ -12,7 +12,7 @@ class Base_Controller {
         return this.Model.findById(_id);
     }
     get_where(_where) {
-        return this.Model.findAll({ where: _where });
+        return this.Model.findAll({ where: _where , paranoid: false});
     }
     insert(model_data_original) {
         const model_data = utils.remove_empty(model_data_original);

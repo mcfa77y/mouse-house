@@ -6,6 +6,7 @@ const utils = require('./utils_controller');
 
 const Base_Controller = require('./base_controller');
 const enum_controller = require('./enum_controller');
+const mouse_controller = require('./mouse_controller');
 const { Breed } = require('../database/models');
 // const Mouse = require('../database/models').Mouse
 
@@ -27,7 +28,7 @@ class Breed_Controller extends Base_Controller {
                         id: male.id_alias,
                         age: utils.relative_time(male.dob),
                     };
-                }
+                } 
                 
                 if (!isFalsey(female)){
                     pretty_model.female_mouse = {
@@ -59,7 +60,7 @@ class Breed_Controller extends Base_Controller {
     }
     all_pretty() {
         const self = this;
-        return super.all()
+        return super.all({include: [{model: mouse_controller.Mouse, paranoid: false}], paranoid: false})
             .then(items => BlueBird.map(items, item => self.pretty(item)))
             .then(model_array => model_array);
     }

@@ -3,7 +3,7 @@ import range from 'lodash/range';
 import * as Axios from 'axios';
 import MaterialDatetimePicker from 'material-datetime-picker';
 
-import 'bootstrap';
+import 'bootstrap/dist/js/npm';
 import 'datatables.net';
 import 'datatables.net-select';
 import 'datatables.net-select-dt/css/select.dataTables.css';

@@ -1,4 +1,4 @@
-import { infection_card_list} from './data-city';
+import { infection_card_list } from './data-city';
 
 
 const setupCitySelect = () => {
