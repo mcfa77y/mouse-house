@@ -9,9 +9,10 @@ const breed_controller = require('../controllers/breed_controller');
 const { select_json, log_json, getErrorGif } = require('./utils_routes');
 const { get_breed_inputs, create_model } = require('./utils_breed_routes');
 
-const my_client_id = '491afd8690be4d8cb71e311407826ad5';
+const client_id = '491afd8690be4d8cb71e311407826ad5';
 const client_secret = 'c45753b01e014562bc0cd0db0ca3c1c4';
-const base64_id_secret = new Buffer(`${my_client_id}:${client_secret}`).toString('base64')
+const redirect_uri = 'http://localhost:5000/festival/login/callback';
+const base64_id_secret = new Buffer(`${client_id}:${client_secret}`).toString('base64')
 router.get('/', (req, res) => {
             res.render('pages/festival/festival_index', {
                 extra_js: ['festival_index.bundle.js'],
@@ -21,8 +22,8 @@ router.get('/', (req, res) => {
 
 router.get('/login/callback', (req, res) => {
     const code = req.query.code 
-    const grant_type = encodeURIComponent('authorization_code');
-    const redirect_uri = encodeURIComponent('http://localhost:5000/festival/token/callback');
+    const grant_type = "authorization_code";
+    
     const token_uri = 'https://accounts.spotify.com/api/token';
 
     const header = `Authorization: Basic ${base64_id_secret}`;
@@ -30,20 +31,30 @@ router.get('/login/callback', (req, res) => {
         code,
         grant_type,
         redirect_uri,
-        client_id: my_client_id,
+        client_id,
         client_secret
     }
-    Axios.post( token_uri, data ).then(()=>{
+    const config = {
+        url: token_uri,
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        params: data,
+        method: "post",
+        
+      
+    }
+    Axios(config).then(()=>{
         log_json(arguments);
         res.render('pages/festival/festival_index', {
             extra_js: ['festival_index.bundle.js'],
         });
     })
     .catch((err)=>{
-        log_json(arguments);
-        res.render('pages/festival/festival_index', {
-            extra_js: ['festival_index.bundle.js'],
-        });
+        log_json(err.response.data);
+         res.render('pages/festival/festival_index', {
+             extra_js: ['festival_index.bundle.js'],
+         });
     });
 
    
@@ -52,12 +63,12 @@ router.get('/login/callback', (req, res) => {
 router.get('/login', (req, res) => {
     
     
-    var redirect_uri = 'http://localhost:5000/festival/login/callback';
+    
     
     const scopes = 'user-read-private user-read-email';
     res.redirect('https://accounts.spotify.com/authorize' +
         '?response_type=code' +
-        '&client_id=' + my_client_id +
+        '&client_id=' + client_id +
         (scopes ? '&scope=' + encodeURIComponent(scopes) : '') +
         '&redirect_uri=' + encodeURIComponent(redirect_uri));
 });
@@ -71,7 +82,7 @@ router.get('/accessToken/callback', (req, res) => {
 
 router.post('/accessToken', (req, res) => {
     const code = req.body.code;
-    const my_client_id = '491afd8690be4d8cb71e311407826ad5';
+    const client_id = '491afd8690be4d8cb71e311407826ad5';
     const client_secret = 'c45753b01e014562bc0cd0db0ca3c1c4';
     var redirect_uri = 'http://localhost:5000/festival/accessToken/callback';
     
