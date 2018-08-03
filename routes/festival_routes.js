@@ -20,7 +20,7 @@ router.get('/', (req, res) => {
 });
 
 
-router.get('/login/callback', (req, res) => {
+router.get('/login/callback', async (req, res) => {
     const code = req.query.code 
     const grant_type = "authorization_code";
     
@@ -41,14 +41,14 @@ router.get('/login/callback', (req, res) => {
         },
         params: data,
         method: "post",
-        
-      
     }
-    Axios(config).then(()=>{
-        log_json(arguments);
-        res.render('pages/festival/festival_index', {
-            extra_js: ['festival_index.bundle.js'],
-        });
+
+    const dat = await Axios(config).then((res)=>{
+        //log_json(res.data);
+        return res.data;
+        // res.render('pages/festival/festival_index', {
+        //     extra_js: ['festival_index.bundle.js'],
+        // });
     })
     .catch((err)=>{
         log_json(err.response.data);
@@ -57,6 +57,22 @@ router.get('/login/callback', (req, res) => {
          });
     });
 
+    const config2 = {
+        method: 'get',
+        url: 'https://api.spotify.com/v1/me',
+        headers: {
+            Authorization: 'Bearer ' + dat.access_token
+        }
+    }
+    Axios(config2).then((res) => {
+        log_json(res.data);
+    })
+    .catch((err)=>{
+        log_json(err.response.data);
+         res.render('pages/festival/festival_index', {
+             extra_js: ['festival_index.bundle.js'],
+         });
+    });
    
 });
 
