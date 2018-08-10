@@ -5,12 +5,30 @@ const readJson = require('r-json');
 const isFalsey = require('falsey');
 const rp = require('request-promise');
 const _ = require('underscore');
+const crypto = require('crypto');
+
+const algorithm = 'aes-256-ctr';
+const password = process.env.ENCRYPTION_KEY;
+
 
 const CREDENTIALS = readJson(`${__dirname}/../config/credentials.json`);
+
 String.prototype.toProperCase = function () {
     return this.replace(/\w\S*/g, txt => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
 };
 module.exports = {
+    encrypt: (string) => {
+        const cipher = crypto.createCipher(algorithm, password);
+        let encrypted_string = cipher.update(string, 'utf8', 'hex');
+        encrypted_string += cipher.final('hex');
+        return encrypted_string;
+    },
+    decrypt: (string) => {
+        const decipher = crypto.createDecipher(algorithm, password);
+        let decrypted_string = decipher.update(string, 'hex', 'utf8');
+        decrypted_string += decipher.final('utf8');
+        return decrypted_string;
+    },
     log_json: (json) => {
         let cache = [];
         const result = JSON.stringify(json, (key, value) => {

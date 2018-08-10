@@ -3,204 +3,193 @@ const express = require('express');
 const router = express.Router();
 const BlueBird = require('bluebird');
 const isFalsey = require('falsey');
-const Axios = require ('axios');
+const Axios = require('axios');
+const querystring = require('querystring');
+// spotify stuffs
+const SpotifyWebApi = require('spotify-web-api-node');
 
-const breed_controller = require('../controllers/breed_controller');
-const { select_json, log_json, getErrorGif } = require('./utils_routes');
-const { get_breed_inputs, create_model } = require('./utils_breed_routes');
 
-const client_id = '491afd8690be4d8cb71e311407826ad5';
-const client_secret = 'c45753b01e014562bc0cd0db0ca3c1c4';
-const redirect_uri = 'http://localhost:5000/festival/login/callback';
-const base64_id_secret = new Buffer(`${client_id}:${client_secret}`).toString('base64')
+// credentials are optional
+const spotifyApi = new SpotifyWebApi({
+    clientId: process.env.SPOTIFY_CLIENT_ID,
+    clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
+    redirectUri: process.env.SPOTIFY_CALLBACK,
+});
+// \ spotify stuffs
+
+const {
+    log_json, getErrorGif, encrypt, decrypt,
+} = require('./utils_routes');
+
+const CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
+const CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET;
+const REDIRECT_URI = process.env.SPOTIFY_CALLBACK;
+
 router.get('/', (req, res) => {
-            res.render('pages/festival/festival_index', {
-                extra_js: ['festival_index.bundle.js'],
-            });
+    res.render('pages/festival/festival_index', {});
 });
 
+const generateRandomString = (length) => {
+    let text = '';
+    const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
-router.get('/login/callback', async (req, res) => {
-    const code = req.query.code 
-    const grant_type = "authorization_code";
-    
-    const token_uri = 'https://accounts.spotify.com/api/token';
-
-    const header = `Authorization: Basic ${base64_id_secret}`;
-    const data = {
-        code,
-        grant_type,
-        redirect_uri,
-        client_id,
-        client_secret
+    for (let i = 0; i < length; i++) {
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
     }
-    const config = {
-        url: token_uri,
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        params: data,
-        method: "post",
-    }
+    return text;
+};
 
-    const dat = await Axios(config).then((res)=>{
-        //log_json(res.data);
-        return res.data;
-        // res.render('pages/festival/festival_index', {
-        //     extra_js: ['festival_index.bundle.js'],
-        // });
-    })
-    .catch((err)=>{
-        log_json(err.response.data);
-         res.render('pages/festival/festival_index', {
-             extra_js: ['festival_index.bundle.js'],
-         });
-    });
-
-    const config2 = {
-        method: 'get',
-        url: 'https://api.spotify.com/v1/me',
-        headers: {
-            Authorization: 'Bearer ' + dat.access_token
-        }
-    }
-    Axios(config2).then((res) => {
-        log_json(res.data);
-    })
-    .catch((err)=>{
-        log_json(err.response.data);
-         res.render('pages/festival/festival_index', {
-             extra_js: ['festival_index.bundle.js'],
-         });
-    });
-   
-});
+const stateKey = 'spotify_auth_state';
 
 router.get('/login', (req, res) => {
-    
-    
-    
-    
-    const scopes = 'user-read-private user-read-email';
-    res.redirect('https://accounts.spotify.com/authorize' +
-        '?response_type=code' +
-        '&client_id=' + client_id +
-        (scopes ? '&scope=' + encodeURIComponent(scopes) : '') +
-        '&redirect_uri=' + encodeURIComponent(redirect_uri));
-});
-
-router.get('/accessToken/callback', (req, res) => {
-    console.log(req.query)
-    res.render('pages/festival/festival_index', {
-        extra_js: ['festival_index.bundle.js'],
+    const state = generateRandomString(16);
+    res.cookie(stateKey, state);
+    const qs = querystring.stringify({
+        response_type: 'code',
+        client_id: CLIENT_ID,
+        redirect_uri: REDIRECT_URI,
+        scope: 'user-read-private user-read-email playlist-modify-public playlist-modify-private',
+        state,
     });
+    const login_url = `https://accounts.spotify.com/authorize?${qs}`;
+    res.redirect(login_url);
 });
 
-router.post('/accessToken', (req, res) => {
-    const code = req.body.code;
-    const client_id = '491afd8690be4d8cb71e311407826ad5';
-    const client_secret = 'c45753b01e014562bc0cd0db0ca3c1c4';
-    var redirect_uri = 'http://localhost:5000/festival/accessToken/callback';
-    
-    
-});
 
-router.get('/create', (req, res) => {
-    BlueBird.props({
-        input: get_breed_inputs(),
-    })
-        .then(({ input: { genotype, male_mice, female_mice } }) => {
-            const gt = select_json(genotype, 'mouse_genotype', 'Genotype');
-            const mm = select_json(male_mice, 'male_mouse');
-            const fm = select_json(female_mice, 'female_mouse');
+router.get('/login/callback', (req, res) => {
+    // your application requests refresh and access tokens
+    // after checking the state parameter
 
-            res.render('pages/breed/breed_create', {
-                genotype: gt,
-                male_mice: mm,
-                female_mice: fm,
-                extra_js: ['breed_create.bundle.js'],
-            });
-        })
-        .catch((error) => {
-            getErrorGif().then((errorImageUrl) => {
-                res.render('error', {
-                    error,
-                    errorImageUrl,
+    const code = req.query.code || null;
+    const state = req.query.state || null;
+    const storedState = req.cookies ? req.cookies[stateKey] : null;
+
+    if (state === null || state !== storedState) {
+        res.redirect(`/#${
+            querystring.stringify({
+                error: 'state_mismatch',
+            })}`);
+    } else {
+        res.clearCookie(stateKey);
+
+        const data = {
+            code,
+            grant_type: 'authorization_code',
+            redirect_uri: REDIRECT_URI,
+            client_id: CLIENT_ID,
+            client_secret: CLIENT_SECRET,
+        };
+        const config = {
+            url: 'https://accounts.spotify.com/api/token',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            params: data,
+            method: 'POST',
+        };
+        Axios(config)
+            .then((token_res) => {
+                const { access_token, refresh_token } = token_res.data;
+                res.cookie('access_token', encrypt(access_token));
+                res.cookie('refresh_token', encrypt(refresh_token));
+                spotifyApi.setAccessToken(access_token);
+                spotifyApi.setRefreshToken(refresh_token);
+                // we can also pass the token to the browser to make requests from there
+                res.redirect('/festival/create');
+            })
+            .catch((error) => {
+                getErrorGif().then((errorImageUrl) => {
+                    res.render('error', {
+                        error,
+                        errorImageUrl,
+                    });
                 });
             });
-        });
+    }
 });
 
-router.get('/:id_alias', (req, res) => {
-    BlueBird.props({
-        input: get_breed_inputs(),
-        breed: breed_controller.by_id_alias(req.params.id_alias),
-    })
-        .then(({ input, breed }) => {
-            const genotype = select_json(input.genotype, 'mouse_genotype', 'Genotype');
-            const male_mice = select_json(input.male_mice, 'male_mouse');
-            const female_mice = select_json(input.female_mice, 'female_mouse');
-            log_json(breed);
-
-            res.render('pages/breed/breed_update', {
-                genotype,
-                male_mice,
-                female_mice,
-                breed,
-                extra_js: ['breed_update.bundle.js'],
-            });
-        })
-        .catch((err) => {
-            console.log(err);
-            res.status(500).send({ success: false, err });
-        });
-});
-
-router.delete('/:id', (req, res) => {
-    const rm_ids = isFalsey(req.query.id_alias) ? req.params.id : req.params.id_alias;
-
-    const rm_promises = rm_ids.split(',').map(id => breed_controller.delete(id));
-
-    return Promise.all(rm_promises)
-        .then(() => {
+router.get('/refresh_token', (req, res) => {
+    // requesting access token from refresh token
+    const { refresh_token } = req.query;
+    const data = {
+        grant_type: 'refresh_token',
+        refresh_token,
+        client_id: CLIENT_ID,
+        client_secret: CLIENT_SECRET,
+    };
+    const config = {
+        url: 'https://accounts.spotify.com/api/token',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        params: data,
+        method: 'POST',
+    };
+    Axios(config)
+        .then((token_res) => {
+            const { access_token } = token_res;
             res.send({
-                success: true,
-            });
-        })
-        .catch((err) => {
-            res.status(500).send({
-                success: false,
-                err,
+                access_token,
             });
         });
 });
 
-router.put('/', (req, res) => {
-    const model = create_model(req.body);
-    breed_controller.insert(model)
-        .then(() => {
-            res.send({
-                success: true,
-            });
-        })
-        .catch((err) => {
-            res.status(500).send({
-                success: false,
-                err,
-            });
-        });
+router.get(('/create'), (req, res) => {
+    res.render('pages/festival/festival_create', {
+        extra_js: ['festival_create.bundle.js'],
+    });
 });
+const get_artist_id_list = (artist_name_array) => {
+    const artist_id_promise_list = artist_name_array
+        .map(artist_name => artist_name.trim())
+        .map(artist_name =>
+            spotifyApi.searchArtists(artist_name).then((data) => {
+                let id = -1;
+                if (data.body.artists.items.length > 0) {
+                    id = data.body.artists.items[0].id;
+                }
+                return id;
+            })
+                .catch((err) => {
+                    console.error(err);
+                }));
+    return Promise.all(artist_id_promise_list);
+};
 
-// update
-router.post('/', (req, res) => {
-    const model = create_model(req.body);
-    breed_controller.update(model)
-        .then(() => {
-            res.send({ success: true });
-        })
-        .catch((err) => {
-            res.status(500).send({ success: false, err });
-        });
+const get_song_by_artist_uri_list = (artist_id_array, song_count) => {
+    const range = [];
+    for (let i = 0; i < song_count; i++) {
+        range.push(i);
+    }
+    const artist_id_promise_list = artist_id_array
+        .filter(artist_id => artist_id !== -1)
+        .map(artist_id =>
+            spotifyApi.getArtistTopTracks(artist_id, 'US')
+                .then(data => range.map(index => data.track[index].uri))
+                .catch((err) => {
+                    console.error(err);
+                }));
+    return Promise.all(artist_id_promise_list);
+};
+
+router.post('/', async (req, res) => {
+    // log_json(req.body);
+    const { festival_name, artist_list, song_count } = req.body;
+    const artist_name_array = artist_list.split('\n');
+
+    spotifyApi.setAccessToken(decrypt(req.cookies.access_token));
+    spotifyApi.setRefreshToken(decrypt(req.cookies.refresh_token));
+    try {
+        const artist_id_list = await get_artist_id_list(artist_name_array);
+        const track_uri_list = await get_song_by_artist_uri_list(artist_id_list, song_count);
+        const user_id = await spotifyApi.getMe().then(data => data.body.id);
+        const new_playlist_id = await spotifyApi.createPlaylist(user_id, festival_name)
+            .then(data => data.body.id);
+        spotifyApi.addTracksToPlaylist(user_id, new_playlist_id, track_uri_list)
+            .then(data => res.send({ success: true, data }));
+    } catch (err) {
+        res.status(500).send({ succcess: false, err });
+    }
 });
 
 module.exports = router;

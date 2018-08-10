@@ -21,6 +21,7 @@ module.exports = {
         mouse_create: path.resolve(JS_DIR, 'cs-mouse-create.js'),
         mouse_list: path.resolve(JS_DIR, 'cs-mouse-list.js'),
         mouse_update: path.resolve(JS_DIR, 'cs-mouse-update.js'),
+        festival_create: path.resolve(JS_DIR, 'cs-festival-create.js'),
     },
     devtool: 'cheap-module-eval-source-map',
     // devServer: {
