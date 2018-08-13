@@ -1,13 +1,12 @@
 const express = require('express');
-
-const router = express.Router();
-const BlueBird = require('bluebird');
-const isFalsey = require('falsey');
 const Axios = require('axios');
 const querystring = require('querystring');
 // spotify stuffs
 const SpotifyWebApi = require('spotify-web-api-node');
 const PromiseThrottle = require('promise-throttle');
+
+const router = express.Router();
+
 const promiseThrottle = new PromiseThrottle({
     requestsPerSecond: 10,           // up to 1 request per second
     promiseImplementation: Promise  // the Promise library you are using
