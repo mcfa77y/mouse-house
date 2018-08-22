@@ -24,10 +24,10 @@ app.use(router);
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-
 const breed = require('./routes/breed_routes');
 const mouse = require('./routes/mouse_routes');
 const cage = require('./routes/cage_routes');
+const graphql = require('./routes/graphql_routes');
 
 
 // handel bars helpers
@@ -57,6 +57,7 @@ app.set('view engine', 'hbs');
 app.use('/breed', breed);
 app.use('/mouse', mouse);
 app.use('/cage', cage);
+app.use('/g', graphql);
 
 
 app.get('/', (request, response) => {
