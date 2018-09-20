@@ -27,9 +27,13 @@ module.exports = {
         cache = null; // Enable garbage collection
         Logger.log(result);
     },
-
-    select_json: (items) => {
-        const result = items.map((x) => {
+    reshape_for_select: model => ({ id: model.id, description: model.id_alias }),
+    select_json: (items, reshape_fn = null) => {
+        let tmp_items = items;
+        if (!isFalsey(reshape_fn)) {
+            tmp_items = items.map(reshape_fn);
+        }
+        const result = tmp_items.map((x) => {
             const description = isFalsey(x.description) ? x.id : x.description;
             return { id: `${x.id}`, description: `${description}` };
         });

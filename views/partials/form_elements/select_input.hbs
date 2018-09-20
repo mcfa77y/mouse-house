@@ -31,11 +31,12 @@
         {{/if}}
     
 </div>
-{{!-- 
+{{!-- <div>
 {{#each items}}
                 {{#contains ../value this.id  }}
-                {{../value}} contains {{this.id}}<br/>
+                <div class="alert alert-success" role="alert">{{../value}} contains {{this.id}} {{this.description}}</div>
                 {{else}}
-                {{../value}} not contains {{this.id}}<br/>
+                <div class="alert alert-danger" role="alert">{{../value}} not contains {{this.id}} {{this.description}}</div>
                 {{/contains}}
-            {{/each}} --}}
+            {{/each}}
+            </div> --}}

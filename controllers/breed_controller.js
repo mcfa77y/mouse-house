@@ -25,27 +25,23 @@ class Breed_Controller extends Base_Controller {
             }) => {
                 const pretty_model = {};
                 try {
-                    
-                    pretty_model.male_mouse = {
-                        id: male.id_alias,
-                        age: relative_time(male.dob),
-                    };
-
-                    pretty_model.female_mouse = {
-                        id: female.id_alias,
-                        age: relative_time(female.dob),
-                    };
+                    const reshape_mouse_data = mouse => ({
+                        id: option(mouse.id_alias, -1),
+                        age: option_date(mouse.dob),
+                    });
+                    pretty_model.male_mouse = option(male, { id: -1, age: relative_time('01/01/1970') }, reshape_mouse_data);
+                    pretty_model.female_mouse = option(female, { id: -1, age: relative_time('01/01/1970') }, reshape_mouse_data);
 
                     pretty_model.id = parseInt(model.id, 10);
-                    pretty_model.id_alias = option(model.id_alias, 0);
+                    pretty_model.id_alias = option(model.id_alias, -1);
                     pretty_model.ween_date = option_date(model.ween_date);
                     pretty_model.female_count = option(model.female_count, 0);
                     pretty_model.genotype = option(genotype);
                     pretty_model.genotype_id = option(genotype);
                     pretty_model.litter_date = option_date(model.litter_date);
                     pretty_model.male_count = option(model.male_count, 0);
-                    pretty_model.uknown_count = option(model.uknown_count, 0);
-                    pretty_model.note = option(note.dataValues.text);
+                    pretty_model.unknown_count = option(model.unknown_count, 0);
+                    pretty_model.note = option(note, '', x => x.dataValues.text);
                     pretty_model.pairing_date = option_date(model.pairing_date);
                     pretty_model.plug_date = option_date(model.plug_date);
                     pretty_model.pup_check_date = option_date(model.pup_check_date);
@@ -60,8 +56,9 @@ class Breed_Controller extends Base_Controller {
     }
     all_pretty() {
         const self = this;
-        return super.all().then(items => BlueBird.map(items, item => self.pretty(item)))
-            .then(model_array => model_array);
+        return super.all()
+            .then(items => BlueBird.map(items, item => self.pretty(item)))
+            .then(model_array => model_array.filter(model => !isFalsey(model)));
     }
     by_id_alias(_id_alias) {
         const self = this;
@@ -106,7 +103,8 @@ class Breed_Controller extends Base_Controller {
                 if (!isFalsey(tmp_model.note)) {
                     isFalsey(note) ? model.createNote(tmp_model.note) : note.update(tmp_model.note);
                 }
-            });
+            })
+            .catch(err => console.error(err));
     }
 }
 

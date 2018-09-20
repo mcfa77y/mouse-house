@@ -5,7 +5,7 @@ const BlueBird = require('bluebird');
 const isFalsey = require('falsey');
 
 const breed_controller = require('../controllers/breed_controller');
-const { select_json, log_json, getErrorGif } = require('./utils_routes');
+const { reshape_for_select, select_json, log_json, getErrorGif } = require('./utils_routes');
 const { get_breed_inputs, create_model } = require('./utils_breed_routes');
 
 // list
@@ -34,15 +34,19 @@ router.get('/create', (req, res) => {
     BlueBird.props({
         input: get_breed_inputs(),
     })
-        .then(({ input: { genotype, male_mice, female_mice, mice } }) => {
-            const gt = select_json(genotype, 'mouse_genotype', 'Genotype');
-            const mm = select_json(male_mice, 'male_mouse');
-            const fm = select_json(female_mice, 'female_mouse');
+        .then(({
+            input: {
+                genotype, male_mice, female_mice, mice,
+            },
+        }) => {
+            const gt = select_json(genotype);
+            const mm = select_json(male_mice, reshape_for_select);
+            const fm = select_json(female_mice, reshape_for_select);
 
             res.render('pages/breed/breed_create', {
                 genotype: gt,
                 male_mice: mm,
-                mice: mice,
+                mice,
                 female_mice: fm,
                 extra_js: ['breed_create.bundle.js'],
             });
@@ -63,9 +67,10 @@ router.get('/:id_alias', (req, res) => {
         breed: breed_controller.by_id_alias(req.params.id_alias),
     })
         .then(({ input, breed }) => {
-            const genotype = select_json(input.genotype, 'mouse_genotype', 'Genotype');
-            const male_mice = select_json(input.male_mice, 'male_mouse');
-            const female_mice = select_json(input.female_mice, 'female_mouse');
+            log_json(breed);
+            const genotype = select_json(input.genotype);
+            const male_mice = select_json(input.male_mice, reshape_for_select);
+            const female_mice = select_json(input.female_mice, reshape_for_select);
             log_json(breed);
 
             res.render('pages/breed/breed_update', {

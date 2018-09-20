@@ -6,7 +6,7 @@ const BlueBird = require('bluebird');
 
 const cage_controller = require('../controllers/cage_controller');
 const utils = require('./utils_cage_routes');
-const { cool_face, select_json, log_json } = require('./utils_routes');
+const { cool_face, select_json, log_json, reshape_for_select } = require('./utils_routes');
 
 router.get('/', (req, res) => {
     BlueBird.props({
@@ -29,7 +29,7 @@ router.get('/create', (req, res) => {
         .then(({ input }) => {
             let mice_select = input.mice
                 .map(mouse => ({ id: mouse.id, description: mouse.id_alias }));
-            mice_select = select_json(mice_select);
+            mice_select = select_json(mice_select, reshape_for_select);
             const cage_type = select_json(input.cage_type);
             const { mice } = input;
             const verb = 'Add';
@@ -52,9 +52,8 @@ router.get('/:id_alias', (req, res) => {
     })
         .then(({ input, cage }) => {
             const { mice } = input;
-            const mice_select = select_json(input.mice
-                .map(mouse => ({ id: mouse.id, description: mouse.id_alias })), 'mouse_ids', 'mice');
-            const cage_type = select_json(input.cage_type, 'cage_type');
+            const mice_select = select_json(input.mice, reshape_for_select);
+            const cage_type = select_json(input.cage_type);
             const verb = 'Update';
             log_json(cage);
 

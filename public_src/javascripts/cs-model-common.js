@@ -171,7 +171,7 @@ export function setup_table({ model_name, column_names, hide_id_column = false }
             [5, 10, 25, 'All'],
         ],
         initComplete() {
-            this.api().columns.adjust();
+            this.api().columns.adjust().draw();
         },
     };
 
