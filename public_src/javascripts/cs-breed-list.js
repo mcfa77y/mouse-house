@@ -14,6 +14,7 @@ $(() => {
         'pup_check_date',
         'male_count',
         'female_count',
+        'unknown_count',
         'notes'];
 
     const table = setup_table({ model_name: 'breed', column_names, hide_id_column: true });

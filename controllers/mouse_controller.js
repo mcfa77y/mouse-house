@@ -95,8 +95,8 @@ class Mouse_Controller extends Base_Controller {
 
     insert(_model) {
         const self = this;
-        _model = utils.remove_empty(_model, true);
-        return Mouse.create(_model, {
+        const tmp_model = utils.remove_empty(_model, true);
+        return Mouse.create(tmp_model, {
             include: [
                 { association: Mouse.Note },
                 { association: Mouse.Sex },
@@ -106,7 +106,13 @@ class Mouse_Controller extends Base_Controller {
             ],
             returning: true,
         })
-            .then(model => model.update({ id_alias: model.id }))
+            .then(async (model) => {
+                const sex_abreviation = await enum_controller
+                    .get(model.sex_id)
+                    .then(x => x.description[0]);
+                const new_alias = `m${sex_abreviation}-${model.id}`;
+                model.update({ id_alias: new_alias });
+            })
             .catch((error) => {
                 console.log(error);
             });

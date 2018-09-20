@@ -15,9 +15,9 @@ router.get('/', (req, res) => {
     })
         .then(({ breeds }) => {
             log_json(breeds);
-
+            const non_empty_breeds = breeds.filter(breed => !isFalsey(breed));
             res.render('pages/breed/breed_list', {
-                breeds,
+                breeds: non_empty_breeds,
                 extra_js: ['breed_list.bundle.js'],
             });
         })
@@ -34,7 +34,7 @@ router.get('/create', (req, res) => {
     BlueBird.props({
         input: get_breed_inputs(),
     })
-        .then(({ input: { genotype, male_mice, female_mice } }) => {
+        .then(({ input: { genotype, male_mice, female_mice, mice } }) => {
             const gt = select_json(genotype, 'mouse_genotype', 'Genotype');
             const mm = select_json(male_mice, 'male_mouse');
             const fm = select_json(female_mice, 'female_mouse');
@@ -42,6 +42,7 @@ router.get('/create', (req, res) => {
             res.render('pages/breed/breed_create', {
                 genotype: gt,
                 male_mice: mm,
+                mice: mice,
                 female_mice: fm,
                 extra_js: ['breed_create.bundle.js'],
             });

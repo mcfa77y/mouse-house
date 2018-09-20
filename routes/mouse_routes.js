@@ -272,7 +272,7 @@ router.post('/breed_mice_together', (req, res) => {
         return breed_controller.insert(new_breed)
             .then((breed) => {
                 const updated_breed = {
-                    id_alias: `b${breed.id}`,
+                    id_alias: `b-${breed.id}`,
                 };
                 const update_breed = breed.update(updated_breed);
                 const update_male = mouse_controller.get(male_id)

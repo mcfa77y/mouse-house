@@ -10,6 +10,7 @@ module.exports = {
         genotype: enum_controller.by_type('MOUSE_GENOTYPE'),
         male_mice: mouse_controller.by_sex('male'),
         female_mice: mouse_controller.by_sex('female'),
+        mice: mouse_controller.by_sex('male').map(mouse_controller.pretty),
     }),
 
     create_model: (_model) => {

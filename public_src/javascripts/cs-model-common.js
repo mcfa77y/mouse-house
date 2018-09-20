@@ -154,14 +154,14 @@ export function setup_table({ model_name, column_names, hide_id_column = false }
     let table_options = {
         select: { style: 'multi' },
         responsive: true,
-        dom: 'lBfrtip',
+        dom: 'lBSfrtip',
         buttons: [
             { extend: 'selectAll', className: 'btn btn-secondary' },
             { extend: 'selectNone', className: 'btn btn-secondary' },
             { extend: 'excel', className: 'btn btn-secondary' },
-            { extend: 'colvis', className: 'btn btn-secondary' },
         ],
         scrollY: '500px',
+        scrollX: true,
         scrollCollapse: true,
         paging: false,
         info: false,

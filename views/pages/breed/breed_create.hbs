@@ -11,6 +11,19 @@
                 {{> form_elements/date_input id='plug_date' description='Plug'}}
                 {{> form_elements/text_input id='pup_check_date' description='Pup check' extra_attr='disabled'}}
             </div>
+
+            <div class="row">
+                {{> form_elements/select_input mice_select id='mouse_ids' isMultiple=false description='Mice'}}
+                <div class='col-md-3 col-sm-6 d-flex align-items-center'>
+                    <button id='show-mouse-table-button' data-toggle='collapse' data-target='#mouse-table' type='button' class='btn btn-secondary'>Add male mice</button>
+                </div>
+            </div>
+            <div class='row d-flex flex-column'>
+                <div id='mouse-table' class='collapse'>
+                    {{> mouse/mouse_table}}
+                </div>
+            </div>
+
             <div class="row">
                 {{> form_elements/text_area_input id='note' description='Note'}}
             </div>

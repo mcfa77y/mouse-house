@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
         ween_date: DataTypes.DATE,
         male_count: { type: DataTypes.INTEGER, defaultValue: 0 },
         female_count: { type: DataTypes.INTEGER, defaultValue: 0 },
+        unknown_count: { type: DataTypes.INTEGER, defaultValue: 0 },
     }, {
         classMethods: {
             associate(models) {

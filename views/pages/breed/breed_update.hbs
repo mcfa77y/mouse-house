@@ -11,7 +11,7 @@
                 {{> form_elements/date_input id='plug_date' description='Plug' value=breed.plug_date}}
                 {{> form_elements/text_input id='pup_check_date' description='Pup check' value=breed.pup_check_date extra_attr='disabled'}}
             </div>
-
+            
             <div class="row">
                 {{> form_elements/text_area_input id='note' description='Note' value=breed.note}}
             </div>
@@ -26,6 +26,7 @@
                     {{> form_elements/text_input id='ween_date' description='Ween' value=breed.ween_date extra_attr='disabled'}}
                     {{> form_elements/text_input id='male_count' description='Male count' placeholder='3' value=breed.male_count}}
                     {{> form_elements/text_input id='female_count' description='Female count' placeholder='3' value=breed.female_count}}
+                    {{> form_elements/text_input id='unknown_count' description='Unknown count' placeholder='3' value=breed.unknown_count}}
                 </div>
                 <div class="row">
                     {{> form_elements/text_area_input id='note2' description='Note'}}

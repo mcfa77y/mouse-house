@@ -4,12 +4,12 @@
         <fieldset id="mouse-fields">
             <div class="row">
             {{> form_elements/text_input id='id_alias' description='ID' placeholder='1234' value=mouse.id_alias }}
-            {{> form_elements/text_input id='ear_tag' description='Ear tag' placeholder='1234' value=mouse.ear_tag}}
+            {{> form_elements/text_input id='ear_tag' description='Ear tag' value=mouse.ear_tag}}
             {{> form_elements/select_input status id='status_id' description='Status' value=mouse.status_id}}
             {{> form_elements/select_input cages id='cage_id' description='Cage' value=mouse.cage_id}}
             {{> form_elements/select_input genotype id='genotype_id' description="Genotype" value=mouse.genotype_id}}
             {{> form_elements/date_input id='dob' description='D.O.B.' value=mouse.dob}}
-            {{> form_elements/radio_input sex id='sex_id' description='Sex' value=mouse.sex_id}}
+            {{> form_elements/select_input sex id='sex_id' description='Sex' value=mouse.sex_id}}
             {{> form_elements/text_area_input id='note' description='Note' value=mouse.notes}}
             <input type="hidden" id="id" value="{{mouse.id}}"/>
             </div>

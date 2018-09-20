@@ -1,11 +1,13 @@
 const BlueBird = require('bluebird');
 const isFalsey = require('falsey');
-const _ = require('underscore');
-const utils = require('./utils_controller');
+
+const {
+    remove_empty, relative_time, option_date, option,
+} = require('./utils_controller');
 // const city_names = require('../lib/data/city_names.json').city_names
 
 const Base_Controller = require('./base_controller');
-const enum_controller = require('./enum_controller');
+
 const { Breed } = require('../database/models');
 // const Mouse = require('../database/models').Mouse
 
@@ -22,33 +24,36 @@ class Breed_Controller extends Base_Controller {
                 genotype, male, female, note,
             }) => {
                 const pretty_model = {};
+                try {
+                    
+                    pretty_model.male_mouse = {
+                        id: male.id_alias,
+                        age: relative_time(male.dob),
+                    };
 
-                pretty_model.male_mouse = {
-                    id: male.id_alias,
-                    age: utils.relative_time(male.dob),
-                };
+                    pretty_model.female_mouse = {
+                        id: female.id_alias,
+                        age: relative_time(female.dob),
+                    };
 
-                pretty_model.female_mouse = {
-                    id: female.id_alias,
-                    age: utils.relative_time(female.dob),
-                };
-                
-
-                pretty_model.id = parseInt(model.id, 10);
-                pretty_model.id_alias = model.id_alias;
-                pretty_model.ween_date = isFalsey(model.ween_date) ? '' : utils.format_date(model.ween_date);
-                pretty_model.female_count = model.female_count;
-                pretty_model.genotype = isFalsey(genotype) ? '' : genotype.description;
-                pretty_model.genotype_id = isFalsey(genotype) ? '' : genotype.id;
-                pretty_model.litter_date = isFalsey(model.litter_date) ? '' : utils.format_date(model.litter_date);
-                pretty_model.male_count = model.male_count;
-                pretty_model.note = isFalsey(note) ? '' : note.text;
-                pretty_model.pairing_date = isFalsey(model.pairing_date) ? '' : utils.format_date(model.pairing_date);
-                pretty_model.plug_date = isFalsey(model.plug_date) ? '' : utils.format_date(model.plug_date);
-                pretty_model.pup_check_date = isFalsey(model.pup_check_date) ? '' : utils.format_date(model.pup_check_date);
-                pretty_model.setup_date = isFalsey(model.setup_date) ? '' : utils.format_date(model.setup_date);
-                pretty_model.update_date = isFalsey(model.update_date) ? '' : utils.format_date(model.update_date);
-
+                    pretty_model.id = parseInt(model.id, 10);
+                    pretty_model.id_alias = option(model.id_alias, 0);
+                    pretty_model.ween_date = option_date(model.ween_date);
+                    pretty_model.female_count = option(model.female_count, 0);
+                    pretty_model.genotype = option(genotype);
+                    pretty_model.genotype_id = option(genotype);
+                    pretty_model.litter_date = option_date(model.litter_date);
+                    pretty_model.male_count = option(model.male_count, 0);
+                    pretty_model.uknown_count = option(model.uknown_count, 0);
+                    pretty_model.note = option(note.dataValues.text);
+                    pretty_model.pairing_date = option_date(model.pairing_date);
+                    pretty_model.plug_date = option_date(model.plug_date);
+                    pretty_model.pup_check_date = option_date(model.pup_check_date);
+                    pretty_model.setup_date = option_date(model.setup_date);
+                    pretty_model.update_date = option_date(model.update_date);
+                } catch (err) {
+                    console.error(err);
+                }
 
                 return pretty_model;
             });
@@ -66,12 +71,13 @@ class Breed_Controller extends Base_Controller {
 
     insert(model_original) {
         const self = this;
-        const model = utils.remove_empty(model_original, true);
+        const model = remove_empty(model_original, true);
         return Breed.create(model, {
-            include: [{ 
-                association: Breed.Note,
-                association: Breed.Male,
-                association: Breed.Female }],
+            include: [
+                { association: Breed.Note },
+                { association: Breed.Male },
+                { association: Breed.Female },
+            ],
             returning: true,
         })
             .catch((err) => {
@@ -80,12 +86,13 @@ class Breed_Controller extends Base_Controller {
     }
     update(model_original) {
         const self = this;
-        const _model = utils.remove_empty(model_original, true);
-        return Breed.update(_model, {
-            where: { id: _model.id },
-            include: [{ 
-                association: Breed.Note,
-                association: Breed.Mouse }],
+        const tmp_model = remove_empty(model_original, true);
+        return Breed.update(tmp_model, {
+            where: { id: tmp_model.id },
+            include: [
+                { association: Breed.Note },
+                { association: Breed.Mouse },
+            ],
             returning: true,
         })
             .then((updated_model) => {
@@ -96,8 +103,8 @@ class Breed_Controller extends Base_Controller {
                 });
             })
             .then(({ note, model }) => {
-                if (!isFalsey(_model.note)) {
-                    isFalsey(note) ? model.createNote(_model.note) : note.update(_model.note);
+                if (!isFalsey(tmp_model.note)) {
+                    isFalsey(note) ? model.createNote(tmp_model.note) : note.update(tmp_model.note);
                 }
             });
     }

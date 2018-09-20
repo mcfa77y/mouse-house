@@ -56,7 +56,7 @@ class Cage_Controller extends Base_Controller {
         })
             .then((nu_model) => {
                 if (isFalsey(_model.id_alias)) {
-                    nu_model.update({ id_alias: 'c' + nu_model.id });
+                    nu_model.update({ id_alias: 'c-' + nu_model.id });
                 }
                 if (!isFalsey(_model.mouse_ids)) {
                     Mouse.update({ cage_id: nu_model.id }, { where: { id: { $in: _model.mouse_ids } } });
