@@ -1,0 +1,348 @@
+[?25l[?25h[?25l[?25h
+ajv                             😎  MAJOR UP  Major update available. https://github.com/epoberezkin/ajv
+                                             npm install --save ajv@6.5.4 to go from 5.5.2 to 6.5.4
+                                😕  NOTUSED?  Still using ajv?
+                                             Depcheck did not find code similar to require('ajv') or import from 'ajv'.
+                                             Check your code before removing as depcheck isn't able to foresee all ways dependencies can be used.
+                                             Use --skip-unused to skip this check.
+                                             
+
+axios                           😎  NEW VER!  NonSemver update available. https://github.com/axios/axios
+                                             npm install --save axios@0.18.0 to go from 0.16.2 to 0.18.0
+
+bootstrap                       😎  MAJOR UP  Major update available. https://getbootstrap.com/
+                                             npm install --save bootstrap@4.1.3 to go from 3.3.7 to 4.1.3
+
+child_process                   😕  NOTUSED?  Still using child_process?
+                                             Depcheck did not find code similar to require('child_process') or import from 'child_process'.
+                                             Check your code before removing as depcheck isn't able to foresee all ways dependencies can be used.
+                                             Use --skip-unused to skip this check.
+                                             
+
+cors                            😕  NOTUSED?  Still using cors?
+                                             Depcheck did not find code similar to require('cors') or import from 'cors'.
+                                             Check your code before removing as depcheck isn't able to foresee all ways dependencies can be used.
+                                             Use --skip-unused to skip this check.
+                                             
+
+css-loader                      😎  MAJOR UP  Major update available. https://github.com/webpack-contrib/css-loader
+                                             npm install --save css-loader@1.0.0 to go from 0.28.11 to 1.0.0
+                                😕  NOTUSED?  Still using css-loader?
+                                             Depcheck did not find code similar to require('css-loader') or import from 'css-loader'.
+                                             Check your code before removing as depcheck isn't able to foresee all ways dependencies can be used.
+                                             Use --skip-unused to skip this check.
+                                             
+
+csv-loader                      😎  MAJOR UP  Major update available. https://github.com/theplatapi/csv-loader
+                                             npm install --save csv-loader@3.0.2 to go from 2.1.1 to 3.0.2
+                                😕  NOTUSED?  Still using csv-loader?
+                                             Depcheck did not find code similar to require('csv-loader') or import from 'csv-loader'.
+                                             Check your code before removing as depcheck isn't able to foresee all ways dependencies can be used.
+                                             Use --skip-unused to skip this check.
+                                             
+
+datatables.net-dt               😕  NOTUSED?  Still using datatables.net-dt?
+                                             Depcheck did not find code similar to require('datatables.net-dt') or import from 'datatables.net-dt'.
+                                             Check your code before removing as depcheck isn't able to foresee all ways dependencies can be used.
+                                             Use --skip-unused to skip this check.
+                                             
+
+debug                           😎  MAJOR UP  Major update available. https://github.com/visionmedia/debug#readme
+                                             npm install --save debug@4.0.1 to go from 2.2.0 to 4.0.1
+                                😕  NOTUSED?  Still using debug?
+                                             Depcheck did not find code similar to require('debug') or import from 'debug'.
+                                             Check your code before removing as depcheck isn't able to foresee all ways dependencies can be used.
+                                             Use --skip-unused to skip this check.
+                                             
+
+falsey                          😎  MAJOR UP  Major update available. https://github.com/jonschlinkert/falsey
+                                             npm install --save falsey@1.0.0 to go from 0.3.2 to 1.0.0
+
+file-loader                     😎  MAJOR UP  Major update available. https://github.com/webpack-contrib/file-loader
+                                             npm install --save file-loader@2.0.0 to go from 0.11.2 to 2.0.0
+                                😕  NOTUSED?  Still using file-loader?
+                                             Depcheck did not find code similar to require('file-loader') or import from 'file-loader'.
+                                             Check your code before removing as depcheck isn't able to foresee all ways dependencies can be used.
+                                             Use --skip-unused to skip this check.
+                                             
+
+googleapis                      😎  MAJOR UP  Major update available. https://github.com/google/google-api-nodejs-client#readme
+                                             npm install --save googleapis@33.0.0 to go from 18.0.0 to 33.0.0
+                                😕  NOTUSED?  Still using googleapis?
+                                             Depcheck did not find code similar to require('googleapis') or import from 'googleapis'.
+                                             Check your code before removing as depcheck isn't able to foresee all ways dependencies can be used.
+                                             Use --skip-unused to skip this check.
+                                             
+
+graphql                         😎  MAJOR UP  Major update available. https://github.com/graphql/graphql-js
+                                             npm install --save graphql@14.0.2 to go from 0.13.2 to 14.0.2
+
+handlebars-helpers              😎  NEW VER!  NonSemver update available. https://github.com/helpers/handlebars-helpers
+                                             npm install --save handlebars-helpers@0.10.0 to go from 0.9.8 to 0.10.0
+
+html-webpack-plugin             😎  MAJOR UP  Major update available. https://github.com/jantimon/html-webpack-plugin
+                                             npm install --save html-webpack-plugin@3.2.0 to go from 2.30.1 to 3.2.0
+                                😕  NOTUSED?  Still using html-webpack-plugin?
+                                             Depcheck did not find code similar to require('html-webpack-plugin') or import from 'html-webpack-plugin'.
+                                             Check your code before removing as depcheck isn't able to foresee all ways dependencies can be used.
+                                             Use --skip-unused to skip this check.
+                                             
+
+loopback                        😕  NOTUSED?  Still using loopback?
+                                             Depcheck did not find code similar to require('loopback') or import from 'loopback'.
+                                             Check your code before removing as depcheck isn't able to foresee all ways dependencies can be used.
+                                             Use --skip-unused to skip this check.
+                                             
+
+loopback-connector-postgresql   😕  NOTUSED?  Still using loopback-connector-postgresql?
+                                             Depcheck did not find code similar to require('loopback-connector-postgresql') or import from 'loopback-connector-postgresql'.
+                                             Check your code before removing as depcheck isn't able to foresee all ways dependencies can be used.
+                                             Use --skip-unused to skip this check.
+                                             
+
+nouislider                      😎  MAJOR UP  Major update available. https://github.com/leongersen/noUiSlider#readme
+                                             npm install --save nouislider@12.0.0 to go from 10.1.0 to 12.0.0
+
+pg                              😎  MAJOR UP  Major update available. http://github.com/brianc/node-postgres
+                                             npm install --save pg@7.4.3 to go from 6.4.2 to 7.4.3
+                                😕  NOTUSED?  Still using pg?
+                                             Depcheck did not find code similar to require('pg') or import from 'pg'.
+                                             Check your code before removing as depcheck isn't able to foresee all ways dependencies can be used.
+                                             Use --skip-unused to skip this check.
+                                             
+
+pg-hstore                       😕  NOTUSED?  Still using pg-hstore?
+                                             Depcheck did not find code similar to require('pg-hstore') or import from 'pg-hstore'.
+                                             Check your code before removing as depcheck isn't able to foresee all ways dependencies can be used.
+                                             Use --skip-unused to skip this check.
+                                             
+
+pg-promise                      😎  MAJOR UP  Major update available. https://github.com/vitaly-t/pg-promise
+                                             npm install --save pg-promise@8.4.6 to go from 5.9.7 to 8.4.6
+                                😕  NOTUSED?  Still using pg-promise?
+                                             Depcheck did not find code similar to require('pg-promise') or import from 'pg-promise'.
+                                             Check your code before removing as depcheck isn't able to foresee all ways dependencies can be used.
+                                             Use --skip-unused to skip this check.
+                                             
+
+querystring                     😕  NOTUSED?  Still using querystring?
+                                             Depcheck did not find code similar to require('querystring') or import from 'querystring'.
+                                             Check your code before removing as depcheck isn't able to foresee all ways dependencies can be used.
+                                             Use --skip-unused to skip this check.
+                                             
+
+sequelize                       😎  MAJOR UP  Major update available. https://github.com/sequelize/sequelize#readme
+                                             npm install --save sequelize@4.38.1 to go from 3.33.0 to 4.38.1
+
+style-loader                    😎  NEW VER!  NonSemver update available. https://github.com/webpack-contrib/style-loader#readme
+                                             npm install --save style-loader@0.23.0 to go from 0.18.2 to 0.23.0
+                                😕  NOTUSED?  Still using style-loader?
+                                             Depcheck did not find code similar to require('style-loader') or import from 'style-loader'.
+                                             Check your code before removing as depcheck isn't able to foresee all ways dependencies can be used.
+                                             Use --skip-unused to skip this check.
+                                             
+
+url                             😕  NOTUSED?  Still using url?
+                                             Depcheck did not find code similar to require('url') or import from 'url'.
+                                             Check your code before removing as depcheck isn't able to foresee all ways dependencies can be used.
+                                             Use --skip-unused to skip this check.
+                                             
+
+util                            😎  NEW VER!  NonSemver update available. https://github.com/defunctzombie/node-util
+                                             npm install --save util@0.11.0 to go from 0.10.4 to 0.11.0
+                                😕  NOTUSED?  Still using util?
+                                             Depcheck did not find code similar to require('util') or import from 'util'.
+                                             Check your code before removing as depcheck isn't able to foresee all ways dependencies can be used.
+                                             Use --skip-unused to skip this check.
+                                             
+
+xml-loader                      😕  NOTUSED?  Still using xml-loader?
+                                             Depcheck did not find code similar to require('xml-loader') or import from 'xml-loader'.
+                                             Check your code before removing as depcheck isn't able to foresee all ways dependencies can be used.
+                                             Use --skip-unused to skip this check.
+                                             
+
+youtube-api                     😕  NOTUSED?  Still using youtube-api?
+                                             Depcheck did not find code similar to require('youtube-api') or import from 'youtube-api'.
+                                             Check your code before removing as depcheck isn't able to foresee all ways dependencies can be used.
+                                             Use --skip-unused to skip this check.
+                                             
+
+youtube-player                  😎  MAJOR UP  Major update available. https://github.com/gajus/youtube-player#readme
+                                             npm install --save youtube-player@5.5.0 to go from 4.2.3 to 5.5.0
+                                😕  NOTUSED?  Still using youtube-player?
+                                             Depcheck did not find code similar to require('youtube-player') or import from 'youtube-player'.
+                                             Check your code before removing as depcheck isn't able to foresee all ways dependencies can be used.
+                                             Use --skip-unused to skip this check.
+                                             
+
+youtube-search                  😕  NOTUSED?  Still using youtube-search?
+                                             Depcheck did not find code similar to require('youtube-search') or import from 'youtube-search'.
+                                             Check your code before removing as depcheck isn't able to foresee all ways dependencies can be used.
+                                             Use --skip-unused to skip this check.
+                                             
+
+babel-core                      😍  UPDATE!   Your local install is out of date. https://babeljs.io/
+                                             npm install --save-dev babel-core@6.26.3 to go from 6.26.0 to 6.26.3
+
+babel-loader                    😟  PKG ERR!  A package.json was not found at /home/joe/Sites/mouse-house/node_modules/babel-loader/package.json
+                                😎  MAJOR UP  Major update available. https://github.com/babel/babel-loader
+                                             npm install --save-dev babel-loader@8.0.2 to go from 7.1.5 to 8.0.2
+
+eslint                          😟  PKG ERR!  A package.json was not found at /home/joe/Sites/mouse-house/node_modules/eslint/package.json
+                                😎  MAJOR UP  Major update available. https://eslint.org
+                                             npm install --save-dev eslint@5.6.0 to go from 4.19.1 to 5.6.0
+                                😕  NOTUSED?  Still using eslint?
+                                             Depcheck did not find code similar to require('eslint') or import from 'eslint'.
+                                             Check your code before removing as depcheck isn't able to foresee all ways dependencies can be used.
+                                             Use --skip-unused to skip this check.
+                                             
+
+webpack-dev-middleware          😎  MAJOR UP  Major update available. https://github.com/webpack/webpack-dev-middleware
+                                             npm install --save-dev webpack-dev-middleware@3.4.0 to go from 1.12.2 to 3.4.0
+                                😕  NOTUSED?  Still using webpack-dev-middleware?
+                                             Depcheck did not find code similar to require('webpack-dev-middleware') or import from 'webpack-dev-middleware'.
+                                             Check your code before removing as depcheck isn't able to foresee all ways dependencies can be used.
+                                             Use --skip-unused to skip this check.
+                                             
+
+webpack-dev-server              😎  MAJOR UP  Major update available. https://github.com/webpack/webpack-dev-server#readme
+                                             npm install --save-dev webpack-dev-server@3.1.9 to go from 2.11.3 to 3.1.9
+                                😕  NOTUSED?  Still using webpack-dev-server?
+                                             Depcheck did not find code similar to require('webpack-dev-server') or import from 'webpack-dev-server'.
+                                             Check your code before removing as depcheck isn't able to foresee all ways dependencies can be used.
+                                             Use --skip-unused to skip this check.
+                                             
+
+eslint-config-airbnb            😟  PKG ERR!  A package.json was not found at /home/joe/Sites/mouse-house/node_modules/eslint-config-airbnb/package.json
+                                😎  MAJOR UP  Major update available. https://github.com/airbnb/javascript
+                                             npm install --save-dev eslint-config-airbnb@17.1.0 to go from 16.1.0 to 17.1.0
+                                😕  NOTUSED?  Still using eslint-config-airbnb?
+                                             Depcheck did not find code similar to require('eslint-config-airbnb') or import from 'eslint-config-airbnb'.
+                                             Check your code before removing as depcheck isn't able to foresee all ways dependencies can be used.
+                                             Use --skip-unused to skip this check.
+                                             
+
+eslint-config-airbnb-base       😟  PKG ERR!  A package.json was not found at /home/joe/Sites/mouse-house/node_modules/eslint-config-airbnb-base/package.json
+                                😎  MAJOR UP  Major update available. https://github.com/airbnb/javascript
+                                             npm install --save-dev eslint-config-airbnb-base@13.1.0 to go from 12.1.0 to 13.1.0
+
+eslint-plugin-import            😟  PKG ERR!  A package.json was not found at /home/joe/Sites/mouse-house/node_modules/eslint-plugin-import/package.json
+
+eslint-plugin-jsx-a11y          😟  PKG ERR!  A package.json was not found at /home/joe/Sites/mouse-house/node_modules/eslint-plugin-jsx-a11y/package.json
+
+eslint-plugin-react             😟  PKG ERR!  A package.json was not found at /home/joe/Sites/mouse-house/node_modules/eslint-plugin-react/package.json
+
+expose-loader                   😟  MISSING!  Not installed.
+                                😕  NOTUSED?  Still using expose-loader?
+                                             Depcheck did not find code similar to require('expose-loader') or import from 'expose-loader'.
+                                             Check your code before removing as depcheck isn't able to foresee all ways dependencies can be used.
+                                             Use --skip-unused to skip this check.
+                                             
+
+nodemon                         😟  MISSING!  Not installed.
+                                😕  NOTUSED?  Still using nodemon?
+                                             Depcheck did not find code similar to require('nodemon') or import from 'nodemon'.
+                                             Check your code before removing as depcheck isn't able to foresee all ways dependencies can be used.
+                                             Use --skip-unused to skip this check.
+                                             
+
+sequelize-cli                   😟  MISSING!  Not installed.
+                                😎  MAJOR UP  Major update available. https://github.com/sequelize/cli
+                                             npm install --save-dev sequelize-cli@4.1.1 to go from 2.8.0 to 4.1.1
+                                😕  NOTUSED?  Still using sequelize-cli?
+                                             Depcheck did not find code similar to require('sequelize-cli') or import from 'sequelize-cli'.
+                                             Check your code before removing as depcheck isn't able to foresee all ways dependencies can be used.
+                                             Use --skip-unused to skip this check.
+                                             
+
+uglify-es                       😟  MISSING!  Not installed.
+                                😕  NOTUSED?  Still using uglify-es?
+                                             Depcheck did not find code similar to require('uglify-es') or import from 'uglify-es'.
+                                             Check your code before removing as depcheck isn't able to foresee all ways dependencies can be used.
+                                             Use --skip-unused to skip this check.
+                                             
+
+uglifyjs-webpack-plugin         😟  PKG ERR!  A package.json was not found at /home/joe/Sites/mouse-house/node_modules/uglifyjs-webpack-plugin/package.json
+                                😎  MAJOR UP  Major update available. https://github.com/webpack-contrib/uglifyjs-webpack-plugin
+                                             npm install --save-dev uglifyjs-webpack-plugin@2.0.1 to go from 0.4.6 to 2.0.1
+                                😕  NOTUSED?  Still using uglifyjs-webpack-plugin?
+                                             Depcheck did not find code similar to require('uglifyjs-webpack-plugin') or import from 'uglifyjs-webpack-plugin'.
+                                             Check your code before removing as depcheck isn't able to foresee all ways dependencies can be used.
+                                             Use --skip-unused to skip this check.
+                                             
+
+webpack                         😟  PKG ERR!  A package.json was not found at /home/joe/Sites/mouse-house/node_modules/webpack/package.json
+                                😎  MAJOR UP  Major update available. https://github.com/webpack/webpack
+                                             npm install --save-dev webpack@4.19.1 to go from 3.12.0 to 4.19.1
+
+webpack-bundle-analyzer         😟  MISSING!  Not installed.
+                                😎  MAJOR UP  Major update available. https://github.com/webpack-contrib/webpack-bundle-analyzer
+                                             npm install --save-dev webpack-bundle-analyzer@3.0.2 to go from 2.13.1 to 3.0.2
+                                😕  NOTUSED?  Still using webpack-bundle-analyzer?
+                                             Depcheck did not find code similar to require('webpack-bundle-analyzer') or import from 'webpack-bundle-analyzer'.
+                                             Check your code before removing as depcheck isn't able to foresee all ways dependencies can be used.
+                                             Use --skip-unused to skip this check.
+                                             
+
+datatables.net-bs               😟  MISSING!  Not installed.
+                                😟  PKG ERR!  Not in the package.json. Found in: /public/third-party/DataTables/Buttons-1.4.0/js/buttons.bootstrap.js, /public/third-party/DataTables/Buttons-1.4.0/js/buttons.bootstrap.min.js, /public/third-party/DataTables/Responsive-2.1.1/js/responsive.bootstrap.min.js, /public/third-party/DataTables/Responsive-2.1.1/js/responsive.bootstrap.js, /public/third-party/DataTables/datatables.js, /public/third-party/DataTables/datatables.min.js
+
+datatables.net-zf               😟  MISSING!  Not installed.
+                                😟  PKG ERR!  Not in the package.json. Found in: /public/third-party/DataTables/Buttons-1.4.0/js/buttons.foundation.js, /public/third-party/DataTables/Buttons-1.4.0/js/buttons.foundation.min.js, /public/third-party/DataTables/Responsive-2.1.1/js/responsive.foundation.js, /public/third-party/DataTables/Responsive-2.1.1/js/responsive.foundation.min.js
+
+datatables.net-jqui             😟  MISSING!  Not installed.
+                                😟  PKG ERR!  Not in the package.json. Found in: /public/third-party/DataTables/Buttons-1.4.0/js/buttons.jqueryui.js, /public/third-party/DataTables/Buttons-1.4.0/js/buttons.jqueryui.min.js, /public/third-party/DataTables/Responsive-2.1.1/js/responsive.jqueryui.js, /public/third-party/DataTables/Responsive-2.1.1/js/responsive.jqueryui.min.js
+
+datatables.net-se               😟  MISSING!  Not installed.
+                                😟  PKG ERR!  Not in the package.json. Found in: /public/third-party/DataTables/Buttons-1.4.0/js/buttons.semanticui.js, /public/third-party/DataTables/Buttons-1.4.0/js/buttons.semanticui.min.js
+
+lie                             😟  MISSING!  Not installed.
+                                😟  PKG ERR!  Not in the package.json. Found in: /public/third-party/DataTables/JSZip-3.1.3/jszip.js, /public/third-party/DataTables/datatables.js
+
+pako                            😟  MISSING!  Not installed.
+                                😟  PKG ERR!  Not in the package.json. Found in: /public/third-party/DataTables/JSZip-3.1.3/jszip.js, /public/third-party/DataTables/datatables.js
+
+readable-stream                 😟  PKG ERR!  Not in the package.json. Found in: /public/third-party/DataTables/JSZip-3.1.3/jszip.js, /public/third-party/DataTables/datatables.js
+                                😎  MAJOR UP  Major update available. https://github.com/nodejs/readable-stream#readme
+                                             npm install --save readable-stream@3.0.3 to go from 2.2.9 to 3.0.3
+
+core-js                         😟  PKG ERR!  Not in the package.json. Found in: /public/third-party/DataTables/JSZip-3.1.3/jszip.js, /public/third-party/DataTables/datatables.js
+                                😎  MINOR UP  Minor update available. https://github.com/zloirock/core-js#readme
+                                             npm install --save core-js@2.5.7 to go from 2.4.1 to 2.5.7
+
+immediate                       😟  MISSING!  Not installed.
+                                😟  PKG ERR!  Not in the package.json. Found in: /public/third-party/DataTables/JSZip-3.1.3/jszip.js, /public/third-party/DataTables/datatables.js
+
+rome                            😟  PKG ERR!  Not in the package.json. Found in: /public/third-party/material-datetime-picker-2.3.0/material-datetime-picker.js
+
+sifter                          😟  MISSING!  Not installed.
+                                😟  PKG ERR!  Not in the package.json. Found in: /public/third-party/selectize-0.12.4/selectize.min.js
+
+microplugin                     😟  MISSING!  Not installed.
+                                😟  PKG ERR!  Not in the package.json. Found in: /public/third-party/selectize-0.12.4/selectize.min.js
+
+crossvent                       😟  PKG ERR!  Not in the package.json. Found in: /public/third-party/unsorted/rome.js
+                                😎  PATCH UP  Patch update available. https://github.com/bevacqua/crossvent
+                                             npm install --save crossvent@1.5.5 to go from 1.5.0 to 1.5.5
+
+sell                            😟  PKG ERR!  Not in the package.json. Found in: /public/third-party/unsorted/rome.js
+
+seleccion                       😟  PKG ERR!  Not in the package.json. Found in: /public/third-party/unsorted/rome.js
+
+ticky                           😟  PKG ERR!  Not in the package.json. Found in: /public/third-party/unsorted/rome.js
+
+atoa                            😟  PKG ERR!  Not in the package.json. Found in: /public/third-party/unsorted/rome.js
+
+custom-event                    😟  PKG ERR!  Not in the package.json. Found in: /public/third-party/unsorted/rome.js
+                                😎  PATCH UP  Patch update available. https://github.com/webmodules/custom-event
+                                             npm install --save custom-event@1.0.1 to go from 1.0.0 to 1.0.1
+
+contra                          😟  PKG ERR!  Not in the package.json. Found in: /public/third-party/unsorted/rome.js
+
+bullseye                        😟  PKG ERR!  Not in the package.json. Found in: /public/third-party/unsorted/rome.js
+                                😎  MINOR UP  Minor update available. https://github.com/bevacqua/bullseye
+                                             npm install --save bullseye@1.5.0 to go from 1.4.6 to 1.5.0
+
+Use npm-check -u for interactive update.
+[?25h
