@@ -7,16 +7,14 @@ module.exports = (sequelize, DataTypes) => {
         },
         end_date: DataTypes.DATE,
     }, {
-        classMethods: {
-            associate(models) {
-                Cage.Type = Cage.belongsTo(models.Enum, { as: 'type', foreignKey: 'type_id' });
-                Cage.Note = Cage.belongsTo(models.Note, { as: 'note', foreignKey: 'note_id' });
-                Cage.Mice = Cage.hasMany(models.Mouse, { as: 'mice', foreignKey: 'cage_id' });
-            },
-        },
         underscored: true,
         timestamps: true,
         paranoid: true,
     });
+    Cage.associate = (models) => {
+        Cage.Type = Cage.belongsTo(models.Enum, { as: 'type', foreignKey: 'type_id' });
+        Cage.Note = Cage.belongsTo(models.Note, { as: 'note', foreignKey: 'note_id' });
+        Cage.Mice = Cage.hasMany(models.Mouse, { as: 'mice', foreignKey: 'cage_id' });
+    }
     return Cage;
 };

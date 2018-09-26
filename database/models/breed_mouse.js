@@ -4,12 +4,7 @@ module.exports = function(sequelize, DataTypes) {
     breed_id: DataTypes.INTEGER,
     mouse_id: DataTypes.INTEGER
   }, {
-    underscored: true,
-    classMethods: {
-      associate: function(models) {
-        // associations can be defined here
-      }
-    }
+    underscored: true
   });
   return Breed_Mouse;
 };
