@@ -3,18 +3,19 @@
   "version": "0.2.6",
   "description": "A sample Node.js app using Express 4",
   "engines": {
-    "node": "6.10.2"
+    "node": "8.9.0"
   },
   "main": "index.js",
   "scripts": {
     "build": "webpack",
     "build:prod": "webpack -p",
     "start": "node index.js",
-    "watch": "nvm use 6.10.2; webpack --watch",
-    "debug": "nvm use 6.10.2; nodemon --inspect index.js",
-    "postinstall": "webpack -p  --progress"
+    "watch": "nvm use 8.9.0; webpack --watch",
+    "debug": "nvm use 8.9.0; nodemon --inspect index.js"
   },
   "dependencies": {
+    "@types/sequelize": "^4.27.26",
+    "D": "^1.0.0",
     "axios": "^0.18.0",
     "babel-preset-env": "^1.7.0",
     "bluebird": "^3.5.2",
@@ -35,11 +36,12 @@
     "express": "^4.16.3",
     "express-graphql": "^0.6.12",
     "falsey": "^1.0.0",
-    "graphql": "^14.0.2",
+    "graphql": "^0.13.0",
     "handlebars-helpers": "^0.10.0",
     "hbs": "^4.0.1",
     "hbs-utils": "^0.0.4",
     "helmet": "^3.13.0",
+    "ioredis": "^4.0.0",
     "jquery": "^3.3.1",
     "lodash": "^4.17.11",
     "material-datetime-picker": "^2.3.0",
@@ -56,6 +58,7 @@
     "sequelize": "^4.39.0",
     "sequelize-redis-cache": "^2.0.1",
     "serve-favicon": "^2.5.0",
+    "spdy": "^3.4.7",
     "squel": "^5.12.2",
     "toastr": "^2.1.4",
     "underscore": "^1.9.1",
@@ -79,12 +82,24 @@
   "homepage": "https://github.com/heroku/node-js-getting-started",
   "author": "",
   "devDependencies": {
+    "@babel/core": "^7.1.0",
+    "@babel/preset-env": "^7.1.0",
     "babel-core": "^6.26.3",
-    "babel-loader": "^8.0.2",
+    "babel-loader": "^8.0.3",
+    "brotli-webpack-plugin": "^1.0.0",
+    "compression-webpack-plugin": "^2.0.0",
+    "css-loader": "^1.0.0",
+    "eslint": "^5.3.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.12.0",
     "eslint-plugin-jsx-a11y": "^6.1.1",
     "eslint-plugin-react": "^7.11.1",
-    "webpack": "^4.20.1"
+    "expose-loader": "^0.7.5",
+    "style-loader": "^0.23.0",
+    "ts-loader": "^5.2.1",
+    "tsc": "^1.20150623.0",
+    "typescript": "^3.1.1",
+    "webpack": "^4.20.2",
+    "webpack-cli": "^3.1.2"
   }
 }

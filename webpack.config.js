@@ -3,29 +3,46 @@ const path = require('path');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 // const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const webpack = require('webpack');
+const CompressionPlugin = require('compression-webpack-plugin');
+const BrotliPlugin = require('brotli-webpack-plugin');
 
-const JS_DIR = './public_src/javascripts';
-
+const CS_JS_DIR = './public_src/javascripts';
+const CONTROLLER_JS_DIR = './controllers_src';
 module.exports = {
+    mode: 'none',
+
     entry: {
     // breed_common: path.resolve(JS_DIR, 'cs-breed-create.js'),
-        breed_create: path.resolve(JS_DIR, 'cs-breed-create.js'),
-        breed_list: path.resolve(JS_DIR, 'cs-breed-list.js'),
-        breed_update: path.resolve(JS_DIR, 'cs-breed-update.js'),
+        breed_create: path.resolve(CS_JS_DIR, 'cs-breed-create.js'),
+        breed_list: path.resolve(CS_JS_DIR, 'cs-breed-list.js'),
+        breed_update: path.resolve(CS_JS_DIR, 'cs-breed-update.js'),
         // cage_common: path.resolve(JS_DIR, 'cs-cage-common.js'),
-        cage_create: path.resolve(JS_DIR, 'cs-cage-create.js'),
-        cage_list: path.resolve(JS_DIR, 'cs-cage-list.js'),
-        cage_update: path.resolve(JS_DIR, 'cs-cage-update.js'),
+        cage_create: path.resolve(CS_JS_DIR, 'cs-cage-create.js'),
+        cage_list: path.resolve(CS_JS_DIR, 'cs-cage-list.js'),
+        cage_update: path.resolve(CS_JS_DIR, 'cs-cage-update.js'),
         // form_helper: path.resolve(JS_DIR, 'cs-form-helper.js'),
         // model_common: path.resolve(JS_DIR, 'cs-model-common.js'),
-        mouse_create: path.resolve(JS_DIR, 'cs-mouse-create.js'),
-        mouse_list: path.resolve(JS_DIR, 'cs-mouse-list.js'),
-        mouse_update: path.resolve(JS_DIR, 'cs-mouse-update.js'),
+        mouse_create: path.resolve(CS_JS_DIR, 'cs-mouse-create.js'),
+        mouse_list: path.resolve(CS_JS_DIR, 'cs-mouse-list.js'),
+        mouse_update: path.resolve(CS_JS_DIR, 'cs-mouse-update.js'),
+        mouse_controller: path.resolve(CONTROLLER_JS_DIR, 'mouse_controller.ts'),
     },
     devtool: 'cheap-module-eval-source-map',
     // devServer: {
     //     contentBase: './dist'
     // },
+    optimization: {
+        splitChunks: {
+            cacheGroups: {
+                commons: {
+                    test: /[\\/]node_modules[\\/]/,
+                    name: 'common',
+                    chunks: 'all'
+                }
+            }
+        }
+    },
+
     plugins: [
         new CleanWebpackPlugin(['public/javascripts']),
         // new HtmlWebpackPlugin({
@@ -37,15 +54,26 @@ module.exports = {
         //         ecma: 6
         //     }
         // }),
-        new webpack.optimize.CommonsChunkPlugin({
-            name: 'common', // Specify the common bundle's name.
-        }),
+        
         new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-    // new webpack.ProvidePlugin({
-    //     $: "jquery",
-    //     jQuery: "jquery",
-    //     "window.jQuery": "jquery"
-    // })
+        // new webpack.ProvidePlugin({
+        //     $: "jquery",
+        //     jQuery: "jquery",
+        //     "window.jQuery": "jquery"
+        // })
+        new CompressionPlugin({
+            filename: '[path].gz[query]',
+            algorithm: 'gzip',
+            test: /\.js$|\.css$|\.html$/,
+            threshold: 10240,
+            minRatio: 0.8,
+        }),
+        new BrotliPlugin({
+            asset: '[path].br[query]',
+            test: /\.js$|\.css$|\.html$/,
+            threshold: 10240,
+            minRatio: 0.8,
+        }),
     ],
     output: {
         filename: '[name].bundle.js',
@@ -109,9 +137,22 @@ module.exports = {
             use: {
                 loader: 'babel-loader',
                 options: {
-                    presets: ['env'],
+                    presets: ['@babel/preset-env'],
                 },
             },
+        },
+        {
+            test: /\.ts$/,
+            exclude: /(node_modules|bower_components)/,
+            use: [
+                {
+                    loader: 'ts-loader',
+                    options: {
+                        transpileOnly: true
+                    }
+                }
+            
+            ],
         },
         ],
     },
