@@ -1,6 +1,7 @@
 const express = require('express');
 
 const app = express();
+const session = require("express-session");
 const path = require('path');
 const favicon = require('serve-favicon');
 const logger = require('morgan');
@@ -11,7 +12,8 @@ const helmet = require('helmet');
 const hbs_utils = require('hbs-utils');
 // const routes = require('./routes/index');
 const router = express.Router();
-
+const { getErrorGif } = require('./routes/utils_routes');
+const { User } = require('./database/models');
 
 app.use(logger('dev'));
 app.use(helmet());
@@ -24,10 +26,51 @@ app.use(router);
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// passport stuffs
+var passport = require('passport');
+var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+app.use(session({ secret: process.env.SESSION_SECRET,resave: true,
+    saveUninitialized: false }));
+app.use(passport.initialize());
+app.use(passport.session());
+
+
+// Use the GoogleStrategy within Passport.
+//   Strategies in Passport require a `verify` function, which accept
+//   credentials (in this case, an accessToken, refreshToken, and Google
+//   profile), and invoke a callback with a user object.
+passport.use(new GoogleStrategy({
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackURL: "http://localhost:5000/login/auth/google/callback"
+  },
+  function(accessToken, refreshToken, profile, done) {
+      try{
+        User.findOrCreate({ email: profile.emails[0].value, 
+            familyName: profile.name.familyName, 
+            givenName: profile.name.givenName,
+            photo: photos[0].value }, 
+            function (err, user) {
+             return done(err, user);
+           })
+      }
+       catch(error){
+        getErrorGif().then((errorImageUrl) => {
+            res.render('error', {
+                error,
+                errorImageUrl,
+            });
+        });
+       }
+  }
+));
+
+
 const breed = require('./routes/breed_routes');
 const mouse = require('./routes/mouse_routes');
 const cage = require('./routes/cage_routes');
 const graphql = require('./routes/graphql_routes');
+const login = require('./routes/login_routes');
 
 
 // handel bars helpers
@@ -58,6 +101,7 @@ app.use('/breed', breed);
 app.use('/mouse', mouse);
 app.use('/cage', cage);
 app.use('/g', graphql);
+app.use('/login', login);
 
 
 app.get('/', (request, response) => {

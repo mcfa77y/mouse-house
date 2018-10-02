@@ -42,6 +42,7 @@ module.exports = (sequelize, DataTypes) => {
             as: 'note',
             foreignKey: 'note_id',
         });
+        Mouse.User = Mouse.belongsTo(models.User);
     }
     return Mouse;
 };

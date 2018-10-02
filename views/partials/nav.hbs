@@ -1,29 +1,49 @@
 <header>
-  <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-    <a class="navbar-brand" href="/"><img src="/images/mouse.svg" style="width:70px"></a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <a class="navbar-brand" href="/"><img src="/images/mouse.svg" style="width:70px"></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item">
-          <a class="nav-link" href="/mouse" data-toggle="tooltip" data-placement="bottom" title="Mice!">
-              <i class="fa fa-mouse-pointer fa-2x" aria-hidden="true"></i>Mice</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/cage" data-toggle="tooltip" data-placement="bottom" title="Cages">
-              <i class="fa fa-home fa-2x" aria-hidden="true"></i>Cages</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/breed" data-toggle="tooltip" data-placement="bottom" title="Breed History">
-              <i class="fa fa-heart-o fa-2x" aria-hidden="true"></i>Breed History</a>
-        </li>
-      
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-          <li><a href="javascript:void(0)">{{ cool_face }} Login</a></li>
-      </ul>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/mouse" data-toggle="tooltip" data-placement="bottom" title="Mice!">
+                        <i class="fa fa-mouse-pointer fa-2x" aria-hidden="true"></i>Mice</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/cage" data-toggle="tooltip" data-placement="bottom" title="Cages">
+                        <i class="fa fa-home fa-2x" aria-hidden="true"></i>Cages</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/breed" data-toggle="tooltip" data-placement="bottom" title="Breed History">
+                        <i class="fa fa-heart-o fa-2x" aria-hidden="true"></i>Breed History</a>
+                </li>
+
+            </ul>
+            <ul class="nav navbar-nav flex-row justify-content-between ml-auto">
+                <a class="nav-link" href="/login">Login</a>
+            </ul>
+        </div>
+    </nav>
+
+    <div id="modalPassword" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Forgot password</h3>
+                    <button type="button" class="close font-weight-light" data-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+                <div class="modal-body">
+                    <p>Reset your password..</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                    <button class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
     </div>
-  </nav>
+
 </header>

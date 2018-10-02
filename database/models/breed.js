@@ -24,6 +24,7 @@ module.exports = (sequelize, DataTypes) => {
         Breed.Note = Breed.belongsTo(models.Note, { as: 'note', foreignKey: 'note_id' });
         Breed.belongsTo(models.Enum, { as: 'status', foreignKey: 'status_id' });
         Breed.belongsTo(models.Enum, { as: 'genotype', foreignKey: 'genotype_id' });
+        Breed.User = Breed.belongsTo(models.User);
     }
     return Breed;
 };

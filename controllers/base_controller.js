@@ -27,20 +27,7 @@ class Base_Controller {
         return this.Model.update(model_data, { where: { id: model_data.id } });
     }
     delete(_id) {
-        // rename id_alias when deleted
-        const date = new Date();
-        return this.get(_id)
-            .then((model) => {
-                model.id_alias = `${model.id_alias}_${date.toISOString()}`;
-                return this.Model.update(model.dataValues, { where: { id: model.id }, returning: true });
-            })
-            .then((model) => {
-                console.log(model);
-                return this.delete_where({ id: model[1][0].id });
-            })
-            .catch((err) => {
-                utils.log_json(err);
-            });
+        return this.delete_where({ id: _id }); 
     }
 
     delete_where(_where) {

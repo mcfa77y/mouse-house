@@ -12,3 +12,5 @@ sequelize db:migrate; sequelize db:seed:all;
 
 
 sequelize model:create --name Breed_Mouse --attributes 'breed_id:integer, mouse_id:integer' --underscored --paranoid --force
+
+sequelize model:create --name User --attributes 'email:string, familyName:string, givenName:string, password:string, photoUrl:string' --underscored --paranoid --force
