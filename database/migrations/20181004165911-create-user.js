@@ -2,7 +2,7 @@
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('Cages', {
+    return queryInterface.createTable('Users', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -10,20 +10,20 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       email: {
-        type: DataTypes.STRING,
+        type: Sequelize.STRING,
         unique: true,
       },
       familyName:{
-          type: DataTypes.STRING,
+          type: Sequelize.STRING,
       },
       givenName:{
-          type: DataTypes.STRING,
+          type: Sequelize.STRING,
       },
       photoUrl: {
-          type: DataTypes.STRING,
+          type: Sequelize.STRING,
       },
       password: {
-          type: DataTypes.STRING,
+          type: Sequelize.STRING,
       },
       created_at: {
         allowNull: false,

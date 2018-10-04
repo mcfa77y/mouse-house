@@ -46,21 +46,20 @@ passport.use(new GoogleStrategy({
   },
   function(accessToken, refreshToken, profile, done) {
       try{
-        User.findOrCreate({ email: profile.emails[0].value, 
-            familyName: profile.name.familyName, 
-            givenName: profile.name.givenName,
-            photo: photos[0].value }, 
-            function (err, user) {
-             return done(err, user);
-           })
+        return User.findOrCreate(
+            {
+                where: {
+                    email: profile.emails[0].value
+                },
+                defaults: { email: profile.emails[0].value, 
+                familyName: profile.name.familyName, 
+                givenName: profile.name.givenName,
+                photoUrl: profile.photos[0].value }, 
+            })
       }
        catch(error){
-        getErrorGif().then((errorImageUrl) => {
-            res.render('error', {
-                error,
-                errorImageUrl,
-            });
-        });
+           console.error(error);
+           return done(error, user);
        }
   }
 ));
