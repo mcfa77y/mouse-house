@@ -1,12 +1,13 @@
-const BlueBird = require('bluebird');
+import { BlueBird  } from 'bluebird';
 // const _ = require('underscore')
-const isFalsey = require('falsey');
+import { isFalsey  } from 'falsey';
 
 import { Base_Controller } from './base_controller';
-const enum_controller = require('./enum_controller');
+import { enum_controller  } from './enum_controller';
 // const cage_controller = require('./cage_controller')
 import {format_date, relative_time, remove_empty} from './utils_controller';
-const { Mouse } = require('../database/models');
+import { db } from '../database/models';
+const {Mouse} = db;
 
 declare class Pretty_Mouse {
     constructor();
@@ -40,7 +41,7 @@ class Mouse_Controller extends Base_Controller {
         return 'SEX';
     }
 
-    by_sex(sex) {
+    by_sex(sex: string) {
         return enum_controller.by_type_desc('SEX', sex)
             .then(sex_enum => super.get_where({
                 sex_id: sex_enum.id,

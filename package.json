@@ -14,6 +14,7 @@
     "debug": "nvm use 8.9.0; nodemon --inspect index.js"
   },
   "dependencies": {
+    "@types/redis": "^2.8.7",
     "@types/sequelize": "^4.27.26",
     "D": "^1.0.0",
     "axios": "^0.18.0",

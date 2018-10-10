@@ -1,7 +1,7 @@
-const d = require('d');
-const memoizeMethods = require('memoizee/methods');
+import {d} from 'd'
+import {memoizeMethods} from 'memoizee/methods'
 import { Base_Controller } from './base_controller';
-// const { Enum } = require('../database/models');
+// import { Enum } from '../database/models'
 import db from '../database/models';
 const { Enum } = db;
 class Controller extends Base_Controller {
@@ -56,12 +56,12 @@ const memoize_methods = {
 
     // }, { promise: true }),
 
-    by_type_desc: d((_code, _description) => Enum.findOne({
+    by_type_desc: d((_code: string, _description: string) => Enum.findOne({
         attributes: ['id', 'description'],
         where: { description: _description, type: _code },
     }), { promise: true }),
 
-    get: d(_id => Enum.findById(_id, { attributes: ['description'] }), { promise: true }),
+    get: d((_id: number) => Enum.findById(_id, { attributes: ['description'] }), { promise: true }),
 };
 
 Object.defineProperties(Controller.prototype, memoizeMethods(memoize_methods));

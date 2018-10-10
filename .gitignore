@@ -15,3 +15,7 @@ public/javascripts/*.bundle.js
 
 
 \.vscode/launch\.json
+
+*.br
+
+*.gz

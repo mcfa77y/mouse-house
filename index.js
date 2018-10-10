@@ -30,17 +30,17 @@ app.use(router);
 app.use(cookieParser());
 
 // serve zip files
-app.get('*.js', function (req, res, next) {
-      // only if file exists, the substr is to remove /assets in front
-      console.log(`\n\nreq for JS:${req.url}\n\n`);
-      if (!fs.existsSync(`./public/${req.url}.gz`)) {
+app.get('*.js', (req, res, next) => {
+    // only if file exists, the substr is to remove /assets in front
+    console.log(`\n\nreq for JS:${req.url}\n\n`);
+    if (!fs.existsSync(`./public/${req.url}.gz`)) {
         return next();
     }
     console.log(`\n\nreq for JS:${req.url}\n\n`);
-    req.url = req.url + '.gz';
+    req.url += '.gz';
     res.set('Content-Encoding', 'gzip');
     next();
-  });
+});
 
 app.use(express.static(path.join(__dirname, 'public')));
 

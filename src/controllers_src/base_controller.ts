@@ -2,17 +2,17 @@ import {remove_empty, log_json} from './utils_controller';
 // Constructor
 export class Base_Controller {
     Model: any;
-    constructor(_Model) {
+    constructor(_Model: any) {
         // always initialize all instance properties
         this.Model = _Model;
     }
     all() {
         return this.Model.findAll();
     }
-    get(_id) {
+    get(_id: number) {
         return this.Model.findById(_id);
     }
-    get_where(_where) {
+    get_where(_where:any) {
         return this.Model.findAll({ where: _where });
     }
     insert(model_data_original) {
@@ -27,24 +27,11 @@ export class Base_Controller {
         const model_data = remove_empty(model_data_original);
         return this.Model.update(model_data, { where: { id: model_data.id } });
     }
-    delete(_id) {
-        // rename id_alias when deleted
-        const date = new Date();
-        return this.get(_id)
-            .then((model) => {
-                model.id_alias = `${model.id_alias}_${date.toISOString()}`;
-                return this.Model.update(model.dataValues, { where: { id: model.id }, returning: true });
-            })
-            .then((model) => {
-                console.log(model);
-                return this.delete_where({ id: model[1][0].id });
-            })
-            .catch((err) => {
-                log_json(err);
-            });
+    delete(_id: number) {
+        return this.delete_where({id: _id});
     }
 
-    delete_where(_where) {
+    delete_where(_where: any) {
         return this.Model.destroy({ where: _where });
     }
 }
