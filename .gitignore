@@ -19,3 +19,5 @@ public/javascripts/*.bundle.js
 *.br
 
 *.gz
+
+dist/**

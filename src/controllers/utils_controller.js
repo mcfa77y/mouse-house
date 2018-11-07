@@ -2,9 +2,9 @@ const Logger = require('bug-killer');
 const moment = require('moment');
 const isFalsey = require('falsey');
 
-String.prototype.toProperCase = function () {
-    return this.replace(/\w\S*/g, txt => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
-};
+// String.prototype.toProperCase = function () {
+//     return this.replace(/\w\S*/g, txt => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
+// };
 
 const option_fn = (value, default_value = '', modifier_fn = null) => {
     let result = '';

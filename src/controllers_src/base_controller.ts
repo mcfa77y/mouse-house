@@ -1,4 +1,4 @@
-import {remove_empty, log_json} from './utils_controller';
+import {remove_empty} from './utils_controller';
 // Constructor
 export class Base_Controller {
     Model: any;
@@ -15,15 +15,15 @@ export class Base_Controller {
     get_where(_where:any) {
         return this.Model.findAll({ where: _where });
     }
-    insert(model_data_original) {
+    insert(model_data_original: any) {
         const model_data = remove_empty(model_data_original);
         return this.Model.create(model_data, { returning: true });
     }
-    upsert(model_data_original) {
+    upsert(model_data_original: any) {
         const model_data = remove_empty(model_data_original);
         return this.Model.upsert(model_data);
     }
-    update(model_data_original) {
+    update(model_data_original: any) {
         const model_data = remove_empty(model_data_original);
         return this.Model.update(model_data, { where: { id: model_data.id } });
     }
@@ -35,6 +35,6 @@ export class Base_Controller {
         return this.Model.destroy({ where: _where });
     }
 }
-
+export default Base_Controller;
 // export the class instance
 // module.exports = Base_Controller;

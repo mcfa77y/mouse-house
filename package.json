@@ -85,6 +85,8 @@
   "devDependencies": {
     "@babel/core": "^7.1.0",
     "@babel/preset-env": "^7.1.0",
+    "@types/bluebird-global": "^3.5.9",
+    "@types/node": "^10.12.1",
     "babel-core": "^6.26.3",
     "babel-loader": "^8.0.3",
     "brotli-webpack-plugin": "^1.0.0",
@@ -98,7 +100,6 @@
     "expose-loader": "^0.7.5",
     "style-loader": "^0.23.0",
     "ts-loader": "^5.2.1",
-    "tsc": "^1.20150623.0",
     "typescript": "^3.1.1",
     "webpack": "^4.20.2",
     "webpack-cli": "^3.1.2"

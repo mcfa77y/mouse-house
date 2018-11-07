@@ -1,38 +1,44 @@
-const BlueBird = require('bluebird');
-const isFalsey = require('falsey');
+import BlueBird from 'bluebird';
+import isFalsey from 'falsey';
+import { Mouse_Instance } from '../database/models/mouse';
+import { Breed_Instance } from '../database/models/breed';
 
 const {
     remove_empty, relative_time, option_date, option,
 } = require('./utils_controller');
 // const city_names = require('../lib/data/city_names.json').city_names
 
-const Base_Controller = require('./base_controller');
+import Base_Controller from './base_controller';
 
-const { Breed } = require('../database/models');
+import db from '../database/models';
+
+const Breed = db.Breed;
+
 // const Mouse = require('../database/models').Mouse
+type Mouse_T = {
+    id?: number;
+    age?: string;
+}
 type Pretty_Breed = {
-    id: number;
-    id_alias: string;
-    ear_tag: string;
-    notes: string;
-    sex: string;
-    genotype: string;
-    status: string;
-    sex_id: number;
-    genotype_id: number;
-    status_id: number;
-    dob: string;
-    age:string;
-    create_at:string;
-    modify_at:string;
-    breeds:string;
-    cage:string;
-    cage_id: number;
-    cage_id_alias:string;
+    id?: number;
+    id_alias?: string;
+    male_mouse?: Mouse_T;
+    female_mouse?: Mouse_T;
+    ween_date?: string;
+    female_count?: string;
+    genotype?: string;
+    genotype_id?: string;
+    litter_date?: string;
+    male_count?: string;
+    unknown_count?: string;
+    note?: string;
+    pairing_date?: string;
+    plug_date?: string;
+    pup_check_date?: string;
 }
 class Breed_Controller extends Base_Controller {
-    pretty(model) {
-        const self = this;
+    pretty(model: Breed_Instance) {
+        // const self = this;
         return BlueBird.props({
             genotype: model.getGenotype(),
             male: model.getMale(),
@@ -42,16 +48,16 @@ class Breed_Controller extends Base_Controller {
             .then(({
                 genotype, male, female, note,
             }) => {
-                const pretty_model = new Pretty_Breed();
+                const pretty_model: Pretty_Breed = {};
                 try {
-                    const reshape_mouse_data = mouse => ({
+                    const reshape_mouse_data = (mouse: any) => ({
                         id: option(mouse.id_alias, -1),
                         age: option_date(mouse.dob),
                     });
                     pretty_model.male_mouse = option(male, { id: -1, age: relative_time('01/01/1970') }, reshape_mouse_data);
                     pretty_model.female_mouse = option(female, { id: -1, age: relative_time('01/01/1970') }, reshape_mouse_data);
 
-                    pretty_model.id = parseInt(model.id, 10);
+                    pretty_model.id = model.id;
                     pretty_model.id_alias = option(model.id_alias, -1);
                     pretty_model.ween_date = option_date(model.ween_date);
                     pretty_model.female_count = option(model.female_count, 0);
@@ -64,8 +70,6 @@ class Breed_Controller extends Base_Controller {
                     pretty_model.pairing_date = option_date(model.pairing_date);
                     pretty_model.plug_date = option_date(model.plug_date);
                     pretty_model.pup_check_date = option_date(model.pup_check_date);
-                    pretty_model.setup_date = option_date(model.setup_date);
-                    pretty_model.update_date = option_date(model.update_date);
                 } catch (err) {
                     console.error(err);
                 }
@@ -76,13 +80,13 @@ class Breed_Controller extends Base_Controller {
     all_pretty() {
         const self = this;
         return super.all()
-            .then(items => BlueBird.map(items, item => self.pretty(item)))
-            .then(model_array => model_array.filter(model => !isFalsey(model)));
+            .then((items:Breed_Instance[]) => BlueBird.map(items, (item:Breed_Instance) => self.pretty(item)))
+            .then((model_array:Pretty_Breed[]) => model_array.filter((model:Pretty_Breed) => !isFalsey(model)));
     }
-    by_id_alias(_id_alias) {
+    by_id_alias(_id_alias: string) {
         const self = this;
         return this.get_where({ id_alias: _id_alias })
-            .then(x => self.pretty(x[0]));
+            .then((x:Breed_Instance[]) => self.pretty(x[0]));
     }
 
     insert(model_original) {
@@ -100,6 +104,7 @@ class Breed_Controller extends Base_Controller {
                 console.log(err);
             });
     }
+
     update(model_original) {
         const self = this;
         const tmp_model = remove_empty(model_original, true);
@@ -127,4 +132,6 @@ class Breed_Controller extends Base_Controller {
     }
 }
 
-module.exports = new Breed_Controller(Breed);
+// module.exports = new Breed_Controller(Breed);
+const bc = new Breed_Controller(Breed);
+export default bc;

@@ -1,34 +1,39 @@
-import { BlueBird  } from 'bluebird';
+import { BlueBird } from 'bluebird';
 // const _ = require('underscore')
-import { isFalsey  } from 'falsey';
+import { isFalsey } from 'falsey';
 
 import { Base_Controller } from './base_controller';
-import { enum_controller  } from './enum_controller';
+import { enum_controller } from './enum_controller';
 // const cage_controller = require('./cage_controller')
-import {format_date, relative_time, remove_empty} from './utils_controller';
+import { format_date, relative_time, remove_empty } from './utils_controller';
 import { db } from '../database/models';
-const {Mouse} = db;
+import { Mouse_Instance } from '../database/models/mouse';
+import { Enum_Instance } from '../database/models/enum';
+import { Cage_Instance } from '../database/models/cage';
+import { Breed_Instance } from '../database/models/breed';
+import { Note_Instance } from '../database/models/note';
 
-declare class Pretty_Mouse {
-    constructor();
-    id: number;
-    id_alias: string;
-    ear_tag: string;
-    notes: string;
-    sex: string;
-    genotype: string;
-    status: string;
-    sex_id: number;
-    genotype_id: number;
-    status_id: number;
-    dob: string;
-    age:string;
-    create_at:string;
-    modify_at:string;
-    breeds:string;
-    cage:string;
-    cage_id: number;
-    cage_id_alias:string;
+const { Mouse } = db;
+
+type Pretty_Mouse = {
+    id?: number;
+    id_alias?: string;
+    ear_tag?: string;
+    notes?: string;
+    sex?: string;
+    genotype?: string;
+    status?: string;
+    sex_id?: number;
+    genotype_id?: number;
+    status_id?: number;
+    dob?: string;
+    age?: string;
+    create_at?: string;
+    modify_at?: string;
+    breeds?: string;
+    cage?: string;
+    cage_id?: number;
+    cage_id_alias?: string;
 }
 class Mouse_Controller extends Base_Controller {
     get STATUS() {
@@ -48,34 +53,33 @@ class Mouse_Controller extends Base_Controller {
             }));
     }
 
-    pretty(mouse) {
+    pretty(mouse: Mouse_Instance) {
         const self = this;
         return BlueBird.props({
-            sex: enum_controller.get(mouse.sex_id),
-            genotype: enum_controller.get(mouse.genotype_id),
-            status: enum_controller.get(mouse.status_id),
+            sex: mouse.sex,
+            genotype: enum_controller.get(mouse.genotype),
+            status: enum_controller.get(mouse.status),
             cage: mouse.getCage({ attributes: ['id', 'id_alias'] }),
             note: mouse.getNote({ attributes: ['id', 'text'] }),
             breeds: mouse.getBreeds({ attributes: ['id_alias'] }),
         })
-            .then(({
-                sex,
-                genotype,
-                status,
-                cage,
-                note,
-                breeds,
-            }) => {
-                const pretty_mouse:Pretty_Mouse = new Pretty_Mouse();
+            .then(({ sex }: { sex: string },
+                { genotype }: { genotype: Enum_Instance },
+                { status }: { status: Enum_Instance },
+                { cage }: { cage: Cage_Instance },
+                { note }: { note: Note_Instance },
+                { breeds }: { breeds: Breed_Instance[] }
+            ) => {
+                const pretty_mouse: Pretty_Mouse = {};
                 pretty_mouse.id = mouse.id;
                 pretty_mouse.id_alias = mouse.id_alias;
                 pretty_mouse.ear_tag = mouse.ear_tag;
                 pretty_mouse.notes = isFalsey(note) ? '' : note.text;
-                pretty_mouse.sex = isFalsey(sex) ? '' : sex.description;
+                pretty_mouse.sex = isFalsey(sex) ? '' : sex;
                 pretty_mouse.genotype = isFalsey(genotype) ? '' : genotype.description;
                 pretty_mouse.status = isFalsey(status) ? '' : status.description;
-                pretty_mouse.sex_id = mouse.sex_id;
-                pretty_mouse.genotype_id = mouse.genotype_id;
+                // pretty_mouse.sex_id = mouse.sex;
+                pretty_mouse.genotype_id = genotype.id;
                 pretty_mouse.status_id = mouse.status_id;
                 pretty_mouse.dob = format_date(mouse.dob);
                 pretty_mouse.age = relative_time(mouse.dob);
