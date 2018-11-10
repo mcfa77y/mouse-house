@@ -1,8 +1,9 @@
 import {remove_empty} from './utils_controller';
 // Constructor
-export class Base_Controller {
-    Model: any;
+export abstract class Base_Controller {
+    Model:any;
     constructor(_Model: any) {
+        // super();
         // always initialize all instance properties
         this.Model = _Model;
     }
@@ -34,7 +35,10 @@ export class Base_Controller {
     delete_where(_where: any) {
         return this.Model.destroy({ where: _where });
     }
+    get model() {
+        return this.Model;
+    }
 }
-export default Base_Controller;
+// export default Base_Controller;
 // export the class instance
 // module.exports = Base_Controller;

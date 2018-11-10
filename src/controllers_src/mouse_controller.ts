@@ -1,19 +1,19 @@
-import { BlueBird } from 'bluebird';
+import BlueBird from 'bluebird';
 // const _ = require('underscore')
-import { isFalsey } from 'falsey';
+const isFalsey = require('falsey');
 
 import { Base_Controller } from './base_controller';
-import { enum_controller } from './enum_controller';
+import { Enum_Controller } from './Enum_Controller';
 // const cage_controller = require('./cage_controller')
 import { format_date, relative_time, remove_empty } from './utils_controller';
 import { db } from '../database/models';
-import { Mouse_Instance } from '../database/models/mouse';
-import { Enum_Instance } from '../database/models/enum';
-import { Cage_Instance } from '../database/models/cage';
-import { Breed_Instance } from '../database/models/breed';
-import { Note_Instance } from '../database/models/note';
-
-const { Mouse } = db;
+import { Mouse_Instance } from '../database/models/Mouse';
+import { Enum_Instance } from '../database/models/Enum';
+import { Cage_Instance } from '../database/models/Cage';
+import { Breed_Instance } from '../database/models/Breed';
+import { Note_Instance } from '../database/models/Note';
+// import { DbInterface } from '../typings/DbInterface';
+const { Mouse, Note, Cage, Enum } = db;
 
 type Pretty_Mouse = {
     id?: number;
@@ -30,12 +30,13 @@ type Pretty_Mouse = {
     age?: string;
     create_at?: string;
     modify_at?: string;
-    breeds?: string;
+    breeds?: string[];
     cage?: string;
     cage_id?: number;
     cage_id_alias?: string;
 }
-class Mouse_Controller extends Base_Controller {
+
+class Mouse_Controller_Factory extends Base_Controller {
     get STATUS() {
         return 'MOUSE_STATUS';
     }
@@ -47,47 +48,40 @@ class Mouse_Controller extends Base_Controller {
     }
 
     by_sex(sex: string) {
-        return enum_controller.by_type_desc('SEX', sex)
-            .then(sex_enum => super.get_where({
+        return Enum_Controller.by_type_desc('SEX', sex)
+            .then((sex_enum: Enum_Instance) => super.get_where({
                 sex_id: sex_enum.id,
             }));
     }
 
     pretty(mouse: Mouse_Instance) {
-        const self = this;
+        // const self = this;
         return BlueBird.props({
-            sex: mouse.sex,
-            genotype: enum_controller.get(mouse.genotype),
-            status: enum_controller.get(mouse.status),
-            cage: mouse.getCage({ attributes: ['id', 'id_alias'] }),
-            note: mouse.getNote({ attributes: ['id', 'text'] }),
-            breeds: mouse.getBreeds({ attributes: ['id_alias'] }),
+            sex: mouse.getSex(),
+            genotype: mouse.getGenotype(),
+            status: mouse.getStatus(),
+            cage: mouse.getCage(),
+            note: mouse.getNote(),
+            breeds: mouse.getBreeds(),
         })
-            .then(({ sex }: { sex: string },
-                { genotype }: { genotype: Enum_Instance },
-                { status }: { status: Enum_Instance },
-                { cage }: { cage: Cage_Instance },
-                { note }: { note: Note_Instance },
-                { breeds }: { breeds: Breed_Instance[] }
-            ) => {
+            .then(({sex, genotype, status, cage, note, breeds}) => {
                 const pretty_mouse: Pretty_Mouse = {};
                 pretty_mouse.id = mouse.id;
                 pretty_mouse.id_alias = mouse.id_alias;
                 pretty_mouse.ear_tag = mouse.ear_tag;
                 pretty_mouse.notes = isFalsey(note) ? '' : note.text;
-                pretty_mouse.sex = isFalsey(sex) ? '' : sex;
+                pretty_mouse.sex = isFalsey(sex) ? '' : sex.description;
                 pretty_mouse.genotype = isFalsey(genotype) ? '' : genotype.description;
                 pretty_mouse.status = isFalsey(status) ? '' : status.description;
                 // pretty_mouse.sex_id = mouse.sex;
                 pretty_mouse.genotype_id = genotype.id;
-                pretty_mouse.status_id = mouse.status_id;
+                pretty_mouse.status_id = status.id;
                 pretty_mouse.dob = format_date(mouse.dob);
                 pretty_mouse.age = relative_time(mouse.dob);
-                pretty_mouse.create_at = format_date(mouse.create_at);
-                pretty_mouse.modify_at = format_date(mouse.modify_at);
+                pretty_mouse.create_at = format_date(mouse.created_at);
+                pretty_mouse.modify_at = format_date(mouse.updated_at);
                 pretty_mouse.breeds = isFalsey(breeds) ? [] : breeds.map(breed => `${breed.id_alias}`);
-                pretty_mouse.cage = isFalsey(cage) ? '' : cage.name;
-                pretty_mouse.cage_id = isFalsey(cage) ? '' : cage.id;
+                pretty_mouse.cage_id = isFalsey(cage) ? -1 : cage.id;
                 pretty_mouse.cage_id_alias = isFalsey(cage) ? '' : cage.id_alias;
                 return pretty_mouse;
             });
@@ -95,55 +89,58 @@ class Mouse_Controller extends Base_Controller {
     all_pretty() {
         const self = this;
         return this.all()
-            .then(items => BlueBird.map(items, item => self.pretty(item)))
-            .then(mouse_array => mouse_array);
+            .then((items: Mouse_Instance[]) => BlueBird.map(items, (item: Mouse_Instance) => self.pretty(item)))
+            .then((mouse_array: Pretty_Mouse) => mouse_array);
     }
-    some_pretty(limit, offset = 0) {
+    some_pretty(limit: number, offset = 0) {
         const self = this;
         return Mouse.findAll({ limit, offset })
-            .then(items => BlueBird.map(items, item => self.pretty(item)))
-            .then(mouse_array => mouse_array);
+            .then((items: Mouse_Instance[]) => BlueBird.map(items, (item: Mouse_Instance) => self.pretty(item)))
+            .then((mouse_array: Pretty_Mouse[]) => mouse_array);
     }
-    by_id_alias(_id_alias) {
+    by_id_alias(_id_alias: string) {
         const self = this;
         return this.get_where({
             id_alias: _id_alias,
         })
-            .then(mice => self.pretty(mice[0]));
+            .then((items: Mouse_Instance[]) => self.pretty(items[0]));
     }
 
-    delete_by_id_alias(_id_alias) {
+    delete_by_id_alias(_id_alias: string) {
         return this.delete_where({
             id_alias: _id_alias,
         });
     }
 
-    insert(_model) {
-        const self = this;
+    insert(_model: any) {
+        // const self = this;
         const tmp_model = remove_empty(_model, true);
         return Mouse.create(tmp_model, {
             include: [
-                { association: Mouse.Note },
-                { association: Mouse.Sex },
-                { association: Mouse.Genotype },
-                { association: Mouse.Status },
-                { association: Mouse.Cage },
+                { model: Mouse, include: [Note], },
+                { model: Mouse, include: [Enum], as: 'Sex' },
+                { model: Mouse, include: [Enum], as: 'Genotype' },
+                { model: Mouse, include: [Enum], as: 'Status' },
+                { model: Mouse, include: [Cage]},
             ],
             returning: true,
         })
-            .then(async (model) => {
-                const sex_abreviation = await enum_controller
-                    .get(model.sex_id)
-                    .then(x => x.description[0]);
+            .then(async (model: Mouse_Instance) => {
+                const sex= await model.getSex();
+                Enum_Controller.Model
+
+                const sex_abreviation = await Enum_Controller
+                    .get(sex.id)
+                    .then((x: Enum_Instance) => x.description[0]);
                 const new_alias = `m${sex_abreviation}-${model.id}`;
                 model.update({ id_alias: new_alias });
             })
-            .catch((error) => {
+            .catch((error: any) => {
                 console.log(error);
             });
     }
 
-    update(model) {
+    update(model: any) {
         const self = this;
         return Mouse.update(remove_empty(model), {
             where: {
@@ -151,33 +148,35 @@ class Mouse_Controller extends Base_Controller {
             },
             returning: true,
         })
-            .then((updated_model) => {
-                const nu_model = updated_model[1][0];
-                return BlueBird.props({
-                    note: nu_model.getNote(),
-                    status: nu_model.getStatus(),
-                    genotype: nu_model.getGenotype(),
-                    cage: nu_model.getCage(),
-                    nu_model,
-                });
-            })
-            .then(({
-                note, status, genotype, cage, nu_model,
-            }) => {
-                if (!isFalsey(nu_model.note)) {
-                    isFalsey(note) ? nu_model.createNote(nu_model.note) : note.update(nu_model.note);
-                }
-                if (!isFalsey(nu_model.status)) {
-                    isFalsey(status) ? nu_model.createStatus(nu_model.status) : status.update(nu_model.status);
-                }
-                if (!isFalsey(nu_model.genotype)) {
-                    isFalsey(genotype) ? nu_model.createGenotype(nu_model.genotype) : genotype.update(nu_model.genotype);
-                }
-                if (!isFalsey(nu_model.cage)) {
-                    isFalsey(cage) ? nu_model.createCage(nu_model.cage) : cage.update(nu_model.cage);
-                }
-            });
+        // .then((updated_model: Mouse_Instance[]) => {
+        //     const nu_model = updated_model[1];
+        //     return BlueBird.props({
+        //         note: nu_model.getNote(),
+        //         status: nu_model.getStatus(),
+        //         genotype: nu_model.getGenotype(),
+        //         cage: nu_model.getCage(),
+        //         nu_model,
+        //     });
+        // })
+        // .then(( {note}: {note: Note_Instance},
+        //     {status}: {status: Enum_Instance},
+        //     {genotype}: {genotype: Enum_Instance},
+        //     {cage}: {cage: Cage_Instance},
+        //     {nu_model}: {nu_model: Mouse_Instance}) => {
+        //     if (!isFalsey(nu_model.note)) {
+        //         isFalsey(note) ? nu_model.createNote(note) : note.update(nu_model.note);
+        //     }
+        //     if (!isFalsey(nu_model.status)) {
+        //         isFalsey(status) ? nu_model.createStatus(nu_model.status) : status.update(nu_model.status);
+        //     }
+        //     if (!isFalsey(nu_model.genotype)) {
+        //         isFalsey(genotype) ? nu_model.createGenotype(nu_model.genotype) : genotype.update(nu_model.genotype);
+        //     }
+        //     if (!isFalsey(nu_model.cage)) {
+        //         isFalsey(cage) ? nu_model.createCage(nu_model.cage) : cage.update(nu_model.cage);
+        //     }
+        // });
     }
 }
 
-module.exports = new Mouse_Controller(Mouse);
+export const Mouse_Controller = new Mouse_Controller_Factory(Mouse);

@@ -4,12 +4,13 @@ import redis from 'redis';
 // import fs from 'fs';
 import path from 'path';
 import Sequelize from "sequelize";
-import { Mouse_Factory } from './mouse';
-import { Breed_Factory } from './breed';
-import { Enum_Factory } from './enum';
-import { Cage_Factory } from './cage';
-import { Note_Factory } from './note';
-import { Breed_Mouse_Factory } from './breed_mouse';
+import { Mouse_Factory } from './Mouse';
+import { Breed_Factory } from './Breed';
+import { Enum_Factory } from './Enum';
+import { Cage_Factory } from './Cage';
+import { Note_Factory } from './Note';
+import { Breed_Mouse_Factory } from './Breed_Mouse';
+import { DbInterface } from '../../typings/DbInterface';
 
 
 const env = process.env.NODE_ENV || 'development';
@@ -21,7 +22,7 @@ const redis_client = redis.createClient(redis_url);
 const basename = path.basename(module.filename);
 
 
-let db:any = {};
+
 const ONE_HOUR = 60 * 60;
 let sequelize:any;
 
@@ -37,7 +38,7 @@ if (process.env.NODE_ENV === 'production') {
     sequelize = new Sequelize(config.database, config.username, config.password, config);
 }
 
-db = {
+export const db:DbInterface  = {
     sequelize,
     Sequelize,
     Mouse: Mouse_Factory(sequelize),
@@ -59,10 +60,11 @@ db = {
 //             .ttl(ONE_HOUR);
 //     });
 
-Object.keys(db).forEach((modelName: any) => {
+Object.keys(db).forEach((modelName: string) => {
     if (db[modelName].associate) {
         db[modelName].associate(db);
     }
 });
 
-export = db;
+// export const db = db;
+// export default db;

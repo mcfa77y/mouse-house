@@ -1,15 +1,15 @@
-const Logger = require('bug-killer');
-const moment = require('moment');
+
+import moment from "moment";
 const isFalsey = require('falsey');
+const Logger = require("bug-killer");
+// String.prototype.toProperCase = function () {
+//     return this.replace(/\w\S*/g, txt => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
+// };
 
-String.prototype.toProperCase = function () {
-    return this.replace(/\w\S*/g, txt => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
-};
-
-export const option = (value, default_value = '', modifier_fn = null) => {
+export const option = (value:any, default_value = '', modifier_fn?: (x:any) => any) => {
     let result = '';
     if (!isFalsey(value)) {
-        if (isFalsey(modifier_fn)) {
+        if (modifier_fn == undefined) {
             result = value;
         } else {
             result = modifier_fn(value);
@@ -20,11 +20,11 @@ export const option = (value, default_value = '', modifier_fn = null) => {
     return result;
 };
 
-export const format_date = (date, format = 'MM/DD/YYYY') => moment(date, moment.ISO_8601).format(format);
+export const format_date = (date: any, format = 'MM/DD/YYYY') => moment(date, moment.ISO_8601).format(format);
 
 
-export function log_json(json) {
-    let cache = [];
+export function log_json(json: any) {
+    let cache: any[] = [];
     const result = JSON.stringify(json, (key, value) => {
         if (typeof value === 'object' && value !== null) {
             if (cache.indexOf(value) !== -1) {
@@ -39,19 +39,19 @@ export function log_json(json) {
     cache = null; // Enable garbage collection
     Logger.log(result);
 }
-export function log(message) {
+export function log(message: string) {
     Logger.log(message);
 }
 export function generate_uuid() {
 
 }
 
-export const option_date = value => option(value, '', format_date);
-export const relative_time = date => moment().diff(moment(date, moment.ISO_8601), 'week');
+export const option_date = (value: string) => option(value, '', format_date);
+export const relative_time = (date: any) => moment().diff(moment(date, moment.ISO_8601), 'week');
 
 
 
-export function remove_empty(obj_original, remove_emptyStrings = false) {
+export function remove_empty(obj_original: any, remove_emptyStrings = false) {
     const obj = Object.assign({}, obj_original);
     Object.keys(obj)
         .forEach((key) => {

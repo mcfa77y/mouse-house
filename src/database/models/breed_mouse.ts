@@ -1,8 +1,8 @@
 import * as Sequelize from "sequelize";
 import { SequelizeAttributes } from '../../typings/SequelizeAttributes';
 
-import { Mouse_Instance, Mouse_Attributes } from './mouse';
-import { Breed_Instance, Breed_Attributes } from './breed';
+import { Mouse_Instance, Mouse_Attributes } from './Mouse';
+import { Breed_Instance, Breed_Attributes } from './Breed';
 
 export interface Breed_Mouse_Attributes {
   id?: number;

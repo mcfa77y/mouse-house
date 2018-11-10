@@ -1,8 +1,8 @@
 import * as Sequelize from "sequelize";
 import { SequelizeAttributes } from '../../typings/SequelizeAttributes';
-import { Note_Instance, Note_Attributes } from './note';
-import { Enum_Instance, Enum_Attributes } from './enum';
-import { Mouse_Instance, Mouse_Attributes } from './mouse';
+import { Note_Instance, Note_Attributes } from './Note';
+import { Enum_Instance, Enum_Attributes } from './Enum';
+import { Mouse_Instance, Mouse_Attributes } from './Mouse';
 
 export interface Cage_Attributes {
     id?: number;

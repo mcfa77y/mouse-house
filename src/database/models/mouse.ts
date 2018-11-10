@@ -1,10 +1,10 @@
 import * as Sequelize from "sequelize";
 import { SequelizeAttributes } from '../../typings/SequelizeAttributes';
-import { Note_Instance, Note_Attributes } from './note';
-import { Enum_Instance, Enum_Attributes } from './enum';
-import { Cage_Instance, Cage_Attributes } from './cage';
-import { Breed_Instance, Breed_Attributes } from './breed';
-import { Breed_Mouse_Instance, Breed_Mouse_Attributes } from './breed_mouse';
+import { Note_Instance, Note_Attributes } from './Note';
+import { Enum_Instance, Enum_Attributes } from './Enum';
+import { Cage_Instance, Cage_Attributes } from './Cage';
+import { Breed_Instance, Breed_Attributes } from './Breed';
+import { Breed_Mouse_Attributes } from './Breed_Mouse';
 
 export interface Mouse_Attributes {
     id?: number;
@@ -14,7 +14,7 @@ export interface Mouse_Attributes {
     created_at?: string;
     updated_at?: string;
     deleted_at?: string;
-    sex: 'female' | 'male' | 'unknown';
+    sex?: Enum_Attributes | Enum_Attributes['id'];
     genotype?: Enum_Attributes | Enum_Attributes['id'];
     status?: Enum_Attributes | Enum_Attributes['id'];
     cage?: Cage_Attributes | Cage_Attributes['id'];
@@ -25,11 +25,11 @@ export interface Mouse_Attributes {
 /*
 node index.js \
       -b Mouse \
-      -a Enum         Note        Enum        Cage        Breed \
-      -s Genotype     Note        Status      Cage        Breed \
-      -p _            _           _           _           Breeds \
-      -t BelongsTo    BelongsTo   BelongsTo   BelongsTo   BelongsToMany \
-      -j _            _           _           _           Breed_Mouse
+      -a Enum         Note        Enum        Cage        Breed         Enum \
+      -s Genotype     Note        Status      Cage        Breed         Sex \
+      -p _            _           _           _           Breeds        _ \
+      -t BelongsTo    BelongsTo   BelongsTo   BelongsTo   BelongsToMany BelongsTo \
+      -j _            _           _           _           Breed_Mouse   _
 */
 
 export interface Mouse_Instance extends Sequelize.Instance<Mouse_Attributes>, Mouse_Attributes {
@@ -59,6 +59,10 @@ export interface Mouse_Instance extends Sequelize.Instance<Mouse_Attributes>, Mo
     hasBreed: Sequelize.BelongsToManyHasAssociationMixin<Breed_Instance, Breed_Instance["id"]>;
     hasBreeds: Sequelize.BelongsToManyHasAssociationsMixin<Breed_Instance, Breed_Instance["id"]>;
     countBreeds: Sequelize.BelongsToManyCountAssociationsMixin;
+
+    getSex: Sequelize.BelongsToGetAssociationMixin<Enum_Instance>;
+    setSex: Sequelize.BelongsToSetAssociationMixin<Enum_Instance, Enum_Instance["id"]>;
+    createSex: Sequelize.BelongsToCreateAssociationMixin<Enum_Attributes>;
 };
 
 export const Mouse_Factory = (sequelize: Sequelize.Sequelize): Sequelize.Model<Mouse_Instance, Mouse_Attributes> => {
@@ -70,7 +74,6 @@ export const Mouse_Factory = (sequelize: Sequelize.Sequelize): Sequelize.Model<M
         },
         ear_tag: Sequelize.STRING,
         dob: Sequelize.DATE,
-        sex: Sequelize.ENUM('female', 'male', 'unknown'),
     }
 
     const Mouse: any = sequelize.define<Mouse_Instance, Mouse_Attributes>('Mouse', attributes, {
@@ -83,13 +86,13 @@ export const Mouse_Factory = (sequelize: Sequelize.Sequelize): Sequelize.Model<M
         Mouse.Cage = Mouse.belongsTo(model.Cage);
         Mouse.Breeds = Mouse.belongsToMany(model.Breed, { through: 'Breed_Mouse' });
 
-        // Mouse.Sex = Mouse.belongsTo(model.Enum, {
-        //     as: 'sex',
-        //     foreignKey: 'sex_id',
-        //     scope: {
-        //         type: 'SEX',
-        //     },
-        // });
+        Mouse.Sex = Mouse.belongsTo(model.Enum, {
+            as: 'sex',
+            foreignKey: 'sex_id',
+            scope: {
+                type: 'SEX',
+            },
+        });
 
         Mouse.Genotype = Mouse.belongsTo(model.Enum, {
             as: 'genotype',
