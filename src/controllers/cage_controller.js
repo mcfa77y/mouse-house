@@ -7,7 +7,7 @@ const utils = require('./utils_controller');
 const Base_Controller = require('./base_controller');
 const { Cage } = require('../database/models');
 const { Mouse } = require('../database/models');
-
+Pa
 class Cage_Controller extends Base_Controller {
     pretty(model) {
         const self = this;
@@ -33,7 +33,7 @@ class Cage_Controller extends Base_Controller {
                 utils.log_json(err);
             });
     }
-    all_pretty() {
+    all_pretty(): Pretty_Cage[] {
         const self = this;
         return super.all().then(items => BlueBird.map(items, item => self.pretty(item)))
             .then(model_array => model_array);

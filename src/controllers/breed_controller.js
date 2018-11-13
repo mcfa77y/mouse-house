@@ -13,7 +13,6 @@ const { Breed } = require('../database/models');
 
 class Breed_Controller extends Base_Controller {
     pretty(model) {
-        const self = this;
         return BlueBird.props({
             genotype: model.getGenotype(),
             male: model.getMale(),

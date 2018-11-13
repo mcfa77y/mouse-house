@@ -1,8 +1,8 @@
 // import * as cacher from 'sequelize-redis-cache';
-import redis from 'redis';
+// import redis from 'redis';
 
 // import fs from 'fs';
-import path from 'path';
+// import path from 'path';
 import Sequelize from "sequelize";
 import { Mouse_Factory } from './Mouse';
 import { Breed_Factory } from './Breed';
@@ -16,14 +16,14 @@ import { DbInterface } from '../../typings/DbInterface';
 const env = process.env.NODE_ENV || 'development';
 const config = require(`${__dirname}/../config/config.json`)[env];
 
-const redis_url: string = process.env.REDIS_URL || config[env].redis_url;
-const redis_client = redis.createClient(redis_url);
+// const redis_url: string = process.env.REDIS_URL || config[env].redis_url;
+// const redis_client = redis.createClient(redis_url);
 
-const basename = path.basename(module.filename);
+// const basename = path.basename(module.filename);
 
 
 
-const ONE_HOUR = 60 * 60;
+// const ONE_HOUR = 60 * 60;
 let sequelize:any;
 
 if (process.env.NODE_ENV === 'production') {

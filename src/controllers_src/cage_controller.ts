@@ -41,30 +41,32 @@ class Cage_Controller_Factory extends Base_Controller {
 
                 pretty_model.id = model.id;
                 pretty_model.id_alias = model.id_alias;
-                pretty_model.note = option(note.text, '', (note:Note_Instance) => note.text);
-                pretty_model.type = option(type.description, '', (type:Enum_Instance) => type.description);
-                pretty_model.type_id = option(type.description, -1, (type:Enum_Instance) => type.id);
+                pretty_model.note = option(note.text, '', (note: Note_Instance) => note.text);
+                pretty_model.type = option(type.description, '', (type: Enum_Instance) => type.description);
+                pretty_model.type_id = option(type.description, -1, (type: Enum_Instance) => type.id);
                 pretty_model.end_date = format_date(model.end_date);
                 pretty_model.mice = mice;
                 pretty_model.mouse_ids = option(mice, [], (mice: Mouse_Instance[]) => mice.map(m => m.id));
                 return pretty_model;
             })
-            .catch((err) => {
-                log_json(err);
-            });
     }
-    all_pretty() {
+    async all_pretty() {
         const self = this;
-        return super.all().then((items:Cage_Instance[]) => BlueBird.map(items, (item: Cage_Instance) => self.pretty(item)))
+        return super.all().then((items: Cage_Instance[]) => BlueBird.map(items, (item: Cage_Instance) => self.pretty(item)))
             .then((model_array) => model_array);
     }
-    by_id_alias(_id_alias: string) {
+    async by_id_alias(_id_alias: string) {
         const self = this;
-        return this.get_where({ id_alias: _id_alias })
+        this.Model.findAll({
+            where: { id_alias: _id_alias }
+        })
             .then((x: Cage_Instance[]) => self.pretty(x[0]))
             .catch((err: any) => log_json(err));
+
+        return this.Model.find({ where: { id_alias: _id_alias } })
+
     }
-    insert(model: any) {
+    async insert(model: any): BlueBird<Cage_Instance> {
         // const self = this;
         const _model = remove_empty(model, true);
         // if(isFalsey(_model.name)){
@@ -83,13 +85,18 @@ class Cage_Controller_Factory extends Base_Controller {
                 }
                 return nu_model;
             })
-            .catch((err) => {
-                console.log(err);
-            });
     }
-    async update(model: any) {
+    async update(model: any): BlueBird<Cage_Instance> {
         // const self = this;
         const _model = remove_empty(model, true);
+        const foo = (updated_cage: [number, Cage_Instance[]]) => {
+            const model = updated_cage[1][0];
+            return BlueBird.props({
+                mice: model.getMice(),
+                note: model.getNote(),
+                cage: model,
+            });
+        }
 
         return Cage.update(_model, {
             where: { id: _model.id },
@@ -119,9 +126,9 @@ class Cage_Controller_Factory extends Base_Controller {
 
                 // add new mouse-cage connections
                 Mouse.update({ cage: cage }, { where: { id: { $in: _model.mouse_ids } } });
-                // return cage;
+                return cage;
             });
     }
-    
+
 }
 export const Cage_Controller = new Cage_Controller_Factory(Cage);

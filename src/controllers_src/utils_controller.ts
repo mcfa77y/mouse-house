@@ -47,7 +47,7 @@ export function generate_uuid() {
 }
 
 export const option_date = (value: string) => option(value, '', format_date);
-export const relative_time = (date: any) => moment().diff(moment(date, moment.ISO_8601), 'week');
+export const relative_time = (date: any): number => moment().diff(moment(date, moment.ISO_8601), 'week');
 
 
 

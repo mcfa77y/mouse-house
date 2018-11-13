@@ -19,7 +19,7 @@ type Mouse_T = {
     id?: number;
     age?: string;
 }
-type Pretty_Breed = {
+export type Pretty_Breed = {
     id?: number;
     id_alias?: string;
     male_mouse?: Mouse_T;
@@ -38,7 +38,7 @@ type Pretty_Breed = {
 }
 
 class Breed_Controller_Factory extends Base_Controller {
-    pretty(model: Breed_Instance) {
+    async pretty(model: Breed_Instance) {
         // const self = this;
 
         return BlueBird.props({
@@ -80,19 +80,19 @@ class Breed_Controller_Factory extends Base_Controller {
                 return pretty_model;
             });
     }
-    all_pretty() {
+    async all_pretty(): Promise<Pretty_Breed[]> {
         const self = this;
-        return super.all()
+        return await super.all()
             .then((items: Breed_Instance[]) => BlueBird.map(items, (item: Breed_Instance) => self.pretty(item)))
             .then((model_array: Pretty_Breed[]) => model_array.filter((model: Pretty_Breed) => !isFalsey(model)));
     }
     by_id_alias(_id_alias: string) {
         const self = this;
-        return this.get_where({ id_alias: _id_alias })
+        return this.Model.findAll({where:{ id_alias: _id_alias }})
             .then((x: Breed_Instance[]) => self.pretty(x[0]));
     }
 
-    insert(model_original: any) {
+    async insert(model_original: any) {
         // const self = this;
         const model = remove_empty(model_original, true);
         return Breed.create(model, {
@@ -103,12 +103,12 @@ class Breed_Controller_Factory extends Base_Controller {
             ],
             returning: true,
         })
-            .catch((err: any) => {
-                console.log(err);
-            });
+            // .catch((err: any) => {
+            //     console.log(err);
+            // });
     }
 
-    update(model_original: any) {
+    async update(model_original: any) {
         // const self = this;
         const tmp_model = remove_empty(model_original, true);
         return Breed.update(tmp_model, {
@@ -125,7 +125,7 @@ class Breed_Controller_Factory extends Base_Controller {
             })
             .then(({ note, model }) => {
                 if (!isFalsey(tmp_model.note)) {
-                    isFalsey(note) ? model.createNote(tmp_model.note) : note.update(tmp_model.note);
+                    isFalsey(note) ? model.createNote(tmp_model.note) : model.setNote(tmp_model.note);
                 }
             })
             .catch((err: any) => console.error(err));

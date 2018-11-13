@@ -1,40 +1,35 @@
-import {remove_empty} from './utils_controller';
+import { remove_empty } from './utils_controller';
+import sequelize = require('sequelize');
+
+// import Bluebird from 'bluebird';
+// const BlueBird = P.Promise;
+
 // Constructor
 export abstract class Base_Controller {
-    Model:any;
-    constructor(_Model: any) {
+    Model: sequelize.Model<I, A>;
+    constructor(_Model: sequelize.Model<I, A>) {
         // super();
         // always initialize all instance properties
         this.Model = _Model;
     }
-    all() {
-        return this.Model.findAll();
-    }
-    get(_id: number) {
-        return this.Model.findById(_id);
-    }
-    get_where(_where:any) {
-        return this.Model.findAll({ where: _where });
-    }
-    insert(model_data_original: any) {
-        const model_data = remove_empty(model_data_original);
-        return this.Model.create(model_data, { returning: true });
-    }
-    upsert(model_data_original: any) {
-        const model_data = remove_empty(model_data_original);
-        return this.Model.upsert(model_data);
-    }
-    update(model_data_original: any) {
-        const model_data = remove_empty(model_data_original);
-        return this.Model.update(model_data, { where: { id: model_data.id } });
-    }
-    delete(_id: number) {
-        return this.delete_where({id: _id});
+    async all() {
+        return await this.Model.findAll();
     }
 
-    delete_where(_where: any) {
-        return this.Model.destroy({ where: _where });
+    async insert(model_original: any) {
+        const model = remove_empty(model_original);
+        return this.Model.create(model, { returning: true });
     }
+
+    upsert(model_original: any) {
+        const model = remove_empty(model_original);
+        return this.Model.upsert(model);
+    }
+    // update(model_original: any) {
+    //     const model = remove_empty(model_original);
+    //     return this.Model.update(model, { where: { id: model.id } });
+    // }
+
     get model() {
         return this.Model;
     }

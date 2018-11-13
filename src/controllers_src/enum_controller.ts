@@ -1,8 +1,10 @@
-import {d} from 'd'
-import {memoizeMethods} from 'memoizee/methods'
+import { db } from '../database/models';
+
+import {d} from 'd';
+import {memoizeMethods} from 'memoizee/methods';
 import { Base_Controller } from './base_controller';
+
 // import { Enum } from '../database/models'
-import db from '../database/models';
 import { Enum_Instance } from '../database/models/enum';
 const { Enum } = db;
 class Enum_Controller_Factory extends Base_Controller {
@@ -14,7 +16,7 @@ class Enum_Controller_Factory extends Base_Controller {
     }
 
     by_type_desc(_code: string, _description: string) {
-        return Enum.findAll({
+        return Enum.findOne({
             attributes: ['id', 'description'],
             where: { 
                 type: _code,
@@ -23,7 +25,7 @@ class Enum_Controller_Factory extends Base_Controller {
         });
     }
 
-    by_type_map(_code: string) {
+    async by_type_map(_code: string) {
         return Enum.findAll({
             attributes: ['id', 'description'],
             where: { type: _code },
