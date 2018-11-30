@@ -6,26 +6,33 @@ const webpack = require('webpack');
 const CompressionPlugin = require('compression-webpack-plugin');
 const BrotliPlugin = require('brotli-webpack-plugin');
 
-const CS_JS_DIR = './public_src/javascripts';
-const CONTROLLER_JS_DIR = './controllers_src';
+const CS_JS_DIR = './src/public/javascripts';
+const CONTROLLER_JS_DIR = './src/controllers';
+const DATABASE_JS_DIR = './src/database/models';
+
 module.exports = {
     mode: 'none',
 
     entry: {
-    // breed_common: path.resolve(JS_DIR, 'cs-breed-create.js'),
-        breed_create: path.resolve(CS_JS_DIR, 'cs-breed-create.js'),
-        breed_list: path.resolve(CS_JS_DIR, 'cs-breed-list.js'),
-        breed_update: path.resolve(CS_JS_DIR, 'cs-breed-update.js'),
-        // cage_common: path.resolve(JS_DIR, 'cs-cage-common.js'),
-        cage_create: path.resolve(CS_JS_DIR, 'cs-cage-create.js'),
-        cage_list: path.resolve(CS_JS_DIR, 'cs-cage-list.js'),
-        cage_update: path.resolve(CS_JS_DIR, 'cs-cage-update.js'),
-        // form_helper: path.resolve(JS_DIR, 'cs-form-helper.js'),
-        // model_common: path.resolve(JS_DIR, 'cs-model-common.js'),
-        mouse_create: path.resolve(CS_JS_DIR, 'cs-mouse-create.js'),
-        mouse_list: path.resolve(CS_JS_DIR, 'cs-mouse-list.js'),
-        mouse_update: path.resolve(CS_JS_DIR, 'cs-mouse-update.js'),
-        mouse_controller: path.resolve(CONTROLLER_JS_DIR, 'mouse_controller.ts'),
+        // breed_common: path.resolve(JS_DIR, 'cs-breed-create.js'),
+        'public/breed_create': path.resolve(CS_JS_DIR, 'cs-breed-create.js'),
+        'public/breed_list': path.resolve(CS_JS_DIR, 'cs-breed-list.js'),
+        'public/breed_update': path.resolve(CS_JS_DIR, 'cs-breed-update.js'),
+        // 'public/cage_common': path.resolve(JS_DIR, 'cs-cage-common.js'),
+        'public/cage_create': path.resolve(CS_JS_DIR, 'cs-cage-create.js'),
+        'public/cage_list': path.resolve(CS_JS_DIR, 'cs-cage-list.js'),
+        'public/cage_update': path.resolve(CS_JS_DIR, 'cs-cage-update.js'),
+        // 'public/form_helper': path.resolve(JS_DIR, 'cs-form-helper.js'),
+        // 'public/model_common': path.resolve(JS_DIR, 'cs-model-common.js'),
+        'public/mouse_create': path.resolve(CS_JS_DIR, 'cs-mouse-create.js'),
+        'public/mouse_list': path.resolve(CS_JS_DIR, 'cs-mouse-list.js'),
+        'public/mouse_update': path.resolve(CS_JS_DIR, 'cs-mouse-update.js'),
+
+        'controllers/mouse_controller': path.resolve(CONTROLLER_JS_DIR, 'mouse_controller.ts'),
+        'controllers/base_controller': path.resolve(CONTROLLER_JS_DIR, 'base_controller.ts'),
+        'controllers/utils_controller': path.resolve(CONTROLLER_JS_DIR, 'utils_controller.ts'),
+        
+        
     },
     devtool: 'cheap-module-eval-source-map',
     // devServer: {
@@ -36,15 +43,15 @@ module.exports = {
             cacheGroups: {
                 commons: {
                     test: /[\\/]node_modules[\\/]/,
-                    name: 'common',
-                    chunks: 'all'
-                }
-            }
-        }
+                    name: 'public/common',
+                    chunks: 'all',
+                },
+            },
+        },
     },
 
     plugins: [
-        new CleanWebpackPlugin(['public/javascripts']),
+        new CleanWebpackPlugin(['dist']),
         // new HtmlWebpackPlugin({
         //     title: 'Output Management'
         // }),
@@ -53,31 +60,32 @@ module.exports = {
         //         ie8: false,
         //         ecma: 6
         //     }
-        // }),
-        
+        // }),   
         new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
         // new webpack.ProvidePlugin({
         //     $: "jquery",
         //     jQuery: "jquery",
         //     "window.jQuery": "jquery"
         // })
-        new CompressionPlugin({
-            filename: '[path].gz[query]',
-            algorithm: 'gzip',
-            test: /\.js$|\.css$|\.html$/,
-            threshold: 10240,
-            minRatio: 0.8,
-        }),
-        new BrotliPlugin({
-            asset: '[path].br[query]',
-            test: /\.js$|\.css$|\.html$/,
-            threshold: 10240,
-            minRatio: 0.8,
-        }),
+        // new CompressionPlugin({
+        //     filename: '[path].gz[query]',
+        //     algorithm: 'gzip',
+        //     test: /\.js$|\.css$|\.html$/,
+        //     exclude: /\.ts$/,
+        //     threshold: 10240,
+        //     minRatio: 0.8,
+        // }),
+        // new BrotliPlugin({
+        //     asset: '[path].br[query]',
+        //     test: /\.js$|\.css$|\.html$/,
+        //     exclude: /\.ts$/,
+        //     threshold: 10240,
+        //     minRatio: 0.8,
+        // }),
     ],
     output: {
-        filename: '[name].bundle.js',
-        path: path.resolve(__dirname, 'public', 'javascripts'),
+        filename: '[name].js',
+        path: path.resolve(__dirname, 'dist'),
         publicPath: '/',
     },
     externals: {
@@ -85,12 +93,14 @@ module.exports = {
         selectize: '',
     },
 
-    resolveLoader: {
-        modules: ['node_modules'],
-        extensions: ['.js', '.json'],
-        mainFields: ['loader', 'main'],
+    // resolveLoader: {
+    //     modules: ['node_modules'],
+    //     extensions: ['.js', '.json'],
+    //     mainFields: ['loader', 'main'],
+    // },
+    resolve: {
+        extensions: ['.tsx', '.ts', '.js'],
     },
-
 
     module: {
         rules: [{
@@ -148,10 +158,10 @@ module.exports = {
                 {
                     loader: 'ts-loader',
                     options: {
-                        transpileOnly: true
-                    }
-                }
-            
+                        transpileOnly: true,
+                    },
+                },
+
             ],
         },
         ],

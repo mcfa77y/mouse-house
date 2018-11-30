@@ -13,15 +13,16 @@ const BlueBird = P.Promise;
 const _ = require('underscore');
 const isFalsey = require('falsey');
 
-import { Enum_Controller } from '../controllers_src/enum_controller';
-import { Breed_Controller } from '../controllers_src/breed_controller';
-import { Mouse_Controller, Pretty_Mouse } from '../controllers_src/mouse_controller';
-import { Cage_Controller } from '../controllers_src/cage_controller';
+import { utils } from './utils_routes';
+import { Enum_Controller } from '../controllers/enum_controller';
+import { Breed_Controller } from '../controllers/breed_controller';
+import { Mouse_Controller, Pretty_Mouse } from '../controllers/mouse_controller';
+import { Cage_Controller } from '../controllers/cage_controller';
 // const utils = require('./utils_routes');
-const {
-    select_json, log_json, getErrorGif, cool_face, today,
-} = require('./utils_routes');
-import { utils } from './utils_mouse_routes';
+// const {
+//     utils.select_json, utils.log_json, utils.getErrorGif, cool_face, today,
+// } = require('./utils_routes');
+import { utils as mouse_utils} from './utils_mouse_routes';
 import { Cage_Instance } from '../database/models/Cage';
 
 const BATCH_SIZE = 10;
@@ -36,22 +37,22 @@ router.delete('/api/mice/:id', db.removePuppy);
 
 router.get('/', (req: Request, res: Response) => {
     BlueBird.props({
-        input: utils.get_inputs(),
+        input: mouse_utils.get_inputs(),
         mice: Mouse_Controller.all_pretty(),
     })
         .then(({ input, mice }) => {
-            const status = select_json(input.status);
+            const status = utils.select_json(input.status);
             res.render('pages/mouse/mouse_list', {
                 cages: input.cages,
                 mice,
                 status,
                 extra_js: ['mouse_list.bundle.js'],
-                cool_face: cool_face(),
+                cool_face: utils.cool_face,
                 model_name: 'mouse',
             });
         })
         .catch((error) => {
-            getErrorGif().then((errorImageUrl) => {
+            utils.getErrorGif().then((errorImageUrl) => {
                 res.render('error', {
                     error,
                     errorImageUrl,
@@ -71,7 +72,7 @@ router.get('/more_rows', (req: Request, res: Response) => {
             });
         })
         .catch((error) => {
-            getErrorGif().then((errorImageUrl) => {
+            utils.getErrorGif().then((errorImageUrl) => {
                 res.render('error', {
                     error,
                     errorImageUrl,
@@ -82,28 +83,32 @@ router.get('/more_rows', (req: Request, res: Response) => {
 
 router.get('/create', (req: Request, res: Response) => {
     BlueBird.props({
-        input: utils.get_inputs(),
+        input: mouse_utils.get_inputs(),
     })
         .then(({ input }) => {
-            const status = select_json(input.status);
-            const genotype = select_json(input.genotype);
-            let cages = input.cages.map(cage => ({
-                id: cage.id,
-                description: cage.id_alias,
-            }));
-            const sex = select_json(input.sex);
-            cages = select_json(cages);
+            const status = utils.select_json(input.status);
+            const genotype = utils.select_json(input.genotype);
+            let cages =  utils.select_json(
+                input.cages.map(cage => ({
+                    id: cage.id,
+                    description: cage.id_alias,
+                }))
+            );
+            
+            // cages =cages);
+
+            const sex = utils.select_json(input.sex);
             res.render('pages/mouse/mouse_create', {
                 status,
                 genotype,
                 cages,
                 sex,
                 extra_js: ['mouse_create.bundle.js'],
-                cool_face: cool_face(),
+                cool_face: utils.cool_face,
             });
         })
         .catch((error) => {
-            getErrorGif().then((errorImageUrl) => {
+            utils.getErrorGif().then((errorImageUrl) => {
                 res.render('error', {
                     error,
                     errorImageUrl,
@@ -117,21 +122,23 @@ router.get('/:id_alias', (req: Request, res: Response) => {
     Mouse_Controller.by_id_alias(req.params.id_alias)
         .then((_mouse) => {
             mouse = _mouse;
-            return utils.get_inputs();
+            return mouse_utils.get_inputs();
         })
         .then((input) => {
-            const status = select_json(input.status);
-            const genotype = select_json(input.genotype);
-            let cages = input.cages.map(cage => ({
-                id: cage.id,
-                description: cage.id_alias,
-            }));
-            const sex = select_json(input.sex);
-            cages = select_json(cages);
-            log_json(mouse);
+            const status = utils.select_json(input.status);
+            const genotype = utils.select_json(input.genotype);
+            let cages = utils.select_json(
+                input.cages.map(cage => ({
+                    id: cage.id,
+                    description: cage.id_alias,
+                }))
+            );
+            const sex = utils.select_json(input.sex);
+            // cages = cages);
+            utils.log_json(mouse);
 
             // mouse_controller.pretty(mouse).then((x)=>{
-            //     log_json(x)})
+            //     utils.log_json(x)})
 
             res.render('pages/mouse/mouse_update', {
                 status,
@@ -140,11 +147,11 @@ router.get('/:id_alias', (req: Request, res: Response) => {
                 sex,
                 mouse,
                 extra_js: ['mouse_update.bundle.js'],
-                cool_face: cool_face(),
+                cool_face: utils.cool_face,
             });
         })
         .catch((error) => {
-            getErrorGif().then((errorImageUrl) => {
+            utils.getErrorGif().then((errorImageUrl) => {
                 res.render('error', {
                     error,
                     errorImageUrl,
@@ -157,7 +164,7 @@ router.delete('/:id', (req: Request, res: Response) => {
     const rm_ids = isFalsey(req.query.id_alias) ? req.params.id : req.params.id_alias;
 
     const rm_promises = rm_ids.split(',').map((id: number) => {
-        Mouse_Controller.Model.destroy({ where: { id } });
+        Mouse_Controller.delete(id);
     });
 
     return Promise.all(rm_promises)
@@ -176,10 +183,10 @@ router.delete('/:id', (req: Request, res: Response) => {
 
 // create action mice
 router.put('/', (req: Request, res: Response) => {
-    log_json(req.body);
+    utils.log_json(req.body);
 
     BlueBird.props({
-        model: utils.create_model(req.body),
+        model: mouse_utils.create_model(req.body),
         sex_id_map: Enum_Controller.by_type_map(Mouse_Controller.SEX),
     })
         .then(({ model, sex_id_map }) => {
@@ -196,7 +203,7 @@ router.put('/', (req: Request, res: Response) => {
         })
         .then(() => res.send({ success: true }))
         .catch((err) => {
-            log_json(err);
+            utils.log_json(err);
             res.status(500).send({
                 success: false,
                 err,
@@ -205,13 +212,13 @@ router.put('/', (req: Request, res: Response) => {
 });
 
 router.post('/cage_mice_together', (req: Request, res: Response) => {
-    log_json(req.body);
+    utils.log_json(req.body);
     let cage_id_promise;
 
     if (isFalsey(req.body.cage_id[0])) {
         const cage: any = {};
         cage.id_alias = req.body.cage_id_alias;
-        cage.setup_date = today();
+        cage.setup_date = utils.today();
         cage_id_promise = Cage_Controller.insert(cage)
             .then((c: Cage_Instance) => c.id);
     } else {
@@ -225,7 +232,7 @@ router.post('/cage_mice_together', (req: Request, res: Response) => {
         Promise.all(update_promises)
             .then(() => res.send({ success: true }))
             .catch((err) => {
-                log_json(err);
+                utils.log_json(err);
                 res.status(500).send({
                     success: false,
                     err,
@@ -235,8 +242,8 @@ router.post('/cage_mice_together', (req: Request, res: Response) => {
 });
 
 router.post('/update_mice_status', (req: Request, res: Response) => {
-    log_json(req.body);
-    const status_id_promise = utils.do_status_upsert({ status_description: req.body.status_description });
+    utils.log_json(req.body);
+    const status_id_promise = mouse_utils.do_status_upsert({ status_description: req.body.status_description });
 
     status_id_promise.then((status_id) => {
         const update_promises = req.body.mouse_ids
@@ -249,7 +256,7 @@ router.post('/update_mice_status', (req: Request, res: Response) => {
                 status: status.description,
             }))
             .catch((err) => {
-                log_json(err);
+                utils.log_json(err);
                 res.status(500).send({
                     success: false,
                     err,
@@ -257,7 +264,7 @@ router.post('/update_mice_status', (req: Request, res: Response) => {
             });
     })
         .catch((err) => {
-            log_json(err);
+            utils.log_json(err);
             res.status(500).send({
                 success: false,
                 err,
@@ -266,7 +273,7 @@ router.post('/update_mice_status', (req: Request, res: Response) => {
 });
 
 router.post('/breed_mice_together', (req: Request, res: Response) => {
-    log_json(req.body);
+    utils.log_json(req.body);
     const { mouse_group_by_sex } = req.body;
     const female_id_list = mouse_group_by_sex.female;
     const male_id_list = mouse_group_by_sex.male;
@@ -293,7 +300,7 @@ router.post('/breed_mice_together', (req: Request, res: Response) => {
     return Promise.all(create_breed_promises)
         .then(() => res.send({ success: true }))
         .catch((err) => {
-            log_json(err);
+            utils.log_json(err);
             res.status(500).send({
                 success: false,
                 err,
@@ -303,7 +310,7 @@ router.post('/breed_mice_together', (req: Request, res: Response) => {
 
 // update mouse action
 router.post('/', (req: Request, res: Response) => {
-    log_json(req.body);
+    utils.log_json(req.body);
 
     Mouse_Controller.update(req.body).then(() => {
         res.send({

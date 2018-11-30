@@ -1,136 +1,34 @@
-src/controllers_src/base_controller.ts(1,23): error TS6133: 'log_json' is declared but its value is never read.
-src/controllers_src/base_controller.ts(18,12): error TS7006: Parameter 'model_data_original' implicitly has an 'any' type.
-src/controllers_src/base_controller.ts(22,12): error TS7006: Parameter 'model_data_original' implicitly has an 'any' type.
-src/controllers_src/base_controller.ts(26,12): error TS7006: Parameter 'model_data_original' implicitly has an 'any' type.
-src/controllers_src/breed_controller.ts(1,7): error TS2451: Cannot redeclare block-scoped variable 'BlueBird'.
-src/controllers_src/breed_controller.ts(2,7): error TS2451: Cannot redeclare block-scoped variable 'isFalsey'.
-src/controllers_src/breed_controller.ts(9,7): error TS2451: Cannot redeclare block-scoped variable 'Base_Controller'.
-src/controllers_src/breed_controller.ts(34,12): error TS7006: Parameter 'model' implicitly has an 'any' type.
-src/controllers_src/breed_controller.ts(35,15): error TS6133: 'self' is declared but its value is never read.
-src/controllers_src/breed_controller.ts(43,17): error TS7031: Binding element 'genotype' implicitly has an 'any' type.
-src/controllers_src/breed_controller.ts(43,27): error TS7031: Binding element 'male' implicitly has an 'any' type.
-src/controllers_src/breed_controller.ts(43,33): error TS7031: Binding element 'female' implicitly has an 'any' type.
-src/controllers_src/breed_controller.ts(43,41): error TS7031: Binding element 'note' implicitly has an 'any' type.
-src/controllers_src/breed_controller.ts(45,42): error TS2693: 'Pretty_Breed' only refers to a type, but is being used as a value here.
-src/controllers_src/breed_controller.ts(47,48): error TS7006: Parameter 'mouse' implicitly has an 'any' type.
-src/controllers_src/breed_controller.ts(63,58): error TS7006: Parameter 'x' implicitly has an 'any' type.
-src/controllers_src/breed_controller.ts(79,19): error TS7006: Parameter 'items' implicitly has an 'any' type.
-src/controllers_src/breed_controller.ts(79,48): error TS7006: Parameter 'item' implicitly has an 'any' type.
-src/controllers_src/breed_controller.ts(80,19): error TS7006: Parameter 'model_array' implicitly has an 'any' type.
-src/controllers_src/breed_controller.ts(80,53): error TS7006: Parameter 'model' implicitly has an 'any' type.
-src/controllers_src/breed_controller.ts(82,17): error TS7006: Parameter '_id_alias' implicitly has an 'any' type.
-src/controllers_src/breed_controller.ts(85,19): error TS7006: Parameter 'x' implicitly has an 'any' type.
-src/controllers_src/breed_controller.ts(88,12): error TS7006: Parameter 'model_original' implicitly has an 'any' type.
-src/controllers_src/breed_controller.ts(89,15): error TS6133: 'self' is declared but its value is never read.
-src/controllers_src/breed_controller.ts(99,21): error TS7006: Parameter 'err' implicitly has an 'any' type.
-src/controllers_src/breed_controller.ts(103,12): error TS7006: Parameter 'model_original' implicitly has an 'any' type.
-src/controllers_src/breed_controller.ts(104,15): error TS6133: 'self' is declared but its value is never read.
-src/controllers_src/breed_controller.ts(114,20): error TS7006: Parameter 'updated_model' implicitly has an 'any' type.
-src/controllers_src/breed_controller.ts(121,22): error TS7031: Binding element 'note' implicitly has an 'any' type.
-src/controllers_src/breed_controller.ts(121,28): error TS7031: Binding element 'model' implicitly has an 'any' type.
-src/controllers_src/breed_controller.ts(126,20): error TS7006: Parameter 'err' implicitly has an 'any' type.
-src/controllers_src/breed_controller.ts(130,18): error TS2554: Expected 0 arguments, but got 1.
-src/controllers_src/cage_controller.ts(1,7): error TS2451: Cannot redeclare block-scoped variable 'BlueBird'.
-src/controllers_src/cage_controller.ts(2,7): error TS2451: Cannot redeclare block-scoped variable 'isFalsey'.
-src/controllers_src/cage_controller.ts(7,7): error TS2451: Cannot redeclare block-scoped variable 'Base_Controller'.
-src/controllers_src/cage_controller.ts(12,12): error TS7006: Parameter 'model' implicitly has an 'any' type.
-src/controllers_src/cage_controller.ts(13,15): error TS6133: 'self' is declared but its value is never read.
-src/controllers_src/cage_controller.ts(19,22): error TS7031: Binding element 'type' implicitly has an 'any' type.
-src/controllers_src/cage_controller.ts(19,28): error TS7031: Binding element 'mice' implicitly has an 'any' type.
-src/controllers_src/cage_controller.ts(19,34): error TS7031: Binding element 'note' implicitly has an 'any' type.
-src/controllers_src/cage_controller.ts(22,30): error TS2339: Property 'id' does not exist on type '{}'.
-src/controllers_src/cage_controller.ts(23,30): error TS2339: Property 'id_alias' does not exist on type '{}'.
-src/controllers_src/cage_controller.ts(24,30): error TS2339: Property 'note' does not exist on type '{}'.
-src/controllers_src/cage_controller.ts(25,30): error TS2339: Property 'type' does not exist on type '{}'.
-src/controllers_src/cage_controller.ts(26,30): error TS2339: Property 'type_id' does not exist on type '{}'.
-src/controllers_src/cage_controller.ts(27,30): error TS2339: Property 'end_date' does not exist on type '{}'.
-src/controllers_src/cage_controller.ts(28,30): error TS2339: Property 'mice' does not exist on type '{}'.
-src/controllers_src/cage_controller.ts(29,30): error TS2339: Property 'mouse_ids' does not exist on type '{}'.
-src/controllers_src/cage_controller.ts(29,51): error TS7006: Parameter 'm' implicitly has an 'any' type.
-src/controllers_src/cage_controller.ts(32,21): error TS7006: Parameter 'err' implicitly has an 'any' type.
-src/controllers_src/cage_controller.ts(38,33): error TS7006: Parameter 'items' implicitly has an 'any' type.
-src/controllers_src/cage_controller.ts(38,62): error TS7006: Parameter 'item' implicitly has an 'any' type.
-src/controllers_src/cage_controller.ts(39,19): error TS7006: Parameter 'model_array' implicitly has an 'any' type.
-src/controllers_src/cage_controller.ts(41,17): error TS7006: Parameter '_id_alias' implicitly has an 'any' type.
-src/controllers_src/cage_controller.ts(44,19): error TS7006: Parameter 'x' implicitly has an 'any' type.
-src/controllers_src/cage_controller.ts(45,20): error TS7006: Parameter 'err' implicitly has an 'any' type.
-src/controllers_src/cage_controller.ts(47,12): error TS7006: Parameter 'model' implicitly has an 'any' type.
-src/controllers_src/cage_controller.ts(48,15): error TS6133: 'self' is declared but its value is never read.
-src/controllers_src/cage_controller.ts(57,20): error TS7006: Parameter 'nu_model' implicitly has an 'any' type.
-src/controllers_src/cage_controller.ts(66,21): error TS7006: Parameter 'err' implicitly has an 'any' type.
-src/controllers_src/cage_controller.ts(70,12): error TS7006: Parameter 'model' implicitly has an 'any' type.
-src/controllers_src/cage_controller.ts(71,15): error TS6133: 'self' is declared but its value is never read.
-src/controllers_src/cage_controller.ts(82,20): error TS7006: Parameter 'updated_cage' implicitly has an 'any' type.
-src/controllers_src/cage_controller.ts(90,22): error TS7031: Binding element 'mice' implicitly has an 'any' type.
-src/controllers_src/cage_controller.ts(90,28): error TS7031: Binding element 'note' implicitly has an 'any' type.
-src/controllers_src/cage_controller.ts(90,34): error TS7031: Binding element 'cage' implicitly has an 'any' type.
-src/controllers_src/cage_controller.ts(99,33): error TS7006: Parameter 'mouse' implicitly has an 'any' type.
-src/controllers_src/cage_controller.ts(99,94): error TS7006: Parameter 'mouse' implicitly has an 'any' type.
-src/controllers_src/cage_controller.ts(109,15): error TS6133: 'self' is declared but its value is never read.
-src/controllers_src/cage_controller.ts(114,18): error TS2554: Expected 0 arguments, but got 1.
-src/controllers_src/enum_controller.ts(1,17): error TS7016: Could not find a declaration file for module 'd'. '/Users/joe/Sites/mouse-house/node_modules/d/index.js' implicitly has an 'any' type.
-  Try `npm install @types/d` if it exists or add a new declaration (.d.ts) file containing `declare module 'd';`
-src/controllers_src/enum_controller.ts(2,30): error TS7016: Could not find a declaration file for module 'memoizee/methods'. '/Users/joe/Sites/mouse-house/node_modules/memoizee/methods.js' implicitly has an 'any' type.
-  Try `npm install @types/memoizee` if it exists or add a new declaration (.d.ts) file containing `declare module 'memoizee/methods';`
-src/controllers_src/enum_controller.ts(20,20): error TS7006: Parameter 'enums' implicitly has an 'any' type.
-src/controllers_src/enum_controller.ts(22,32): error TS7006: Parameter 'enoom' implicitly has an 'any' type.
-src/controllers_src/enum_controller.ts(23,21): error TS7017: Element implicitly has an 'any' type because type '{}' has no index signature.
-src/controllers_src/enum_controller.ts(31,17): error TS7006: Parameter '_Model' implicitly has an 'any' type.
-src/controllers_src/mouse_controller.ts(1,10): error TS2305: Module '"/Users/joe/Sites/mouse-house/node_modules/@types/bluebird/index"' has no exported member 'BlueBird'.
-src/controllers_src/mouse_controller.ts(3,27): error TS7016: Could not find a declaration file for module 'falsey'. '/Users/joe/Sites/mouse-house/node_modules/falsey/index.js' implicitly has an 'any' type.
-  Try `npm install @types/falsey` if it exists or add a new declaration (.d.ts) file containing `declare module 'falsey';`
-src/controllers_src/mouse_controller.ts(6,10): error TS2305: Module '"/Users/joe/Sites/mouse-house/src/controllers_src/enum_controller"' has no exported member 'enum_controller'.
-src/controllers_src/mouse_controller.ts(9,10): error TS2305: Module '"/Users/joe/Sites/mouse-house/src/database/models/index"' has no exported member 'db'.
-src/controllers_src/mouse_controller.ts(46,19): error TS7006: Parameter 'sex_enum' implicitly has an 'any' type.
-src/controllers_src/mouse_controller.ts(51,12): error TS7006: Parameter 'mouse' implicitly has an 'any' type.
-src/controllers_src/mouse_controller.ts(52,15): error TS6133: 'self' is declared but its value is never read.
-src/controllers_src/mouse_controller.ts(62,17): error TS7031: Binding element 'sex' implicitly has an 'any' type.
-src/controllers_src/mouse_controller.ts(63,17): error TS7031: Binding element 'genotype' implicitly has an 'any' type.
-src/controllers_src/mouse_controller.ts(64,17): error TS7031: Binding element 'status' implicitly has an 'any' type.
-src/controllers_src/mouse_controller.ts(65,17): error TS7031: Binding element 'cage' implicitly has an 'any' type.
-src/controllers_src/mouse_controller.ts(66,17): error TS7031: Binding element 'note' implicitly has an 'any' type.
-src/controllers_src/mouse_controller.ts(67,17): error TS7031: Binding element 'breeds' implicitly has an 'any' type.
-src/controllers_src/mouse_controller.ts(84,74): error TS7006: Parameter 'breed' implicitly has an 'any' type.
-src/controllers_src/mouse_controller.ts(94,19): error TS7006: Parameter 'items' implicitly has an 'any' type.
-src/controllers_src/mouse_controller.ts(94,48): error TS7006: Parameter 'item' implicitly has an 'any' type.
-src/controllers_src/mouse_controller.ts(95,19): error TS7006: Parameter 'mouse_array' implicitly has an 'any' type.
-src/controllers_src/mouse_controller.ts(97,17): error TS7006: Parameter 'limit' implicitly has an 'any' type.
-src/controllers_src/mouse_controller.ts(100,19): error TS7006: Parameter 'items' implicitly has an 'any' type.
-src/controllers_src/mouse_controller.ts(100,48): error TS7006: Parameter 'item' implicitly has an 'any' type.
-src/controllers_src/mouse_controller.ts(101,19): error TS7006: Parameter 'mouse_array' implicitly has an 'any' type.
-src/controllers_src/mouse_controller.ts(103,17): error TS7006: Parameter '_id_alias' implicitly has an 'any' type.
-src/controllers_src/mouse_controller.ts(108,19): error TS7006: Parameter 'mice' implicitly has an 'any' type.
-src/controllers_src/mouse_controller.ts(111,24): error TS7006: Parameter '_id_alias' implicitly has an 'any' type.
-src/controllers_src/mouse_controller.ts(117,12): error TS7006: Parameter '_model' implicitly has an 'any' type.
-src/controllers_src/mouse_controller.ts(118,15): error TS6133: 'self' is declared but its value is never read.
-src/controllers_src/mouse_controller.ts(130,19): error TS2705: An async function or method in ES5/ES3 requires the 'Promise' constructor.  Make sure you have a declaration for the 'Promise' constructor or include 'ES2015' in your `--lib` option.
-src/controllers_src/mouse_controller.ts(130,26): error TS7006: Parameter 'model' implicitly has an 'any' type.
-src/controllers_src/mouse_controller.ts(133,27): error TS7006: Parameter 'x' implicitly has an 'any' type.
-src/controllers_src/mouse_controller.ts(137,21): error TS7006: Parameter 'error' implicitly has an 'any' type.
-src/controllers_src/mouse_controller.ts(142,12): error TS7006: Parameter 'model' implicitly has an 'any' type.
-src/controllers_src/mouse_controller.ts(143,15): error TS6133: 'self' is declared but its value is never read.
-src/controllers_src/mouse_controller.ts(150,20): error TS7006: Parameter 'updated_model' implicitly has an 'any' type.
-src/controllers_src/mouse_controller.ts(161,17): error TS7031: Binding element 'note' implicitly has an 'any' type.
-src/controllers_src/mouse_controller.ts(161,23): error TS7031: Binding element 'status' implicitly has an 'any' type.
-src/controllers_src/mouse_controller.ts(161,31): error TS7031: Binding element 'genotype' implicitly has an 'any' type.
-src/controllers_src/mouse_controller.ts(161,41): error TS7031: Binding element 'cage' implicitly has an 'any' type.
-src/controllers_src/mouse_controller.ts(161,47): error TS7031: Binding element 'nu_model' implicitly has an 'any' type.
-src/controllers_src/utils_controller.ts(5,18): error TS2551: Property 'toProperCase' does not exist on type 'String'. Did you mean 'toUpperCase'?
-src/controllers_src/utils_controller.ts(9,24): error TS7006: Parameter 'value' implicitly has an 'any' type.
-src/controllers_src/utils_controller.ts(15,22): error TS2721: Cannot invoke an object which is possibly 'null'.
-src/controllers_src/utils_controller.ts(23,29): error TS7006: Parameter 'date' implicitly has an 'any' type.
-src/controllers_src/utils_controller.ts(26,26): error TS7006: Parameter 'json' implicitly has an 'any' type.
-src/controllers_src/utils_controller.ts(27,9): error TS7034: Variable 'cache' implicitly has type 'any[]' in some locations where its type cannot be determined.
-src/controllers_src/utils_controller.ts(28,42): error TS6133: 'key' is declared but its value is never read.
-src/controllers_src/utils_controller.ts(30,17): error TS7005: Variable 'cache' implicitly has an 'any[]' type.
-src/controllers_src/utils_controller.ts(35,13): error TS7005: Variable 'cache' implicitly has an 'any[]' type.
-src/controllers_src/utils_controller.ts(39,5): error TS2322: Type 'null' is not assignable to type 'any[]'.
-src/controllers_src/utils_controller.ts(42,21): error TS7006: Parameter 'message' implicitly has an 'any' type.
-src/controllers_src/utils_controller.ts(49,28): error TS7006: Parameter 'value' implicitly has an 'any' type.
-src/controllers_src/utils_controller.ts(49,55): error TS2345: Argument of type '(date: any, format?: string) => any' is not assignable to parameter of type 'null | undefined'.
-  Type '(date: any, format?: string) => any' is not assignable to type 'null'.
-src/controllers_src/utils_controller.ts(50,30): error TS7006: Parameter 'date' implicitly has an 'any' type.
-src/controllers_src/utils_controller.ts(54,30): error TS7006: Parameter 'obj_original' implicitly has an 'any' type.
-src/controllers_src/utils_controller.ts(55,24): error TS2339: Property 'assign' does not exist on type 'ObjectConstructor'.
-src/database/models/index.ts(1,20): error TS7016: Could not find a declaration file for module 'sequelize-redis-cache'. '/Users/joe/Sites/mouse-house/node_modules/sequelize-redis-cache/lib/index.js' implicitly has an 'any' type.
-  Try `npm install @types/sequelize-redis-cache` if it exists or add a new declaration (.d.ts) file containing `declare module 'sequelize-redis-cache';`
+src/controllers/base_controller.ts(9,29): error TS2304: Cannot find name 'I'.
+src/controllers/base_controller.ts(9,32): error TS2304: Cannot find name 'A'.
+src/controllers/base_controller.ts(10,41): error TS2304: Cannot find name 'I'.
+src/controllers/base_controller.ts(10,44): error TS2304: Cannot find name 'A'.
+src/controllers/breed_controller.ts(70,51): error TS2531: Object is possibly 'null'.
+src/controllers/cage_controller.ts(44,44): error TS2531: Object is possibly 'null'.
+src/controllers/cage_controller.ts(45,44): error TS2531: Object is possibly 'null'.
+src/controllers/cage_controller.ts(46,47): error TS2531: Object is possibly 'null'.
+src/controllers/cage_controller.ts(92,15): error TS6133: 'foo' is declared but its value is never read.
+src/controllers/mouse_controller.ts(54,29): error TS2531: Object is possibly 'null'.
+src/controllers/mouse_controller.ts(74,60): error TS2531: Object is possibly 'null'.
+src/controllers/mouse_controller.ts(75,57): error TS2531: Object is possibly 'null'.
+src/controllers/mouse_controller.ts(76,67): error TS2531: Object is possibly 'null'.
+src/controllers/mouse_controller.ts(77,63): error TS2531: Object is possibly 'null'.
+src/controllers/mouse_controller.ts(79,44): error TS2531: Object is possibly 'null'.
+src/controllers/mouse_controller.ts(80,42): error TS2531: Object is possibly 'null'.
+src/controllers/mouse_controller.ts(86,62): error TS2531: Object is possibly 'null'.
+src/controllers/mouse_controller.ts(87,68): error TS2531: Object is possibly 'null'.
+src/controllers/mouse_controller.ts(138,30): error TS2531: Object is possibly 'null'.
+src/controllers/utils_controller.ts(28,42): error TS6133: 'key' is declared but its value is never read.
+src/index.ts(9,7): error TS6133: 'favicon' is declared but its value is never read.
+src/index.ts(58,7): error TS6133: 'helpers' is declared but its value is never read.
+src/index.ts(84,15): error TS6133: 'request' is declared but its value is never read.
+src/index.ts(90,10): error TS6133: 'req' is declared but its value is never read.
+src/index.ts(90,24): error TS6133: 'res' is declared but its value is never read.
+src/index.ts(100,24): error TS6133: 'req' is declared but its value is never read.
+src/index.ts(111,19): error TS6133: 'req' is declared but its value is never read.
+src/routes/breed_routes.ts(18,18): error TS6133: 'req' is declared but its value is never read.
+src/routes/breed_routes.ts(39,24): error TS6133: 'req' is declared but its value is never read.
+src/routes/cage_routes.ts(16,18): error TS6133: 'req' is declared but its value is never read.
+src/routes/cage_routes.ts(30,24): error TS6133: 'req' is declared but its value is never read.
+src/routes/mouse_routes.ts(38,18): error TS6133: 'req' is declared but its value is never read.
+src/routes/mouse_routes.ts(84,24): error TS6133: 'req' is declared but its value is never read.
+src/routes/utils_routes.ts(19,46): error TS6133: 'key' is declared but its value is never read.

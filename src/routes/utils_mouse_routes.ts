@@ -1,9 +1,9 @@
 import P from 'bluebird';
 const BlueBird = P.Promise;
 
-import { Enum_Controller } from '../controllers_src/enum_controller';
-import { Mouse_Controller } from '../controllers_src/mouse_controller';
-import { Cage_Controller } from '../controllers_src/cage_controller';
+import { Enum_Controller } from '../controllers/enum_controller';
+import { Mouse_Controller } from '../controllers/mouse_controller';
+import { Cage_Controller } from '../controllers/cage_controller';
 
 // const Enum_Controller = require('../controllers/enum_controller');
 // const Mouse_Controller = require('../controllers/mouse_controller');
@@ -21,39 +21,39 @@ export const utils = {
     }),
        
 
-    do_cage_upsert: (model) => {
+    do_cage_upsert: (model:any) => {
         const cage = {
             id_alias: model.cage_description,
         };
         return Cage_Controller.model
             .findOrCreate({ where: cage })
-            .spread(result => result.id)
+            .spread((result:any) => result.id)
             .catch((err) => {
                 console.log('cage upsert error: ');
                 log_json(err);
             });
     },
 
-    do_status_upsert: (model) => {
+    do_status_upsert: (model:any) => {
         const status = {
             description: model.status_description,
             type: Mouse_Controller.STATUS,
         };
         return Enum_Controller.model.findOrCreate({ where: status })
-            .spread(result => result.id)
+            .spread((result:any) => result.id)
             .catch((err) => {
                 console.log('status upsert error: ');
                 log_json(err);
             });
     },
 
-    do_genotype_upsert: (model) => {
+    do_genotype_upsert: (model:any) => {
         const genotype = {
             description: model.genotype_description,
             type: Mouse_Controller.GENOTYPE,
         };
         return Enum_Controller.model.findOrCreate({ where: genotype })
-            .spread(result => result.id)
+            .spread((result: any) => result.id)
             .catch((err) => {
                 console.log('genotype upsert error: ');
                 log_json(err);
@@ -61,8 +61,8 @@ export const utils = {
     },
 
 
-    create_model: (_model) => {
-        const model = _model;
+    create_model: (model:any) => {
+        
         return BlueBird.props({
             cage_id: module.exports.do_cage_upsert(model),
             status_id: module.exports.do_status_upsert(model),
@@ -72,7 +72,7 @@ export const utils = {
                 model.cage_id = ids.cage_id;
                 model.status_id = ids.status_id;
                 model.genotype_id = ids.genotype_id;
-                model.note = build_note(_model);
+                model.note = build_note(model);
                 return model;
             });
     },

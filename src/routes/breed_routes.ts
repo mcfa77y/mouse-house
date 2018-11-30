@@ -6,12 +6,12 @@ const router: Router = Router();
 
 import P from 'bluebird';
 const BlueBird = P.Promise;
-import {Breed_Controller} from '../controllers_src/breed_controller'
+import {Breed_Controller} from '../controllers/breed_controller'
 
 const isFalsey = require('falsey');
 
 // const Breed_Controller = require('../controllers_src/breed_controller');
-const { reshape_for_select, select_json, log_json, getErrorGif } = require('./utils_routes');
+import { utils } from './utils_routes';
 const { get_breed_inputs, create_model } = require('./utils_breed_routes');
 
 // list
@@ -20,7 +20,7 @@ router.get('/', (req: Request, res: Response) => {
         breeds: Breed_Controller.all_pretty(),
     })
         .then(({ breeds }) => {
-            log_json(breeds);
+            utils.log_json(breeds);
             const non_empty_breeds = breeds.filter(breed => !isFalsey(breed));
             res.render('pages/breed/breed_list', {
                 breeds: non_empty_breeds,
@@ -28,7 +28,7 @@ router.get('/', (req: Request, res: Response) => {
             });
         })
         .catch((error) => {
-            getErrorGif().then((errorImageUrl) => {
+            utils.getErrorGif().then((errorImageUrl) => {
                 res.render('error', {
                     error,
                     errorImageUrl,
@@ -45,9 +45,9 @@ router.get('/create', (req: Request, res: Response) => {
                 genotype, male_mice, female_mice, mice,
             },
         }) => {
-            const gt = select_json(genotype);
-            const mm = select_json(male_mice, reshape_for_select);
-            const fm = select_json(female_mice, reshape_for_select);
+            const gt = utils.select_json(genotype);
+            const mm = utils.select_json(male_mice, utils.reshape_for_select);
+            const fm = utils.select_json(female_mice, utils.reshape_for_select);
 
             res.render('pages/breed/breed_create', {
                 genotype: gt,
@@ -58,7 +58,7 @@ router.get('/create', (req: Request, res: Response) => {
             });
         })
         .catch((error) => {
-            getErrorGif().then((errorImageUrl) => {
+            utils.getErrorGif().then((errorImageUrl) => {
                 res.render('error', {
                     error,
                     errorImageUrl,
@@ -73,11 +73,11 @@ router.get('/:id_alias', (req: Request, res: Response) => {
         breed: Breed_Controller.by_id_alias(req.params.id_alias),
     })
         .then(({ input, breed }) => {
-            log_json(breed);
-            const genotype = select_json(input.genotype);
-            const male_mice = select_json(input.male_mice, reshape_for_select);
-            const female_mice = select_json(input.female_mice, reshape_for_select);
-            log_json(breed);
+            utils.log_json(breed);
+            const genotype = utils.select_json(input.genotype);
+            const male_mice = utils.select_json(input.male_mice, utils.reshape_for_select);
+            const female_mice = utils.select_json(input.female_mice, utils.reshape_for_select);
+            utils.log_json(breed);
 
             res.render('pages/breed/breed_update', {
                 genotype,
