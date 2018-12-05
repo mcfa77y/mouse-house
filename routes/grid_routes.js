@@ -3,21 +3,35 @@ const express = require('express');
 const router = express.Router();
 const BlueBird = require('bluebird');
 const isFalsey = require('falsey');
+const fs = require('fs');
+
+BlueBird.promisifyAll(fs);
 
 const breed_controller = require('../controllers/breed_controller');
 const {
     select_json,
     log_json,
-    getErrorGif
+    getErrorGif,
 } = require('./utils_routes');
 const {
     get_breed_inputs,
-    create_model
+    create_model,
 } = require('./utils_breed_routes');
 
 // list
 router.get('/', (req, res) => {
     res.render('pages/grid/grid_list', {
+        extra_js: ['grid_list.bundle.js'],
+    });
+});
+
+// list
+router.get('/view', (req, res) => {
+    const cvs_uri = req.body.cvs_uri;
+    const image_dir_uri = req.body.imageDirUri;
+
+    res.render('pages/grid/grid_view', {
+        extra_js: ['grid_view.bundle.js'],
     });
 });
 
@@ -119,8 +133,29 @@ router.put('/', (req, res) => {
     //     });
 });
 
-// update
+// create table from csv and image dir
 router.post('/', (req, res) => {
+    const cvs_uri = req.body.cvsUri;
+    const image_dir_uri = req.body.imageDirUri;
+
+    // fs
+    // .readdirSync(image_dir_uri)
+    // .filter(file => (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js'))
+    // .forEach((file) => {
+
+    // });
+    try {
+        fs.readFileAsync(cvs_uri, 'utf8').then((data) => {
+            console.log(data);
+        });
+    } catch (err) {
+        res.status(500).send({
+            success: false,
+            err,
+        });
+    }
+
+
     // const model = create_model(req.body);
     // breed_controller.update(model)
     //     .then(() => {
