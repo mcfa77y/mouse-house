@@ -9,6 +9,27 @@ $(() => {
     const success = (data) => {
         console.log(data);
         results.html(`${data.data.html}`);
+        const table_options = {
+            select: { style: 'multi' },
+            responsive: true,
+            dom: 'lBfrti',
+            
+            scrollY: '500px',
+            scrollCollapse: true,
+            paging: false,
+            info: false,
+
+            lengthMenu: [
+                [5, 10, 25, -1],
+                [5, 10, 25, 'All'],
+            ],
+            initComplete() {
+                this.api().columns.adjust();
+            },
+        };
+
+
+        const table = $(`#${model_name}-list`).DataTable();
     };
     const error = (data) => {
         results.html(`error: ${data.error_message}`);
