@@ -4,6 +4,8 @@ const router = express.Router();
 const BlueBird = require('bluebird');
 const isFalsey = require('falsey');
 const fs = require('fs');
+const csv = require('csvtojson');
+const handlebars = require('handlebars');
 
 BlueBird.promisifyAll(fs);
 
@@ -135,7 +137,7 @@ router.put('/', (req, res) => {
 
 // create table from csv and image dir
 router.post('/', (req, res) => {
-    const cvs_uri = req.body.cvsUri;
+    const cvs_uri = req.body.csvUri;
     const image_dir_uri = req.body.imageDirUri;
 
     // fs
@@ -144,16 +146,28 @@ router.post('/', (req, res) => {
     // .forEach((file) => {
 
     // });
-    try {
-        fs.readFileAsync(cvs_uri, 'utf8').then((data) => {
+    const source = fs.readFileSync(`${__dirname}/../views/partials/grid/grid_table.hbs`, 'utf-8');
+    const html_template = handlebars.compile(source);
+    csv()
+        .fromFile(cvs_uri)
+        .then((data) => {
             console.log(data);
+            const column_headers = Object.keys(data[0]);
+            const row_value_list = data.reduce((acc_array, row) => { acc_array.push(Object.values(row)); return acc_array; }, []);
+            const html = html_template({ column_headers, row_value_list });
+            res.status(200).send({
+                success: true,
+                data,
+                html,
+            });
+        })
+        .catch((err) => {
+            console.error(err);
+            res.send({
+                success: false,
+                err,
+            });
         });
-    } catch (err) {
-        res.status(500).send({
-            success: false,
-            err,
-        });
-    }
 
 
     // const model = create_model(req.body);

@@ -15,3 +15,9 @@ public/javascripts/*.bundle.js
 
 
 \.vscode/launch\.json
+
+dist/public/
+
+input/ImageMappingData/
+
+dist/

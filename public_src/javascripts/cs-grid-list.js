@@ -7,13 +7,15 @@ $(() => {
     const model_name = 'grid';
 
     const success = (data) => {
-        results.html(`${data.table}`);
+        console.log(data);
+        results.html(`${data.data.html}`);
     };
     const error = (data) => {
         results.html(`error: ${data.error_message}`);
     };
 
-    submit_button.click(() => {
+    submit_button.click((e) => {
+        e.preventDefault();
         const dt = form_ids_vals(`${model_name}-fields`);
         Axios.post(`/${model_name}`, dt)
             .then(success)
