@@ -6,6 +6,7 @@ const isFalsey = require('falsey');
 const fs = require('fs');
 const csv = require('csvtojson');
 const handlebars = require('handlebars');
+const path = require('path');
 
 BlueBird.promisifyAll(fs);
 
@@ -137,24 +138,35 @@ router.put('/', (req, res) => {
 
 // create table from csv and image dir
 router.post('/', (req, res) => {
-    const cvs_uri = req.body.csvUri;
-    const image_dir_uri = req.body.imageDirUri;
+    const {
+        csv_uri, image_dir_uri, prefix, extension,
+    } = req.body;
+    const image_uri_array = [];
+    const digits = /\d+/;
+    fs
+        .readdirSync(image_dir_uri)
+        .forEach((file) => {
+            const dest_uri = path.join(__dirname, '..', 'public', 'images', file);
+            fs.copyFileSync(image_dir_uri + file, dest_uri);
 
-    // fs
-    // .readdirSync(image_dir_uri)
-    // .filter(file => (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js'))
-    // .forEach((file) => {
+            const foo = {
+                image_uri: path.join('images', file),
+                name: path.parse(dest_uri).name,
+                id: path.parse(dest_uri).name.match(digits)[0],
+            };
+            image_uri_array.push(foo);
+        });
 
-    // });
     const source = fs.readFileSync(`${__dirname}/../views/partials/grid/grid_table.hbs`, 'utf-8');
     const html_template = handlebars.compile(source);
     csv()
-        .fromFile(cvs_uri)
+        .fromFile(csv_uri)
         .then((data) => {
-            console.log(data);
             const column_headers = Object.keys(data[0]);
             const row_value_list = data.reduce((acc_array, row) => { acc_array.push(Object.values(row)); return acc_array; }, []);
-            const html = html_template({ column_headers, row_value_list });
+            const html = html_template({
+                column_headers, row_value_list, prefix, extension, image_uri_array,
+            });
             res.status(200).send({
                 success: true,
                 data,

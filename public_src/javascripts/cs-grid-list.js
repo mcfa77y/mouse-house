@@ -1,35 +1,22 @@
 import { form_ids_vals } from './cs-form-helper';
 import * as Axios from 'axios';
 
+const zeroFill = require('zero-fill');
+
 $(() => {
     const submit_button = $('#submit');
     const results = $('#results');
     const model_name = 'grid';
 
-    const success = (data) => {
-        console.log(data);
-        results.html(`${data.data.html}`);
-        const table_options = {
-            select: { style: 'multi' },
-            responsive: true,
-            dom: 'lBfrti',
-            
-            scrollY: '500px',
-            scrollCollapse: true,
-            paging: false,
-            info: false,
-
-            lengthMenu: [
-                [5, 10, 25, -1],
-                [5, 10, 25, 'All'],
-            ],
-            initComplete() {
-                this.api().columns.adjust();
-            },
-        };
-
-
-        const table = $(`#${model_name}-list`).DataTable();
+    const success = (response) => {
+        results.html(`${response.data.html}`);
+        $(`#${model_name}-list`).DataTable();
+        $('.hover_cell').click((e) => {
+            console.log(this);
+            const index = zeroFill(3, this.textContent);
+            console.log(`${'clicked: #image_'}${index}`);
+            $(`#image_${index}`).toggleClass('d-none');
+        });
     };
     const error = (data) => {
         results.html(`error: ${data.error_message}`);
