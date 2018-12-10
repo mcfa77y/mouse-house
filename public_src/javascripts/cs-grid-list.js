@@ -1,5 +1,5 @@
-import { form_ids_vals } from './cs-form-helper';
 import * as Axios from 'axios';
+import { form_ids_vals } from './cs-form-helper';
 
 const zeroFill = require('zero-fill');
 
@@ -15,7 +15,7 @@ $(() => {
 
 
     const create_card = (response) => {
-        $('.card-deck').append(`${response.data.html}`);
+        $('#image-row').append(`${response.data.html}`);
     };
 
     $(document).on('click', '.hover_cell', (event) => {
@@ -36,12 +36,18 @@ $(() => {
 
     const create_table = (response) => {
         results.html(`${response.data.html}`);
-        $(`#${model_name}-list`).DataTable();
+        const table_options = {
+            scrollX: true,
+            paging: false,
+        };
+        $(`#${model_name}-list`).DataTable(table_options);
     };
 
 
     submit_button.click((e) => {
         e.preventDefault();
+        $('#collapseOne').collapse();
+        $('#collapseTwo').collapse('show');
         const dt = form_ids_vals(`${model_name}-fields`);
         Axios.post(`/${model_name}/table`, dt)
             .then(create_table)

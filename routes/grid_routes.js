@@ -13,16 +13,15 @@ const DIGITS_REGEX = /\d+/;
 
 BlueBird.promisifyAll(fs);
 
-const breed_controller = require('../controllers/breed_controller');
 const {
     select_json,
     log_json,
     getErrorGif,
 } = require('./utils_routes');
 const {
-    get_breed_inputs,
-    create_model,
-} = require('./utils_breed_routes');
+    create_data_from_csv,
+    find_row_by_index,
+} = require('./utils_grid_routes');
 
 // list
 router.get('/', (req, res) => {
@@ -136,17 +135,27 @@ router.put('/', (req, res) => {
     //     });
 });
 // create card
-router.post('/card', (req, res) => {
+router.post('/card', async (req, res) => {
     const {
-        prefix, extension, index,
+        prefix, extension, index, metadata_csv_uri,
     } = req.body;
 
     const file = `${prefix}${index}${extension}`;
+    const data = await create_data_from_csv(metadata_csv_uri);
+
+    const row = find_row_by_index(index, data);
+    const row_zip = row.column_headers
+        .reduce((acc, column_header, i) => {
+            acc.push({ name: column_header, value: row.row_value_list[0][i] });
+            return acc;
+        }, []);
 
     const card_data = {
         image_uri: path.join('images', file),
         name: path.parse(file).name,
         id: path.parse(file).name.match(DIGITS_REGEX)[0],
+        row_zip,
+        column_headers: data.column_headers,
     };
 
     const source = fs.readFileSync(`${PARTIALS_DIR}/grid_card.hbs`, 'utf-8');
@@ -159,66 +168,33 @@ router.post('/card', (req, res) => {
     });
 });
 // create table from csv and image dir
-router.post('/table', (req, res) => {
+router.post('/table', async (req, res) => {
     const {
         csv_uri, image_dir_uri, prefix, extension,
     } = req.body;
-    const image_uri_array = [];
 
+    // copy images to public dir
     fs
         .readdirSync(image_dir_uri)
         .forEach((file) => {
             const dest_uri = path.join(__dirname, '..', 'public', 'images', file);
             fs.copyFileSync(image_dir_uri + file, dest_uri);
-
-            const foo = {
-                image_uri: path.join('images', file),
-                name: path.parse(dest_uri).name,
-                id: path.parse(dest_uri).name.match(DIGITS_REGEX)[0],
-            };
-            image_uri_array.push(foo);
         });
 
     const source = fs.readFileSync(`${PARTIALS_DIR}/grid_table.hbs`, 'utf-8');
     const html_template = handlebars.compile(source);
-    csv()
-        .fromFile(csv_uri)
-        .then((data) => {
-            const column_headers = Object.keys(data[0]);
-            const row_value_list = data.reduce((acc_array, row) => { acc_array.push(Object.values(row)); return acc_array; }, []);
-            const dt = {
-                column_headers, row_value_list, prefix, extension, image_uri_array,
-            };
-            const html = html_template(dt);
-            // res.render('pages/grid/grid_view', dt);
-            res.status(200).send({
-                success: true,
-                data,
-                html,
-            });
-        })
-        .catch((err) => {
-            console.error(err);
-            res.send({
-                success: false,
-                err,
-            });
-        });
-
-
-    // const model = create_model(req.body);
-    // breed_controller.update(model)
-    //     .then(() => {
-    //         res.send({
-    //             success: true
-    //         });
-    //     })
-    //     .catch((err) => {
-    //         res.status(500).send({
-    //             success: false,
-    //             err
-    //         });
-    //     });
+    const { column_headers, row_value_list } = await create_data_from_csv(csv_uri);
+    const dt = {
+        column_headers,
+        row_value_list,
+        prefix,
+        extension,
+    };
+    const html = html_template(dt);
+    res.status(200).send({
+        success: true,
+        html,
+    });
 });
 
 module.exports = router;

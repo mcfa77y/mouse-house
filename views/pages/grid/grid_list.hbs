@@ -1,37 +1,60 @@
 <div class="card">
-    <div class="card-body">
-        <h4 class="card-title">Grid</h4>
-
-        <form id="grid-fields">
-            <div class="row"></div>
-            
-            <div class="form-group">
-                <label for="csvUri">Grid data CSV</label>
-                <input class="form-control" id="csv_uri" placeholder="/path/to/data.csv" value="/Users/joe/Sites/mouse-house/input/ImageMappingData/Platemap.csv">
-            
-            </div>
-            <div class="form-group">
-                <label for="image_dir_uri">Image directory</label>
-                <input class="form-control" id="image_dir_uri" placeholder="/path/to/images" value="/Users/joe/Sites/mouse-house/input/ImageMappingData/Tubulin/">
-            </div>
-            <div class="form-group">
-                <label for="prefix">Prefix</label>
-                <input class="form-control" id="prefix" placeholder="Tubulin_" value="Tubulin_">
-            </div>
-            <div class="form-group">
-                <label for="extension">Extension</label>
-                <input class="form-control" id="extension" placeholder=".jpg" value=".jpg">
-            </div>
-            <button id="submit" type="submit" class="btn btn-primary">Submit</button>
+    <div class="card-header" id="headingOne">
+        <h5 class="mb-0">
+            <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true"
+                aria-controls="collapseOne">
+                Inputs
+            </button>
+        </h5>
     </div>
-    </form>
+    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+        <div class="card-body">
+            <h4 class="card-title">Inputs</h4>
 
+            <form id="grid-fields">
+                <div class="row"></div>
 
-    <div class="row mt-3">
-        <div class="col-md-12">
+                <div class="form-group">
+                    <label for="csvUri">Grid data CSV</label>
+                    <input class="form-control" id="csv_uri" placeholder="/path/to/data.csv" value="/Users/joe/Sites/mouse-house/input/ImageMappingData/Platemap.csv">
+                </div>
+                <div class="form-group">
+                    <label for="image_dir_uri">Image directory</label>
+                    <input class="form-control" id="image_dir_uri" placeholder="/path/to/images" value="/Users/joe/Sites/mouse-house/input/ImageMappingData/Tubulin/">
+                </div>
+                <div class="form-group">
+                    <label for="metadata_csv_uri">Metadata</label>
+                    <input class="form-control" id="metadata_csv_uri" placeholder="/path/to/metadata.csv" value="/Users/joe/Sites/mouse-house/input/ImageMappingData/SP20299.csv">
+                </div>
+                <div class="form-group">
+                    <label for="prefix">Prefix</label>
+                    <input class="form-control" id="prefix" placeholder="Tubulin_" value="Tubulin_">
+                </div>
+                <div class="form-group">
+                    <label for="extension">Extension</label>
+                    <input class="form-control" id="extension" placeholder=".jpg" value=".jpg">
+                </div>
+                <button id="submit" type="submit" class="btn btn-primary">Submit</button>
 
-            <div id="results"></div>
+            </form>
         </div>
     </div>
 </div>
+
+
+<div class="card">
+    <div class="card-header" id="headingOne">
+        <h5 class="mb-0">
+            <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true"
+                aria-controls="collapseTwo">
+                Results
+            </button>
+        </h5>
+    </div>
+    <div id="collapseTwo" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+        <div class="card-body">
+            <h4 class="card-title">Results</h4>
+           <div id="results"></div>
+        </div>
+    </div>
 </div>

@@ -1,5 +1,5 @@
 <div id='cell_image_array'>
-    <div class="card-deck">
+    <div id="image-row" class="row">
     
   
    </div>
@@ -16,10 +16,17 @@
         {{#each row_value_list as |value_list|}}
         <tr>
             {{#each value_list as |value|}}
-            <td class="hover_cell" value="{{value}}">{{value}}</a></td>
+            <td class="hover_cell" value="{{value}}">{{value}}</td>
             {{/each}}
         </tr>
 
         {{/each}}
     </tbody>
+    <tfoot>
+            <tr>
+            {{#each column_headers as |header|}}
+            <th>{{header}}</th>
+            {{/each}}
+        </tr>
+        </tfoot>
 </table>
