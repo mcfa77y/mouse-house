@@ -45,6 +45,7 @@
     "falsey": "^0.3.2",
     "file-loader": "^0.11.2",
     "googleapis": "^18.0.0",
+    "handlebars": "^4.0.12",
     "handlebars-helpers": "^0.9.3",
     "hbs": "^4.0.1",
     "hbs-utils": "^0.0.4",

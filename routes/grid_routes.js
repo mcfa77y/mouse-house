@@ -8,6 +8,9 @@ const csv = require('csvtojson');
 const handlebars = require('handlebars');
 const path = require('path');
 
+const PARTIALS_DIR = path.join(__dirname, '../views/partials/grid/');
+const DIGITS_REGEX = /\d+/;
+
 BlueBird.promisifyAll(fs);
 
 const breed_controller = require('../controllers/breed_controller');
@@ -30,9 +33,6 @@ router.get('/', (req, res) => {
 
 // list
 router.get('/view', (req, res) => {
-    const cvs_uri = req.body.cvs_uri;
-    const image_dir_uri = req.body.imageDirUri;
-
     res.render('pages/grid/grid_view', {
         extra_js: ['grid_view.bundle.js'],
     });
@@ -135,14 +135,36 @@ router.put('/', (req, res) => {
     //         });
     //     });
 });
+// create card
+router.post('/card', (req, res) => {
+    const {
+        prefix, extension, index,
+    } = req.body;
 
+    const file = `${prefix}${index}${extension}`;
+
+    const card_data = {
+        image_uri: path.join('images', file),
+        name: path.parse(file).name,
+        id: path.parse(file).name.match(DIGITS_REGEX)[0],
+    };
+
+    const source = fs.readFileSync(`${PARTIALS_DIR}/grid_card.hbs`, 'utf-8');
+    const html_template = handlebars.compile(source);
+    const html = html_template(card_data);
+
+    // res.render('pages/grid/grid_view', dt);
+    res.status(200).send({
+        html,
+    });
+});
 // create table from csv and image dir
-router.post('/', (req, res) => {
+router.post('/table', (req, res) => {
     const {
         csv_uri, image_dir_uri, prefix, extension,
     } = req.body;
     const image_uri_array = [];
-    const digits = /\d+/;
+
     fs
         .readdirSync(image_dir_uri)
         .forEach((file) => {
@@ -152,21 +174,23 @@ router.post('/', (req, res) => {
             const foo = {
                 image_uri: path.join('images', file),
                 name: path.parse(dest_uri).name,
-                id: path.parse(dest_uri).name.match(digits)[0],
+                id: path.parse(dest_uri).name.match(DIGITS_REGEX)[0],
             };
             image_uri_array.push(foo);
         });
 
-    const source = fs.readFileSync(`${__dirname}/../views/partials/grid/grid_table.hbs`, 'utf-8');
+    const source = fs.readFileSync(`${PARTIALS_DIR}/grid_table.hbs`, 'utf-8');
     const html_template = handlebars.compile(source);
     csv()
         .fromFile(csv_uri)
         .then((data) => {
             const column_headers = Object.keys(data[0]);
             const row_value_list = data.reduce((acc_array, row) => { acc_array.push(Object.values(row)); return acc_array; }, []);
-            const html = html_template({
+            const dt = {
                 column_headers, row_value_list, prefix, extension, image_uri_array,
-            });
+            };
+            const html = html_template(dt);
+            // res.render('pages/grid/grid_view', dt);
             res.status(200).send({
                 success: true,
                 data,
