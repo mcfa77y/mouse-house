@@ -1,6 +1,6 @@
 const csv = require('csvtojson');
 
-const create_data_from_csv = async csv_uri => csv()
+const create_data_from_csv = async csv_uri => csv({ flatKeys: true })
     .fromFile(csv_uri)
     .then((data) => {
         const column_headers = Object.keys(data[0]);
@@ -33,7 +33,7 @@ const find_row_by_well = (well_x, well_y, data) => {
 };
 
 const one_d_2_two_d = (index, well_row_count) => {
-    const i = parseInt(index, 10);
+    const i = parseInt(index, 10) - 1;
     const col = i % well_row_count;
     const row = Math.floor((i - col) / well_row_count);
     return { row, col };
