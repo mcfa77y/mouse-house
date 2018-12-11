@@ -31,7 +31,7 @@ $(() => {
     });
 
     $(document).on('click', '.close-btn', function () {
-        $(this).closest('.card').fadeOut();
+        $(this).closest('.card').fadeOut({ complete: function() { $(this).remove(); } });
     });
 
     const create_table = (response) => {
