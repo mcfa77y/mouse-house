@@ -15,7 +15,7 @@ $(() => {
 
 
     const create_card = (response) => {
-        $('#image-row').append(`${response.data.html}`);
+        $('#image_row').append(`${response.data.html}`);
     };
 
     $(document).on('click', '.hover_cell', (event) => {
@@ -33,7 +33,10 @@ $(() => {
     $(document).on('click', '.close-btn', function () {
         $(this).closest('.card').fadeOut({ complete: function() { $(this).remove(); } });
     });
-
+    $(document).on('click', '.card-img-top', function () {
+        const img_uri = $(this).closest('.card-img-top').attr('src');
+        window.open(img_uri,'Image');
+    });
     const create_table = (response) => {
         results.html(`${response.data.html}`);
         const table_options = {
