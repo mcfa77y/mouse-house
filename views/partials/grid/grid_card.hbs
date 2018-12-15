@@ -1,8 +1,11 @@
-<div class="card" id="image_{{id}}" style="width: 34em">
+<div class="card" id="image_{{id}}" style="width: 14em">
+<div class="card-header">
+    {{name}}
+  </div>
     <img class="card-img-top" src="{{image_uri}}" alt="Card image cap">
 
     <div class="card-body">
-        <h5 class="card-title">{{name}}</h5>
+        {{!-- <h5 class="card-title">{{name}}</h5> --}}
 
         <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#multiCollapse_{{id}}"
             aria-expanded="false" aria-controls="multiCollapse_{{id}}">Metadata</button>

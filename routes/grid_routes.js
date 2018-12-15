@@ -176,9 +176,11 @@ router.post('/table', async (req, res) => {
     // copy images to public dir
     fs
         .readdirSync(image_dir_uri)
+        .filter(file => path.parse(file).ext === extension)
         .forEach((file) => {
             const dest_uri = path.join(__dirname, '..', 'public', 'images', file);
-            fs.copyFileSync(image_dir_uri + file, dest_uri);
+            const src_uri = path.join(image_dir_uri, file);
+            fs.copyFileSync(src_uri, dest_uri);
         });
 
     const source = fs.readFileSync(`${PARTIALS_DIR}/grid_table.hbs`, 'utf-8');
