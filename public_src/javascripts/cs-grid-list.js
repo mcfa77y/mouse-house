@@ -12,6 +12,18 @@ const foo_this = (event, klass) => {
 
 const setup_grid_cells = () => {
     const results = $('#results');
+    const model_name = 'grid';
+
+    const success = (response) => {
+        results.html(`${response.data.html}`);
+        $(`#${model_name}-list`).DataTable();
+        $(document).on('click', '.hover_cell', (e) => {
+            console.log(this);
+            const index = zeroFill(3, this.textContent);
+            console.log(`${'clicked: #image_'}${index}`);
+            $(`#image_${index}`).toggleClass('d-none');
+        });
+    };
     const error = (data) => {
         results.html(`error: ${data.error_message}`);
     };
