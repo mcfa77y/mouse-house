@@ -144,6 +144,7 @@ router.get(('/create'), (req, res) => {
 });
 const get_artist_id_list = (artist_name_array) => {
     const artist_id_promise_list = artist_name_array
+        .filter(artist_name => artist_name.length > 0)
         .map(artist_name => artist_name.trim())
         .map(artist_name => promiseThrottle.add(() =>
             spotifyApi.searchArtists(artist_name).then((data) => {
@@ -168,7 +169,16 @@ const get_song_by_artist_uri_list = (artist_id_array, song_count) => {
     const artist_id_promise_list = artist_id_array
         .filter(artist_id => artist_id !== -1)
         .map(artist_id => promiseThrottle.add(() => spotifyApi.getArtistTopTracks(artist_id, 'US')
-            .then(data => range.map(index => data.body.tracks[index].uri))
+            .then(data => range.map((index) => {
+              let result;
+              if (data.body.tracks.length > index) {
+                result = data.body.tracks[index].uri;
+              }
+              else {
+                console.warn("not enough tracks");
+              }
+              return result;
+            }))
             .catch((err) => {
                 console.error(err);
             })));
@@ -184,22 +194,27 @@ router.post('/', async (req, res) => {
     spotifyApi.setRefreshToken(decrypt(req.cookies.refresh_token));
     try {
         const artist_id_list = await get_artist_id_list(artist_name_array);
-        const track_uri_list = await get_song_by_artist_uri_list(artist_id_list, song_count);
+        const track_uri_list = await get_song_by_artist_uri_list(artist_id_list.filter(artist_id => artist_id !== -1 && artist_id !== undefined), song_count);
         const user_id = await spotifyApi.getMe().then(data => data.body.id);
         const new_playlist_id = await spotifyApi.createPlaylist(user_id, festival_name)
             .then(data => data.body.id);
         const foo = track_uri_list.reduce((acc, val) => acc.concat(val), []).filter(el => el !== undefined);
         const step = 50;
         const p = [];
-        for (let i = 0; i <= Math.ceil(foo.length / step); i += 1) {
+        for (let i = 0; i < Math.ceil(foo.length / step); i += 1) {
             const bar = foo.slice(i * step, Math.min(foo.length, (i + 1) * step));
             console.log(bar.length, i, (i + 1) * step);
+            console.log(bar);
             p.push(spotifyApi.addTracksToPlaylist(user_id, new_playlist_id, bar)
-                .catch(err => log_json(err)));
+                .catch((err) => {
+                  log_json(err);
+                }));
         }
         Promise.all(p)
             .then(data => res.send({ success: true, data }))
-            .catch(err => log_json(err));
+            .catch((err) => {
+              log_json(err);
+            });
     } catch (err) {
         log_json(err);
         res.status(500).send({ succcess: false, err });
