@@ -12,20 +12,9 @@ const foo_this = (event, klass) => {
 
 const setup_grid_cells = () => {
     const results = $('#results');
-    const model_name = 'grid';
 
-    const success = (response) => {
-        results.html(`${response.data.html}`);
-        $(`#${model_name}-list`).DataTable();
-        $(document).on('click', '.hover_cell', (e) => {
-            console.log(this);
-            const index = zeroFill(3, this.textContent);
-            console.log(`${'clicked: #image_'}${index}`);
-            $(`#image_${index}`).toggleClass('d-none');
-        });
-    };
-    const error = (data) => {
-        results.html(`error: ${data.error_message}`);
+    const error = ({ response }) => {
+        results.html(`error: ${response.data.message}`);
     };
     const create_card = (response) => {
         $('#image_row').append(`${response.data.html}`);
@@ -39,7 +28,7 @@ const setup_grid_cells = () => {
             .then(create_card)
             .catch(error);
 
-        // $(`#image_${index}`).toggleClass('d-none');
+    // $(`#image_${index}`).toggleClass('d-none');
     });
 };
 
@@ -56,14 +45,12 @@ const setup_cards = () => {
 };
 
 const setup_form = () => {
-    const submit_button = $('#submit');
     const results = $('#results');
 
-
-    const error = (data) => {
-        results.html(`error: ${data.error_message}`);
+    const error = ({ response }) => {
+        const warning = `<div class="alert alert-warning" role="alert">${response.data.message}</div>`;
+        results.html(warning);
     };
-
 
     const create_table = (response) => {
         results.html(`${response.data.html}`);
@@ -74,7 +61,7 @@ const setup_form = () => {
         $(`#${model_name}-list`).DataTable(table_options);
     };
 
-
+    const submit_button = $('#submit');
     submit_button.click((e) => {
         e.preventDefault();
         $('#exampleModal').modal('hide');
@@ -86,7 +73,20 @@ const setup_form = () => {
     });
 };
 
+const setupSelects = () => {
+    $('.foo-select')
+        .toArray()
+        .forEach((s) => {
+            $(s).selectize({
+                plugins: ['restore_on_backspace', 'remove_button'],
+                create: true,
+                persist: true,
+                maxItems: 1,
+            });
+        });
+};
 $(() => {
+    setupSelects();
     setup_form();
     setup_grid_cells();
     setup_cards();

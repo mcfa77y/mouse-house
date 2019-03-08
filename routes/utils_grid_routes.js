@@ -1,4 +1,7 @@
 const csv = require('csvtojson');
+const BlueBird = require('bluebird');
+
+const stat = BlueBird.promisify(require('fs').stat);
 
 const create_data_from_csv = async csv_uri => csv({ flatKeys: true })
     .fromFile(csv_uri)
@@ -12,10 +15,8 @@ const create_data_from_csv = async csv_uri => csv({ flatKeys: true })
         return {
             column_headers, row_value_list,
         };
-    })
-    .catch((err) => {
-        console.err(err);
     });
+
 const find_row_by_column = (col_name, test, data) => {
     const {
         column_headers, row_value_list,
@@ -45,11 +46,15 @@ const find_row_by_index = (index, data) => {
     return find_row_by_well(col + 1, row + 1, data);
 };
 
+const file_exist = (uri, error_msg) => stat(uri)
+    .catch(error => Promise.reject(new Error(error_msg)));
+
 module.exports = {
     create_data_from_csv,
     find_row_by_column,
     find_row_by_well,
     one_d_2_two_d,
     find_row_by_index,
+    file_exist,
 };
 

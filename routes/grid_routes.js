@@ -13,14 +13,18 @@ const DIGITS_REGEX = /\d+/;
 
 BlueBird.promisifyAll(fs);
 
+const stat = BlueBird.promisify(fs.stat);
+
 const {
     select_json,
     log_json,
     getErrorGif,
 } = require('./utils_routes');
+
 const {
     create_data_from_csv,
     find_row_by_index,
+    file_exist,
 } = require('./utils_grid_routes');
 
 // list
@@ -170,33 +174,44 @@ router.post('/card', async (req, res) => {
 // create table from csv and image dir
 router.post('/table', async (req, res) => {
     const {
-        csv_uri, image_dir_uri, prefix, extension,
+        csv_uri, image_dir_uri, prefix, extension, metadata_csv_uri,
     } = req.body;
+      Promise.all([file_exist(image_dir_uri, 'Image directory not found'), file_exist(csv_uri, 'Grid csv file not found'), file_exist(metadata_csv_uri, 'Metadata csv file not found')])
+        .then(async () => {
+            // copy images to public dir
+        
+            fs
+                .readdirSync(image_dir_uri)
+                .filter(file => path.parse(file).ext === extension)
+                .forEach((file) => {
+                    const dest_uri = path.join(__dirname, '..', 'public', 'images', file);
+                    const src_uri = path.join(image_dir_uri, file);
+                    fs.copyFileSync(src_uri, dest_uri);
+                });
 
-    // copy images to public dir
-    fs
-        .readdirSync(image_dir_uri)
-        .filter(file => path.parse(file).ext === extension)
-        .forEach((file) => {
-            const dest_uri = path.join(__dirname, '..', 'public', 'images', file);
-            const src_uri = path.join(image_dir_uri, file);
-            fs.copyFileSync(src_uri, dest_uri);
+            const source = fs.readFileSync(`${PARTIALS_DIR}/grid_table.hbs`, 'utf-8');
+            const html_template = handlebars.compile(source);
+
+            const { column_headers, row_value_list } = await create_data_from_csv(csv_uri)
+
+            const dt = {
+                column_headers,
+                row_value_list,
+                prefix,
+                extension,
+            };
+            const html = html_template(dt);
+            res.status(200).send({
+                success: true,
+                html,
+            });
+        })
+        .catch(({ message }) => {
+            res.status(500).send({
+                success: false,
+                message,
+            });
         });
-
-    const source = fs.readFileSync(`${PARTIALS_DIR}/grid_table.hbs`, 'utf-8');
-    const html_template = handlebars.compile(source);
-    const { column_headers, row_value_list } = await create_data_from_csv(csv_uri);
-    const dt = {
-        column_headers,
-        row_value_list,
-        prefix,
-        extension,
-    };
-    const html = html_template(dt);
-    res.status(200).send({
-        success: true,
-        html,
-    });
 });
 
 module.exports = router;
