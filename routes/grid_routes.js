@@ -7,6 +7,7 @@ const fs = require('fs');
 const csv = require('csvtojson');
 const handlebars = require('handlebars');
 const path = require('path');
+const zeroFill = require('zero-fill');
 
 const PARTIALS_DIR = path.join(__dirname, '../views/partials/grid/');
 const DIGITS_REGEX = /\d+/;
@@ -25,14 +26,61 @@ const {
     create_data_from_csv,
     find_row_by_index,
     file_exist,
+    two_d_2_one_d,
 } = require('./utils_grid_routes');
 
 // list
 router.get('/', (req, res) => {
+    let config_map = [];
+    if (req.cookies.config_map) {
+        ({ config_map } = req.cookies);
+    } else {
+        res.cookie('config_map', config_map);
+    }
+    const config_name_select_list = Object.keys(config_map).map(config_name => ({ id: `${config_name}`, description: `${config_name}` }));
     res.render('pages/grid/grid_list', {
         extra_js: ['grid_list.bundle.js'],
+        config_name_select_list,
     });
 });
+
+const add_config = (req, res) => {
+    let config_map = {};
+    if (req.cookies.config_map) {
+        ({ config_map } = req.cookies);
+    }
+
+    const {
+        csv_uri, image_dir_uri, prefix, extension, metadata_csv_uri, config_name,
+    } = req.body;
+
+    config_map[config_name] = {
+        csv_uri, image_dir_uri, prefix, extension, metadata_csv_uri,
+    };
+    res.cookie('config_map', config_map);
+    return config_map;
+};
+
+const get_config = (req, res, config_name) => {
+    let config_map = {};
+    if (req.cookies.config_map) {
+        ({ config_map } = req.cookies);
+    }
+
+    // const config = config_map[config_name]
+    console.log(`get_config: ${config_map[config_name]}`);
+    return config_map[config_name];
+};
+
+router.get('/config/:config_name', (req, res) => {
+    res.send({ config: get_config(req, res, req.params.config_name) });
+});
+
+router.post('/config/', (req, res) => {
+    add_config(req, res);
+    res.send({ success: true });
+});
+
 
 // list
 router.get('/view', (req, res) => {
@@ -143,8 +191,9 @@ router.post('/card', async (req, res) => {
     const {
         prefix, extension, index, metadata_csv_uri,
     } = req.body;
-
-    const file = `${prefix}${index}${extension}`;
+    const well_row_count = 24;
+    const one_d_index = zeroFill(3, two_d_2_one_d(index, well_row_count));
+    const file = `${prefix}${one_d_index}${extension}`;
     const data = await create_data_from_csv(metadata_csv_uri);
 
     const row = find_row_by_index(index, data);
@@ -157,7 +206,7 @@ router.post('/card', async (req, res) => {
     const card_data = {
         image_uri: path.join('images', file),
         name: path.parse(file).name,
-        id: path.parse(file).name.match(DIGITS_REGEX)[0],
+        id: path.parse(file).name,
         row_zip,
         column_headers: data.column_headers,
     };
@@ -173,13 +222,13 @@ router.post('/card', async (req, res) => {
 });
 // create table from csv and image dir
 router.post('/table', async (req, res) => {
+    add_config(req, res);
     const {
         csv_uri, image_dir_uri, prefix, extension, metadata_csv_uri,
     } = req.body;
-      Promise.all([file_exist(image_dir_uri, 'Image directory not found'), file_exist(csv_uri, 'Grid csv file not found'), file_exist(metadata_csv_uri, 'Metadata csv file not found')])
+    Promise.all([file_exist(image_dir_uri, 'Image directory not found'), file_exist(csv_uri, 'Grid csv file not found'), file_exist(metadata_csv_uri, 'Metadata csv file not found')])
         .then(async () => {
             // copy images to public dir
-        
             fs
                 .readdirSync(image_dir_uri)
                 .filter(file => path.parse(file).ext === extension)
@@ -192,7 +241,7 @@ router.post('/table', async (req, res) => {
             const source = fs.readFileSync(`${PARTIALS_DIR}/grid_table.hbs`, 'utf-8');
             const html_template = handlebars.compile(source);
 
-            const { column_headers, row_value_list } = await create_data_from_csv(csv_uri)
+            const { column_headers, row_value_list } = await create_data_from_csv(csv_uri);
 
             const dt = {
                 column_headers,

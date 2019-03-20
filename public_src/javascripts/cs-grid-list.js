@@ -3,7 +3,6 @@ import { form_ids_vals } from './cs-form-helper';
 
 const zeroFill = require('zero-fill');
 
-const model_name = 'grid';
 const foo_this = (event, klass) => {
     const clickedElement = $(event.target);
     const targetElement = clickedElement.closest(klass);
@@ -22,9 +21,9 @@ const setup_grid_cells = () => {
 
     $(document).on('click', '.hover_cell', (event) => {
         const targetElement = foo_this(event, '.hover_cell');
-        const index = zeroFill(3, targetElement.text());
-        const dt = $.extend(form_ids_vals(`${model_name}-fields`), { index });
-        Axios.post(`/${model_name}/card`, dt)
+        const index = targetElement[0].attributes.value.value;
+        const dt = $.extend(form_ids_vals('grid-fields'), { index });
+        Axios.post('/grid/card', dt)
             .then(create_card)
             .catch(error);
 
@@ -58,7 +57,7 @@ const setup_form = () => {
             scrollX: true,
             paging: false,
         };
-        $(`#${model_name}-list`).DataTable(table_options);
+        $('#grid-list').DataTable(table_options);
     };
 
     const submit_button = $('#submit');
@@ -66,8 +65,8 @@ const setup_form = () => {
         e.preventDefault();
         $('#exampleModal').modal('hide');
         $('#collapseTwo').collapse('show');
-        const dt = form_ids_vals(`${model_name}-fields`);
-        Axios.post(`/${model_name}/table`, dt)
+        const dt = form_ids_vals('grid-fields');
+        Axios.post('/grid/table', dt)
             .then(create_table)
             .catch(error);
     });
@@ -84,6 +83,28 @@ const setupSelects = () => {
                 maxItems: 1,
             });
         });
+    const update_form = (res) => {
+        console.log(JSON.stringify(res.data.config, null, 2));
+        const {
+          csv_uri, image_dir_uri, prefix, extension, metadata_csv_uri, 
+        } = res.data.config;
+        $('#csv_uri').val(csv_uri);
+        $('#image_dir_uri').val(image_dir_uri);
+        $('#prefix').val(prefix);
+        $('#extension').val(extension);
+        $('#metadata_csv_uri').val(metadata_csv_uri);
+    };
+    const results = $('#results');
+    const error = ({ response }) => {
+        const warning = `<div class="alert alert-warning" role="alert">${response.data.message}</div>`;
+        results.html(warning);
+    };
+    $('#config_name').change(() => {
+        const dt = form_ids_vals('grid-fields');
+        Axios.get(`/grid/config/${dt.config_name}`)
+            .then(update_form)
+            .catch(error);
+    });
 };
 $(() => {
     setupSelects();

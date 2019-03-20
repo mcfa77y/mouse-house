@@ -16,7 +16,7 @@
         {{#each row_value_list as |value_list|}}
         <tr>
             {{#each value_list as |value|}}
-            <td class="hover_cell" value="{{value}}">{{truncate value 5}}</td>
+            <td class="hover_cell" value="{{@../index}}_{{@index}}">{{truncate value 5}}</td>
             {{/each}}
         </tr>
 

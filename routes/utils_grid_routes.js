@@ -40,10 +40,16 @@ const one_d_2_two_d = (index, well_row_count) => {
     return { row, col };
 };
 
+const two_d_2_one_d = (index, well_row_count) => {
+    const [row, col] = index.split('_').map(x => parseInt(x, 10));
+    return well_row_count * row + col;
+};
+
 const find_row_by_index = (index, data) => {
-    const well_row_count = 24;
-    const { row, col } = one_d_2_two_d(index, well_row_count);
-    return find_row_by_well(col + 1, row + 1, data);
+    // const well_row_count = 24;
+    // const { row, col } = one_d_2_two_d(index, well_row_count);
+    const [row, col] = index.split('_').map(x => parseInt(x, 10));
+    return find_row_by_well(col, row + 1, data);
 };
 
 const file_exist = (uri, error_msg) => stat(uri)
@@ -54,6 +60,7 @@ module.exports = {
     find_row_by_column,
     find_row_by_well,
     one_d_2_two_d,
+    two_d_2_one_d,
     find_row_by_index,
     file_exist,
 };
