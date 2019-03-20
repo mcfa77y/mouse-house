@@ -16,7 +16,11 @@
         {{#each row_value_list as |value_list|}}
         <tr>
             {{#each value_list as |value|}}
+            {{#if @first}}
             <td class="hover_cell" value="{{@../index}}_{{@index}}">{{truncate value 5}}</td>
+            {{else}}
+            <td class="hover_cell" value="{{@../index}}_{{@index}}">{{value}}</td>
+            {{/if}}
             {{/each}}
         </tr>
 
