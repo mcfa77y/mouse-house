@@ -26,7 +26,7 @@ const {
     create_data_from_csv,
     find_row_by_index,
     file_exist,
-    two_d_2_one_d, synthesize_rows,
+    two_d_2_one_d, synthesize_rows, create_cell_name,
 } = require('./utils_grid_routes');
 
 // list
@@ -97,12 +97,10 @@ router.post('/card', async (req, res) => {
             return acc;
         }, []);
 
-    const molarity_index = row.column_headers.indexOf('Molarity (mM)');
-    const molecule_index = row.column_headers.indexOf('Molecule Name');
-    const meta_row = row.row_value_list[0];
+    const cell_name = create_cell_name(row.column_headers, row.row_value_list[0]);
     const card_data = {
         image_uri: path.join('images', file),
-        name: `${zeroFill(2, meta_row[molarity_index])}_${meta_row[molecule_index]}: ${path.parse(file).name}`,
+        name: `${cell_name}: ${path.parse(file).name}`,
         id: path.parse(file).name,
         row_zip,
         column_headers: data.column_headers,

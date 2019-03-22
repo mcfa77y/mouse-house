@@ -56,16 +56,21 @@ const find_row_by_index = (index, data) => {
 const file_exist = (uri, error_msg) => stat(uri)
     .catch(error => Promise.reject(new Error(error_msg)));
 
-
-const synthesize_rows = (other_row_value_list, meta_row_list, meta_headers) => {
+const create_cell_name = (meta_headers, meta_row) => {
     const molarity_index = meta_headers.indexOf('Molarity (mM)');
     const molecule_index = meta_headers.indexOf('Molecule Name');
+    const molarity = zeroFill(2, meta_row[molarity_index]);
+    const molecule_name = meta_row[molecule_index];
+    return `${molecule_name}_${molarity}`;
+};
+
+const synthesize_rows = (other_row_value_list, meta_row_list, meta_headers) => {
     return other_row_value_list
         .map((other_row_value, row_index) => other_row_value.map((other_value, col_index) => {
             let new_cell_name = other_value;
             if (col_index !== 0) {
                 const { row_value_list: meta_row } = find_row_by_index(`${row_index}_${col_index}`, { column_headers: meta_headers, row_value_list: meta_row_list });
-                new_cell_name = `${zeroFill(2, meta_row[0][molarity_index])}_${meta_row[0][molecule_index]}`;
+                new_cell_name = create_cell_name(meta_headers, meta_row[0]);
             }
             return new_cell_name;
         }));
@@ -79,5 +84,6 @@ module.exports = {
     find_row_by_index,
     file_exist,
     synthesize_rows,
+    create_cell_name,
 };
 
