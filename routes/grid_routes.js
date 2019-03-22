@@ -26,7 +26,7 @@ const {
     create_data_from_csv,
     find_row_by_index,
     file_exist,
-    two_d_2_one_d,
+    two_d_2_one_d, synthesize_rows,
 } = require('./utils_grid_routes');
 
 // list
@@ -81,118 +81,12 @@ router.post('/config/', (req, res) => {
     res.send({ success: true });
 });
 
-
-// list
-router.get('/view', (req, res) => {
-    res.render('pages/grid/grid_view', {
-        extra_js: ['grid_view.bundle.js'],
-    });
-});
-
-router.get('/create', (req, res) => {
-    // BlueBird.props({
-    //         input: get_breed_inputs(),
-    //     })
-    //     .then(({
-    //         input: {
-    //             genotype,
-    //             male_mice,
-    //             female_mice
-    //         }
-    //     }) => {
-    //         const gt = select_json(genotype, 'mouse_genotype', 'Genotype');
-    //         const mm = select_json(male_mice, 'male_mouse');
-    //         const fm = select_json(female_mice, 'female_mouse');
-
-    //         res.render('pages/breed/breed_create', {
-    //             genotype: gt,
-    //             male_mice: mm,
-    //             female_mice: fm,
-    //             extra_js: ['breed_create.bundle.js'],
-    //         });
-    //     })
-    //     .catch((error) => {
-    //         getErrorGif().then((errorImageUrl) => {
-    //             res.render('error', {
-    //                 error,
-    //                 errorImageUrl,
-    //             });
-    //         });
-    //     });
-});
-
-router.get('/:id_alias', (req, res) => {
-    // BlueBird.props({
-    //         input: get_breed_inputs(),
-    //         breed: breed_controller.by_id_alias(req.params.id_alias),
-    //     })
-    //     .then(({
-    //         input,
-    //         breed
-    //     }) => {
-    //         const genotype = select_json(input.genotype, 'mouse_genotype', 'Genotype');
-    //         const male_mice = select_json(input.male_mice, 'male_mouse');
-    //         const female_mice = select_json(input.female_mice, 'female_mouse');
-    //         log_json(breed);
-
-    //         res.render('pages/breed/breed_update', {
-    //             genotype,
-    //             male_mice,
-    //             female_mice,
-    //             breed,
-    //             extra_js: ['breed_update.bundle.js'],
-    //         });
-    //     })
-    //     .catch((err) => {
-    //         console.log(err);
-    //         res.status(500).send({
-    //             success: false,
-    //             err
-    //         });
-    //     });
-});
-
-router.delete('/:id', (req, res) => {
-    // const rm_ids = isFalsey(req.query.id_alias) ? req.params.id : req.params.id_alias;
-
-    // const rm_promises = rm_ids.split(',').map(id => breed_controller.delete(id));
-
-    // return Promise.all(rm_promises)
-    //     .then(() => {
-    //         res.send({
-    //             success: true,
-    //         });
-    //     })
-    //     .catch((err) => {
-    //         res.status(500).send({
-    //             success: false,
-    //             err,
-    //         });
-    //     });
-});
-
-router.put('/', (req, res) => {
-    // const model = create_model(req.body);
-    // breed_controller.insert(model)
-    //     .then(() => {
-    //         res.send({
-    //             success: true,
-    //         });
-    //     })
-    //     .catch((err) => {
-    //         res.status(500).send({
-    //             success: false,
-    //             err,
-    //         });
-    //     });
-});
 // create card
 router.post('/card', async (req, res) => {
     const {
         prefix, extension, index, metadata_csv_uri,
     } = req.body;
-    const well_row_count = 24;
-    const one_d_index = zeroFill(3, two_d_2_one_d(index, well_row_count));
+    const one_d_index = zeroFill(3, two_d_2_one_d(index));
     const file = `${prefix}${one_d_index}${extension}`;
     const data = await create_data_from_csv(metadata_csv_uri);
 
@@ -203,9 +97,12 @@ router.post('/card', async (req, res) => {
             return acc;
         }, []);
 
+    const molarity_index = row.column_headers.indexOf('Molarity (mM)');
+    const molecule_index = row.column_headers.indexOf('Molecule Name');
+    const meta_row = row.row_value_list[0];
     const card_data = {
         image_uri: path.join('images', file),
-        name: path.parse(file).name,
+        name: `${zeroFill(2, meta_row[molarity_index])}_${meta_row[molecule_index]}: ${path.parse(file).name}`,
         id: path.parse(file).name,
         row_zip,
         column_headers: data.column_headers,
@@ -226,7 +123,9 @@ router.post('/table', async (req, res) => {
     const {
         csv_uri, image_dir_uri, prefix, extension, metadata_csv_uri,
     } = req.body;
-    Promise.all([file_exist(image_dir_uri, 'Image directory not found'), file_exist(csv_uri, 'Grid csv file not found'), file_exist(metadata_csv_uri, 'Metadata csv file not found')])
+    Promise.all([file_exist(image_dir_uri, 'Image directory not found'),
+        file_exist(csv_uri, 'Grid csv file not found'),
+        file_exist(metadata_csv_uri, 'Metadata csv file not found')])
         .then(async () => {
             // copy images to public dir
             fs
@@ -239,17 +138,18 @@ router.post('/table', async (req, res) => {
                 });
 
             const source = fs.readFileSync(`${PARTIALS_DIR}/grid_table.hbs`, 'utf-8');
-            const html_template = handlebars.compile(source);
+            const grid_table_template = handlebars.compile(source);
 
             const { column_headers, row_value_list } = await create_data_from_csv(csv_uri);
-
+            const { column_headers: meta_column_headers, row_value_list: meta_row_value_list } = await create_data_from_csv(metadata_csv_uri);
+            const new_row = synthesize_rows(row_value_list, meta_row_value_list, meta_column_headers);
             const dt = {
                 column_headers,
-                row_value_list,
+                row_value_list: new_row,
                 prefix,
                 extension,
             };
-            const html = html_template(dt);
+            const html = grid_table_template(dt);
             res.status(200).send({
                 success: true,
                 html,
