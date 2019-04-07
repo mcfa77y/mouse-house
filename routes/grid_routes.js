@@ -32,10 +32,11 @@ const {
 // list
 router.get('/', (req, res) => {
     let config_map = [];
-    if (req.cookies.config_map) {
-        ({ config_map } = req.cookies);
+    if (req.session.config_map) {
+        ({ config_map } = req.session);
     } else {
-        res.cookie('config_map', config_map);
+        req.session.config_map = config_map;
+        // res.cookie('config_map', config_map);
     }
     const config_name_select_list = Object.keys(config_map).map(config_name => ({ id: `${config_name}`, description: `${config_name}` }));
     res.render('pages/grid/grid_list', {
@@ -46,30 +47,35 @@ router.get('/', (req, res) => {
 
 const add_config = (req, res) => {
     let config_map = {};
-    if (req.cookies.config_map) {
-        ({ config_map } = req.cookies);
+    if (req.session.config_map) {
+        ({ config_map } = req.session);
     }
 
     const {
         csv_uri, image_dir_uri, prefix, extension, metadata_csv_uri, config_name,
     } = req.body;
 
-    config_map[config_name] = {
+    config_map[sanitize_config_name(config_name)] = {
         csv_uri, image_dir_uri, prefix, extension, metadata_csv_uri,
     };
-    res.cookie('config_map', config_map);
+    req.session.config_map = config_map;
+    // console.log('saved config: ' + JSON.stringify(req.session.config_map, null, 2));
+    // res.cookie('config_map', config_map);
     return config_map;
 };
-
+const sanitize_config_name = (name) => {
+    return name.trim().replace(' ', '_');
+}
 const get_config = (req, res, config_name) => {
     let config_map = {};
-    if (req.cookies.config_map) {
-        ({ config_map } = req.cookies);
+    if (req.session.config_map) {
+        ({ config_map } = req.session);
     }
 
     // const config = config_map[config_name]
-    console.log(`get_config: ${config_map[config_name]}`);
-    return config_map[config_name];
+    // console.log(`config name: ${sanitize_config_name(config_name)}`);
+    // console.log(`get_config: ${config_map[sanitize_config_name(config_name)]}`);
+    return config_map[sanitize_config_name(config_name)];
 };
 
 router.get('/config/:config_name', (req, res) => {

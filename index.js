@@ -9,6 +9,7 @@ const bodyParser = require('body-parser');
 // const cors = require('cors');
 const helmet = require('helmet');
 const hbs_utils = require('hbs-utils');
+const session = require('express-session')
 // const routes = require('./routes/index');
 const router = express.Router();
 
@@ -24,6 +25,12 @@ app.use(router);
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.set('trust proxy', 1) // trust first proxy
+app.use(session({
+  secret: 'Zw$shAt$27U%*{5v',
+  resave: false,
+  saveUninitialized: true,
+}))
 
 const breed = require('./routes/breed_routes');
 const mouse = require('./routes/mouse_routes');
@@ -95,3 +102,5 @@ app.use((err, req, res, next) => {
 app.listen(app.get('port'), () => {
     console.log('Node app is running on port', app.get('port'));
 });
+
+
