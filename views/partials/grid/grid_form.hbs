@@ -1,22 +1,21 @@
 <form id="grid-fields">
-  <div class="form-group label-floating col-md-12">
-      <label for="config_name">Configuration Name</label>
-      <select class="form-control foo-select" id="config_name" size="12">
-      {{#each config_name_list}}
-          <option value="{{this.id}}">{{this.description}}</option>
-      {{/each}}
-      </select>
-  </div>
+    <div class="form-group label-floating col-md-12">
+        <label for="config_name">Configuration Name</label>
+        <select class="form-control foo-select" id="config_name" size="12">
+            {{#each config_name_list}}
+            <option value="{{this.id}}">{{this.description}}</option>
+            {{/each}}
+        </select>
+    </div>
 
     {{> form_elements/text_input id='csv_uri' description='Grid data csv' class="col-md-12" }}
     {{> form_elements/text_input id='metadata_csv_uri' description='Metadata csv' class="col-md-12" }}
     {{> form_elements/text_input id='image_dir_uri' description='Image directory' class="col-md-12" }}
-    
+
     <div class="row">
-    {{> form_elements/text_input id='prefix' description='Prefix' class="col-md-6" }}  
-    {{> form_elements/text_input id='extension' description='Extension' class="col-md-6" }}
+        {{> form_elements/text_input id='prefix' description='Prefix' class="col-md-6" }}
+        {{> form_elements/text_input id='extension' description='Extension' class="col-md-6" }}
     </div>
 
     <button id="submit" type="submit" class="btn btn-primary">Submit</button>
-
 </form>

@@ -8,9 +8,13 @@ const csv = require('csvtojson');
 const handlebars = require('handlebars');
 const path = require('path');
 const zeroFill = require('zero-fill');
+const moment = require('moment');
 
 const PARTIALS_DIR = path.join(__dirname, '../views/partials/grid/');
 const DIGITS_REGEX = /\d+/;
+
+
+const CONFIG_DIR = path.join(__dirname, '../config/');
 
 BlueBird.promisifyAll(fs);
 
@@ -45,6 +49,12 @@ router.get('/', (req, res) => {
     });
 });
 
+const save_config_to_disk = (config) => {
+    const date_suffix = moment().format("YYYY_MM_DD");
+    const config_filename = path.join(CONFIG_DIR, `config_map_${date_suffix}.json`);
+    fs.writeFileSync(config_filename, JSON.stringify(config, null, 2));
+}
+
 const add_config = (req, res) => {
     let config_map = {};
     if (req.session.config_map) {
@@ -59,8 +69,9 @@ const add_config = (req, res) => {
         csv_uri, image_dir_uri, prefix, extension, metadata_csv_uri,
     };
     req.session.config_map = config_map;
-    // console.log('saved config: ' + JSON.stringify(req.session.config_map, null, 2));
+    console.log('saved config: ' + JSON.stringify(req.session.config_map, null, 2));
     // res.cookie('config_map', config_map);
+    save_config_to_disk(config_map);
     return config_map;
 };
 const sanitize_config_name = (name) => {
@@ -128,8 +139,8 @@ router.post('/table', async (req, res) => {
         csv_uri, image_dir_uri, prefix, extension, metadata_csv_uri,
     } = req.body;
     Promise.all([file_exist(image_dir_uri, 'Image directory not found'),
-        file_exist(csv_uri, 'Grid csv file not found'),
-        file_exist(metadata_csv_uri, 'Metadata csv file not found')])
+    file_exist(csv_uri, 'Grid csv file not found'),
+    file_exist(metadata_csv_uri, 'Metadata csv file not found')])
         .then(async () => {
             // copy images to public dir
             fs

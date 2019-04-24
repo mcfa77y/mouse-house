@@ -72,6 +72,36 @@ const setup_form = () => {
     });
 };
 
+
+const setup_upload_config_form = () => {
+    const results = $('#results');
+
+    const error = ({ response }) => {
+        const warning = `<div class="alert alert-warning" role="alert">${response.data.message}</div>`;
+        results.html(warning);
+    };
+
+    const create_table = (response) => {
+        results.html(`${response.data.html}`);
+        const table_options = {
+            scrollX: true,
+            paging: false,
+        };
+        $('#grid-list').DataTable(table_options);
+    };
+
+    const submit_button = $('#submit');
+    submit_button.click((e) => {
+        e.preventDefault();
+        $('#exampleModal').modal('hide');
+        $('#collapseTwo').collapse('show');
+        const dt = form_ids_vals('grid-fields');
+        Axios.post('/grid/table', dt)
+            .then(create_table)
+            .catch(error);
+    });
+};
+
 const setupSelects = () => {
     $('.foo-select')
         .toArray()
@@ -106,9 +136,11 @@ const setupSelects = () => {
             .catch(error);
     });
 };
+
 $(() => {
     setupSelects();
     setup_form();
+    setup_upload_config_form();
     setup_grid_cells();
     setup_cards();
     $('#exampleModal').modal('show');
