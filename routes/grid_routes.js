@@ -74,9 +74,7 @@ const add_config = (req, res) => {
     save_config_to_disk(config_map);
     return config_map;
 };
-const sanitize_config_name = (name) => {
-    return name.trim().replace(' ', '_');
-}
+
 const get_config = (req, res, config_name) => {
     let config_map = {};
     if (req.session.config_map) {
