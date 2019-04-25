@@ -1,8 +1,11 @@
 const csv = require('csvtojson');
 const BlueBird = require('bluebird');
 const zeroFill = require('zero-fill');
+const moment = require('moment');
+const path = require('path');
+const fs = require('fs');
 
-const stat = BlueBird.promisify(require('fs').stat);
+const stat = BlueBird.promisify(fs.stat);
 
 const WELL_ROW_COUNT = 24;
 
@@ -75,6 +78,43 @@ const synthesize_rows = (other_row_value_list, meta_row_list, meta_headers) => {
             return new_cell_name;
         }));
 };
+
+
+const sanitize_config_name = name => name.trim().replace(' ', '_');
+
+const save_config_to_disk = (config, config_dir) => {
+    const date_suffix = moment().format('YYYY_MM_DD');
+    const config_filename = path.join(config_dir, `config_map_${date_suffix}.json`);
+    fs.writeFileSync(config_filename, JSON.stringify(config, null, 2));
+};
+
+const add_config = (req) => {
+    let config_map = {};
+    if (req.session.config_map) {
+        ({ config_map } = req.session);
+    }
+
+    const {
+        csv_uri, image_dir_uri, prefix, extension, metadata_csv_uri, config_name,
+    } = req.body;
+
+    config_map[sanitize_config_name(config_name)] = {
+        csv_uri, image_dir_uri, prefix, extension, metadata_csv_uri,
+    };
+    req.session.config_map = config_map;
+    // console.log(`saved config: ${JSON.stringify(req.session.config_map, null, 2)}`);
+    // res.cookie('config_map', config_map);
+    return config_map;
+};
+
+const get_config = (req, config_name) => {
+    let config_map = {};
+    if (req.session.config_map) {
+        ({ config_map } = req.session);
+    }
+    return config_map[sanitize_config_name(config_name)];
+};
+
 module.exports = {
     create_data_from_csv,
     find_row_by_column,
@@ -85,5 +125,9 @@ module.exports = {
     file_exist,
     synthesize_rows,
     create_cell_name,
+    sanitize_config_name,
+    add_config,
+    get_config,
+    save_config_to_disk,
 };
 

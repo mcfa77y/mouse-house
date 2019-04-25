@@ -1,8 +1,6 @@
 import * as Axios from 'axios';
 import { form_ids_vals } from './cs-form-helper';
 
-const zeroFill = require('zero-fill');
-
 const foo_this = (event, klass) => {
     const clickedElement = $(event.target);
     const targetElement = clickedElement.closest(klass);
@@ -63,8 +61,9 @@ const setup_form = () => {
     const submit_button = $('#submit');
     submit_button.click((e) => {
         e.preventDefault();
-        $('#exampleModal').modal('hide');
-        $('#collapseTwo').collapse('show');
+        $('#configModal').modal('hide');
+        // $('#collapseTwo').collapse('show');
+
         const dt = form_ids_vals('grid-fields');
         Axios.post('/grid/table', dt)
             .then(create_table)
@@ -81,24 +80,33 @@ const setup_upload_config_form = () => {
         results.html(warning);
     };
 
-    const create_table = (response) => {
-        results.html(`${response.data.html}`);
-        const table_options = {
-            scrollX: true,
-            paging: false,
-        };
-        $('#grid-list').DataTable(table_options);
+    const update_config_select = (res) => {
+        const x = $('#config_name').selectize();
+        const y = x[0].selectize;
+        Object.keys(res.data.config_map).forEach((select_item) => {
+            y.addOption({ value: select_item, text: select_item });
+            y.refreshOptions();
+        });
     };
 
-    const submit_button = $('#submit');
+    const submit_button = $('#submit_upload');
     submit_button.click((e) => {
         e.preventDefault();
-        $('#exampleModal').modal('hide');
-        $('#collapseTwo').collapse('show');
-        const dt = form_ids_vals('grid-fields');
-        Axios.post('/grid/table', dt)
-            .then(create_table)
+        $('#uploadModal').modal('hide');
+        $('#configModal').modal('show');
+        // $('#collapseTwo').collapse('show');
+        const formData = new FormData();
+        formData.append('config_file', document.getElementById('config_file').files[0]);
+        Axios.post('/grid/config', formData)
+            .then(update_config_select)
             .catch(error);
+    });
+
+    $('#config_file').change((e) => {
+        // get the file name
+        const fileName = document.getElementById('config_file').files[0].name;
+        // replace the "Choose a file" label
+        $('#config_file').next('.custom-file-label').html(fileName);
     });
 };
 
@@ -116,7 +124,7 @@ const setupSelects = () => {
     const update_form = (res) => {
         console.log(JSON.stringify(res.data.config, null, 2));
         const {
-          csv_uri, image_dir_uri, prefix, extension, metadata_csv_uri, 
+            csv_uri, image_dir_uri, prefix, extension, metadata_csv_uri,
         } = res.data.config;
         $('#csv_uri').val(csv_uri);
         $('#image_dir_uri').val(image_dir_uri);
@@ -143,5 +151,5 @@ $(() => {
     setup_upload_config_form();
     setup_grid_cells();
     setup_cards();
-    $('#exampleModal').modal('show');
+    $('#configModal').modal('show');
 });
