@@ -7,7 +7,7 @@
     <div class="card-body">
         {{!-- <h5 class="card-title">{{name}}</h5> --}}
 
-        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#multiCollapse_{{id}}"
+        <button class="btn btn-primary metadata_button" type="button" data-toggle="collapse" data-target="#multiCollapse_{{id}}"
             aria-expanded="false" aria-controls="multiCollapse_{{id}}">Metadata</button>
 
 
@@ -18,7 +18,18 @@
                     {{#each row_zip}}
                     <tr>
                         <td><strong>{{name}}</strong></td>
-                        <td>{{{value}}}</td>
+                        
+                        {{#eq class_name "smiles"}}
+                        <td class="{{class_name}}" value="{{value}}">
+                          <canvas id="smiles_canvas_{{../id}}" width="125" height="250"></canvas>
+                          </br>
+                          {{{value}}}
+                        </td>
+                        {{else}}
+                        <td class="{{class_name}}">
+                          {{{value}}}
+                        </td>
+                        {{/eq}}
                     </tr>
                     {{/each}}
                 </tbody>

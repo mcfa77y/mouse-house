@@ -7,18 +7,18 @@ const handlebars = require('handlebars');
 const path = require('path');
 const zeroFill = require('zero-fill');
 const multer = require('multer');
-
+// const helpers = require('handlebars-helpers');
+const hbs = require('hbs');
+// helpers.comparison({ handlebars });
 
 const CONFIG_DIR = path.join(__dirname, '../config/');
 
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        console.log(`dest: ${JSON.stringify(file, null, 2)}`);
         cb(null, CONFIG_DIR);
     },
     filename: (req, file, cb) => {
-        console.log(`filename: ${JSON.stringify(file, null, 2)}`);
         cb(null, `${file.fieldname}_${Date.now()}.json`);
     },
 });
@@ -79,6 +79,7 @@ router.post('/config/', cpUpload, (req, res) => {
         const {
             csv_uri, image_dir_uri, prefix, extension, metadata_csv_uri,
         } = config[config_name];
+        console.log(`config name: ${config_name}`);
         config_map[sanitize_config_name(config_name)] = {
             csv_uri, image_dir_uri, prefix, extension, metadata_csv_uri,
         };
@@ -87,6 +88,7 @@ router.post('/config/', cpUpload, (req, res) => {
     req.session.config_map = config_map;
     save_config_to_disk(config_map, CONFIG_DIR);
     fs.unlinkSync(req.files.config_file[0].path);
+    console.log(JSON.stringify(config_map, null, 2));
     res.send({ config_map });
 });
 
@@ -102,7 +104,10 @@ router.post('/card', async (req, res) => {
     const row = find_row_by_index(index, data);
     const row_zip = row.column_headers
         .reduce((acc, column_header, i) => {
-            acc.push({ name: column_header, value: row.row_value_list[0][i] });
+            const class_name = column_header.trim().toLowerCase()
+                .replace(' ', '_')
+                .replace(/[(|)|.]/g, '');
+            acc.push({ name: column_header, value: row.row_value_list[0][i].trim(), class_name });
             return acc;
         }, []);
 
@@ -116,7 +121,7 @@ router.post('/card', async (req, res) => {
     };
 
     const source = fs.readFileSync(`${PARTIALS_DIR}/grid_card.hbs`, 'utf-8');
-    const html_template = handlebars.compile(source);
+    const html_template = hbs.handlebars.compile(source);
     const html = html_template(card_data);
 
     // res.render('pages/grid/grid_view', dt);
@@ -147,7 +152,7 @@ router.post('/table', async (req, res) => {
                 });
 
             const source = fs.readFileSync(`${PARTIALS_DIR}/grid_table.hbs`, 'utf-8');
-            const grid_table_template = handlebars.compile(source);
+            const grid_table_template = hbs.handlebars.compile(source);
 
             const { column_headers, row_value_list } = await create_data_from_csv(csv_uri);
             const {

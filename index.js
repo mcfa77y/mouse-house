@@ -43,8 +43,9 @@ const hbs = require('hbs');
 const hbsutils = hbs_utils(hbs);
 
 const helpers = require('handlebars-helpers');
-const string = helpers.string();
-// helpers.comparison({ handlebars: hbs.handlebars });
+
+helpers.string({ handlebars: hbs.handlebars });
+helpers.comparison({ handlebars: hbs.handlebars });
 
 app.set('port', (process.env.PORT || 5000));
 
