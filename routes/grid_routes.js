@@ -48,7 +48,7 @@ router.get('/', (req, res) => {
         ({ config_map } = req.session);
     } else {
         req.session.config_map = config_map;
-    // res.cookie('config_map', config_map);
+        // res.cookie('config_map', config_map);
     }
     const config_name_select_list = Object.keys(config_map)
         .map(config_name => ({ id: `${config_name}`, description: `${config_name}` }));
@@ -130,16 +130,20 @@ router.post('/card', async (req, res) => {
     });
 });
 
+
+const image_upload = upload.fields([
+    { name: 'image_files', maxCount: 400 },
+]);
 // create table from csv and image dir
-router.post('/table', async (req, res) => {
+router.post('/table', image_upload, async (req, res) => {
     const config_map = add_config(req);
     save_config_to_disk(config_map, CONFIG_DIR);
     const {
         csv_uri, image_dir_uri, prefix, extension, metadata_csv_uri,
     } = req.body;
     Promise.all([file_exist(image_dir_uri, 'Image directory not found'),
-        file_exist(csv_uri, 'Grid csv file not found'),
-        file_exist(metadata_csv_uri, 'Metadata csv file not found')])
+    file_exist(csv_uri, 'Grid csv file not found'),
+    file_exist(metadata_csv_uri, 'Metadata csv file not found')])
         .then(async () => {
             // copy images to public dir
             fs
@@ -174,7 +178,6 @@ router.post('/table', async (req, res) => {
         })
         .catch(({ message }) => {
             res.status(500).send({
-                success: false,
                 message,
             });
         });

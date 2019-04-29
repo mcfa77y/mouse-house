@@ -9,9 +9,9 @@ const foo_this = (event, klass) => {
     return targetElement;
 };
 
-const error = (err) => {
+const error = ({ response }) => {
     const results = $('#results');
-    const warning = `<div class="alert alert-warning" role="alert">${err}</div>`;
+    const warning = `<div class="alert alert-warning" role="alert">${response.data.message}</div>`;
     results.html(warning);
 };
 
@@ -44,7 +44,7 @@ const setup_grid_cells = () => {
             .then(create_card)
             .catch(error);
 
-    // $(`#image_${index}`).toggleClass('d-none');
+        // $(`#image_${index}`).toggleClass('d-none');
     });
 };
 
@@ -79,9 +79,19 @@ const setup_form = () => {
         // $('#collapseTwo').collapse('show');
 
         const dt = form_ids_vals('grid-fields');
+        Array.from(document.getElementById('image_files').files).forEach((file) => {
+            dt.append('image_files', file);
+        });
         Axios.post('/grid/table', dt)
             .then(create_table)
             .catch(error);
+    });
+
+    $('#image_files').change((e) => {
+        // get the file name
+        const fileName = document.getElementById('image_files').files.length + " files selected";
+        // replace the "Choose a file" label
+        $('#image_files').next('.custom-file-label').html(fileName);
     });
 };
 
