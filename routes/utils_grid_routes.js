@@ -67,17 +67,15 @@ const create_cell_name = (meta_headers, meta_row) => {
     return `${molecule_name}_${molarity}`;
 };
 
-const synthesize_rows = (other_row_value_list, meta_row_list, meta_headers) => {
-    return other_row_value_list
-        .map((other_row_value, row_index) => other_row_value.map((other_value, col_index) => {
-            let new_cell_name = other_value;
-            if (col_index !== 0) {
-                const { row_value_list: meta_row } = find_row_by_index(`${row_index}_${col_index}`, { column_headers: meta_headers, row_value_list: meta_row_list });
-                new_cell_name = create_cell_name(meta_headers, meta_row[0]);
-            }
-            return new_cell_name;
-        }));
-};
+const synthesize_rows = (other_row_value_list, meta_row_list, meta_headers) => other_row_value_list
+    .map((other_row_value, row_index) => other_row_value.map((other_value, col_index) => {
+        let new_cell_name = other_value;
+        if (col_index !== 0) {
+            const { row_value_list: meta_row } = find_row_by_index(`${row_index}_${col_index}`, { column_headers: meta_headers, row_value_list: meta_row_list });
+            new_cell_name = create_cell_name(meta_headers, meta_row[0]);
+        }
+        return new_cell_name;
+    }));
 
 
 const sanitize_config_name = name => name.trim().replace(' ', '_');
@@ -95,16 +93,19 @@ const add_config = (req) => {
     }
 
     const {
-        csv_uri, image_dir_uri, prefix, extension, metadata_csv_uri, config_name,
+        config_name_description,
     } = req.body;
-
-    config_map[sanitize_config_name(config_name)] = {
-        csv_uri, image_dir_uri, prefix, extension, metadata_csv_uri,
+    const { grid_data_csv, metadata_csv, image_files } = req.files;
+    const image_file_uri_list = image_files.map(x => x.path);
+    config_map[sanitize_config_name(config_name_description)] = {
+        grid_data_csv_uri: grid_data_csv[0].path,
+        metadata_csv_uri: metadata_csv[0].path,
+        image_file_uri_list,
     };
-    req.session.config_map = config_map;
+    req.session.config_map = Object.assign({}, config_map);
     // console.log(`saved config: ${JSON.stringify(req.session.config_map, null, 2)}`);
     // res.cookie('config_map', config_map);
-    return config_map;
+    return req.session.config_map;
 };
 
 const get_config = (req, config_name) => {

@@ -23,3 +23,11 @@ input/ImageMappingData/
 dist/
 
 public/images/
+
+public/experiments/development/
+
+public/experiments/for_realz/
+
+public/experiments/super/
+
+public/experiments/test/

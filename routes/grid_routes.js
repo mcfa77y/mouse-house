@@ -11,24 +11,6 @@ const multer = require('multer');
 const hbs = require('hbs');
 // helpers.comparison({ handlebars });
 
-const CONFIG_DIR = path.join(__dirname, '../config/');
-
-
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, CONFIG_DIR);
-    },
-    filename: (req, file, cb) => {
-        cb(null, `${file.fieldname}_${Date.now()}.json`);
-    },
-});
-const upload = multer({ storage });
-
-const PARTIALS_DIR = path.join(__dirname, '../views/partials/grid/');
-
-
-BlueBird.promisifyAll(fs);
-
 
 const {
     create_data_from_csv,
@@ -41,7 +23,42 @@ const {
     sanitize_config_name,
 } = require('./utils_grid_routes');
 
-// list
+const CONFIG_DIR = path.join(__dirname, '../config/');
+const PUBLIC_DIR = path.join(__dirname, '../public/experiments');
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        const url = req.originalUrl;
+        if (url === '/grid/config') {
+            cb(null, CONFIG_DIR);
+        } else if (url === '/grid/table') {
+            const foo = path.join(PUBLIC_DIR, sanitize_config_name(req.body.config_name_description));
+            try {
+                fs.mkdirSync(foo);
+            } catch (err) {
+                // console.error(err);
+            }
+            cb(null, foo);
+        }
+    },
+    filename: (req, file, cb) => {
+        const url = req.originalUrl;
+        if (url === '/grid/config') {
+            cb(null, `${file.fieldname}_${Date.now()}.json`);
+        } else if (url === '/grid/table') {
+            const new_name = `${file.originalname}`;
+            cb(null, new_name);
+        }
+    },
+});
+const upload = multer({ storage });
+
+const PARTIALS_DIR = path.join(__dirname, '../views/partials/grid/');
+
+
+BlueBird.promisifyAll(fs);
+
+
 router.get('/', (req, res) => {
     let config_map = [];
     if (req.session.config_map) {
@@ -77,14 +94,14 @@ router.post('/config/', cpUpload, (req, res) => {
 
     Object.keys(config).forEach((config_name) => {
         const {
-            csv_uri, image_dir_uri, prefix, extension, metadata_csv_uri,
+            grid_data_csv_uri, image_file_uri_list, metadata_csv_uri,
         } = config[config_name];
         console.log(`config name: ${config_name}`);
         config_map[sanitize_config_name(config_name)] = {
-            csv_uri, image_dir_uri, prefix, extension, metadata_csv_uri,
+            grid_data_csv_uri, image_file_uri_list, metadata_csv_uri,
         };
     });
-
+    config_map = Object.assign({}, config_map);
     req.session.config_map = config_map;
     save_config_to_disk(config_map, CONFIG_DIR);
     fs.unlinkSync(req.files.config_file[0].path);
@@ -92,20 +109,25 @@ router.post('/config/', cpUpload, (req, res) => {
     res.send({ config_map });
 });
 
+
+const any_upload_fields = upload.any();
 // create card
-router.post('/card', async (req, res) => {
+router.post('/card', any_upload_fields, async (req, res) => {
     const {
-        prefix, extension, index, metadata_csv_uri,
+        index, config_name_description,
     } = req.body;
+    const { image_file_uri_list, metadata_csv_uri } = get_config(req, config_name_description);
     const one_d_index = zeroFill(3, two_d_2_one_d(index));
-    const file = `${prefix}${one_d_index}${extension}`;
+    const file = image_file_uri_list
+        .find(x => x.indexOf(`_${one_d_index}.`) >= 0)
+        .replace('/Users/joe/Sites/mouse-house/public/experiments', '');
     const data = await create_data_from_csv(metadata_csv_uri);
 
     const row = find_row_by_index(index, data);
     const row_zip = row.column_headers
         .reduce((acc, column_header, i) => {
             const class_name = column_header.trim().toLowerCase()
-                .replace(' ', '_')
+                .replace(/ /g, '_')
                 .replace(/[(|)|.]/g, '');
             acc.push({ name: column_header, value: row.row_value_list[0][i].trim(), class_name });
             return acc;
@@ -113,7 +135,7 @@ router.post('/card', async (req, res) => {
 
     const cell_name = create_cell_name(row.column_headers, row.row_value_list[0]);
     const card_data = {
-        image_uri: path.join('images', file),
+        image_uri: path.join('experiments', file),
         name: `${cell_name}: ${path.parse(file).name}`,
         id: path.parse(file).name,
         row_zip,
@@ -131,56 +153,40 @@ router.post('/card', async (req, res) => {
 });
 
 
-const image_upload = upload.fields([
+const public_upload_fields = upload.fields([
     { name: 'image_files', maxCount: 400 },
+    { name: 'grid_data_csv', maxCount: 1 },
+    { name: 'metadata_csv', maxCount: 1 },
 ]);
 // create table from csv and image dir
-router.post('/table', image_upload, async (req, res) => {
+router.post('/table', public_upload_fields, async (req, res) => {
     const config_map = add_config(req);
     save_config_to_disk(config_map, CONFIG_DIR);
     const {
-        csv_uri, image_dir_uri, prefix, extension, metadata_csv_uri,
+        config_name_description,
     } = req.body;
-    Promise.all([file_exist(image_dir_uri, 'Image directory not found'),
-    file_exist(csv_uri, 'Grid csv file not found'),
-    file_exist(metadata_csv_uri, 'Metadata csv file not found')])
-        .then(async () => {
-            // copy images to public dir
-            fs
-                .readdirSync(image_dir_uri)
-                .filter(file => path.parse(file).ext === extension)
-                .forEach((file) => {
-                    const dest_uri = path.join(__dirname, '..', 'public', 'images', file);
-                    const src_uri = path.join(image_dir_uri, file);
-                    fs.copyFileSync(src_uri, dest_uri);
-                });
+    const {
+        grid_data_csv_uri, metadata_csv_uri,
+    } = config_map[config_name_description];
 
-            const source = fs.readFileSync(`${PARTIALS_DIR}/grid_table.hbs`, 'utf-8');
-            const grid_table_template = hbs.handlebars.compile(source);
+    const source = fs.readFileSync(`${PARTIALS_DIR}/grid_table.hbs`, 'utf-8');
+    const grid_table_template = hbs.handlebars.compile(source);
 
-            const { column_headers, row_value_list } = await create_data_from_csv(csv_uri);
-            const {
-                column_headers: meta_column_headers,
-                row_value_list: meta_row_value_list,
-            } = await create_data_from_csv(metadata_csv_uri);
-            const new_row = synthesize_rows(row_value_list, meta_row_value_list, meta_column_headers);
-            const dt = {
-                column_headers,
-                row_value_list: new_row,
-                prefix,
-                extension,
-            };
-            const html = grid_table_template(dt);
-            res.status(200).send({
-                success: true,
-                html,
-            });
-        })
-        .catch(({ message }) => {
-            res.status(500).send({
-                message,
-            });
-        });
+    const { column_headers, row_value_list } = await create_data_from_csv(grid_data_csv_uri);
+    const {
+        column_headers: meta_column_headers,
+        row_value_list: meta_row_value_list,
+    } = await create_data_from_csv(metadata_csv_uri);
+    const new_row = synthesize_rows(row_value_list, meta_row_value_list, meta_column_headers);
+    const dt = {
+        column_headers,
+        row_value_list: new_row,
+    };
+    const html = grid_table_template(dt);
+    res.status(200).send({
+        success: true,
+        html,
+    });
 });
 
 module.exports = router;

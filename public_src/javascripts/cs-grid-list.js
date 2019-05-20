@@ -3,7 +3,7 @@ import * as SmilesDrawer from 'smiles-drawer';
 import { form_ids_vals } from './cs-form-helper';
 
 
-const foo_this = (event, klass) => {
+const get_target_element_by_class = (event, klass) => {
     const clickedElement = $(event.target);
     const targetElement = clickedElement.closest(klass);
     return targetElement;
@@ -37,9 +37,10 @@ const setup_grid_cells = () => {
     };
 
     $(document).on('click', '.hover_cell', (event) => {
-        const targetElement = foo_this(event, '.hover_cell');
+        const targetElement = get_target_element_by_class(event, '.hover_cell');
         const index = targetElement[0].attributes.value.value;
-        const dt = $.extend(form_ids_vals('grid-fields'), { index });
+        const dt = form_ids_vals('grid-fields');
+        dt.append('index', index);
         Axios.post('/grid/card', dt)
             .then(create_card)
             .catch(error);
@@ -50,14 +51,19 @@ const setup_grid_cells = () => {
 
 const setup_cards = () => {
     $(document).on('click', '.close-btn', (event) => {
-        const targetElement = foo_this(event, '.close-btn');
+        const targetElement = get_target_element_by_class(event, '.close-btn');
         targetElement.closest('.card').fadeOut({ complete() { $(this).remove(); } });
     });
+
     $(document).on('click', '.card-img-top', (event) => {
-        const targetElement = foo_this(event, '.card-img-top');
+        const targetElement = get_target_element_by_class(event, '.card-img-top');
         const img_uri = targetElement.closest('.card-img-top').attr('src');
         window.open(img_uri, 'Image');
     });
+};
+
+const set_custom_file_label = (id, value) => {
+    $(`#${id}`).next('.custom-file-label').html(value);
 };
 
 const setup_form = () => {
@@ -82,16 +88,32 @@ const setup_form = () => {
         Array.from(document.getElementById('image_files').files).forEach((file) => {
             dt.append('image_files', file);
         });
+        dt.append('metadata_csv', document.getElementById('metadata_csv').files[0]);
+        dt.append('grid_data_csv', document.getElementById('grid_data_csv').files[0]);
         Axios.post('/grid/table', dt)
             .then(create_table)
             .catch(error);
     });
 
+    $('#grid_data_csv').change((e) => {
+        // get the file name
+        const value = document.getElementById('grid_data_csv').files[0].name;
+        // replace the "Choose a file" label
+        set_custom_file_label('grid_data_csv', value);
+    });
+
+    $('#metadata_csv').change((e) => {
+        // get the file name
+        const value = document.getElementById('metadata_csv').files[0].name;
+        // replace the "Choose a file" label
+        set_custom_file_label('metadata_csv', value);
+    });
+
     $('#image_files').change((e) => {
         // get the file name
-        const fileName = document.getElementById('image_files').files.length + " files selected";
+        const value = `${document.getElementById('image_files').files.length} files selected`;
         // replace the "Choose a file" label
-        $('#image_files').next('.custom-file-label').html(fileName);
+        set_custom_file_label('image_files', value);
     });
 };
 
@@ -122,9 +144,9 @@ const setup_upload_config_form = () => {
 
     $('#config_file').change((e) => {
         // get the file name
-        const fileName = document.getElementById('config_file').files[0].name;
+        const value = document.getElementById('config_file').files[0].name;
         // replace the "Choose a file" label
-        $('#config_file').next('.custom-file-label').html(fileName);
+        set_custom_file_label('config_file', value);
     });
 };
 
@@ -142,13 +164,11 @@ const setupSelects = () => {
     const update_form = (res) => {
         console.log(JSON.stringify(res.data.config, null, 2));
         const {
-            csv_uri, image_dir_uri, prefix, extension, metadata_csv_uri,
+            grid_data_csv_uri, image_file_uri_list, metadata_csv_uri,
         } = res.data.config;
-        $('#csv_uri').val(csv_uri);
-        $('#image_dir_uri').val(image_dir_uri);
-        $('#prefix').val(prefix);
-        $('#extension').val(extension);
-        $('#metadata_csv_uri').val(metadata_csv_uri);
+        set_custom_file_label('grid_data_csv', grid_data_csv_uri);
+        set_custom_file_label('metadata_csv', metadata_csv_uri);
+        set_custom_file_label('image_files', `${image_file_uri_list.length} files selected`);
     };
     const results = $('#results');
     const error = ({ response }) => {
@@ -157,7 +177,7 @@ const setupSelects = () => {
     };
     $('#config_name').change(() => {
         const dt = form_ids_vals('grid-fields');
-        Axios.get(`/grid/config/${dt.config_name}`)
+        Axios.get(`/grid/config/${dt.get('config_name_description')}`)
             .then(update_form)
             .catch(error);
     });
