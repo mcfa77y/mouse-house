@@ -90,6 +90,9 @@ const setup_form = () => {
         });
         dt.append('metadata_csv', document.getElementById('metadata_csv').files[0]);
         dt.append('grid_data_csv', document.getElementById('grid_data_csv').files[0]);
+        dt.append('metadata_csv_label', document.getElementById('metadata_csv_label').files[0]);
+        dt.append('grid_data_csv_label', document.getElementById('grid_data_csv_label').files[0]);
+
         Axios.post('/grid/table', dt)
             .then(create_table)
             .catch(error);
