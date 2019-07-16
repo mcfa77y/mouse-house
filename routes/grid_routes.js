@@ -110,12 +110,10 @@ router.post('/config/', cpUpload, (req, res) => {
 });
 
 router.post('/tags/', cpUpload, (req, res) => {
-    debugger
     add_config(req);
     res.status(200).send({
         success: true,
     });
-    
 });
 
 const any_upload_fields = upload.any();
@@ -127,8 +125,7 @@ router.post('/card', any_upload_fields, async (req, res) => {
     const { image_file_uri_list, metadata_csv_uri } = get_config(req, config_name_description);
     const one_d_index = zeroFill(3, two_d_2_one_d(index));
     const file = image_file_uri_list
-        .find(x => x.indexOf(`_${one_d_index}.`) >= 0)
-        .replace('/Users/joe/Sites/mouse-house/public/experiments', '');
+        .find(x => x.indexOf(`_${one_d_index}.`) >= 0);
     const data = await create_data_from_csv(metadata_csv_uri);
 
     const row = find_row_by_index(index, data);
@@ -143,7 +140,7 @@ router.post('/card', any_upload_fields, async (req, res) => {
 
     const cell_name = create_cell_name(row.column_headers, row.row_value_list[0]);
     const card_data = {
-        image_uri: path.join('experiments', file),
+        image_uri: path.join(file),
         name: `${cell_name}: ${path.parse(file).name}`,
         id: path.parse(file).name,
         row_zip,

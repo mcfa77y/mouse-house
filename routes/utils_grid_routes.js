@@ -61,9 +61,15 @@ const file_exist = (uri, error_msg) => stat(uri)
 
 const create_cell_name = (meta_headers, meta_row) => {
     const molarity_index = meta_headers.indexOf('Molarity (mM)');
+    let molarity = 'molarity_unknown';
+    if (molarity_index !== -1) {
+        molarity = zeroFill(2, meta_row[molarity_index]);
+    }
     const molecule_index = meta_headers.indexOf('Molecule Name');
-    const molarity = zeroFill(2, meta_row[molarity_index]);
-    const molecule_name = meta_row[molecule_index];
+    let molecule_name = 'molecule_unknown';
+    if (molecule_index !== -1) {
+        molecule_name = meta_row[molecule_index];
+    }
     return `${molecule_name}_${molarity}`;
 };
 
@@ -93,19 +99,24 @@ const add_config = (req) => {
     }
 
     const {
-        config_name_description,
+        config_name_description, tags,
     } = req.body;
-    const { grid_data_csv, metadata_csv, image_files, tags } = req.files;
-    if(image_files != undefined && grid_data_csv!= undefined && metadata_csv!= undefined){
-        const image_file_uri_list = image_files.map(x => x.path);
+    const {
+        grid_data_csv,
+        metadata_csv,
+        image_files,
+    } = req.files;
+    if (image_files !== undefined && grid_data_csv !== undefined && metadata_csv !== undefined) {
+        const image_file_uri_list = image_files.map((x) => {
+            const uri = x.path;
+            return uri.slice(uri.indexOf('experiments'));
+        });
         config_map[sanitize_config_name(config_name_description)] = {
             grid_data_csv_uri: grid_data_csv[0].path,
             metadata_csv_uri: metadata_csv[0].path,
             image_file_uri_list,
-            tags
+            tags,
         };
-        // console.log(`saved config: ${JSON.stringify(req.session.config_map, null, 2)}`);
-        // res.cookie('config_map', config_map);
     }
     req.session.config_map = Object.assign({}, config_map);
 
