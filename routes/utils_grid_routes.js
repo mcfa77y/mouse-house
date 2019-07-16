@@ -95,13 +95,14 @@ const add_config = (req) => {
     const {
         config_name_description,
     } = req.body;
-    const { grid_data_csv, metadata_csv, image_files } = req.files;
+    const { grid_data_csv, metadata_csv, image_files, tags } = req.files;
     if(image_files != undefined && grid_data_csv!= undefined && metadata_csv!= undefined){
         const image_file_uri_list = image_files.map(x => x.path);
         config_map[sanitize_config_name(config_name_description)] = {
             grid_data_csv_uri: grid_data_csv[0].path,
             metadata_csv_uri: metadata_csv[0].path,
             image_file_uri_list,
+            tags
         };
         // console.log(`saved config: ${JSON.stringify(req.session.config_map, null, 2)}`);
         // res.cookie('config_map', config_map);

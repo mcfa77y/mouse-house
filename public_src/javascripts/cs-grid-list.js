@@ -1,11 +1,33 @@
 import * as Axios from 'axios';
 import * as SmilesDrawer from 'smiles-drawer';
 import { form_ids_vals } from './cs-form-helper';
+import * as toastr from 'toastr';
 
+const GRID_MODE = {
+    CREATE_CARD: 1,
+    TAG_CELL: 2,
+};
+const CELL_TAG = {
+    GREEN: 'green',
+    RED: 'red',
+    BLACK: 'black',
+    BLUE: 'blue',
+    GREY: 'grey',
+    TEAL: 'teal',
+    YELLOW: 'yellow',
+    SELECTED: 'selected_cell',
+    UNSELECTED: 'unselected_cell'
+}
+
+
+let CURRENT_GRID_MODE = GRID_MODE.CREATE_CARD;
 
 const get_target_element_by_class = (event, klass) => {
     const clickedElement = $(event.target);
-    const targetElement = clickedElement.closest(klass);
+    let targetElement = clickedElement.closest(klass);
+    if (targetElement.length === 0) {
+        targetElement = clickedElement.children().closest(klass);
+    }
     return targetElement;
 };
 
@@ -15,6 +37,89 @@ const error = ({ response }) => {
     results.html(warning);
 };
 
+const set_cell_tag = (cell_tag, target_element) => {
+    Object.values(CELL_TAG).forEach((tag) => {
+        target_element.removeClass(tag);
+    })
+    target_element.addClass(cell_tag);
+}
+const setup_tag = () => {
+
+    $('#reset_cells').click((e) => {
+        Object.values(CELL_TAG).forEach((tag) => {
+            $('.hover_cell').removeClass(tag);
+            $('.hover_cell').addClass(CELL_TAG.UNSELECTED);
+        })
+    });
+
+    ;
+    $('#select_all_undefined_cells').click((e) => {
+        const cells = $('.hover_cell.unselected_cell');
+        cells.addClass(CELL_TAG.SELECTED);
+        cells.removeClass(CELL_TAG.UNSELECTED);
+
+    });
+    $('#select_col_undefined_cells').click((e) => {
+        const cells = $('.hover_cell.selected_cell');
+
+        cells.addClass(CELL_TAG.SELECTED);
+        cells.removeClass(CELL_TAG.UNSELECTED);
+
+    });
+
+    $('#apply_tags').click((e) => {
+        $('.hover_cell.unselected_cell').addClass('selected_cell');
+    });
+    const saved_tags_success = ({ response }) => {
+        toastr.success('tags saved');
+    }
+    const saved_tags_fail = ({ response }) => {
+        toastr.error('tags saved fail');
+    }
+    $('#tag_cells_button').click((e) => {
+        if (CURRENT_GRID_MODE == GRID_MODE.CREATE_CARD) {
+            CURRENT_GRID_MODE = GRID_MODE.TAG_CELL;
+        }
+        else {
+            CURRENT_GRID_MODE = GRID_MODE.CREATE_CARD;
+            const tags = $('.hover_cell').toArray()
+                .filter(x => !$(x).hasClass('unselected_cell'))
+                .map((x) => {
+                    return { 
+                        row_col: $(x).attr('value'), 
+                        tag: $(x).attr('class').replace('hover_cell', '').trim() 
+                    }
+                });
+            Axios.post('/grid/tag', {tags})
+                .then(saved_tags_success)
+                .catch(saved_tags_fail);
+        }
+    })
+    const foo = (tag) => {
+        const cells = $('.hover_cell.selected_cell')
+        cells.addClass(tag)
+        cells.removeClass(CELL_TAG.SELECTED)
+    }
+    $('#green_button').click((e) => {
+        foo(CELL_TAG.GREEN)
+    })
+    $('#red_button').click((e) => {
+        foo(CELL_TAG.RED)
+    })
+    $('#black_button').click((e) => {
+        foo(CELL_TAG.BLACK)
+    })
+    $('#blue_button').click((e) => {
+        foo(CELL_TAG.BLUE)
+    })
+    $('#grey_button').click((e) => {
+        foo(CELL_TAG.GREY)
+    })
+    $('#yellow_button').click((e) => {
+        foo(CELL_TAG.YELLOW)
+    })
+
+}
 const setup_grid_cells = () => {
     const create_card = (response) => {
         const html_string = `${response.data.html}`;
@@ -36,16 +141,28 @@ const setup_grid_cells = () => {
         });
     };
 
-    $(document).on('click', '.hover_cell', (event) => {
+    $(document).on('mousedown', '.hover_cell', (event) => {
         const targetElement = get_target_element_by_class(event, '.hover_cell');
-        const index = targetElement[0].attributes.value.value;
-        const dt = form_ids_vals('grid-fields');
-        dt.append('index', index);
-        Axios.post('/grid/card', dt)
-            .then(create_card)
-            .catch(error);
+        if (CURRENT_GRID_MODE == GRID_MODE.CREATE_CARD) {
+            const index = targetElement[0].attributes.value.value;
+            const dt = form_ids_vals('grid-fields');
+            dt.append('index', index);
+            Axios.post('/grid/card', dt)
+                .then(create_card)
+                .catch(error);
+        }
+        else if (CURRENT_GRID_MODE == GRID_MODE.TAG_CELL) {
+            if (targetElement.hasClass(CELL_TAG.SELECTED)) {
+                set_cell_tag(CELL_TAG.UNSELECTED, targetElement);
+            }
+            else if (targetElement.hasClass(CELL_TAG.UNSELECTED)) {
+                set_cell_tag(CELL_TAG.SELECTED, targetElement);
+            }
+            else {
+                set_cell_tag(CELL_TAG.SELECTED, targetElement);
+            }
+        }
 
-        // $(`#image_${index}`).toggleClass('d-none');
     });
 };
 
@@ -70,6 +187,7 @@ const setup_form = () => {
     const results = $('#results');
 
     const create_table = (response) => {
+        $('#results_spinner').collapse('hide');
         results.html(`${response.data.html}`);
         const table_options = {
             scrollX: true,
@@ -82,7 +200,7 @@ const setup_form = () => {
     submit_button.click((e) => {
         e.preventDefault();
         $('#configModal').modal('hide');
-        // $('#collapseTwo').collapse('show');
+        $('#results_spinner').collapse('show');
 
         const dt = form_ids_vals('grid-fields');
         Array.from(document.getElementById('image_files').files).forEach((file) => {
@@ -90,8 +208,8 @@ const setup_form = () => {
         });
         dt.append('metadata_csv', document.getElementById('metadata_csv').files[0]);
         dt.append('grid_data_csv', document.getElementById('grid_data_csv').files[0]);
-        dt.append('metadata_csv_label', document.getElementById('metadata_csv_label').files[0]);
-        dt.append('grid_data_csv_label', document.getElementById('grid_data_csv_label').files[0]);
+        dt.append('metadata_csv_label', document.getElementById('metadata_csv_label').innerText);
+        dt.append('grid_data_csv_label', document.getElementById('grid_data_csv_label').innerText);
 
         Axios.post('/grid/table', dt)
             .then(create_table)
@@ -188,10 +306,13 @@ const setupSelects = () => {
 
 
 $(() => {
+    CURRENT_GRID_MODE = GRID_MODE.CREATE_CARD;
+
     setupSelects();
     setup_form();
     setup_upload_config_form();
     setup_grid_cells();
     setup_cards();
+    setup_tag();
     $('#configModal').modal('show');
 });

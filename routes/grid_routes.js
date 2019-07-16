@@ -109,6 +109,14 @@ router.post('/config/', cpUpload, (req, res) => {
     res.send({ config_map });
 });
 
+router.post('/tags/', cpUpload, (req, res) => {
+    debugger
+    add_config(req);
+    res.status(200).send({
+        success: true,
+    });
+    
+});
 
 const any_upload_fields = upload.any();
 // create card
