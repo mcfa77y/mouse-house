@@ -3,7 +3,6 @@ const express = require('express');
 const router = express.Router();
 const BlueBird = require('bluebird');
 const fs = require('fs');
-const handlebars = require('handlebars');
 const path = require('path');
 const zeroFill = require('zero-fill');
 const multer = require('multer');
@@ -15,7 +14,6 @@ const hbs = require('hbs');
 const {
     create_data_from_csv,
     find_row_by_index,
-    file_exist,
     two_d_2_one_d, synthesize_rows, create_cell_name,
     get_config,
     add_config,
@@ -75,9 +73,51 @@ router.get('/', (req, res) => {
     });
 });
 
+router.get('/:config_name', async (req, res) => {
+    let config_map = [];
+    if (req.session.config_map) {
+        ({ config_map } = req.session);
+    } else {
+        req.session.config_map = config_map;
+        // res.cookie('config_map', config_map);
+    }
+    const config_name_select_list = Object.keys(config_map)
+        .map(config_name => ({ id: `${config_name}`, description: `${config_name}` }));
+
+    const config = get_config(req, req.params.config_name);
+
+    const config_name_description = req.params.config_name;
+
+    const {
+        grid_data_csv_uri, metadata_csv_uri,
+    } = config;
+
+    const source = fs.readFileSync(`${PARTIALS_DIR}/grid_table.hbs`, 'utf-8');
+    const grid_table_template = hbs.handlebars.compile(source);
+
+    const { column_headers, row_value_list } = await create_data_from_csv(grid_data_csv_uri);
+    const {
+        column_headers: meta_column_headers,
+        row_value_list: meta_row_value_list,
+    } = await create_data_from_csv(metadata_csv_uri);
+    const new_row = synthesize_rows(row_value_list, meta_row_value_list, meta_column_headers);
+    const dt = {
+        column_headers,
+        row_value_list: new_row,
+    };
+    const table_html = grid_table_template(dt);
+    res.render('pages/grid/grid_list', {
+        extra_js: ['grid_list.bundle.js'],
+        config_name_select_list,
+        table_html,
+        config_name_description,
+    });
+});
+
 
 router.get('/config/:config_name', (req, res) => {
-    res.send({ config: get_config(req, req.params.config_name) });
+    const config = get_config(req, req.params.config_name);
+    res.status(200).send({ config });
 });
 
 const cpUpload = upload.fields([
@@ -110,7 +150,8 @@ router.post('/config/', cpUpload, (req, res) => {
 });
 
 router.post('/tags/', cpUpload, (req, res) => {
-    add_config(req);
+    const config_map = add_config(req);
+    save_config_to_disk(config_map, CONFIG_DIR);
     res.status(200).send({
         success: true,
     });
@@ -191,6 +232,7 @@ router.post('/table', public_upload_fields, async (req, res) => {
     res.status(200).send({
         success: true,
         html,
+        config_name_description,
     });
 });
 

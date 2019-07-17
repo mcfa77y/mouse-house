@@ -99,25 +99,42 @@ const add_config = (req) => {
     }
 
     const {
-        config_name_description, tags,
+        config_name_description,
+        tags,
+        metadata_csv_label,
+        grid_data_csv_label,
     } = req.body;
     const {
         grid_data_csv,
         metadata_csv,
         image_files,
     } = req.files;
-    if (image_files !== undefined && grid_data_csv !== undefined && metadata_csv !== undefined) {
-        const image_file_uri_list = image_files.map((x) => {
+    const config = config_map[sanitize_config_name(config_name_description)] || {};
+    if (image_files === undefined) {
+        config.image_file_uri_list = config.image_file_uri_list;
+    } else {
+        config.image_file_uri_list = image_files.map((x) => {
             const uri = x.path;
-            return uri.slice(uri.indexOf('experiments'));
+            if (uri.indexOf('/experiments') !== -1) {
+                return uri.slice(uri.indexOf('/experiments'));
+            }
+            return uri;
         });
-        config_map[sanitize_config_name(config_name_description)] = {
-            grid_data_csv_uri: grid_data_csv[0].path,
-            metadata_csv_uri: metadata_csv[0].path,
-            image_file_uri_list,
-            tags,
-        };
     }
+    if (grid_data_csv === undefined) {
+        config.grid_data_csv_uri = grid_data_csv_label;
+    } else {
+        config.grid_data_csv_uri = grid_data_csv[0].path;
+    }
+    if (metadata_csv === undefined) {
+        config.metadata_csv_uri = metadata_csv_label;
+    } else {
+        config.metadata_csv_uri = metadata_csv[0].path;
+    }
+    if (tags !== undefined) {
+        config.tags = tags.map(tag => JSON.parse(tag));
+    }
+    config_map[sanitize_config_name(config_name_description)] = config;
     req.session.config_map = Object.assign({}, config_map);
 
     return req.session.config_map;

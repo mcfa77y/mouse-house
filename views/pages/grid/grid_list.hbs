@@ -1,10 +1,10 @@
 <div class="card">
   <div class="card-body">
-    <h5 class="card-title">Results</h5>
-    <div id="results"></div>
-    <div id="results_spinner" class="spinner-border text-primary collapse" role="status">
-        <span class="sr-only">Loading...</span>
-      </div>
+    <h5 id="results_title" class="card-title">{{config_name_description}}</h5>
+    <div id="results" class="collapse show">{{{table_html}}}</div>
+    <div id="results_spinner" class="collapse" role="status">
+        <i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
+    </div>
   </div>
 </div>
 
