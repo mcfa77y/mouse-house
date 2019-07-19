@@ -112,6 +112,7 @@ module.exports = {
                 options: {
                     presets: ['env'],
                 },
+                exclude: /node_modules/,
             },
         },
         ],
