@@ -30,6 +30,12 @@ const setup_form = () => {
             paging: false,
         };
         $('#grid_table').DataTable(table_options);
+        if (response.data.tags !== undefined) {
+            response.data.tags.forEach(({ row_col, tag }) => {
+                $(`td[value="${row_col}"]`).removeClass('unselected_cell');
+                $(`td[value="${row_col}"]`).addClass(tag);
+            });
+        }
     };
 
     const submit_button = $('#submit');
@@ -114,11 +120,11 @@ const update_form = (res) => {
     }
     console.log(JSON.stringify(res.data.config, null, 2));
     const {
-        grid_data_csv_uri, image_file_uri_list, metadata_csv_uri,
+        grid_data_csv_uri, image_count, metadata_csv_uri,
     } = res.data.config;
     set_custom_file_label('grid_data_csv', grid_data_csv_uri);
     set_custom_file_label('metadata_csv', metadata_csv_uri);
-    set_custom_file_label('image_files', `${image_file_uri_list.length} files selected`);
+    set_custom_file_label('image_files', `${image_count} files selected`);
     // clear files from last use
     document.getElementById('image_files').value = '';
 };

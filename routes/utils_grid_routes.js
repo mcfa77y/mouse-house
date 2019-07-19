@@ -104,22 +104,18 @@ const add_config = (req) => {
         metadata_csv_label,
         grid_data_csv_label,
     } = req.body;
+
     const {
         grid_data_csv,
         metadata_csv,
         image_files,
     } = req.files;
+
     const config = config_map[sanitize_config_name(config_name_description)] || {};
-    if (image_files === undefined) {
-        config.image_file_uri_list = config.image_file_uri_list;
-    } else {
-        config.image_file_uri_list = image_files.map((x) => {
-            const uri = x.path;
-            if (uri.indexOf('/experiments') !== -1) {
-                return uri.slice(uri.indexOf('/experiments'));
-            }
-            return uri;
-        });
+    if (image_files !== undefined) {
+        const uri = image_files[0].path;
+        config.image_path_obj = path.parse(uri.slice(uri.indexOf('/experiments')));
+        config.image_count = image_files.length;
     }
     if (grid_data_csv === undefined) {
         config.grid_data_csv_uri = grid_data_csv_label;

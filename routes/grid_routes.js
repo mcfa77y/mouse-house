@@ -163,10 +163,11 @@ router.post('/card', any_upload_fields, async (req, res) => {
     const {
         index, config_name_description,
     } = req.body;
-    const { image_file_uri_list, metadata_csv_uri } = get_config(req, config_name_description);
+    const { image_path_obj, metadata_csv_uri } = get_config(req, config_name_description);
     const one_d_index = zeroFill(3, two_d_2_one_d(index));
-    const file = image_file_uri_list
-        .find(x => x.indexOf(`_${one_d_index}.`) >= 0);
+    const filename = image_path_obj.name.slice(0, -3) + one_d_index + image_path_obj.ext;
+    const file_path = image_path_obj.dir.replace('/', '');
+    const file = path.join(file_path, filename);
     const data = await create_data_from_csv(metadata_csv_uri);
 
     const row = find_row_by_index(index, data);
@@ -181,9 +182,9 @@ router.post('/card', any_upload_fields, async (req, res) => {
 
     const cell_name = create_cell_name(row.column_headers, row.row_value_list[0]);
     const card_data = {
-        image_uri: path.join(file),
-        name: `${cell_name}: ${path.parse(file).name}`,
-        id: path.parse(file).name,
+        image_uri: file,
+        name: `${cell_name}: ${filename}`,
+        id: filename,
         row_zip,
         column_headers: data.column_headers,
     };
@@ -204,6 +205,7 @@ const public_upload_fields = upload.fields([
     { name: 'grid_data_csv', maxCount: 1 },
     { name: 'metadata_csv', maxCount: 1 },
 ]);
+
 // create table from csv and image dir
 router.post('/table', public_upload_fields, async (req, res) => {
     const config_map = add_config(req);
@@ -212,7 +214,7 @@ router.post('/table', public_upload_fields, async (req, res) => {
         config_name_description,
     } = req.body;
     const {
-        grid_data_csv_uri, metadata_csv_uri,
+        grid_data_csv_uri, metadata_csv_uri, tags,
     } = config_map[config_name_description];
 
     const source = fs.readFileSync(`${PARTIALS_DIR}/grid_table.hbs`, 'utf-8');
@@ -233,6 +235,7 @@ router.post('/table', public_upload_fields, async (req, res) => {
         success: true,
         html,
         config_name_description,
+        tags,
     });
 });
 

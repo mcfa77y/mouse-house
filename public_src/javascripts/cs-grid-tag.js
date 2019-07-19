@@ -58,6 +58,8 @@ export const setup_tag = () => {
             tags.forEach((tag) => {
                 data.append('tags[]', JSON.stringify(tag));
             });
+            data.set('metadata_csv_label', document.getElementById('metadata_csv_label').innerText);
+            data.set('grid_data_csv_label', document.getElementById('grid_data_csv_label').innerText);
             Axios.post('/grid/tags', data)
                 .then(saved_tags_success)
                 .catch(saved_tags_fail);
