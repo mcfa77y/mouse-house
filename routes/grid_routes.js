@@ -134,11 +134,11 @@ router.post('/config/', cpUpload, (req, res) => {
 
     Object.keys(config).forEach((config_name) => {
         const {
-            grid_data_csv_uri, image_file_uri_list, metadata_csv_uri,
+            grid_data_csv_uri, metadata_csv_uri, tags, image_path_obj,
         } = config[config_name];
         console.log(`config name: ${config_name}`);
         config_map[sanitize_config_name(config_name)] = {
-            grid_data_csv_uri, image_file_uri_list, metadata_csv_uri,
+            grid_data_csv_uri, metadata_csv_uri, tags, image_path_obj,
         };
     });
     config_map = Object.assign({}, config_map);
