@@ -111,8 +111,8 @@ module.exports = {
                 loader: 'babel-loader',
                 options: {
                     presets: ['env'],
+                    exclude: /node_modules/,
                 },
-                exclude: /node_modules/,
             },
         },
         ],
