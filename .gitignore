@@ -19,3 +19,7 @@ public/javascripts/*.bundle.js
 input/ImageMappingData/
 
 public/images/
+
+dist/
+
+public/experiments

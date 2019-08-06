@@ -1,3 +1,17 @@
+/*
+scraping for outsidelands 2019
+for(let i = 0; i<20; i++) { 
+    Array.from(
+        document
+        .getElementsByClassName('row small-up-1 medium-up-3 ds-lineup ds-lineup-images')[i]
+        .getElementsByClassName('ds-artist-name')
+    )
+    .map(x => x.textContent)
+    .forEach(x=> console.log(x)); 
+    console.log("\n\n")
+}
+*/
+
 const express = require('express');
 const Axios = require('axios');
 const querystring = require('querystring');
