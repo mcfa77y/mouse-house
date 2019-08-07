@@ -184,7 +184,7 @@ router.post('/card', any_upload_fields, async (req, res) => {
     const card_data = {
         image_uri: file,
         name: `${cell_name}: ${filename}`,
-        id: filename,
+        id: path.parse(file).name,
         row_zip,
         column_headers: data.column_headers,
     };
