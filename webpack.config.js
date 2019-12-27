@@ -1,6 +1,7 @@
 const path = require('path');
 // const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+// const CleanWebpackPlugin = require('clean-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 // const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const webpack = require('webpack');
 
@@ -8,7 +9,7 @@ const JS_DIR = './public_src/javascripts';
 
 module.exports = {
     entry: {
-    // breed_common: path.resolve(JS_DIR, 'cs-breed-create.js'),
+        // breed_common: path.resolve(JS_DIR, 'cs-breed-create.js'),
         breed_create: path.resolve(JS_DIR, 'cs-breed-create.js'),
         breed_list: path.resolve(JS_DIR, 'cs-breed-list.js'),
         breed_update: path.resolve(JS_DIR, 'cs-breed-update.js'),
@@ -27,8 +28,20 @@ module.exports = {
     // devServer: {
     //     contentBase: './dist'
     // },
+    optimization: {
+        splitChunks: {
+            cacheGroups: {
+                commons: {
+                    chunks: "initial",
+                    minChunks: 3,
+                    name: "commons",
+                    enforce: true
+                }
+            }
+        }
+    },
     plugins: [
-        new CleanWebpackPlugin(['public/javascripts']),
+        new CleanWebpackPlugin(),
         // new HtmlWebpackPlugin({
         //     title: 'Output Management'
         // }),
@@ -38,15 +51,13 @@ module.exports = {
         //         ecma: 6
         //     }
         // }),
-        new webpack.optimize.CommonsChunkPlugin({
-            name: 'common', // Specify the common bundle's name.
-        }),
+
         new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-    // new webpack.ProvidePlugin({
-    //     $: "jquery",
-    //     jQuery: "jquery",
-    //     "window.jQuery": "jquery"
-    // })
+        // new webpack.ProvidePlugin({
+        //     $: "jquery",
+        //     jQuery: "jquery",
+        //     "window.jQuery": "jquery"
+        // })
     ],
     output: {
         filename: '[name].bundle.js',
@@ -110,10 +121,10 @@ module.exports = {
             use: {
                 loader: 'babel-loader',
                 options: {
-                    presets: ['env'],
-                    ignore: '/node_modules/',
+                    presets: ['@babel/env'],
+                    ignore: ['/node_modules/']
                 },
-                
+
             },
         },
         ],
