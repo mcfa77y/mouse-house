@@ -1,3 +1,37 @@
 body {
     padding-top: 70px; 
 }
+
+.red {
+    background-color: #dc3545
+}
+
+.green {
+    background-color: #28a745
+}
+
+.yellow {
+    background-color: #ffc107
+}
+
+.selected_cell {
+    background-color: #17a2b8
+}
+
+.black {
+    background-color: #343a40
+}
+
+.blue{
+    background-color: #007bff
+}
+.dark {
+    background-color: #343a40
+}
+
+.grey{
+    background-color: #6c757d
+}
+.unselected_cell {
+    background-color: #f8f9fa
+}

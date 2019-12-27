@@ -3,7 +3,6 @@
     
 
     	{{#if isMultiple}}
-        
             <select class="form-control foo-select" id="{{id}}" multiple="multiple">
             {{#each items}}
                 {{#contains ../value this.id  }}
@@ -31,8 +30,7 @@
         {{/if}}
     
 </div>
-{{!-- 
-{{#each items}}
+{{!-- {{#each items}}
                 {{#contains ../value this.id  }}
                 {{../value}} contains {{this.id}}<br/>
                 {{else}}

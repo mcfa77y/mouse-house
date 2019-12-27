@@ -33,7 +33,7 @@ router.get('/', (req, res) => {
         mice: mouse_controller.all_pretty(),
     })
         .then(({ input, mice }) => {
-            const status = select_json(input.status, 'status_id');
+            const status = select_json(input.status);
             res.render('pages/mouse/mouse_list', {
                 cages: input.cages,
                 mice,
@@ -78,14 +78,14 @@ router.get('/create', (req, res) => {
         input: get_inputs(),
     })
         .then(({ input }) => {
-            const status = select_json(input.status, 'status_id');
-            const genotype = select_json(input.genotype, 'genotype_id');
+            const status = select_json(input.status);
+            const genotype = select_json(input.genotype);
             let cages = input.cages.map(cage => ({
                 id: cage.id,
                 description: cage.id_alias,
             }));
-            const sex = select_json(input.sex, 'sex_id');
-            cages = select_json(cages, 'cage_id');
+            const sex = select_json(input.sex);
+            cages = select_json(cages);
             res.render('pages/mouse/mouse_create', {
                 status,
                 genotype,
@@ -113,14 +113,14 @@ router.get('/:id_alias', (req, res) => {
             return get_inputs();
         })
         .then((input) => {
-            const status = select_json(input.status, 'status_id');
-            const genotype = select_json(input.genotype, 'genotype_id');
+            const status = select_json(input.status);
+            const genotype = select_json(input.genotype);
             let cages = input.cages.map(cage => ({
                 id: cage.id,
                 description: cage.id_alias,
             }));
-            const sex = select_json(input.sex, 'sex_id');
-            cages = select_json(cages, 'cage_id');
+            const sex = select_json(input.sex);
+            cages = select_json(cages);
             log_json(mouse);
 
             // mouse_controller.pretty(mouse).then((x)=>{

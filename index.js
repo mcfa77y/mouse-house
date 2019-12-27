@@ -9,6 +9,7 @@ const bodyParser = require('body-parser');
 // const cors = require('cors');
 const helmet = require('helmet');
 const hbs_utils = require('hbs-utils');
+const session = require('express-session')
 // const routes = require('./routes/index');
 const router = express.Router();
 
@@ -24,22 +25,27 @@ app.use(router);
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.set('trust proxy', 1) // trust first proxy
+app.use(session({
+  secret: 'Zw$shAt$27U%*{5v',
+  resave: false,
+  saveUninitialized: true,
+}))
 
 const breed = require('./routes/breed_routes');
 const mouse = require('./routes/mouse_routes');
 const cage = require('./routes/cage_routes');
-
+const grid = require('./routes/grid_routes');
 
 // handel bars helpers
 const hbs = require('hbs');
 
 const hbsutils = hbs_utils(hbs);
 
-const helpers = require('handlebars-helpers')({
-    handlebars: hbs.handlebars,
-});
+const helpers = require('handlebars-helpers');
 
-// helpers.comparison({ handlebars: hbs.handlebars });
+helpers.string({ handlebars: hbs.handlebars });
+helpers.comparison({ handlebars: hbs.handlebars });
 
 app.set('port', (process.env.PORT || 5000));
 
@@ -57,6 +63,7 @@ app.set('view engine', 'hbs');
 app.use('/breed', breed);
 app.use('/mouse', mouse);
 app.use('/cage', cage);
+app.use('/grid', grid);
 
 
 app.get('/', (request, response) => {
@@ -96,3 +103,5 @@ app.use((err, req, res, next) => {
 app.listen(app.get('port'), () => {
     console.log('Node app is running on port', app.get('port'));
 });
+
+
