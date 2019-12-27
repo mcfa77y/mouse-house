@@ -17,7 +17,16 @@ if (process.env.NODE_ENV === 'production') {
       ssl: true,
     },
   });
-} else {
+}
+else if (process.env.NODE_ENV === 'test') {
+  sequelize = new Sequelize(process.env.DATABASE_URL, {
+    dialect: 'postgres',
+    dialectOptions: {
+      ssl: true,
+    },
+  });
+}
+else {
   sequelize = new Sequelize(config.database, config.username, config.password, config);
 }
 
