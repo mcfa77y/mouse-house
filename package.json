@@ -10,11 +10,9 @@
     "build": "webpack",
     "build:prod": "webpack -p",
     "start": "node index.js",
-    "watch": "nvm use 6.10.2; webpack --watch",
-    "debug": "nvm use 6.10.2; nodemon --ignore '/Users/joe/Sites/mouse-house/config/*/**' --inspect index.js",
-    "postinstall": "webpack -p  --progress",
-    "build:database": "/home/joe/Sites/mouse-house/node_modules/.bin/tsc ./database/src",
-    "tsc": "/home/joe/Sites/mouse-house/node_modules/.bin/tsc "
+    "watch": "nvm use 12.14.0; webpack --watch",
+    "debug": "nvm use 12.14.0; nodemon --ignore '/Users/joe/Sites/mouse-house/config/*/**' --inspect index.js",
+    "postinstall": "webpack -p  --progress"
   },
   "dependencies": {
     "@types/sequelize": "^4.28.8",
