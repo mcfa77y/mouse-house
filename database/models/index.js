@@ -37,9 +37,6 @@ fs
     });
 
 Object.keys(db).forEach((modelName) => {
-    console.log('modelName: ' + modelName);
-    console.log(`db[modelName]: ${JSON.stringify(db[modelName].associate, null, 2)}`);
-
     if (db[modelName].associate) {
         db[modelName].associate(db);
     }

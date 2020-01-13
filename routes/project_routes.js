@@ -75,10 +75,10 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/:project_id', async (req, res) => {
-    const project = await project_controller.get_experiments(req.params.project_id)
+    const experiments = await project_controller.get_experiments(req.params.project_id)
         .catch((error) => console.log(`errora: ${JSON.stringify(error, null, 2)}`));
-    console.log(`project: ${JSON.stringify(project, null, 2)}`);
-    res.send({ project });
+    console.log(`experiements: ${JSON.stringify(experiments, null, 2)}`);
+    res.send({ experiments });
     // const {
     //     grid_data_csv_uri, metadata_csv_uri,
     // } = config;
