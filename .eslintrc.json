@@ -2,10 +2,15 @@
     "extends": "airbnb-base",
     "rules": {
         "camelcase": "off",
-        "indent": ["error", 4]
-      },
-      "env": {
-          "jquery": true,
-          "browser": true
-      }
+        "no-underscore-dangle": 0,
+        "class-methods-use-this": "off",
+        "indent": [
+            "error",
+            4
+        ]
+    },
+    "env": {
+        "jquery": true,
+        "browser": true
+    }
 }

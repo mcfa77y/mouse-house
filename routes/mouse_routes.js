@@ -119,8 +119,8 @@ router.get('/:id_alias', (req, res) => {
                 id: cage.id,
                 description: cage.id_alias,
             }));
-            const sex = select_json(input.sex);
             cages = select_json(cages);
+            const sex = select_json(input.sex);
             log_json(mouse);
 
             // mouse_controller.pretty(mouse).then((x)=>{

@@ -12,3 +12,12 @@ sequelize db:migrate; sequelize db:seed:all;
 
 
 sequelize model:create --name Breed_Mouse --attributes 'breed_id:integer, mouse_id:integer' --underscored --paranoid --force
+
+
+node_modules/.bin/sequelize model:create --name Project --attributes name:string,description:string --underscored
+sequelize model:create --name Experiment --attributes name:string,grid_data_uri:string,metadata_uri:string,image_config:jsonb,tag_config:jsonb --underscored
+
+sequelize model:create --name Project_Experiment --attributes 'project_id:integer, experiment_id:integer' --underscored
+
+sequelize model:create --name Tag_Experiment --attributes 'tag_id:integer, experiment_id:integer' --underscored
+sequelize model:create --name Tag_Project --attributes 'tag_id:integer, project_id:integer' --underscored
