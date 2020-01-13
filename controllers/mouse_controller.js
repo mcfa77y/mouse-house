@@ -13,16 +13,18 @@ class Mouse_Controller extends Base_Controller {
     get STATUS() {
         return 'MOUSE_STATUS';
     }
+
     get GENOTYPE() {
         return 'MOUSE_GENOTYPE';
     }
+
     get SEX() {
         return 'SEX';
     }
 
     by_sex(sex) {
         return enum_controller.by_type_desc('SEX', sex)
-            .then(sex_enum => super.get_where({
+            .then((sex_enum) => super.get_where({
                 sex_id: sex_enum.id,
             }));
     }
@@ -60,31 +62,34 @@ class Mouse_Controller extends Base_Controller {
                 pretty_mouse.age = utils.relative_time(mouse.dob);
                 pretty_mouse.create_at = utils.format_date(mouse.create_at);
                 pretty_mouse.modify_at = utils.format_date(mouse.modify_at);
-                pretty_mouse.breeds = isFalsey(breeds) ? [] : breeds.map(breed => `${breed.id_alias}`);
+                pretty_mouse.breeds = isFalsey(breeds) ? [] : breeds.map((breed) => `${breed.id_alias}`);
                 pretty_mouse.cage = isFalsey(cage) ? '' : cage.name;
                 pretty_mouse.cage_id = isFalsey(cage) ? '' : `${cage.id}`;
                 pretty_mouse.cage_id_alias = isFalsey(cage) ? '' : cage.id_alias;
                 return pretty_mouse;
             });
     }
+
     all_pretty() {
         const self = this;
         return this.all()
-            .then(items => BlueBird.map(items, item => self.pretty(item)))
-            .then(mouse_array => mouse_array);
+            .then((items) => BlueBird.map(items, (item) => self.pretty(item)))
+            .then((mouse_array) => mouse_array);
     }
+
     some_pretty(limit, offset = 0) {
         const self = this;
         return Mouse.findAll({ limit, offset })
-            .then(items => BlueBird.map(items, item => self.pretty(item)))
-            .then(mouse_array => mouse_array);
+            .then((items) => BlueBird.map(items, (item) => self.pretty(item)))
+            .then((mouse_array) => mouse_array);
     }
+
     by_id_alias(_id_alias) {
         const self = this;
         return this.get_where({
             id_alias: _id_alias,
         })
-            .then(mice => self.pretty(mice[0]));
+            .then((mice) => self.pretty(mice[0]));
     }
 
     delete_by_id_alias(_id_alias) {
@@ -106,7 +111,7 @@ class Mouse_Controller extends Base_Controller {
             ],
             returning: true,
         })
-            .then(model => model.update({ id_alias: model.id }))
+            .then((model) => model.update({ id_alias: model.id }))
             .catch((error) => {
                 console.log(error);
             });

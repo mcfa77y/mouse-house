@@ -9,7 +9,7 @@ const multer = require('multer');
 // const helpers = require('handlebars-helpers');
 const hbs = require('hbs');
 // helpers.comparison({ handlebars });
-
+const project_controller = require('../controllers/project_controller');
 
 const {
     create_data_from_csv,
@@ -57,61 +57,52 @@ const PARTIALS_DIR = path.join(__dirname, '../views/partials/grid/');
 BlueBird.promisifyAll(fs);
 
 
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
     let config_map = [];
     if (req.session.config_map) {
         ({ config_map } = req.session);
     } else {
         req.session.config_map = config_map;
-    // res.cookie('config_map', config_map);
+        // res.cookie('config_map', config_map);
     }
-    const config_name_select_list = Object.keys(config_map)
-        .map((config_name) => ({ id: `${config_name}`, description: `${config_name}` }));
-    res.render('pages/grid/grid_list', {
-        extra_js: ['grid_list.bundle.js'],
-        config_name_select_list,
+    const projects = await project_controller.all_pretty().catch((err) => {
+        console.log(`Error get project all pretty: ${JSON.stringify(err, null, 2)}`);
+    });
+    res.render('pages/project/project_list', {
+        extra_js: ['project_list.bundle.js'],
+        projects,
     });
 });
 
-router.get('/:config_name', async (req, res) => {
-    let config_map = [];
-    if (req.session.config_map) {
-        ({ config_map } = req.session);
-    } else {
-        req.session.config_map = config_map;
-    // res.cookie('config_map', config_map);
-    }
-    const config_name_select_list = Object.keys(config_map)
-        .map((config_name) => ({ id: `${config_name}`, description: `${config_name}` }));
+router.get('/:project_id', async (req, res) => {
+    const project = await project_controller.get_experiments(req.params.project_id)
+        .catch((error) => console.log(`errora: ${JSON.stringify(error, null, 2)}`));
+    console.log(`project: ${JSON.stringify(project, null, 2)}`);
+    res.send({ project });
+    // const {
+    //     grid_data_csv_uri, metadata_csv_uri,
+    // } = config;
 
-    const config = get_config(req, req.params.config_name);
+    // const source = fs.readFileSync(`${PARTIALS_DIR}/grid_table.hbs`, 'utf-8');
+    // const grid_table_template = hbs.handlebars.compile(source);
 
-    const config_name_description = req.params.config_name;
-
-    const {
-        grid_data_csv_uri, metadata_csv_uri,
-    } = config;
-
-    const source = fs.readFileSync(`${PARTIALS_DIR}/grid_table.hbs`, 'utf-8');
-    const grid_table_template = hbs.handlebars.compile(source);
-
-    const { column_headers, row_value_list } = await create_data_from_csv(grid_data_csv_uri);
-    const {
-        column_headers: meta_column_headers,
-        row_value_list: meta_row_value_list,
-    } = await create_data_from_csv(metadata_csv_uri);
-    const new_row = synthesize_rows(row_value_list, meta_row_value_list, meta_column_headers);
-    const dt = {
-        column_headers,
-        row_value_list: new_row,
-    };
-    const table_html = grid_table_template(dt);
-    res.render('pages/grid/grid_list', {
-        extra_js: ['grid_list.bundle.js'],
-        config_name_select_list,
-        table_html,
-        config_name_description,
-    });
+    // const { column_headers, row_value_list } = await create_data_from_csv(grid_data_csv_uri);
+    // const {
+    //     column_headers: meta_column_headers,
+    //     row_value_list: meta_row_value_list,
+    // } = await create_data_from_csv(metadata_csv_uri);
+    // const new_row = synthesize_rows(row_value_list, meta_row_value_list, meta_column_headers);
+    // const dt = {
+    //     column_headers,
+    //     row_value_list: new_row,
+    // };
+    // const table_html = grid_table_template(dt);
+    // res.render('pages/grid/grid_list', {
+    //     extra_js: ['grid_list.bundle.js'],
+    //     config_name_select_list,
+    //     table_html,
+    //     config_name_description,
+    // });
 });
 
 
