@@ -53,9 +53,11 @@ class Project_Controller extends Base_Controller {
     }
 
     async get_experiments(id) {
-        const p = await this.Model.findByPk(id, { raw: true }).catch((error) => console.log(`errorx: ${JSON.stringify(error, null, 2)}`));
-
-        console.log(`p: ${JSON.stringify(p, null, 2)}`);
+        const p = await this.Model.findByPk(id).catch((error) => console.log(`errorx: ${JSON.stringify(error, null, 2)}`));
+        // console.log(`p: ${JSON.stringify(p, null, 2)}`);
+        const e = await p.getExperiments({raw:true});
+        // console.log(`e: ${JSON.stringify(e, null, 2)}`);
+        return e;
     }
 
     get model() {
