@@ -1,5 +1,5 @@
 const express = require('express');
-const isFalsey = require('falsey');
+const {falsy: isFalsey} = require('is');
 
 const router = express.Router();
 const BlueBird = require('bluebird');
@@ -53,8 +53,8 @@ router.get('/:id_alias', (req, res) => {
         .then(({ input, cage }) => {
             const { mice } = input;
             const mice_select = select_json(input.mice
-                    .map(mouse => ({ id: mouse.id, description: mouse.id_alias })), 'mouse_ids', 'mice');
-            const cage_type = select_json(input.cage_type, 'cage_type');
+                    .map(mouse => ({ id: mouse.id, description: mouse.id_alias })));
+            const cage_type = select_json(input.cage_type);
             const verb = 'Update';
             log_json(cage);
 

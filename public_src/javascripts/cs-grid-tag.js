@@ -1,4 +1,4 @@
-import * as Axios from 'axios';
+import Axios from 'axios';
 import * as toastr from 'toastr';
 
 import { CELL_TAG, GRID_MODE } from './cs-grid-utils';

@@ -3,7 +3,8 @@
 const DEFAULT_OPTIONS = require('./default_options.json');
 
 DEFAULT_OPTIONS.tableName = 'Experiments';
-module.exports = (sequelize, DataTypes) => {
+// module.exports = (sequelize, DataTypes) => {
+export default (sequelize, DataTypes) => {
     const Experiment = sequelize.define('Experiment', {
         name: DataTypes.STRING,
         note: DataTypes.TEXT,

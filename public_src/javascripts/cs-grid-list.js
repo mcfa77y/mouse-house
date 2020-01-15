@@ -1,5 +1,5 @@
-import * as Axios from 'axios';
-import isFalsey from 'falsey';
+import Axios from 'axios';
+const {falsy: isFalsey} = require('is');
 
 import { form_ids_vals } from './cs-form-helper';
 import { GRID_MODE, error } from './cs-grid-utils';

@@ -1,5 +1,5 @@
 const BlueBird = require('bluebird');
-const isFalsey = require('falsey');
+const {falsy: isFalsey} = require('is');
 
 const utils = require('./utils_controller');
 // const city_names = require('../lib/data/city_names.json').city_names;

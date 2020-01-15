@@ -2,11 +2,11 @@ const Logger = require('bug-killer');
 const moment = require('moment');
 const cool = require('cool-ascii-faces');
 const readJson = require('r-json');
-const isFalsey = require('falsey');
+const {falsy: isFalsey} = require('is');
 const rp = require('request-promise');
 const _ = require('underscore');
 
-const CREDENTIALS = readJson(`${__dirname}/../config/credentials.json`);
+const CREDENTIALS = require('../config/credentials.json');
 String.prototype.toProperCase = function () {
     return this.replace(/\w\S*/g, txt => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
 };
