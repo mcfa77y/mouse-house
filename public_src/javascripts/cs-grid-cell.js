@@ -1,4 +1,4 @@
-import * as Axios from 'axios';
+import Axios from 'axios';
 import * as SmilesDrawer from 'smiles-drawer';
 
 import { form_ids_vals } from './cs-form-helper';

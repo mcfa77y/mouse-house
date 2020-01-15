@@ -1,6 +1,6 @@
 import * as Toastr from 'toastr';
 import range from 'lodash/range';
-import * as Axios from 'axios';
+import Axios from 'axios';
 import MaterialDatetimePicker from 'material-datetime-picker';
 
 import 'bootstrap';

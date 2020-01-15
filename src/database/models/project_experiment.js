@@ -1,7 +1,7 @@
 const DEFAULT_OPTIONS = require('./default_options.json');
 
 DEFAULT_OPTIONS.tableName = 'Project_Experiments';
-module.exports = (sequelize, DataTypes) => {
+export default (sequelize, DataTypes) => {
     const Project_Experiment = sequelize.define('Project_Experiments', {
         project_id: DataTypes.INTEGER,
         experiment_id: DataTypes.INTEGER,

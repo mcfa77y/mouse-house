@@ -1,6 +1,6 @@
 const Logger = require('bug-killer');
 const moment = require('moment');
-const isFalsey = require('falsey');
+const {falsy: isFalsey} = require('is');
 
 String.prototype.toProperCase = function () {
     return this.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());

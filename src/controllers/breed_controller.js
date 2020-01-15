@@ -1,5 +1,5 @@
 const BlueBird = require('bluebird');
-const isFalsey = require('falsey');
+const {falsy: isFalsey} = require('is');
 const _ = require('underscore');
 const utils = require('./utils_controller');
 // const city_names = require('../lib/data/city_names.json').city_names
@@ -68,10 +68,10 @@ class Breed_Controller extends Base_Controller {
         const self = this;
         const model = utils.remove_empty(model_original, true);
         return Breed.create(model, {
-            include: [{ 
-                association: Breed.Note,
-                association: Breed.Male,
-                association: Breed.Female }],
+            include: [
+                {association: Breed.Note},
+                {association: Breed.Male},
+                {association: Breed.Female}],
             returning: true,
         })
             .catch((err) => {
@@ -84,8 +84,8 @@ class Breed_Controller extends Base_Controller {
         return Breed.update(_model, {
             where: { id: _model.id },
             include: [{ 
-                association: Breed.Note,
-                association: Breed.Mouse }],
+                association: Breed.Note},
+                {association: Breed.Mouse }],
             returning: true,
         })
             .then((updated_model) => {
@@ -103,4 +103,6 @@ class Breed_Controller extends Base_Controller {
     }
 }
 
-module.exports = new Breed_Controller(Breed);
+// module.exports = new Breed_Controller(Breed);
+export default new Breed_Controller(Breed)
+

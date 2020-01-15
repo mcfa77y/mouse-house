@@ -5,7 +5,7 @@ const router = express.Router();
 // const Logger = require('bug-killer');
 const BlueBird = require('bluebird');
 const _ = require('underscore');
-const isFalsey = require('falsey');
+const {falsy: isFalsey} = require('is');
 
 const enum_controller = require('../controllers/enum_controller');
 const breed_controller = require('../controllers/breed_controller');

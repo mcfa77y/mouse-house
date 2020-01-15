@@ -1,5 +1,5 @@
 const express = require('express');
-const isFalsey = require('falsey');
+const {falsy: isFalsey} = require('is');
 
 const router = express.Router();
 const BlueBird = require('bluebird');
