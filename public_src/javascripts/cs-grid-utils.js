@@ -28,7 +28,8 @@ export const CELL_TAG = {
 export const error = ({ response }) => {
     const results = $('#results');
     let warning = `<div class="alert alert-warning" role="alert">${JSON.stringify(arguments[0], null, 2)}</div>`;
-    if (response !== undefined) {
+    // let warning = `<div class="alert alert-warning" role="alert">${arguments[0])}</div>`;
+    if (response !== undefined && response.data !== undefined && response.data.message !== undefined) {
         warning = `<div class="alert alert-warning" role="alert">${response.data.message}</div>`;
     }
     results.html(warning);

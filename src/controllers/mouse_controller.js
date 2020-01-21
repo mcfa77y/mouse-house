@@ -1,6 +1,6 @@
 const BlueBird = require('bluebird');
 // const _ = require('underscore')
-const {falsy: isFalsey} = require('is');
+const {falsy: isFalsey} = require('is_js');
 
 const Base_Controller = require('./base_controller');
 const enum_controller = require('./enum_controller');

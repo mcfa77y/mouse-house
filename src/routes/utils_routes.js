@@ -2,14 +2,14 @@ const Logger = require('bug-killer');
 const moment = require('moment');
 const cool = require('cool-ascii-faces');
 const readJson = require('r-json');
-const {falsy: isFalsey} = require('is');
+const {falsy: isFalsey} = require('is_js');
 const rp = require('request-promise');
 const _ = require('underscore');
 
 const CREDENTIALS = require('../config/credentials.json');
-String.prototype.toProperCase = function () {
-    return this.replace(/\w\S*/g, txt => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
-};
+// String.prototype.toProperCase = function () {
+//     return this.replace(/\w\S*/g, txt => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
+// };
 module.exports = {
     log_json: (json) => {
         let cache = [];

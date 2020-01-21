@@ -13,8 +13,6 @@ console.log("enter index.js model: "+__dirname);
 // const bar = path.resolve(foo, '/../config/config.json');
 // const config = readJson(bar)[env];
 const config = require('../config/config.json')[env];
-console.log(`DB configs: ${config}`);
-
 const db = {};
 let sequelize;
 
@@ -36,8 +34,8 @@ if (process.env.NODE_ENV === 'production') {
         },
     });
 } else {
-    console.log('using config for db');
-    console.log(`config: ${JSON.stringify(config, null, 2)}`);
+    console.log('using default config for db');
+    // console.log(`config: ${JSON.stringify(config, null, 2)}`);
     
     sequelize = new Sequelize(config.database, config.username, config.password, config);
 }
@@ -73,13 +71,12 @@ let modules = [
     require('./project_experiment')
   ];
 
-  // Initialize models
-  modules.forEach((module) => {
-    const model = module.default(sequelize, Sequelize, config);
+// Initialize models
+modules.forEach((module) => {
+    const model = module.default(sequelize, Sequelize);
     db[model.name] = model;
     console.log('added Model: ' + model.name);
-    
-  });
+});
 
 Object.keys(db).forEach((modelName) => {
     if (db[modelName].associate) {

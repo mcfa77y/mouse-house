@@ -1,5 +1,6 @@
 import Axios from 'axios';
-const {falsy: isFalsey} = require('is');
+const {falsy: isFalsey} = require('is_js');
+import * as Toastr from 'toastr';
 
 import { form_ids_vals } from './cs-form-helper';
 import { GRID_MODE, error } from './cs-grid-utils';
@@ -23,6 +24,10 @@ const setup_form = () => {
 
     const create_table = (response) => {
         $('#results_spinner').collapse('hide');
+        if (response.data.html == undefined){
+            Toastr.warning("unable to create table");
+            results.html(`${response.data}`);
+        }
         results.html(`${response.data.html}`);
         $('#results_title').text(response.data.config_name_description);
         const table_options = {

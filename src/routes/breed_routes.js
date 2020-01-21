@@ -2,7 +2,7 @@ const express = require('express');
 
 const router = express.Router();
 const BlueBird = require('bluebird');
-const {falsy: isFalsey} = require('is');
+const {falsy: isFalsey} = require('is_js');
 
 const breed_controller = require('../controllers/breed_controller');
 const { select_json, log_json, getErrorGif } = require('./utils_routes');
@@ -11,7 +11,7 @@ const { get_breed_inputs, create_model } = require('./utils_breed_routes');
 // list
 router.get('/', (req, res) => {
     BlueBird.props({
-        breeds: breed_controller.all_pretty(),
+        breeds: breed_controller.default.all_pretty(),
     })
         .then(({ breeds }) => {
             log_json(breeds);
@@ -59,7 +59,7 @@ router.get('/create', (req, res) => {
 router.get('/:id_alias', (req, res) => {
     BlueBird.props({
         input: get_breed_inputs(),
-        breed: breed_controller.by_id_alias(req.params.id_alias),
+        breed: breed_controller.default.by_id_alias(req.params.id_alias),
     })
         .then(({ input, breed }) => {
             const genotype = select_json(input.genotype);
@@ -84,7 +84,7 @@ router.get('/:id_alias', (req, res) => {
 router.delete('/:id', (req, res) => {
     const rm_ids = isFalsey(req.query.id_alias) ? req.params.id : req.params.id_alias;
 
-    const rm_promises = rm_ids.split(',').map(id => breed_controller.delete(id));
+    const rm_promises = rm_ids.split(',').map(id => breed_controller.default.delete(id));
 
     return Promise.all(rm_promises)
         .then(() => {
@@ -102,7 +102,7 @@ router.delete('/:id', (req, res) => {
 
 router.put('/', (req, res) => {
     const model = create_model(req.body);
-    breed_controller.insert(model)
+    breed_controller.default.insert(model)
         .then(() => {
             res.send({
                 success: true,
@@ -119,7 +119,7 @@ router.put('/', (req, res) => {
 // update
 router.post('/', (req, res) => {
     const model = create_model(req.body);
-    breed_controller.update(model)
+    breed_controller.default.update(model)
         .then(() => {
             res.send({ success: true });
         })

@@ -1,4 +1,4 @@
-const utils = require('./utils_controller');
+const {log_json, remove_empty} = require('./utils_controller');
 // Constructor
 class Base_Controller {
     constructor(_Model) {
@@ -11,7 +11,7 @@ class Base_Controller {
     }
 
     get(_id) {
-        return this.Model.findById(_id);
+        return this.Model.findByPk(_id);
     }
 
     get_where(_where) {
@@ -19,17 +19,17 @@ class Base_Controller {
     }
 
     insert(model_data_original) {
-        const model_data = utils.remove_empty(model_data_original);
+        const model_data = remove_empty(model_data_original);
         return this.Model.create(model_data, { returning: true });
     }
 
     upsert(model_data_original) {
-        const model_data = utils.remove_empty(model_data_original);
+        const model_data = remove_empty(model_data_original);
         return this.Model.upsert(model_data);
     }
 
     update(model_data_original) {
-        const model_data = utils.remove_empty(model_data_original);
+        const model_data = remove_empty(model_data_original);
         return this.Model.update(model_data, { where: { id: model_data.id } });
     }
 
@@ -46,7 +46,7 @@ class Base_Controller {
                 return this.delete_where({ id: model[1][0].id });
             })
             .catch((err) => {
-                utils.log_json(err);
+                log_json(err);
             });
     }
 

@@ -25,10 +25,9 @@ app.use(router);
 app.use(cookieParser());
 
 // const foo = __dirname.substring(4);
-const foo = __dirname;
-const bar = path.join(foo, '..', 'public')
-console.log(`static path: ${bar}`);
-app.use(express.static(bar));
+const PUBLIC_DIR = path.join(__dirname, '..', 'public')
+console.log(`static path: ${PUBLIC_DIR}`);
+app.use(express.static(PUBLIC_DIR));
 
 app.set('trust proxy', 1); // trust first proxy
 app.use(session({
@@ -46,6 +45,7 @@ import mouse from './routes/mouse_routes';
 import cage from './routes/cage_routes';
 import grid from './routes/grid_routes';
 import project from './routes/project_routes';
+import dropbox from './routes/dropbox_routes';
 
 const hbsutils = hbs_utils(hbs);
 
@@ -55,16 +55,17 @@ helpers.comparison({ handlebars: hbs.handlebars });
 
 app.set('port', (process.env.PORT || 5000));
 
+const VIEW_DIR = path.join(__dirname, '..','views');
 // reg partials
-hbs.registerPartials(`${__dirname}/views/partials`);
-// hbsutils.registerPartials(`${__dirname}/views/partials`);
-// hbsutils.registerWatchedPartials(`${__dirname}/views/partials`);
+hbs.registerPartials(path.join(VIEW_DIR, 'partials'));
+hbsutils.registerPartials(path.join(VIEW_DIR, 'partials'));
+hbsutils.registerWatchedPartials(path.join(VIEW_DIR, 'partials'));
 
-hbs.registerPartials(`${__dirname}/views/partials/form-elements`);
-// hbsutils.registerWatchedPartials(`${__dirname}/views/partials/form-elements`);
+hbs.registerPartials(path.join(VIEW_DIR, 'partials/form-elements'));
+hbsutils.registerWatchedPartials(path.join(VIEW_DIR, 'partials/form-elements'));
 
 // views is directory for all template files
-app.set('views', `${__dirname}/views`);
+app.set('views', VIEW_DIR);
 app.set('view engine', 'hbs');
 
 app.use('/breed', breed);
@@ -72,6 +73,7 @@ app.use('/mouse', mouse);
 app.use('/cage', cage);
 app.use('/grid', grid);
 app.use('/project', project);
+app.use('/', dropbox);
 
 
 app.get('/', (request, response) => {

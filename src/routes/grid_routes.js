@@ -21,37 +21,41 @@ const {
     sanitize_config_name,
 } = require('./utils_grid_routes');
 
-const CONFIG_DIR = path.join(__dirname, '../config/');
-const PUBLIC_DIR = path.join(__dirname, '../public/experiments');
+const CONFIG_DIR = path.join(__dirname, '../../config/');
+const PUBLIC_DIR = path.join(__dirname, '../../public/experiments');
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        const url = req.originalUrl;
+        const url = req["originalUrl"];
         if (url === '/grid/config') {
             cb(null, CONFIG_DIR);
         } else if (url === '/grid/table') {
-            const foo = path.join(PUBLIC_DIR, sanitize_config_name(req.body.config_name_description));
+            const foo = path.join(PUBLIC_DIR, sanitize_config_name(req["body"].config_name_description));
             try {
                 fs.mkdirSync(foo);
             } catch (err) {
-                // console.error(err);
+                console.error(err);
             }
             cb(null, foo);
         }
     },
     filename: (req, file, cb) => {
-        const url = req.originalUrl;
+        const url = req["originalUrl"];
+        let new_name = "";
         if (url === '/grid/config') {
-            cb(null, `${file.fieldname}_${Date.now()}.json`);
+            new_name = `${file.fieldname}_${Date.now()}.json`
+            // cb(null, `${file.fieldname}_${Date.now()}.json`);
         } else if (url === '/grid/table') {
-            const new_name = `${file.originalname}`;
-            cb(null, new_name);
+            new_name = `${file.originalname}`;
         }
+        console.log(`new_name: ${new_name}`);
+        
+        cb(null, new_name);
     },
 });
 const upload = multer({ storage });
 
-const PARTIALS_DIR = path.join(__dirname, '../views/partials/grid/');
+const PARTIALS_DIR = path.join(__dirname, '../../views/partials/grid/');
 
 
 BlueBird.promisifyAll(fs);
@@ -129,8 +133,8 @@ router.post('/config/', cpUpload, (req, res) => {
     if (req.session.config_map) {
         ({ config_map } = req.session);
     }
-    const uploaded_file_uri = req.files.config_file[0].path;
-    const config = JSON.parse(fs.readFileSync(uploaded_file_uri));
+    const uploaded_file_uri = req.files["config_file"][0].path;
+    const config = fs.readFileSync(uploaded_file_uri).toJSON();
 
     Object.keys(config).forEach((config_name) => {
         const {
@@ -144,7 +148,7 @@ router.post('/config/', cpUpload, (req, res) => {
     config_map = { ...config_map };
     req.session.config_map = config_map;
     save_config_to_disk(config_map, CONFIG_DIR);
-    fs.unlinkSync(req.files.config_file[0].path);
+    fs.unlinkSync(req.files["config_file"][0].path);
     console.log(JSON.stringify(config_map, null, 2));
     res.send({ config_map });
 });
@@ -208,6 +212,8 @@ const public_upload_fields = upload.fields([
 
 // create table from csv and image dir
 router.post('/table', public_upload_fields, async (req, res) => {
+    console.log("doingng tble stuff");
+    
     const config_map = add_config(req);
     save_config_to_disk(config_map, CONFIG_DIR);
     const {
@@ -216,8 +222,8 @@ router.post('/table', public_upload_fields, async (req, res) => {
     const {
         grid_data_csv_uri, metadata_csv_uri, tags,
     } = config_map[config_name_description];
-
-    const source = fs.readFileSync(`${PARTIALS_DIR}/grid_table.hbs`, 'utf-8');
+    const grid_table_template_uri = path.join(PARTIALS_DIR, 'grid_table.hbs');
+    const source = fs.readFileSync(grid_table_template_uri, 'utf-8');
     const grid_table_template = hbs.handlebars.compile(source);
 
     const { column_headers, row_value_list } = await create_data_from_csv(grid_data_csv_uri);

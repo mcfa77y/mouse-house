@@ -1,5 +1,5 @@
 const BlueBird = require('bluebird');
-const {falsy: isFalsey} = require('is');
+const {falsy: isFalsey} = require('is_js');
 
 const utils = require('./utils_controller');
 // const city_names = require('../lib/data/city_names.json').city_names;
@@ -7,9 +7,8 @@ const utils = require('./utils_controller');
 const Base_Controller = require('./base_controller');
 const { Project } = require('../database/models');
 
-
 class Project_Controller extends Base_Controller {
-    async pretty(model) {
+    pretty(model) {
         const {
             id, name, note, created_at, updated_at,
         } = model;
@@ -23,10 +22,10 @@ class Project_Controller extends Base_Controller {
         };
     }
 
-    all_pretty() {
+    async all_pretty() {
         const self = this;
-        return super.all().then((items) => BlueBird.map(items, (item) => self.pretty(item)))
-            .then((model_array) => model_array);
+        const all_projects = await super.all();
+        return all_projects.map(project => self.pretty(project));
     }
 
     insert(model) {
@@ -53,11 +52,9 @@ class Project_Controller extends Base_Controller {
     }
 
     async get_experiments(id) {
-        const p = await this.Model.findByPk(id).catch((error) => console.log(`errorx: ${JSON.stringify(error, null, 2)}`));
-        // console.log(`p: ${JSON.stringify(p, null, 2)}`);
-        const e = await p.getExperiments({raw:true});
-        // console.log(`e: ${JSON.stringify(e, null, 2)}`);
-        return e;
+        const project = await this.Model.findByPk(id);
+        const experiments = await project.getExperiments({raw:true});
+        return {project, experiments};
     }
 
     get model() {
