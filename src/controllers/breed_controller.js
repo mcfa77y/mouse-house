@@ -1,11 +1,10 @@
 const BlueBird = require('bluebird');
-const {falsy: isFalsey} = require('is');
+const {falsy: isFalsey} = require('is_js');
 const _ = require('underscore');
 const utils = require('./utils_controller');
 // const city_names = require('../lib/data/city_names.json').city_names
 
 const Base_Controller = require('./base_controller');
-const enum_controller = require('./enum_controller');
 const { Breed } = require('../database/models');
 // const Mouse = require('../database/models').Mouse
 
@@ -60,7 +59,7 @@ class Breed_Controller extends Base_Controller {
     }
     by_id_alias(_id_alias) {
         const self = this;
-        return this.get_where({ id_alias: _id_alias })
+        return super.get_where({ id_alias: _id_alias })
             .then(x => self.pretty(x[0]));
     }
 

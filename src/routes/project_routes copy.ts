@@ -27,11 +27,11 @@ const PUBLIC_DIR = path.join(__dirname, '../public/experiments');
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        const url = req["originalUrl"];
+        const url = req.originalUrl;
         if (url === '/grid/config') {
             cb(null, CONFIG_DIR);
         } else if (url === '/grid/table') {
-            const foo = path.join(PUBLIC_DIR, sanitize_config_name(req["body"].config_name_description));
+            const foo = path.join(PUBLIC_DIR, sanitize_config_name(req.body.config_name_description));
             try {
                 fs.mkdirSync(foo);
             } catch (err) {
@@ -41,7 +41,7 @@ const storage = multer.diskStorage({
         }
     },
     filename: (req, file, cb) => {
-        const url = req["originalUrl"];
+        const url = req.originalUrl;
         if (url === '/grid/config') {
             cb(null, `${file.fieldname}_${Date.now()}.json`);
         } else if (url === '/grid/table') {
@@ -74,7 +74,10 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/:project_id', async (req, res) => {
-    const {project, experiments} = await project_controller.get_experiments(req.params.project_id);
+    const project = await project_controller.get(req.params.project_id);
+    const experiments = await project_controller.get_experiments(req.params.project_id)
+        .catch((error) => console.log(`errora: ${JSON.stringify(error, null, 2)}`));
+
     res.render('pages/project/project_update', 
         { experiments, project });
     // const {
@@ -118,8 +121,8 @@ router.post('/config/', cpUpload, (req, res) => {
     if (req.session.config_map) {
         ({ config_map } = req.session);
     }
-    const uploaded_file_uri = req.files["config_file"][0].path;
-    const config = fs.readFileSync(uploaded_file_uri).toJSON();
+    const uploaded_file_uri = req.files.config_file[0].path;
+    const config = JSON.parse(fs.readFileSync(uploaded_file_uri));
 
     Object.keys(config).forEach((config_name) => {
         const {
@@ -133,7 +136,7 @@ router.post('/config/', cpUpload, (req, res) => {
     config_map = { ...config_map };
     req.session.config_map = config_map;
     save_config_to_disk(config_map, CONFIG_DIR);
-    fs.unlinkSync(req.files["config_file"][0].path);
+    fs.unlinkSync(req.files.config_file[0].path);
     console.log(JSON.stringify(config_map, null, 2));
     res.send({ config_map });
 });

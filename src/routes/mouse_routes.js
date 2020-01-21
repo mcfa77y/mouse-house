@@ -5,7 +5,7 @@ const router = express.Router();
 // const Logger = require('bug-killer');
 const BlueBird = require('bluebird');
 const _ = require('underscore');
-const {falsy: isFalsey} = require('is');
+const {falsy: isFalsey} = require('is_js');
 
 const enum_controller = require('../controllers/enum_controller');
 const breed_controller = require('../controllers/breed_controller');
@@ -33,15 +33,17 @@ router.get('/', (req, res) => {
         mice: mouse_controller.all_pretty(),
     })
         .then(({ input, mice }) => {
-            const status = select_json(input.status);
-            res.render('pages/mouse/mouse_list', {
-                cages: input.cages,
-                mice,
-                status,
-                extra_js: ['mouse_list.bundle.js'],
-                cool_face: cool_face(),
-                model_name: 'mouse',
-            });
+            if(input){
+                const status = select_json(input.status);
+                res.render('pages/mouse/mouse_list', {
+                    cages: input.cages,
+                    mice,
+                    status,
+                    extra_js: ['mouse_list.bundle.js'],
+                    cool_face: cool_face(),
+                    model_name: 'mouse',
+                });
+            }
         })
         .catch((error) => {
             getErrorGif().then((errorImageUrl) => {
@@ -78,22 +80,24 @@ router.get('/create', (req, res) => {
         input: get_inputs(),
     })
         .then(({ input }) => {
-            const status = select_json(input.status);
-            const genotype = select_json(input.genotype);
-            let cages = input.cages.map(cage => ({
-                id: cage.id,
-                description: cage.id_alias,
-            }));
-            const sex = select_json(input.sex);
-            cages = select_json(cages);
-            res.render('pages/mouse/mouse_create', {
-                status,
-                genotype,
-                cages,
-                sex,
-                extra_js: ['mouse_create.bundle.js'],
-                cool_face: cool_face(),
-            });
+            if (input){
+                const status = select_json(input.status);
+                const genotype = select_json(input.genotype);
+                let cages = input.cages.map(cage => ({
+                    id: cage.id,
+                    description: cage.id_alias,
+                }));
+                const sex = select_json(input.sex);
+                cages = select_json(cages);
+                res.render('pages/mouse/mouse_create', {
+                    status,
+                    genotype,
+                    cages,
+                    sex,
+                    extra_js: ['mouse_create.bundle.js'],
+                    cool_face: cool_face(),
+                });
+            }
         })
         .catch((error) => {
             getErrorGif().then((errorImageUrl) => {
@@ -269,7 +273,7 @@ router.post('/breed_mice_together', (req, res) => {
             male_id,
             female_id,
         };
-        return breed_controller.insert(new_breed)
+        return breed_controller.default.insert(new_breed)
             .then((breed) => {
                 const updated_breed = {
                     id_alias: `b${breed.id}`,

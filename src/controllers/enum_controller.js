@@ -24,6 +24,12 @@ class Controller extends Base_Controller {
         return enum_id_map;
       });
   }
+  by_type_desc(_code, _description) {
+    return Enum.findOne({
+      attributes: ['id', 'description'],
+      where: { description: _description, type: _code }
+    })
+  }
   get model() {
     return Enum;
   }
@@ -53,11 +59,11 @@ const memoize_methods = {
   // }, { promise: true }),
 
   by_type_desc: d((_code, _description) => Enum.findOne({
-            attributes: ['id', 'description'],
-            where: { description: _description, type: _code }
-        }), { promise: true }),
+    attributes: ['id', 'description'],
+    where: { description: _description, type: _code }
+  }), { promise: true }),
 
-  get: d((_id) => Enum.findById(_id, { attributes: ['description'] }), { promise: true }),
+  get: d((_id) => Enum.findByPk(_id, { attributes: ['description'] }), { promise: true }),
 };
 
 Object.defineProperties(Controller.prototype, memoizeMethods(memoize_methods));

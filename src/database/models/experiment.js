@@ -2,7 +2,7 @@
 // import DEFAULT_OPTIONS from './default_options.json';
 const DEFAULT_OPTIONS = require('./default_options.json');
 
-DEFAULT_OPTIONS.tableName = 'Experiments';
+const OPTIONS = Object.assign({tableName: 'Experiments'}, DEFAULT_OPTIONS); 
 // module.exports = (sequelize, DataTypes) => {
 export default (sequelize, DataTypes) => {
     const Experiment = sequelize.define('Experiment', {
@@ -12,7 +12,7 @@ export default (sequelize, DataTypes) => {
         metadata_uri: DataTypes.STRING,
         image_config: DataTypes.JSONB,
         tag_config: DataTypes.JSONB,
-    }, DEFAULT_OPTIONS);
+    }, OPTIONS);
     Experiment.associate = (models) => {
         Experiment.Projects = Experiment.belongsToMany(models.Project,
             { through: 'Project_Experiments' });

@@ -201,15 +201,15 @@ export function setup_table({ model_name, column_names, hide_id_column = false }
     function update_crud_buttons() {
         const data = table.rows({ selected: true }).data().pluck('id');
 
-        let disableDelete = true;
-        let disableUpdate = true;
+        let disableDelete = "true";
+        let disableUpdate = "true";
 
         if (data.length === 1) {
-            disableDelete = false;
-            disableUpdate = false;
+            disableDelete = "false";
+            disableUpdate = "false";
         } else if (data.length > 1) {
-            disableDelete = false;
-            disableUpdate = true;
+            disableDelete = "false";
+            disableUpdate = "true";
         }
 
         delete_button.attr('disabled', disableDelete);

@@ -142,7 +142,12 @@ const get_config = (req, config_name) => {
     if (req.session.config_map) {
         ({ config_map } = req.session);
     }
-    return config_map[sanitize_config_name(config_name)];
+    if (config_map[sanitize_config_name(config_name)] != undefined){
+        return config_map[sanitize_config_name(config_name)];
+    }
+    else {
+        return {};
+    }
 };
 
 module.exports = {
