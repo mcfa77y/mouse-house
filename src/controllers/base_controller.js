@@ -1,4 +1,4 @@
-const {log_json, remove_empty} = require('./utils_controller');
+const { log_json, remove_empty } = require('./utils_controller');
 // Constructor
 class Base_Controller {
     constructor(_Model) {
@@ -44,9 +44,6 @@ class Base_Controller {
             .then((model) => {
                 console.log(model);
                 return this.delete_where({ id: model[1][0].id });
-            })
-            .catch((err) => {
-                log_json(err);
             });
     }
 

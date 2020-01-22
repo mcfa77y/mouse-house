@@ -1,6 +1,5 @@
 const BlueBird = require('bluebird');
-const {falsy: isFalsey} = require('is_js');
-const _ = require('underscore');
+const { falsy: isFalsey } = require('is_js');
 const utils = require('./utils_controller');
 // const city_names = require('../lib/data/city_names.json').city_names
 
@@ -10,7 +9,6 @@ const { Breed } = require('../database/models');
 
 class Breed_Controller extends Base_Controller {
     pretty(model) {
-        const self = this;
         return BlueBird.props({
             genotype: model.getGenotype(),
             male: model.getMale(),
@@ -31,7 +29,7 @@ class Breed_Controller extends Base_Controller {
                     id: female.id_alias,
                     age: utils.relative_time(female.dob),
                 };
-                
+
 
                 pretty_model.id = parseInt(model.id, 10);
                 pretty_model.id_alias = model.id_alias;
@@ -52,39 +50,39 @@ class Breed_Controller extends Base_Controller {
                 return pretty_model;
             });
     }
+
     all_pretty() {
         const self = this;
-        return super.all().then(items => BlueBird.map(items, item => self.pretty(item)))
-            .then(model_array => model_array);
+        return super.all().then((items) => BlueBird.map(items, (item) => self.pretty(item)))
+            .then((model_array) => model_array);
     }
+
     by_id_alias(_id_alias) {
         const self = this;
         return super.get_where({ id_alias: _id_alias })
-            .then(x => self.pretty(x[0]));
+            .then((x) => self.pretty(x[0]));
     }
 
     insert(model_original) {
-        const self = this;
         const model = utils.remove_empty(model_original, true);
         return Breed.create(model, {
             include: [
-                {association: Breed.Note},
-                {association: Breed.Male},
-                {association: Breed.Female}],
+                { association: Breed.Note },
+                { association: Breed.Male },
+                { association: Breed.Female }],
             returning: true,
         })
             .catch((err) => {
                 console.log(err);
             });
     }
+
     update(model_original) {
-        const self = this;
         const _model = utils.remove_empty(model_original, true);
         return Breed.update(_model, {
             where: { id: _model.id },
-            include: [{ 
-                association: Breed.Note},
-                {association: Breed.Mouse }],
+            include: [{ association: Breed.Note },
+                { association: Breed.Mouse }],
             returning: true,
         })
             .then((updated_model) => {
@@ -96,12 +94,15 @@ class Breed_Controller extends Base_Controller {
             })
             .then(({ note, model }) => {
                 if (!isFalsey(_model.note)) {
-                    isFalsey(note) ? model.createNote(_model.note) : note.update(_model.note);
+                    if (isFalsey(note)) {
+                        model.createNote(_model.note);
+                    } else {
+                        note.update(_model.note);
+                    }
                 }
             });
     }
 }
 
 // module.exports = new Breed_Controller(Breed);
-export default new Breed_Controller(Breed)
-
+export default new Breed_Controller(Breed);

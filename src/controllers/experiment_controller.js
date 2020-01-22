@@ -1,55 +1,39 @@
-const BlueBird = require('bluebird');
-const {falsy: isFalsey} = require('is_js');
-
 const utils = require('./utils_controller');
-// const city_names = require('../lib/data/city_names.json').city_names;
-
 const Base_Controller = require('./base_controller');
 const { Experiment } = require('../database/models');
 
-
 class Experiment_Controller extends Base_Controller {
     pretty(model) {
-        return {};
-        // const self = this;
-        // return BlueBird.props({
-        //     type: model.getType(),
-        //     mice: model.getMice(),
-        //     note: model.getNote(),
-        // })
-        //     .then(({ type, mice, note }) => {
-        //         const pretty_model = {};
-
-        //         pretty_model.id = model.id;
-        //         pretty_model.id_alias = model.id_alias;
-        //         pretty_model.note = isFalsey(note) ? '' : note.text;
-        //         pretty_model.type = isFalsey(type) ? '' : type.description;
-        //         pretty_model.type_id = isFalsey(type) ? '' : `${type.id}`;
-        //         pretty_model.end_date = utils.format_date(model.end_date);
-        //         pretty_model.mice = mice;
-        //         pretty_model.mouse_ids = mice.map((m) => `${m.id}`);
-        //         return pretty_model;
-        //     })
-        //     .catch((err) => {
-        //         utils.log_json(err);
-        //     });
+        const {
+            id, name, note, created_at, updated_at,
+            grid_data_uri,
+            metadata_uri,
+            image_config,
+            tag_config,
+        } = model;
+        // const experiments = await model.getExperiments({ raw: true });
+        return {
+            id,
+            name,
+            note,
+            created_at: utils.format_date(created_at),
+            updated_at: utils.format_date(updated_at),
+            grid_data_uri,
+            metadata_uri,
+            image_config,
+            tag_config,
+        };
     }
 
-    all_pretty() {
+    async all_pretty() {
         const self = this;
-        return super.all().then((items) => BlueBird.map(items, (item) => self.pretty(item)))
-            .then((model_array) => model_array);
+        const all_experiments = await super.all();
+        return all_experiments.map((experiment) => self.pretty(experiment));
     }
 
     insert(model) {
-        // const self = this;
         const _model = utils.remove_empty(model, true);
-        // if(isFalsey(_model.name)){
-        //     _model.name = city_names[Math.floor(Math.random() * city_names.length)]
-        // }
-       
-        return Experiment.create(_model,  {
-            include: [{ association: Experiment.Projects }],
+        return Experiment.create(_model, {
             returning: true,
         })
             .catch((err) => {
@@ -64,6 +48,12 @@ class Experiment_Controller extends Base_Controller {
             where: { id: _model.id },
             returning: true,
         });
+    }
+
+    async get_projects(id) {
+        const experiment = await this.Model.findByPk(id);
+        const projects = await experiment.getProjects({ raw: true });
+        return { projects, experiment };
     }
 
     get model() {

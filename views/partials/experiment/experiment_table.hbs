@@ -4,8 +4,10 @@
             <th>ID</th>
             <th>Experiment</th>
             <th>Note</th>
-            <th>Grid Data URI</th>
+            <th>Grid data URI</th>
             <th>Metadata URI</th>
+            <th>Image config</th>
+            <th>Tag config</th>
 
             <th>Updated at</th>
             <th>Created at</th>
@@ -15,10 +17,12 @@
         {{#each experiments}}
         <tr>
             <td>{{id}}</td>
-            <td><a href="experiment/{{id}}">{{name}}</a></td>
+            <td><a href="/experiment/{{id}}">{{name}}</a></td>
             <td>{{ellipsis note 32}}</td>
             <td>{{grid_data_uri}}</td>
             <td>{{metadata_uri}}</td>
+            <td>{{image_config}}</td>
+            <td>{{tag_config}}</td>
             <td>{{updated_at}}</td>
             <td>{{created_at}}</td>
         </tr>

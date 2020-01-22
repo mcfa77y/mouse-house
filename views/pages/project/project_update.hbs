@@ -58,7 +58,7 @@
                     <span></span>
                     <span></span>
                 </button>
-                {{> project/experiment_table}}
+                {{> experiment/experiment_table}}
                 <div class="row mt-3">
                     <div class="col-md-12">
                         {{>crud_buttons model_name='experiment'}}
@@ -74,11 +74,11 @@
 </div>
 
 
-    <script>
-        $(document).ready(function () {
-            $('#sidebarCollapse').on('click', function () {
-                $('#sidebar').toggleClass('active');
-                $(this).toggleClass('active');
-            });
+<script>
+    $(document).ready(function () {
+        $('#sidebarCollapse').on('click', function () {
+            $('#sidebar').toggleClass('active');
+            $(this).toggleClass('active');
         });
-    </script>
+    });
+</script>
