@@ -1,24 +1,20 @@
 
-const fs = require('fs');
-const path = require('path');
-const {Sequelize} = require('sequelize');
+const { Sequelize } = require('sequelize');
 
 // const basename = path.basename(module.filename);
-const basename = 'index.js';
+
 const env = process.env.NODE_ENV || 'development';
-// const config = require(`${__dirname}/../config/config.json`)[env];
-const readJson = require('r-json');
-console.log("enter index.js model: "+__dirname);
-// const foo = __dirname;
-// const bar = path.resolve(foo, '/../config/config.json');
-// const config = readJson(bar)[env];
+
+console.log(`enter index.js model: ${__dirname}`);
+
 const config = require('../config/config.json')[env];
+
 const db = {};
 let sequelize;
 
 if (process.env.NODE_ENV === 'production') {
     console.log('using prod for db');
-    
+
     sequelize = new Sequelize(process.env.DATABASE_URL, {
         dialect: 'postgres',
         dialectOptions: {
@@ -36,7 +32,7 @@ if (process.env.NODE_ENV === 'production') {
 } else {
     console.log('using default config for db');
     // console.log(`config: ${JSON.stringify(config, null, 2)}`);
-    
+
     sequelize = new Sequelize(config.database, config.username, config.password, config);
 }
 
@@ -62,20 +58,20 @@ if (process.env.NODE_ENV === 'production') {
 //         const model = sequelize.import(bar);
 //         db[model.name] = model;
 //         console.log("end import");
-        
+
 //     });
 
-let modules = [
+const modules = [
     require('./project'),
     require('./experiment'),
-    require('./project_experiment')
-  ];
+    require('./project_experiment'),
+];
 
 // Initialize models
 modules.forEach((module) => {
     const model = module.default(sequelize, Sequelize);
     db[model.name] = model;
-    console.log('added Model: ' + model.name);
+    console.log(`added Model: ${model.name}`);
 });
 
 Object.keys(db).forEach((modelName) => {

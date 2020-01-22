@@ -176,14 +176,15 @@
 import { setup_table, setup_list_page_buttons } from './cs-model-common';
 
 
-$(document).ready(function () {
+$(document).ready(() => {
     const model_name = 'project';
-    const column_names = ['id', 'name', 'note', 'updated_at', 'created_at']
+    const column_names = ['id', 'name', 'note', 'updated_at', 'created_at'];
     const project_table = setup_table({ model_name, column_names, hide_id_column: true });
 
+    setup_list_page_buttons(model_name, project_table);
 
-    $(document).ready(function () {
-        $('#sidebarCollapse').on('click', function () {
+    $(document).ready(() => {
+        $('#sidebarCollapse').on('click', () => {
             $('#sidebar').toggleClass('active');
         });
     });

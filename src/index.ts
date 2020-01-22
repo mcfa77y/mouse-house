@@ -45,17 +45,17 @@ import mouse from './routes/mouse_routes';
 import cage from './routes/cage_routes';
 import grid from './routes/grid_routes';
 import project from './routes/project_routes';
+import experiment from './routes/experiment_routes';
 import dropbox from './routes/dropbox_routes';
 
 const hbsutils = hbs_utils(hbs);
-
 
 helpers.string({ handlebars: hbs.handlebars });
 helpers.comparison({ handlebars: hbs.handlebars });
 
 app.set('port', (process.env.PORT || 5000));
 
-const VIEW_DIR = path.join(__dirname, '..','views');
+const VIEW_DIR = path.join(__dirname, '..', 'views');
 // reg partials
 hbs.registerPartials(path.join(VIEW_DIR, 'partials'));
 hbsutils.registerPartials(path.join(VIEW_DIR, 'partials'));
@@ -73,6 +73,7 @@ app.use('/mouse', mouse);
 app.use('/cage', cage);
 app.use('/grid', grid);
 app.use('/project', project);
+app.use('/experiment', experiment);
 app.use('/', dropbox);
 
 

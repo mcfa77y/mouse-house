@@ -5,7 +5,7 @@ const router = express.Router();
 // const Logger = require('bug-killer');
 const BlueBird = require('bluebird');
 const _ = require('underscore');
-const {falsy: isFalsey} = require('is_js');
+const { falsy: isFalsey } = require('is_js');
 
 const enum_controller = require('../controllers/enum_controller');
 const breed_controller = require('../controllers/breed_controller');
@@ -33,7 +33,7 @@ router.get('/', (req, res) => {
         mice: mouse_controller.all_pretty(),
     })
         .then(({ input, mice }) => {
-            if(input){
+            if (input) {
                 const status = select_json(input.status);
                 res.render('pages/mouse/mouse_list', {
                     cages: input.cages,
@@ -80,10 +80,10 @@ router.get('/create', (req, res) => {
         input: get_inputs(),
     })
         .then(({ input }) => {
-            if (input){
+            if (input) {
                 const status = select_json(input.status);
                 const genotype = select_json(input.genotype);
-                let cages = input.cages.map(cage => ({
+                let cages = input.cages.map((cage) => ({
                     id: cage.id,
                     description: cage.id_alias,
                 }));
@@ -119,7 +119,7 @@ router.get('/:id_alias', (req, res) => {
         .then((input) => {
             const status = select_json(input.status);
             const genotype = select_json(input.genotype);
-            let cages = input.cages.map(cage => ({
+            let cages = input.cages.map((cage) => ({
                 id: cage.id,
                 description: cage.id_alias,
             }));
@@ -174,7 +174,7 @@ router.delete('/:id', (req, res) => {
 // create action mice
 router.put('/', (req, res) => {
     log_json(req.body);
-    
+
     BlueBird.props({
         model: create_model(req.body),
         sex_id_map: enum_controller.by_type_map(mouse_controller.SEX),
@@ -182,7 +182,7 @@ router.put('/', (req, res) => {
         .then(({ model, sex_id_map }) => {
             const slider_sex_ids = ['male', 'female', 'unknown'];
             const create_mouse_promises = slider_sex_ids
-                .filter(sex_type => parseInt(model[sex_type], 10) > 0)
+                .filter((sex_type) => parseInt(model[sex_type], 10) > 0)
                 .map((sex_type) => {
                     const tmp_model = model;
                     tmp_model.sex_id = sex_id_map[sex_type];
@@ -210,14 +210,14 @@ router.post('/cage_mice_together', (req, res) => {
         cage.id_alias = req.body.cage_id_alias;
         cage.setup_date = today();
         cage_id_promise = cage_controller.insert(cage)
-            .then(c => c.id);
+            .then((c) => c.id);
     } else {
         cage_id_promise = Promise.resolve(req.body.cage_id[0]);
     }
 
     cage_id_promise.then((cage_id) => {
         const update_promises = req.body.mouse_ids
-            .map(id => mouse_controller.update({ id, cage_id }));
+            .map((id) => mouse_controller.update({ id, cage_id }));
 
         Promise.all(update_promises)
             .then(() => res.send({ success: true }))
@@ -237,11 +237,11 @@ router.post('/update_mice_status', (req, res) => {
 
     status_id_promise.then((status_id) => {
         const update_promises = req.body.mouse_ids
-            .map(id => mouse_controller.update({ id, status_id }));
+            .map((id) => mouse_controller.update({ id, status_id }));
 
         Promise.all(update_promises)
             .then(() => enum_controller.get(status_id))
-            .then(status => res.send({
+            .then((status) => res.send({
                 success: true,
                 status: status.description,
             }))
@@ -267,7 +267,7 @@ router.post('/breed_mice_together', (req, res) => {
     const { mouse_group_by_sex } = req.body;
     const female_id_list = mouse_group_by_sex.female;
     const male_id_list = mouse_group_by_sex.male;
-    const create_breed_promises = female_id_list.map(female_id => male_id_list.map((male_id) => {
+    const create_breed_promises = female_id_list.map((female_id) => male_id_list.map((male_id) => {
         const new_breed = {
             pairing_date: Date(),
             male_id,
@@ -280,9 +280,9 @@ router.post('/breed_mice_together', (req, res) => {
                 };
                 const update_breed = breed.update(updated_breed);
                 const update_male = mouse_controller.get(male_id)
-                    .then(mouse => mouse.addBreed(breed));
+                    .then((mouse) => mouse.addBreed(breed));
                 const update_female = mouse_controller.get(female_id)
-                    .then(mouse => mouse.addBreed(breed));
+                    .then((mouse) => mouse.addBreed(breed));
 
                 return Promise.all([update_breed, update_male, update_female]);
             });
