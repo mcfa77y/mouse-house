@@ -3,7 +3,7 @@ const
 const NodeCache = require('node-cache');
 const rp = require('request-promise');
 const config = require('./config');
-import { Router, Request, Response, NextFunction } from 'express';
+import { Request, Response, NextFunction } from 'express';
 
 const mycache = new NodeCache();
 
@@ -120,7 +120,7 @@ class Dropbox_Controller {
                 if (paths.length > 0) {
                     console.log('paths: ' + paths);
 
-                    res.render('pages/project/project_list', { imgs: paths, projects: {} });
+                    res.redirect('/project')
                 } else {
                     // if no images, ask user to upload some
                     res.render('empty', { layout: false });

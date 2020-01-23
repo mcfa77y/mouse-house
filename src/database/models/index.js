@@ -1,7 +1,9 @@
 
 const { Sequelize } = require('sequelize');
 
-// const basename = path.basename(module.filename);
+const project = require('./project');
+const experiment = require('./experiment');
+const project_experiment = require('./project_experiment');
 
 const env = process.env.NODE_ENV || 'development';
 
@@ -36,35 +38,11 @@ if (process.env.NODE_ENV === 'production') {
     sequelize = new Sequelize(config.database, config.username, config.password, config);
 }
 
-// const good_guys = ['project.js', 'experiment.js', 'project_experiment.js']
-
-// fs
-//     .readdirSync(__dirname)
-//     .filter((file) => {
-//         const keep = (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js')
-//         // console.log(`file: ${file} - ${keep}`);
-//         return keep
-//     })
-//     .filter((file) => {
-//         const keep = good_guys.indexOf(file) >= 0;
-//         // console.log(`file: ${file} - ${keep}`);
-//         return keep
-//     })
-//     .forEach((file) => {
-//         // const foo = __dirname.substring(4);
-//         const foo = __dirname;
-//         const bar = path.join(__dirname, file);
-//         console.log(`start import file: ${bar}`);
-//         const model = sequelize.import(bar);
-//         db[model.name] = model;
-//         console.log("end import");
-
-//     });
 
 const modules = [
-    require('./project'),
-    require('./experiment'),
-    require('./project_experiment'),
+    project,
+    experiment,
+    project_experiment,
 ];
 
 // Initialize models
