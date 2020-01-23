@@ -3,19 +3,14 @@ const BlueBird = require('bluebird');
 const fs = require('fs');
 const { falsy: isFalsey } = require('is_js');
 
+const { select_json, log_json, getErrorGif } = require('./utils_routes');
 const project_controller = require('../controllers/project_controller');
+const experiment_controller = require('../controllers/experiment_controller');
 
 const router = express.Router();
 BlueBird.promisifyAll(fs);
 
 router.get('/', async (req, res) => {
-    let config_map = [];
-    if (req.session.config_map) {
-        ({ config_map } = req.session);
-    } else {
-        req.session.config_map = config_map;
-        // res.cookie('config_map', config_map);
-    }
     const projects = await project_controller.all_pretty();
     res.render('pages/project/project_list', {
         extra_js: ['project_list.bundle.js'],
@@ -23,9 +18,51 @@ router.get('/', async (req, res) => {
     });
 });
 
+// create page
+router.get('/create', async (req, res) => {
+    console.log('foobar');
+    
+    const experiments = await experiment_controller.all_pretty();
+    const experiments_select = select_json(experiments
+        .map(model => ({ id: model.id, description: model.name })));
+    console.log(`experiments_select: ${JSON.stringify(experiments_select, null, 2)}`);
+    
+    
+    res.render('pages/project/project_create',
+        {
+            experiments, 
+            experiments_select,
+            extra_js: ['project_create.bundle.js'],
+        });
+})
+
+// create action
+router.put('/', (req, res) => {
+    const {note, name, } = (req.body);
+    const model = {note, name};
+    console.log(`model: ${JSON.stringify(model, null, 2)}`);
+    console.log(`req.body: ${JSON.stringify(req.body, null, 2)}`);
+    
+    // breed_controller.default.insert(model)
+    //     .then(() => {
+    //         res.send({
+    //             success: true,
+    //         });
+    //     })
+    //     .catch((err) => {
+    //         res.status(500).send({
+    //             success: false,
+    //             err,
+    //         });
+    //     });
+});
+
+
+// update page
 router.get('/:project_id', async (req, res) => {
+    const { project_id } = req.params;
     const { project, experiments } = await project_controller
-        .get_experiments(req.params.project_id);
+        .get_experiments(project_id);
     res.render('pages/project/project_update',
         { experiments, project });
 });
