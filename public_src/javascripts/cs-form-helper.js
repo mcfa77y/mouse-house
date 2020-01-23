@@ -47,7 +47,6 @@ export function name_to_val(el) {
 }
 export function form_ids_vals(form_id) {
     const form = $(`#${form_id}`);
-    const form_data = new FormData();
     return [].concat(form.find(':text, select, :hidden, input').toArray()
         .filter(el => $(el).attr('id') !== undefined)
         .filter(el => $(el).attr('id').length > 0)

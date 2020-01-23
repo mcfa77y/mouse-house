@@ -25,6 +25,8 @@ module.exports = [
             grid_list: path.resolve(JS_DIR, 'cs-grid-list.js'),
             project_list: path.resolve(JS_DIR, 'cs-project-list.js'),
             experiment_list: path.resolve(JS_DIR, 'cs-experiment-list.js'),
+            project_create: path.resolve(JS_DIR, 'cs-project-create.js'),
+            experiment_create: path.resolve(JS_DIR, 'cs-experiment-create.js'),
         },
         devtool: 'cheap-module-eval-source-map',
         // devServer: {

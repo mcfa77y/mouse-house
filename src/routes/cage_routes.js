@@ -9,6 +9,8 @@ const utils = require('./utils_cage_routes');
 const { cool_face, select_json, log_json } = require('./utils_routes');
 
 router.get('/', (req, res) => {
+    console.log('get cage list');
+    
     BlueBird.props({
         cages: cage_controller.all_pretty(),
     })
