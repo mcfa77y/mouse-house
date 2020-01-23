@@ -1,23 +1,21 @@
-
-import express from 'express';
-
-const app = express();
+import { Router, Application } from 'express';
+import express = require('express');
 import path from 'path';
 import logger from 'morgan'
 import cookieParser from 'cookie-parser';
-import bodyParser from 'body-parser';
-// const cors = require('cors');
 import helmet from 'helmet';
 import hbs_utils from 'hbs-utils';
 import session from 'express-session';
-// const routes = require('./routes/index');
-const router = express.Router();
+// const cors = require('cors');
 
+
+const app: Application = express();
+const router = Router();
 
 app.use(logger('dev'));
 app.use(helmet());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({
+app.use(express.json());
+app.use(express.urlencoded({
     extended: true,
 }));
 app.use(router);
@@ -47,6 +45,7 @@ import grid from './routes/grid_routes';
 import project from './routes/project_routes';
 import experiment from './routes/experiment_routes';
 import dropbox from './routes/dropbox_routes';
+import multer = require('multer');
 
 const hbsutils = hbs_utils(hbs);
 

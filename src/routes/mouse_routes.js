@@ -1,17 +1,16 @@
+import { range } from 'underscore';
+
 const express = require('express');
-
-const router = express.Router();
-
-// const Logger = require('bug-killer');
 const BlueBird = require('bluebird');
-const _ = require('underscore');
 const { falsy: isFalsey } = require('is_js');
 
 const enum_controller = require('../controllers/enum_controller');
 const breed_controller = require('../controllers/breed_controller');
 const mouse_controller = require('../controllers/mouse_controller');
 const cage_controller = require('../controllers/cage_controller');
-// const utils = require('./utils_routes');
+
+const router = express.Router();
+
 const {
     select_json, log_json, getErrorGif, cool_face, today,
 } = require('./utils_routes');
@@ -153,9 +152,7 @@ router.get('/:id_alias', (req, res) => {
 router.delete('/:id', (req, res) => {
     const rm_ids = isFalsey(req.query.id_alias) ? req.params.id : req.params.id_alias;
 
-    const rm_promises = rm_ids.split(',').map((id) => {
-        mouse_controller.delete(id);
-    });
+    const rm_promises = rm_ids.split(',').map((id) => mouse_controller.delete(id));
 
     return Promise.all(rm_promises)
         .then(() => {
@@ -186,7 +183,7 @@ router.put('/', (req, res) => {
                 .map((sex_type) => {
                     const tmp_model = model;
                     tmp_model.sex_id = sex_id_map[sex_type];
-                    const create_mouse_count = _.range(parseInt(tmp_model[sex_type], 10));
+                    const create_mouse_count = range(parseInt(tmp_model[sex_type], 10));
                     return create_mouse_count.map(() => mouse_controller.insert(tmp_model));
                 });
             return Promise.all(create_mouse_promises);
@@ -315,4 +312,5 @@ router.post('/', (req, res) => {
         });
 });
 
-module.exports = router;
+// module.exports = router;
+export default router;

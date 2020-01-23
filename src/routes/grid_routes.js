@@ -161,9 +161,8 @@ router.post('/tags/', cpUpload, (req, res) => {
     });
 });
 
-const any_upload_fields = upload.any();
 // create card
-router.post('/card', any_upload_fields, async (req, res) => {
+router.post('/card', upload.none(), async (req, res) => {
     const {
         index, config_name_description,
     } = req.body;
