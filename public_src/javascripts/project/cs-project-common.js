@@ -1,6 +1,6 @@
 import contains from 'underscore-es/contains';
-import { setup_table } from './cs-model-common';
-import { column_names as experiment_column_names, model_name as experiment_model_name } from './cs-experiment-common';
+import { setup_table } from '../cs-model-common';
+import { column_names as experiment_column_names, model_name as experiment_model_name } from '../experiment/cs-experiment-common';
 
 export const model_name = 'project';
 

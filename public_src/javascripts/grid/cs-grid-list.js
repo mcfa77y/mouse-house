@@ -2,7 +2,7 @@ import Axios from 'axios';
 const {falsy: isFalsey} = require('is_js');
 import * as Toastr from 'toastr';
 
-import { form_ids_vals } from './cs-form-helper';
+import { form_ids_vals } from '../cs-form-helper';
 import { GRID_MODE, error } from './cs-grid-utils';
 import { setup_tag } from './cs-grid-tag';
 import { setup_grid_cells, set_grid_mode } from './cs-grid-cell';

@@ -16,6 +16,8 @@ export default (sequelize, DataTypes) => {
     Experiment.associate = (models) => {
         Experiment.Projects = Experiment.belongsToMany(models.Project,
             {
+                as: "projects",
+                foreignKey: 'experiment_id',
                 through: 'Project_Experiments',
                 onDelete: 'CASCADE',
             });

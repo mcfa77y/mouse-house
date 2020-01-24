@@ -1,7 +1,7 @@
 import Axios from 'axios';
 import * as SmilesDrawer from 'smiles-drawer';
 
-import { form_ids_vals } from './cs-form-helper';
+import { form_ids_vals } from '../cs-form-helper';
 import { GRID_MODE, CELL_TAG, get_target_element_by_class, error } from './cs-grid-utils';
 import { set_cell_tag } from './cs-grid-tag';
 

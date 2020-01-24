@@ -3,7 +3,7 @@ import * as toastr from 'toastr';
 
 import { CELL_TAG, GRID_MODE } from './cs-grid-utils';
 import { get_grid_mode, set_grid_mode } from './cs-grid-cell';
-import { form_ids_vals } from './cs-form-helper';
+import { form_ids_vals } from '../cs-form-helper';
 
 export const set_cell_tag = (cell_tag, target_element) => {
     Object.values(CELL_TAG).forEach((tag) => {

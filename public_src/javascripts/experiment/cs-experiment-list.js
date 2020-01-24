@@ -1,4 +1,4 @@
-import { setup_table, setup_list_page_buttons } from './cs-model-common';
+import { setup_table, setup_list_page_buttons } from '../cs-model-common';
 import { model_name, column_names } from './cs-experiment-common';
 
 $(document).ready(() => {

@@ -1,5 +1,5 @@
 const BlueBird = require('bluebird');
-const {falsy: isFalsey} = require('is_js');
+const { falsy: isFalsey } = require('is_js');
 
 const utils = require('./utils_controller');
 // const city_names = require('../lib/data/city_names.json').city_names;
@@ -29,32 +29,35 @@ class Project_Controller extends Base_Controller {
     }
 
     insert(model) {
-        // const self = this;
-        const _model = utils.remove_empty(model, true);
-        // if(isFalsey(_model.name)){
-        //     _model.name = city_names[Math.floor(Math.random() * city_names.length)]
-        // }
-        return Project.create(_model, {
-            returning: true,
-        })
+        console.log(`_model: ${JSON.stringify(model, null, 2)}`);
+
+        return Project.create(model, { returning: true })
+            .then((proj_model) => {
+                const { experiments } = model;
+                if (Array.isArray(experiments) && experiments.length) {
+                    return proj_model.addExperiments(experiments);
+                }
+                return proj_model;
+            })
             .catch((err) => {
                 console.error(err);
             });
     }
 
     update(model) {
-        const _model = utils.remove_empty(model, true);
-
-        return Project.update(_model, {
-            where: { id: _model.id },
+        return Project.update(model, {
+            where: { id: model.id },
+            include: [{ association: Project.Experiments }],
             returning: true,
         });
     }
 
     async get_experiments(id) {
         const project = await this.Model.findByPk(id);
-        const experiments = await project.getExperiments({raw:true});
-        return {project, experiments};
+        const experiments = await project.getExperiments({ attributes: {
+        },
+        raw: true });
+        return { project, experiments };
     }
 
     get model() {

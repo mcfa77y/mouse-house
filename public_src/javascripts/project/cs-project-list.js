@@ -173,7 +173,7 @@
 //         y.setValue(config_name_description);
 //     }
 // });
-import { setup_table, setup_list_page_buttons } from './cs-model-common';
+import { setup_table, setup_list_page_buttons } from '../cs-model-common';
 
 
 $(document).ready(() => {
