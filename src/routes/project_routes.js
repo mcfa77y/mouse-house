@@ -14,7 +14,7 @@ function create_model({ name, note, experiment_ids }) {
     return {
         name,
         note,
-        experiment_ids: experiment_ids.split(','),
+        experiments: experiment_ids.split(',').map(id => parseInt(id)),
     };
 }
 
@@ -47,41 +47,6 @@ router.get('/create', async (req, res) => {
 // create action
 // ajax response
 router.put('/', upload.none(), (req, res) => {
-    const { note, name, experiment_ids } = (req.body);
-
-    const model = {
-        note,
-        name,
-        experiment_ids: experiment_ids.split(','),
-    };
-
-    project_controller.insert(model)
-        .then(() => {
-            res.send({
-                success: true,
-            });
-        })
-        .catch((err) => {
-            res.status(500).send({
-                success: false,
-                err,
-            });
-        });
-});
-
-
-// update page
-router.get('/:project_id', async (req, res) => {
-    const { project_id } = req.params;
-    const { project, experiments } = await project_controller
-        .get_experiments(project_id);
-    res.render('pages/project/project_update',
-        { experiments, project });
-});
-
-// create action
-// ajax response
-router.put('/', upload.none(), (req, res) => {
     const model = create_model(req.body);
 
     project_controller.insert(model)
@@ -98,9 +63,29 @@ router.put('/', upload.none(), (req, res) => {
         });
 });
 
+// update page
+router.get('/:project_id', async (req, res) => {
+    const { project_id } = req.params;
+    const { project, experiments } = await project_controller
+        .get_experiments(project_id);
+
+    const all_experiments = await experiment_controller.all_pretty();
+    const all_experiments_select = select_json(all_experiments
+        .map((model) => ({ id: model.id, description: model.name })));
+
+    res.render('pages/project/project_update',
+        {
+            project,
+            experiments: all_experiments,
+            experiments_select: all_experiments_select,
+            extra_js: ['project_update.bundle.js'],
+        });
+});
+
+
 // update action
 // ajax response
-router.put('/', upload.none(), (req, res) => {
+router.post('/', upload.none(), (req, res) => {
     const model = create_model(req.body);
 
     project_controller.update(model)

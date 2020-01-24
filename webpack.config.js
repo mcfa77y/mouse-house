@@ -1,33 +1,42 @@
 const path = require('path');
 // const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const webpack = require('webpack');
-
+const fs = require('fs');
 // const CONTROLLER_JS_DIR = './src/controllers';
 // const ROUTES_JS_DIR = './src/routes';
 const JS_DIR = './public_src/javascripts';
 const PUBLIC_DIR = './public';
 const MODE = 'development';
 
+
+const modules = ['grid', 'project', 'experiment'];
+function create_entry(){
+    // traverse modules inside of JS_DIR
+    return modules.reduce((acc, module) => {
+        const module_dir = path.resolve(JS_DIR, module);
+        const file_list = fs.readdirSync(module_dir)
+        // taverse files in module dir
+        const module_entries = file_list.reduce((sub_acc, file) => {
+                const entry = {};
+                // transform filename cs-grid-cards.js -> grid_cards
+                // which is used as entry key
+                const entry_key = file.split('-').slice(1).join("_").slice(0,-3); 
+                const entry_path = path.resolve(module_dir, file);
+                
+                entry[entry_key] = entry_path;
+                
+                return Object.assign(sub_acc, entry);
+            }, {});
+
+        return Object.assign(acc, module_entries);
+    }, {})
+}
+
 module.exports = [
     {
         mode: MODE,
         watch: true,
-        entry: {
-            breed_create: path.resolve(JS_DIR, 'cs-breed-create.js'),
-            breed_list: path.resolve(JS_DIR, 'cs-breed-list.js'),
-            breed_update: path.resolve(JS_DIR, 'cs-breed-update.js'),
-            cage_create: path.resolve(JS_DIR, 'cs-cage-create.js'),
-            cage_list: path.resolve(JS_DIR, 'cs-cage-list.js'),
-            cage_update: path.resolve(JS_DIR, 'cs-cage-update.js'),
-            mouse_create: path.resolve(JS_DIR, 'cs-mouse-create.js'),
-            mouse_list: path.resolve(JS_DIR, 'cs-mouse-list.js'),
-            mouse_update: path.resolve(JS_DIR, 'cs-mouse-update.js'),
-            grid_list: path.resolve(JS_DIR, 'cs-grid-list.js'),
-            project_list: path.resolve(JS_DIR, 'cs-project-list.js'),
-            experiment_list: path.resolve(JS_DIR, 'cs-experiment-list.js'),
-            project_create: path.resolve(JS_DIR, 'cs-project-create.js'),
-            experiment_create: path.resolve(JS_DIR, 'cs-experiment-create.js'),
-        },
+        entry: create_entry(),
         devtool: 'cheap-module-eval-source-map',
         // devServer: {
         //     contentBase: './dist'

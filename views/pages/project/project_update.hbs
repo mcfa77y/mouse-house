@@ -1,84 +1,33 @@
 <div class="card">
     <div class="card-body">
-        <h4 class="card-title">Project: {{project.name}}</h4>
+        <h4 class="card-title">Update Project</h4>
 
-        <div class="wrapper">
-
-            <nav id="sidebar" class="">
-                <div class="sidebar-header">
-                    <h3>Experiments</h3>
-                </div>
-
-                <ul class="list-unstyled components">
-                    <p>{{project.note}}</p>
-                    <li class="active">
-                        <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false"
-                            class="dropdown-toggle collapsed">Home</a>
-                        <ul class="list-unstyled collapse" id="homeSubmenu" style="">
-                            <li>
-                                <a href="#">Home 1</a>
-                            </li>
-                            <li>
-                                <a href="#">Home 2</a>
-                            </li>
-                            <li>
-                                <a href="#">Home 3</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="#">About</a>
-                        <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="true"
-                            class="dropdown-toggle">Pages</a>
-                        <ul class="list-unstyled collapse show" id="pageSubmenu" style="">
-                            <li>
-                                <a href="#">Page 1</a>
-                            </li>
-                            <li>
-                                <a href="#">Page 2</a>
-                            </li>
-                            <li>
-                                <a href="#">Page 3</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="#">Portfolio</a>
-                    </li>
-                    <li>
-                        <a href="#">Contact</a>
-                    </li>
-                </ul>
-
-            </nav>
-
-            <div id="content">
-                <button type="button" id="sidebarCollapse" class="navbar-btn">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
-                {{> experiment/experiment_table}}
-                <div class="row mt-3">
-                    <div class="col-md-12">
-                        {{>crud_buttons model_name='experiment'}}
-                    </div>
-                </div>
+        <fieldset id="project-fields">
+            <div class="row">
+                {{> form_elements/text_input id='name' description='Name' value=project.name}}
+            </div>
+            <div class="row">
+                {{> form_elements/text_area_input id='note' description='Note' value=project.note}}
             </div>
 
-
-
+            <div class="row">
+                {{> form_elements/select_input experiments_select id='experiment_ids' isMultiple=true description='Experiments' value=project.experiment_ids}}
+                <div class='col-md-3 col-sm-6 d-flex align-items-center'>
+                    <button id='show-experiment-table-button' data-toggle='collapse' data-target='#experiment-table' type='button' class='btn btn-secondary'>Add experiments</button>
+                </div>
+            </div>
+            <div class='row d-flex flex-column'>
+                <div id='experiment-table' class='collapse'>
+                    {{> experiment/experiment_table}}
+                </div>
+            </div>
+           
+            <input type="hidden" id="id" value="{{project.id}}"/>
+        </fieldset>
+        <div class="row">
+            <button id="save-project-button" type="button" class="btn btn-primary float-right">Save</button>
+            <button id="back-project-button" type="button" class="btn btn-secondary float-right">Back</button>
         </div>
     </div>
-    {{> common/delete_confirmation_modal model_name='experiment'}}
+    
 </div>
-
-
-<script>
-    $(document).ready(function () {
-        $('#sidebarCollapse').on('click', function () {
-            $('#sidebar').toggleClass('active');
-            $(this).toggleClass('active');
-        });
-    });
-</script>
