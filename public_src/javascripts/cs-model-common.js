@@ -1,6 +1,6 @@
 import * as Toastr from 'toastr';
 import range from 'lodash/range';
-import * as Axios from 'axios';
+import Axios from 'axios';
 import MaterialDatetimePicker from 'material-datetime-picker';
 
 import 'bootstrap';
@@ -149,7 +149,7 @@ export function init_page(model_name) {
 }
 
 export function setup_table({ model_name, column_names, hide_id_column = false }) {
-    const columns = column_names.map(x => ({ data: x }));
+    const columns = column_names.map((x) => ({ data: x }));
 
     let table_options = {
         select: { style: 'multi' },
@@ -195,7 +195,7 @@ export function setup_table({ model_name, column_names, hide_id_column = false }
     function get_selected_row_ids() {
         const data = table.rows({ selected: true }).data().pluck('id');
 
-        return range(data.length).map(index => data[index]);
+        return range(data.length).map((index) => data[index]);
     }
 
     function update_crud_buttons() {

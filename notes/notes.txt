@@ -1,0 +1,47 @@
+models
+  when creating models that need to do cascade deletes
+  you need to update join model migration to have onDelete set
+
+  project_id: {
+      type: Sequelize.INTEGER,
+      onDelete: 'CASCADE',
+      references: {
+        model: 'Projects',
+        key: 'id',
+      },
+    },
+    experiment_id: {
+      type: Sequelize.INTEGER,
+      onDelete: 'CASCADE',
+      references: {
+        model: 'Experiments',
+        key: 'id',
+      },
+    },
+
+-----------------------------------------------------------
+
+Routes / Client Side
+  when sending form data (multipart)
+  the routes need to use multer
+    for files then make custom upload middle ware
+
+
+    const public_upload_fields = upload.fields([
+        { name: 'image_files', maxCount: 400 },
+        { name: 'grid_data_csv', maxCount: 1 },
+        { name: 'metadata_csv', maxCount: 1 },
+    ]);
+
+    router.post('/table', public_upload_fields, async (req, res) => {
+
+  for only non file fields use upload.none()
+    router.post('/card', upload.none(), async (req, res) => {
+
+-----------------------------------------------------------
+
+when creating select for partials
+the select_json needs to be of shape
+item : [{ id: 1, description: "thing" }, 
+        { id: 2, description: "thing 2" }, ]
+since select form partial uses 'item'
