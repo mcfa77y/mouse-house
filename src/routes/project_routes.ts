@@ -10,12 +10,22 @@ const upload = multer();
 const router = express.Router();
 
 // common stuff
-function create_model({ name, note, experiment_ids }) {
-    return {
-        name,
-        note,
-        experiments: experiment_ids.split(',').map(id => parseInt(id)),
-    };
+function create_model({ name, note, experiment_ids }: { name: string, note: string, experiment_ids: string }, add_id_key = false) {
+    let model = { name, note };
+
+    let experiments = [];
+    if (!isFalsey(experiment_ids)) {
+        experiments = experiment_ids.split(',').map((id) => {
+            if (add_id_key) {
+                return { 'id': parseInt(id) }
+            }
+            else {
+                return parseInt(id)
+            }
+        });
+        model = Object.assign(model, { experiments });
+    }
+    return model;
 }
 
 // end common stuff
@@ -119,4 +129,5 @@ router.delete('/:id', (req, res) => {
         });
 });
 
-module.exports = router;
+// module.exports = router;
+export default router;

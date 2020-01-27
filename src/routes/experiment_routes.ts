@@ -13,6 +13,15 @@ router.get('/', async (req: Request, res: Response) => {
   });
 });
 
+
+router.get('/create', async (req: Request, res: Response) => {
+  
+  res.render('pages/experiment/experiment_create', {
+    extra_js: ['experiment_create.bundle.js'],
+    
+  });
+});
+
 router.get('/:experiment_id', async (req: Request, res: Response) => {
   const { projects, experiment } = await experiment_controller.get_projects(req.params.experiment_id);
   res.render('pages/experiment/experiment_update',
