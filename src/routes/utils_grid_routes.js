@@ -10,6 +10,21 @@ const stat = BlueBird.promisify(fs.stat);
 
 const WELL_ROW_COUNT = 24;
 
+/**
+ * CSV Data
+ * @typedef {Object} CSV_DATA
+ * @property {Array<string>} column_headers - Headers from file
+ * @property {Array<Array<string>>} row_value_list - CSV row as array or arrays
+ */
+
+/**
+ * Reads data from CSV file
+ * @example
+ *   create_data_from_csv(csv_uri)
+ * @param {string} csv_uri - path to csv file
+ * @return {CSV_DATA}
+ */
+
 const create_data_from_csv = async (csv_uri) => csv({ flatKeys: true })
     .fromFile(csv_uri)
     .then((data) => {

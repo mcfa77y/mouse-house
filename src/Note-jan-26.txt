@@ -1,0 +1,107 @@
+notes jan 26
+search project for compounds w/n experiments
+
+doing search on Project List page
+
+action: search for compund Q
+
+project 0 - return this project
+ note: concentration 50 uM
+ experiments 1 - compounds.. Q
+ experiments 2 - compounds.. x
+ ...
+
+
+project 1 - return this project
+ note: concentration 10 uM
+ experiments 1 - compounds.. Q
+ experiments 4 - compounds.. x
+ ...
+
+project 1 - return this project
+ note: concentration gradient
+ experiments 1 - compounds.. Q
+ experiments 4 - compounds.. x
+ ...
+
+
+
+
+Bulk/Individual experiment upload
+
+ field file input
+ - CytoRunContentsDATE (meta info for linking images to platemap)
+
+ field file input
+ ZIPPED with same file structure as cyto run
+ - images dir (images)
+  - sub images dir name changes according to CytoRunContentsDATE file
+    - images
+ 
+ field file inputs
+ - platemap dir (CytoPlatemaps never changes)
+  - platemaps
+ 
+ Processing
+  CRC 
+    - file link image_dir/sub_image_dir/image to platemap
+    - populate column heades with
+      - experiment_date / platemap / cell_line / magnification / concentration
+
+
+  platemap contains information on compounds
+     - compound / well_id / target / concentration
+    
+
+------------------------------------------------------------
+update name of images to use 
+date - cell line - platemap_number - condition? (ex LPS, EDU, ___)
+well_id - site_number - wave_length (1 of 4)
+
+mapping file: map.json
+[
+  {
+    image_name: file_000.tiff,
+    date: YY-MM-DD,
+    cell_line: CL,
+    platemap_number: SP0####,
+    condition: (LPS, EDU, ___),
+    well_id: A01,
+    site_number: [S1..]
+    wave_length: [1..4]
+  }
+]
+
+------------------------------------------------------------
+Search over experiments for compund
+table should have 
+cell line / magnification/ experiments date / concentration /etc
+
+it'll have buttons for view all from result select
+that takes you to a new page VIEW_ALL_COMPOUNDS_FROM_EXPR
+
+should be able to download all images from search query
+stretch goal download images as pdf with meta info
+
+
+------------------------------------------------------------
+VIEW_ALL_COMPOUNDS_FROM_EXPR
+the same as the card info w/o the grid table
+
+------------------------------------------------------------
+bulk upload plate map data
+experiments have plate maps (1..N)
+upload the plate infromation independent of experiments
+
+so when creating an experiment we can select from previous
+uploaded platemaps ( or upload new plate which in turn is
+loaded to list of already uploaded platemaps)
+
+
+
+------------------------------------------------------------
+grid map is normalized and doesn't need to be uploaded everytime
+we can do the same as platemaps
+
+gridmap is not needed any more work on refactoring it out and remove input field
+use general map for time being

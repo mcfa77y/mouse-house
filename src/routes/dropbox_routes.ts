@@ -4,7 +4,7 @@ const router: Router = Router();
 const controller = require('../controllers/dropbox/dropbox_controller');
 
 /* GET home page. */
-router.get('/', controller.default.home);
+router.get('/home', controller.default.home);
 
 router.get('/login', controller.default.login);
 

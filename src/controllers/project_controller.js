@@ -25,7 +25,7 @@ class Project_Controller extends Base_Controller {
     async all_pretty() {
         const self = this;
         const all_projects = await super.all();
-        return all_projects.map(project => self.pretty(project));
+        return all_projects.map((project) => self.pretty(project));
     }
 
     insert(model) {
@@ -35,7 +35,7 @@ class Project_Controller extends Base_Controller {
             .then((proj_model) => {
                 const { experiments } = model;
                 if (Array.isArray(experiments) && experiments.length) {
-                    return proj_model.addExperiments(experiments);
+                    return proj_model.setExperiments(experiments);
                 }
                 return proj_model;
             })
@@ -49,14 +49,19 @@ class Project_Controller extends Base_Controller {
             where: { id: model.id },
             include: [{ association: Project.Experiments }],
             returning: true,
-        });
+        })
+            .catch((err) => {
+                console.error('proj controller update');
+                console.log(`err: ${JSON.stringify(err, null, 2)}`);
+            });
     }
 
     async get_experiments(id) {
         const project = await this.Model.findByPk(id);
-        const experiments = await project.getExperiments({ attributes: {
-        },
-        raw: true });
+        const experiments = await project.getExperiments({
+            attributes: ['id'],
+            raw: true,
+        });
         return { project, experiments };
     }
 

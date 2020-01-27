@@ -73,7 +73,7 @@ app.use('/cage', cage);
 app.use('/grid', grid);
 app.use('/project', project);
 app.use('/experiment', experiment);
-app.use('/', dropbox);
+app.use('/db', dropbox);
 
 
 app.get('/', (request, response) => {
