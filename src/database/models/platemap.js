@@ -6,6 +6,7 @@ const OPTIONS = { tableName: 'Platemaps', ...DEFAULT_OPTIONS };
 // module.exports = (sequelize, DataTypes) => {
 export default (sequelize, DataTypes) => {
     const Platemap = sequelize.define('Platemap', {
+        name: DataTypes.STRING,
         plate_id_96: DataTypes.STRING,
         plate_number_96: DataTypes.STRING,
         well_384: DataTypes.STRING,
