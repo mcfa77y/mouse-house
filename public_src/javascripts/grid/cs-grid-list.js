@@ -7,10 +7,8 @@ import { GRID_MODE, error } from './cs-grid-utils';
 import { setup_tag } from './cs-grid-tag';
 import { setup_grid_cells, set_grid_mode } from './cs-grid-cell';
 import { setup_cards } from './cs-grid-cards';
+import { set_custom_file_label } from '../cs-model-common';
 
-const set_custom_file_label = (id, value) => {
-    $(`#${id}`).next('.custom-file-label').html(value);
-};
 const data_the_table = () => {
     const table_options = {
         scrollX: true,
