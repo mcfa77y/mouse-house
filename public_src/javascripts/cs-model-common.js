@@ -297,3 +297,7 @@ export function setup_list_page_buttons(model_name, table) {
             .catch(error);
     });
 }
+
+export function set_custom_file_label (id, value) {
+    $(`#${id}`).next('.custom-file-label').html(value);
+};

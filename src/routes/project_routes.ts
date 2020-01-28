@@ -1,33 +1,31 @@
-const express = require('express');
-const { falsy: isFalsey } = require('is_js');
-const multer = require('multer');
+import express from 'express';
+import { falsy as isFalsey } from 'is_js';
+import multer from 'multer';
 
-const { select_json, getErrorGif } = require('./utils_routes');
-const project_controller = require('../controllers/project_controller');
-const experiment_controller = require('../controllers/experiment_controller');
+import  {select_json, getErrorGif} from './utils_routes';
+import project_controller from '../controllers/project_controller';
+import experiment_controller from '../controllers/experiment_controller';
 
 const upload = multer();
 const router = express.Router();
 
 // common stuff
-function create_model({ name, note, experiment_ids }: { name: string, note: string, experiment_ids: string }, add_id_key = false) {
-    let model = { name, note };
-
-    let experiments = [];
-    if (!isFalsey(experiment_ids)) {
-        experiments = experiment_ids.split(',').map((id) => {
-            if (add_id_key) {
-                return { 'id': parseInt(id) }
-            }
-            else {
-                return parseInt(id)
-            }
-        });
-        model = Object.assign(model, { experiments });
-    }
-    return model;
+function create_model({ name, note, experiment_ids }: {name: string, note:string, experiment_ids: string}) {
+    return {
+        name,
+        note,
+        experiments: experiment_ids.split(',').map(id => parseInt(id)),
+    };
 }
 
+function update_model({ id, name, note, experiment_ids }: {id: string, name: string, note:string, experiment_ids: string}) {
+    return {
+        id,
+        name,
+        note,
+        experiments: experiment_ids.split(',').map(id => parseInt(id)),
+    };
+}
 // end common stuff
 
 // list page
@@ -78,16 +76,16 @@ router.get('/:project_id', async (req, res) => {
     const { project_id } = req.params;
     const { project, experiments } = await project_controller
         .get_experiments(project_id);
-
-    const all_experiments = await experiment_controller.all_pretty();
-    const all_experiments_select = select_json(all_experiments
+    const experiments_select = select_json(experiments
         .map((model) => ({ id: model.id, description: model.name })));
+    project.experiment_ids = experiments.map((experiment) => experiment.id + "");
+    const all_experiments = await experiment_controller.all_pretty();
 
     res.render('pages/project/project_update',
         {
             project,
             experiments: all_experiments,
-            experiments_select: all_experiments_select,
+            experiments_select,
             extra_js: ['project_update.bundle.js'],
         });
 });
@@ -96,7 +94,7 @@ router.get('/:project_id', async (req, res) => {
 // update action
 // ajax response
 router.post('/', upload.none(), (req, res) => {
-    const model = create_model(req.body);
+    const model = update_model(req.body);
 
     project_controller.update(model)
         .then(() => {

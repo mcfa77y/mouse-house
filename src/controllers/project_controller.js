@@ -58,10 +58,8 @@ class Project_Controller extends Base_Controller {
 
     async get_experiments(id) {
         const project = await this.Model.findByPk(id);
-        const experiments = await project.getExperiments({
-            attributes: ['id'],
-            raw: true,
-        });
+        const experiments = await project.getExperiments({ attributes: ['id', 'name'],
+        raw: true });
         return { project, experiments };
     }
 

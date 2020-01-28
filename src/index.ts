@@ -45,7 +45,7 @@ import grid from './routes/grid_routes';
 import project from './routes/project_routes';
 import experiment from './routes/experiment_routes';
 import dropbox from './routes/dropbox_routes';
-import multer = require('multer');
+import upload from './routes/upload_routes';
 
 const hbsutils = hbs_utils(hbs);
 
@@ -73,7 +73,8 @@ app.use('/cage', cage);
 app.use('/grid', grid);
 app.use('/project', project);
 app.use('/experiment', experiment);
-app.use('/db', dropbox);
+app.use('/dropbox', dropbox);
+app.use('/upload', upload);
 
 
 app.get('/', (request, response) => {

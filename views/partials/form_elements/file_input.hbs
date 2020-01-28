@@ -1,0 +1,13 @@
+<div class="form-group label-floating col-md-12">
+    {{#if isMultiple}}
+    <div class="custom-file">
+        <input multiple="multiple" type="file" class="custom-file-input" id="{{id}}" placeholder="{{placeholder}}">
+        <label for="{{id}}" class="custom-file-label">{{description}}</label>
+    </div>
+    {{else}}
+    <div class="custom-file">
+        <input type="file" class="custom-file-input" id="{{id}}" placeholder="{{placeholder}}">
+        <label for="{{id}}" class="custom-file-label">{{description}}</label>
+    </div>
+    {{/if}}
+</div>
