@@ -4,6 +4,9 @@ const { Sequelize } = require('sequelize');
 const project = require('./project');
 const experiment = require('./experiment');
 const project_experiment = require('./project_experiment');
+const platemap = require('./platemap');
+const product_info = require('./product_info');
+const molecule = require('./molecule');
 
 const env = process.env.NODE_ENV || 'development';
 
@@ -43,6 +46,9 @@ const modules = [
     project,
     experiment,
     project_experiment,
+    platemap,
+    product_info,
+    molecule,
 ];
 
 // Initialize models

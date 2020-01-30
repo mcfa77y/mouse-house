@@ -5,27 +5,30 @@ const DEFAULT_OPTIONS = require('./default_options.json');
 const OPTIONS = { tableName: 'Molecules', ...DEFAULT_OPTIONS };
 // module.exports = (sequelize, DataTypes) => {
 export default (sequelize, DataTypes) => {
+
     const Molecule = sequelize.define('Molecule', {
-        well_96: DataTypes.STRING,
-        plate_id_384: DataTypes.STRING,
-        plate_id_ucsc_csc: DataTypes.STRING,
-        molecule_name: DataTypes.STRING,
-        vial_code: DataTypes.STRING,
-        cas_no: DataTypes.STRING,
-        molecular_weight: DataTypes.DOUBLE,
-        target: DataTypes.STRING,
-        salt_data: DataTypes.STRING,
+        form: DataTypes.STRING,
         info: DataTypes.TEXT,
+        max_solubility: DataTypes.DOUBLE,
+        name: DataTypes.STRING,
+        pathway: DataTypes.STRING,
         smiles: DataTypes.STRING,
+        targets: DataTypes.STRING,
+        weight: DataTypes.DOUBLE,
     }, OPTIONS);
+
     Molecule.associate = (models) => {
-        Molecule.Platemaps = Molecule.belongsToMany(models.Platemap,
+        Molecule.Platemap = Molecule.hasOne(models.Platemap,
             {
-                as: 'platemaps',
-                foreignKey: 'molecule_id',
-                through: 'Platemap_Molecules',
-                onDelete: 'CASCADE',
+                as: 'platemap',
+                foreignKey: 'molecule_id'
+            });
+        Molecule.Product_Info = Molecule.hasOne(models.Product_Info,
+            {
+                as: 'well',
+                foreignKey: 'molecule_id'
             });
     };
+
     return Molecule;
 };

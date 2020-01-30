@@ -20,4 +20,5 @@ sequelize model:create --name Experiment --attributes name:string,grid_data_uri:
 sequelize model:create --name Project_Experiment --attributes 'project_id:integer, experiment_id:integer' --underscored
 
 sequelize model:create --name Tag_Experiment --attributes 'tag_id:integer, experiment_id:integer' --underscored
+
 sequelize model:create --name Tag_Project --attributes 'tag_id:integer, project_id:integer' --underscored
