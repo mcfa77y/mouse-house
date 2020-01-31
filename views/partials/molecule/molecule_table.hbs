@@ -1,0 +1,46 @@
+<table id='molecule-list' class="table table-striped table-bordered" cellspacing="0" width="100%">
+    <thead>
+        <tr>
+            <th>ID</th>
+
+            <th>name</th>
+            <th>form</th>
+            <th>info</th>
+            <th>max_solubility</th>
+            <th>molarity_mm</th>
+            <th>molarity_unit</th>
+            <th>pathway</th>
+            <th>smiles</th>
+            <th>targets</th>
+            <th>weight</th>
+            <th>cell</th>
+            <th>x</th>
+            <th>y</th>
+
+            <th>Updated at</th>
+            <th>Created at</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each molecules}}
+        <tr>
+            <td>{{id}}</td>
+            <td><a href="/molecule/{{id}}">{{name}}</a></td>
+            <td>{{form}}</td>
+            <td>{{info}}</td>
+            <td>{{max_solubility}}</td>
+            <td>{{molarity_mm}}</td>
+            <td>{{molarity_unit}}</td>
+            <td>{{pathway}}</td>
+            <td>{{smiles}}</td>
+            <td>{{targets}}</td>
+            <td>{{weight}}</td>
+            <td>{{cell}}</td>
+            <td>{{x}}</td>
+            <td>{{y}}</td>
+            <td>{{updated_at}}</td>
+            <td>{{created_at}}</td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>

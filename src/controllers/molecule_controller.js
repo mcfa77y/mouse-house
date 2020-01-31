@@ -49,16 +49,10 @@ class Molecule_Controller extends Base_Controller {
         return all_molecules.map((molecule) => self.pretty(molecule));
     }
 
-    insert(model) {
-        console.log(`_model: ${JSON.stringify(model, null, 2)}`);
-
-        return Molecule.create(model, { returning: true })
-            .then(async (model) => {
-                const { well, platemap } = model;
-                await model.setProduct_Info(well);
-                await model.setPlatemap(platemap);
-                return model;
-            })
+    insert(_model) {
+        // console.log(`update molecule_model:\n ${JSON.stringify(_model, null, 2)}`);
+        const { product_info_id, platemap_id } = _model;
+        return Molecule.create(_model, { returning: true, attributes: ['id'] })
             .catch((err) => {
                 console.error(err);
             });

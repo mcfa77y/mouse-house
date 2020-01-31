@@ -1,18 +1,8 @@
 import express from 'express';
-// import { falsy as isFalsey } from 'is_js';
-
-// import { fstat, readFileSync } from 'fs';
-
-// import { getErrorGif } from './utils_routes';
-// import experiment_controller from '../controllers/experiment_controller';
-
 import {upload_fields, 
-    process_csvs, 
-    transform_platemap_data} from './util_upload_routes';
-
+    process_platemap_csv} from './util_upload_routes';
 
 const router = express.Router();
-
 
 // upload page
 router.get('/', async (req, res) => {
@@ -28,7 +18,7 @@ router.post('/', upload_fields, async (req, res) => {
     const files = req.files as { [fieldname: string]: Express.Multer.File[] };
     const platemap_csv_files: Express.Multer.File[] = files["platemap_csv_files"];
     console.log(`platemap_csv_files: ${JSON.stringify(platemap_csv_files, null, 2)}`);
-    process_csvs(platemap_csv_files, transform_platemap_data);
+    process_platemap_csv(platemap_csv_files);
     
     res.send({ success: true });
 });
