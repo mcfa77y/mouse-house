@@ -46,6 +46,7 @@ import project from './routes/project_routes';
 import experiment from './routes/experiment_routes';
 import dropbox from './routes/dropbox_routes';
 import upload from './routes/upload_routes';
+import molecule from './routes/molecule_routes';
 
 const hbsutils = hbs_utils(hbs);
 
@@ -75,6 +76,7 @@ app.use('/project', project);
 app.use('/experiment', experiment);
 app.use('/dropbox', dropbox);
 app.use('/upload', upload);
+app.use('/molecule', molecule);
 
 
 app.get('/', (request, response) => {

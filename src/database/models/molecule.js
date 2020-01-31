@@ -7,26 +7,31 @@ const OPTIONS = { tableName: 'Molecules', ...DEFAULT_OPTIONS };
 export default (sequelize, DataTypes) => {
 
     const Molecule = sequelize.define('Molecule', {
+        cell: DataTypes.STRING,
         form: DataTypes.STRING,
         info: DataTypes.TEXT,
         max_solubility: DataTypes.DOUBLE,
+        molarity_mm: DataTypes.DOUBLE,
+        molarity_unit: DataTypes.STRING,
         name: DataTypes.STRING,
         pathway: DataTypes.STRING,
-        smiles: DataTypes.STRING,
+        smiles: DataTypes.TEXT,
         targets: DataTypes.STRING,
         weight: DataTypes.DOUBLE,
+        x: DataTypes.INTEGER,
+        y: DataTypes.INTEGER,
     }, OPTIONS);
 
     Molecule.associate = (models) => {
-        Molecule.Platemap = Molecule.hasOne(models.Platemap,
+        Molecule.Platemap = Molecule.belongsTo(models.Platemap,
             {
                 as: 'platemap',
-                foreignKey: 'molecule_id'
+                foreignKey: 'platemap_id'
             });
-        Molecule.Product_Info = Molecule.hasOne(models.Product_Info,
+        Molecule.Product_Info = Molecule.belongsTo(models.Product_Info,
             {
-                as: 'well',
-                foreignKey: 'molecule_id'
+                as: 'product_info',
+                foreignKey: 'product_info_id'
             });
     };
 

@@ -13,14 +13,14 @@ export default (sequelize, DataTypes) => {
         library: DataTypes.STRING,
     }, OPTIONS);
 
-    Platemap.associate = (models) => {
-        Platemap.Molecules = Platemap.hasMany(models.Molecule,
-            {
-                as: 'molecules',
-                foreignKey: 'platemap_id',
-                onDelete: 'CASCADE',
-            });
-    };
+    // Platemap.associate = (models) => {
+    //     Platemap.Molecules = Platemap.belongsTo(models.Molecule,
+    //         {
+    //             as: 'molecules',
+    //             foreignKey: 'platemap_id',
+    //             onDelete: 'CASCADE',
+    //         });
+    // };
     
     return Platemap;
 };

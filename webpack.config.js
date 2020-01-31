@@ -9,7 +9,7 @@ const PUBLIC_DIR = './public';
 const MODE = 'development';
 
 
-const modules = ['grid', 'project', 'experiment', 'upload'];
+const modules = ['grid', 'project', 'experiment', 'upload', 'molecule'];
 function create_entry(){
     // traverse modules inside of JS_DIR
     return modules.reduce((acc, module) => {
