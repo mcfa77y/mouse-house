@@ -14,14 +14,17 @@ class Molecule_Controller extends Base_Controller {
             barcode,
             cas_number,
             catalog_number,
+            cell,
             form,
             info,
             max_solubility,
+            molarity_mm, molarity_unit,
             pathway,
             smiles,
             targets,
             url,
             weight,
+            x,y,
         } = model;
         // const experiments = await model.getExperiments({ raw: true });
         return {
@@ -32,20 +35,42 @@ class Molecule_Controller extends Base_Controller {
             barcode,
             cas_number,
             catalog_number,
+            cell,
             form,
             info,
             max_solubility,
+            molarity_mm, molarity_unit,
             pathway,
             smiles,
             targets,
             url,
             weight,
+            x,y,
         };
+    }
+    async some_pretty({limit, offset}) {
+        const self = this;
+        // const all_molecules = await super.all();
+        const all_molecules = await Molecule
+        .findAndCountAll({include: ['platemap', 'product_info'],
+            limit,
+            offset
+        })
+        .catch(error => console.log(`error - find all molecule: ${error}`));
+        
+        const molecules = all_molecules.rows.map((molecule) => self.pretty(molecule));
+        return {
+            molecules,
+            count: all_molecules.count
+        }
+
     }
 
     async all_pretty() {
         const self = this;
-        const all_molecules = await super.all();
+        // const all_molecules = await super.all();
+        const all_molecules = await Molecule.findAll({include: ['platemap', 'product_info']}).catch(error => console.log(`error - find all molecule: ${error}`));
+        
         return all_molecules.map((molecule) => self.pretty(molecule));
     }
 

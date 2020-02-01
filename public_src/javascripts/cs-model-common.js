@@ -147,6 +147,10 @@ export function init_page(model_name) {
     setupTodayButton();
     setupToolTip();
 }
+export function get_selected_row_ids(table) {
+    const data = table.rows({ selected: true }).data().pluck('id');
+    return range(data.length).map((index) => data[index]);
+}
 
 export function setup_table({ model_name, column_names, hide_id_column = false }) {
     const columns = column_names.map((x) => ({ data: x }));
@@ -192,11 +196,7 @@ export function setup_table({ model_name, column_names, hide_id_column = false }
     const update_modal_button = $(`#update-${model_name}-button`);
     const delete_button = $(`#open-delete-${model_name}-modal-button`);
 
-    function get_selected_row_ids() {
-        const data = table.rows({ selected: true }).data().pluck('id');
-
-        return range(data.length).map((index) => data[index]);
-    }
+    
 
     function update_crud_buttons() {
         const data = table.rows({ selected: true }).data().pluck('id');
@@ -225,7 +225,7 @@ export function setup_table({ model_name, column_names, hide_id_column = false }
     table.on('deselect', on_select);
 
     // custom table functions
-    table.get_selected_row_ids = get_selected_row_ids;
+    // table.get_selected_row_ids = get_selected_row_ids;
 
     update_crud_buttons();
     return table;
@@ -285,7 +285,8 @@ export function setup_list_page_buttons(model_name, table) {
     const delete_button = $(`#delete-${model_name}-button`);
 
     delete_button.click(() => {
-        Axios.delete(`/${model_name}/${table.get_selected_row_ids()}`)
+        const ids = get_selected_row_ids(table);
+        Axios.delete(`/${model_name}/${ids}`)
             .then((response) => {
                 console.log(response);
                 Toastr.success('delete succesful');
