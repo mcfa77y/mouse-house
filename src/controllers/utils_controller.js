@@ -20,7 +20,8 @@ module.exports = {
             return value;
         }, 4);
         cache = null; // Enable garbage collection
-        Logger.log(result);
+        // Logger.log(result);
+        console.log(result);
     },
     log: (message) => {
         Logger.log(message);

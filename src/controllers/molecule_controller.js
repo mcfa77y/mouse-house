@@ -10,7 +10,10 @@ const { Molecule } = require('../database/models');
 class Molecule_Controller extends Base_Controller {
     pretty(model) {
         const {
-            id, name, created_at, updated_at,
+            id,
+            name,
+            created_at,
+            updated_at,
             barcode,
             cas_number,
             catalog_number,
@@ -18,13 +21,16 @@ class Molecule_Controller extends Base_Controller {
             form,
             info,
             max_solubility,
-            molarity_mm, molarity_unit,
+            molarity_mm,
+            molarity_unit,
             pathway,
             smiles,
             targets,
             url,
             weight,
-            x,y,
+            x,
+            y,
+            platemap, product_info,
         } = model;
         // const experiments = await model.getExperiments({ raw: true });
         return {
@@ -39,60 +45,77 @@ class Molecule_Controller extends Base_Controller {
             form,
             info,
             max_solubility,
-            molarity_mm, molarity_unit,
+            molarity_mm,
+            molarity_unit,
             pathway,
             smiles,
             targets,
             url,
             weight,
-            x,y,
+            x,
+            y,
+            platemap_name: platemap.id_384,
+            product_info: product_info.cas_number,
         };
     }
-    async some_pretty({limit, offset}) {
+
+    async some_pretty({ limit, offset }) {
         const self = this;
         // const all_molecules = await super.all();
-        const all_molecules = await Molecule
-        .findAndCountAll({include: ['platemap', 'product_info'],
-            limit,
-            offset
-        })
-        .catch(error => console.log(`error - find all molecule: ${error}`));
-        
-        const molecules = all_molecules.rows.map((molecule) => self.pretty(molecule));
+        let all_molecules;
+        let molecules;
+        if (limit > 0) {
+            all_molecules = await Molecule.findAndCountAll({
+                include: ['platemap', 'product_info'],
+                limit,
+                offset,
+            }).catch((error) => console.log(`error - find all molecule: ${error}`));
+            molecules = all_molecules.rows.map((molecule) => self.pretty(molecule));
+        } else {
+            all_molecules = await Molecule.findAll({
+                include: ['platemap', 'product_info'],
+            }).catch((error) => console.log(`error - find all molecule: ${error}`));
+            molecules = all_molecules.map((molecule) => self.pretty(molecule));
+        }
         return {
             molecules,
-            count: all_molecules.count
-        }
-
+            count: all_molecules.count,
+        };
     }
 
     async all_pretty() {
         const self = this;
         // const all_molecules = await super.all();
-        const all_molecules = await Molecule.findAll({include: ['platemap', 'product_info']}).catch(error => console.log(`error - find all molecule: ${error}`));
-        
+        const all_molecules = await Molecule.findAll({
+            include: ['platemap', 'product_info'],
+        }).catch((error) => console.log(`error - find all molecule: ${error}`));
+
         return all_molecules.map((molecule) => self.pretty(molecule));
     }
 
     insert(_model) {
-        // console.log(`update molecule_model:\n ${JSON.stringify(_model, null, 2)}`);
+    // console.log(`update molecule_model:\n ${JSON.stringify(_model, null, 2)}`);
         const { product_info_id, platemap_id } = _model;
-        return Molecule.create(_model, { returning: true, attributes: ['id'] })
-            .catch((err) => {
-                console.error(err);
-            });
+        return Molecule.create(_model, {
+            returning: true,
+            attributes: ['id'],
+        }).catch((err) => {
+            console.error(err);
+        });
     }
 
     update(model) {
         return Molecule.update(model, {
             where: { id: model.id },
-            include: [{ association: Molecule.Product_Info }, { association: Molecule.Platemap }],
+            include: [
+                { association: Molecule.Product_Info },
+                { association: Molecule.Platemap },
+            ],
             returning: true,
-        })
-            .catch((err) => {
-                console.error('molecule controller update');
-                console.log(`err: ${JSON.stringify(err, null, 2)}`);
-            });
+        }).catch((err) => {
+            console.error('molecule controller update');
+            console.log(`err: ${JSON.stringify(err, null, 2)}`);
+        });
     }
 
     // async get_experiments(id) {

@@ -1,46 +1,39 @@
-import { setup_list_page_buttons } from '../cs-model-common';
-import { model_name, column_names } from './cs-molecule-common';
 import range from 'lodash/range';
 
-require( 'datatables.net-bs4' )();
-require( 'datatables.net-buttons-bs4' )();
-require( 'datatables.net-buttons/js/buttons.colVis.js' )();
-require( 'datatables.net-fixedheader-bs4' )();
-require( 'datatables.net-responsive-bs4' )();
-require( 'datatables.net-scroller-bs4' )();
-require( 'datatables.net-searchpanes-bs4' )();
-require( 'datatables.net-select-bs4' )();
+import { setup_list_page_buttons } from '../cs-model-common';
+import { model_name, column_names } from './cs-molecule-common';
 
 export function setup_table({ model_name, column_names, hide_id_column = false }) {
     const columns = column_names.map((x) => ({ data: x }));
 
-    let table_options = {
+    let table_options: DataTables.Settings = {
         serverSide: true,
-        ajax: {url: '/molecule/table', type: 'POST'},
+        ajax: { url: '/molecule/table', type: 'POST' },
         columns,
         select: { style: 'multi' },
         responsive: true,
-        dom: 'Pfrtip',
+        dom: 'lBfrtip',
         buttons: [
             { extend: 'selectAll', className: 'btn btn-secondary' },
             { extend: 'selectNone', className: 'btn btn-secondary' },
-            { extend: 'excel', className: 'btn btn-secondary' },
             { extend: 'colvis', className: 'btn btn-secondary' },
         ],
         scrollY: '500px',
         scrollCollapse: true,
         paging: true,
-        info: true,
-        searchPanes: true,
-        // dom: 'Pfrtip',
-        "sPaginationType": "simple",
         lengthMenu: [
             [5, 10, 25, -1],
             [5, 10, 25, 'All'],
         ],
+
+        info: true,
+
+        // dom: 'Pfrtip',
+        pagingType: "simple",
         initComplete() {
             this.api().columns.adjust();
         },
+
     };
 
     if (hide_id_column) {
@@ -52,11 +45,41 @@ export function setup_table({ model_name, column_names, hide_id_column = false }
             }],
         });
     }
-    const table = $(`#${model_name}-list`).DataTable(table_options);
-    table.searchPanes.container().prependTo(table.table().container());
-    
-    table.buttons().container()
-        .appendTo(`#${model_name}-list_wrapper .col-md-6:eq(0)`);
+
+    // Setup - add a text input to each footer cell
+    let table_id = `#${model_name}-list`;
+    $(table_id).append(
+        $('<tfoot/>').append($(table_id + " thead tr").clone())
+    );
+    $(table_id + ' tfoot th').each(function () {
+        var title = $(table_id + ' thead th').eq($(this).index()).text();
+        $(this).html('<input type="text" placeholder="Search ' + title + '" />');
+    });
+
+
+    const table: DataTables.Api = $(`#${model_name}-list`).DataTable(table_options);
+    // table.searchPanes.container().prependTo(table.table().container());
+
+    // table.buttons().container()
+    //     .appendTo(`#${model_name}-list_wrapper .col-md-6:eq(0)`);
+
+
+
+    // DataTable
+
+    // Apply the filter
+    table.columns().every(function () {
+        var column = this;
+
+        $('input', this.footer()).on('keyup change', function () {
+            column
+                .search(this.value)
+                .draw();
+        });
+    });
+
+
+
 
     const update_modal_button = $(`#update-${model_name}-button`);
     const delete_button = $(`#open-delete-${model_name}-modal-button`);
