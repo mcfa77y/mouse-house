@@ -4,14 +4,6 @@ import Axios from 'axios';
 import MaterialDatetimePicker from 'material-datetime-picker';
 
 import 'bootstrap';
-import 'datatables.net';
-import 'datatables.net-select';
-import 'datatables.net-select-dt/css/select.dataTables.css';
-import 'datatables.net-responsive';
-import 'datatables.net-responsive-dt/css/responsive.dataTables.min.css';
-import 'datatables.net-buttons';
-import 'datatables.net-buttons/js/buttons.colVis';
-import 'datatables.net-buttons/js/buttons.html5';
 // import 'bootstrap-material-design';
 
 import { form_ids_vals, json_string } from './cs-form-helper';
@@ -196,7 +188,6 @@ export function setup_table({ model_name, column_names, hide_id_column = false }
     const update_modal_button = $(`#update-${model_name}-button`);
     const delete_button = $(`#open-delete-${model_name}-modal-button`);
 
-    
 
     function update_crud_buttons() {
         const data = table.rows({ selected: true }).data().pluck('id');
@@ -299,6 +290,6 @@ export function setup_list_page_buttons(model_name, table) {
     });
 }
 
-export function set_custom_file_label (id, value) {
+export function set_custom_file_label(id, value) {
     $(`#${id}`).next('.custom-file-label').html(value);
-};
+}

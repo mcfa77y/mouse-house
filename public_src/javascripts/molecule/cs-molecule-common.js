@@ -1,2 +1,21 @@
 export const model_name = 'molecule';
-export const column_names = ['id', 'name', 'form', 'info', 'max_solubility', 'molarity_mm', 'molarity_unit', 'pathway', 'smiles', 'targets', 'weight', 'cell', 'x', 'y', 'updated_at', 'created_at']
+export const column_names = [
+    'id',
+    'name',
+    'form',
+    'info',
+    'max_solubility',
+    'molarity_mm',
+    'molarity_unit',
+    'pathway',
+    'smiles',
+    'targets',
+    'weight',
+    'cell',
+    'x',
+    'y',
+    'platemap_name',
+    'product_info',
+    'updated_at',
+    'created_at',
+];
