@@ -1,6 +1,8 @@
 import express from 'express';
-import {upload_fields, 
-    process_platemap_csv} from './util_upload_routes';
+import {
+    upload_fields,
+    process_platemap_csv
+} from './util_upload_routes';
 
 const router = express.Router();
 
@@ -19,8 +21,18 @@ router.post('/', upload_fields, async (req, res) => {
     const platemap_csv_files: Express.Multer.File[] = files["platemap_csv_files"];
     console.log(`platemap_csv_files: ${JSON.stringify(platemap_csv_files, null, 2)}`);
     process_platemap_csv(platemap_csv_files);
-    
-    res.send({ success: true });
+    var data = '';
+
+    req.on('data', function (chunk) {
+        data += chunk;
+    });
+
+    req.on('end', function () {
+        console.log('File uploaded');
+        res.writeHead(200);
+        res.end();
+    });
+    // res.send({ success: true });
 });
 
 // module.exports = router;

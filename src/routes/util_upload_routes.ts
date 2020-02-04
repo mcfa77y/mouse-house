@@ -133,15 +133,20 @@ export const process_platemap_csv = async (csv_file_array: Express.Multer.File[]
         // create platemap
         const platemap = build_platemap(rows[0]);
         platemap.name = file.originalname;
+        console.log("start create platemap: " + platemap.name);
         const platemap_id = await create_platemap_db(platemap);
-
+        console.log("end create platemap: " + platemap.name);
+        const row_total = rows.length;
+        let row_count = 0;
         rows.map(extract_molecule_product_info)
             .forEach(async ({ molecule, product_info }) => {
                 const product_info_id = await create_product_info_db(product_info);
                 molecule.product_info_id = product_info_id;
                 molecule.platemap_id = platemap_id;
                 await create_molecule_db(molecule);
-            })
+                row_count += 1;
+                console.log(`${platemap.name} - ${row_count} of ${row_total} = ${(row_count * 100.0) / row_total}`);
+            });
 
         // result.push(data);
         // console.log(`data: ${JSON.stringify(data[0], null, 2)}`);
@@ -152,9 +157,9 @@ export const process_platemap_csv = async (csv_file_array: Express.Multer.File[]
 const cache = {}
 const create_platemap_db = async (platemap: Platemap) => {
     let platemap_db;
-    if (!(platemap.id_384 in cache)) {
+    if (!(platemap.name in cache)) {
         // check db
-        const platemap_db_result_set = await platemap_controller.Model.findAll({ where: { id_384: platemap.id_384 }, attributes: ['id', 'id_384'] })
+        const platemap_db_result_set = await platemap_controller.Model.findAll({ where: { name: platemap.name }, attributes: ['id', 'name'] })
             .catch(error => console.log(`error - platemap controller findall: ${error}`));
 
         if (platemap_db_result_set.length >= 1) {
@@ -164,9 +169,9 @@ const create_platemap_db = async (platemap: Platemap) => {
             platemap_db = await platemap_controller.insert(platemap)
                 .catch(error => console.log(`error - platemap controller insert: ${error}`));
         }
-        cache[platemap.id_384] = platemap_db.id;
+        cache[platemap.name] = platemap_db.id;
     }
-    return cache[platemap.id_384];
+    return cache[platemap.name];
 }
 
 const create_product_info_db = async (product_info: Product_Info) => {
