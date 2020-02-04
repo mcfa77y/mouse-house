@@ -1,12 +1,14 @@
 const BlueBird = require('bluebird');
 const { falsy: isFalsey } = require('is_js');
-
+const { Op } = require("sequelize");
 const utils = require('./utils_controller');
 // const city_names = require('../lib/data/city_names.json').city_names;
 
 const Base_Controller = require('./base_controller');
-const { Molecule } = require('../database/models');
-
+const { Molecule, Platemap, Product_Info } = require('../database/models');
+const TYPE_STRING = 'string';
+const TYPE_NUMBER = 'number';
+const TYPE_DATE = 'date';
 class Molecule_Controller extends Base_Controller {
     pretty(model) {
         const {
@@ -54,26 +56,118 @@ class Molecule_Controller extends Base_Controller {
             weight,
             x,
             y,
-            platemap_name: platemap.id_384,
+            platemap_name: platemap.name,
             product_info: product_info.cas_number,
         };
     }
+    annotate_columns(columns) {
+        const type_map = {
+            name: TYPE_STRING,
+            form: TYPE_STRING,
+            info: TYPE_STRING,
+            molarity_unit: TYPE_STRING,
+            pathway: TYPE_STRING,
+            smiles: TYPE_STRING,
+            targets: TYPE_STRING,
+            cell: TYPE_STRING,
+            platemap_name: TYPE_STRING,
+            product_info: TYPE_STRING,
+            max_solubility: TYPE_NUMBER,
+            molarity_mm: TYPE_NUMBER,
+            weight: TYPE_NUMBER,
+            x: TYPE_NUMBER,
+            y: TYPE_NUMBER,
+            updated_at: TYPE_DATE,
+            created_at: TYPE_DATE,
+        }
+        // key by data value
+        return columns.map(col => {
+            col.type = type_map[col.data];
+            return col;
+        })
 
-    async some_pretty({ limit, offset }) {
+    }
+    build_where(columns) {
+        const where = {};
+        const filtered_cols = columns.filter(({ searchable }) => searchable == 'true')
+            .filter(({ search }) => search.value != '')
+            .filter(({ data }) => data != 'platemap_name' && data != 'product_info');
+        for (const { data, search, type } of this.annotate_columns(filtered_cols)) {
+            // search is a list
+            const search_values = this.build_like_array(search);
+            if (type == TYPE_STRING){
+                where[data] = {
+                    [Op.iLike]:
+                        { [Op.any]: search_values }
+                }
+            }
+            else if (type == TYPE_NUMBER){
+                where[data] = parseFloat(search.value);
+            }
+        }
+        return where;
+    }
+    build_like_array(search) {
+        return search.value.split(',').map((value) => `%${value.trim()}%`);
+    }
+    build_include_helper(model_db, column_name, search, as) {
+        let search_values = [];
+        if (search.value != '') {
+            search_values = this.build_like_array(search);
+        }
+        const include = { model: model_db, as };
+        if (search_values.length > 0) {
+            const where = {}
+            where[column_name] = {
+                [Op.iLike]:
+                    { [Op.any]: search_values }
+            }
+            include.where = where;
+        }
+        return include;
+    }
+
+    build_include(columns) {
+        const include = [];
+        const filtered_cols = columns.filter(({ data }) => data == 'platemap_name' || data == 'product_info');
+
+        for (const { data, search } of filtered_cols) {
+            if (data == 'platemap_name') {
+                include.push(this.build_include_helper(Platemap, 'name', search, 'platemap'))
+            }
+            if (data == 'product_info') {
+                include.push(this.build_include_helper(Product_Info, 'cas_number', search, 'product_info'))
+            }
+        }
+        return include;
+    }
+    build_order(columns, order) {
+        return [[columns[order[0].column].data, order[0].dir]]
+    }
+    async some_pretty({ limit, offset, columns, search, order }) {
         const self = this;
         // const all_molecules = await super.all();
         let all_molecules;
         let molecules;
+        const where = this.build_where(columns);
+        const include = this.build_include(columns);
+        const order_by = this.build_order(columns, order)
         if (limit > 0) {
             all_molecules = await Molecule.findAndCountAll({
-                include: ['platemap', 'product_info'],
+                include,
                 limit,
                 offset,
-            }).catch((error) => console.log(`error - find all molecule: ${error}`));
+                where,
+                order: order_by,
+            }).catch((error) => {
+                console.log(`error - find all molecule: ${error}`)
+            });
             molecules = all_molecules.rows.map((molecule) => self.pretty(molecule));
         } else {
             all_molecules = await Molecule.findAll({
-                include: ['platemap', 'product_info'],
+                include,
+                where,
+                order: order_by
             }).catch((error) => console.log(`error - find all molecule: ${error}`));
             molecules = all_molecules.map((molecule) => self.pretty(molecule));
         }
@@ -94,7 +188,7 @@ class Molecule_Controller extends Base_Controller {
     }
 
     insert(_model) {
-    // console.log(`update molecule_model:\n ${JSON.stringify(_model, null, 2)}`);
+        // console.log(`update molecule_model:\n ${JSON.stringify(_model, null, 2)}`);
         const { product_info_id, platemap_id } = _model;
         return Molecule.create(_model, {
             returning: true,

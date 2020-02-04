@@ -37,8 +37,13 @@ const setup_form = () => {
 
         dt.append('images_zip', document.getElementById('images_zip').files[0]);
         // dt.append('images_zip_label', document.getElementById('images_zip_label').innerText);
-
-        Axios.post('/upload', dt)
+        const config = {
+            onUploadProgress: function(progressEvent) {
+              const percentCompleted = Math.round( (progressEvent.loaded * 100.0) / progressEvent.total );
+              console.log('percentCompleted:\t'+percentCompleted);
+            }
+          };
+        Axios.post('/upload', dt, config)
             .then(success)
             .catch(error);
     });
