@@ -1,6 +1,6 @@
 import Axios from 'axios';
 const { falsy: isFalsey } = require('is_js');
-import * as Toastr from 'toastr';
+// import * as Toastr from 'toastr';
 
 import { form_ids_vals } from '../cs-form-helper';
 import { set_custom_file_label } from '../cs-model-common';
@@ -29,21 +29,23 @@ const setup_form = () => {
         $('#results_spinner').collapse('show');
 
         const dt = form_ids_vals('upload-fields');
-        Array.from(document.getElementById('platemap_csv_files').files).forEach((file) => {
+        
+        const fileInput: HTMLInputElement = <HTMLInputElement>document.querySelector('#platemap_csv_files');
+        Array.from(fileInput.files).forEach((file) => {
             dt.append('platemap_csv_files', file);
         });
+
         dt.append('crc_csv', document.getElementById('crc_csv').files[0]);
         // dt.append('crc_csv_label', document.getElementById('crc_csv_label').innerText);
 
         dt.append('images_zip', document.getElementById('images_zip').files[0]);
         // dt.append('images_zip_label', document.getElementById('images_zip_label').innerText);
+        
         const config = {
-            onUploadProgress: function(progressEvent) {
-              const percentCompleted = Math.round( (progressEvent.loaded * 100.0) / progressEvent.total );
-              console.log('percentCompleted:\t'+percentCompleted);
-            }
+            
           };
-        Axios.post('/upload', dt, config)
+        
+          Axios.post('/upload', dt, config)
             .then(success)
             .catch(error);
     });
@@ -64,7 +66,7 @@ const setup_form = () => {
 
     $('#platemap_csv_files').change(() => {
         // get the file name
-        const value = `${document.getElementById('platemap_csv_files').files.length} files selected`;
+        const value = `${document.getElementById('platemap_csv_files').files.length} platemap files selected`;
         // replace the "Choose a file" label
         set_custom_file_label('platemap_csv_files', value);
     });
