@@ -176,30 +176,25 @@ class Molecule_Controller extends Base_Controller {
         limit, offset, columns, search, order,
     }) {
         const self = this;
-        // const all_molecules = await super.all();
         let all_molecules;
         let molecules;
         const where = this.build_where(columns);
         const include = this.build_include(columns);
         const order_by = this.build_order(columns, order);
+        const base_config = {
+            include,
+            where,
+            order: order_by,
+        };
         if (limit > 0) {
-            all_molecules = await Molecule.findAndCountAll({
-                include,
-                limit,
-                offset,
-                where,
-                order: order_by,
-            }).catch((error) => {
-                console.log(`error - find all molecule: ${error}`);
-                console.log(`error - find all molecule stack:\n ${error.stack}`);
+            const config = Object.assign(base_config, { limit, offset });
+            all_molecules = await Molecule.findAndCountAll(config).catch((error) => {
+                console.log(`error - find some molecule: ${error}`);
+                console.log(`error - find some molecule stack:\n ${error.stack}`);
             });
             molecules = all_molecules.rows.map((molecule) => self.pretty(molecule));
         } else {
-            all_molecules = await Molecule.findAll({
-                include,
-                where,
-                order: order_by,
-            }).catch((error) => {
+            all_molecules = await Molecule.findAll(base_config).catch((error) => {
                 console.log(`error - find all molecule: ${error}`);
             });
             molecules = all_molecules.map((molecule) => self.pretty(molecule));

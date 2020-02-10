@@ -294,37 +294,42 @@ export function set_custom_file_label(id, value) {
     $(`#${id}`).next('.custom-file-label').html(value);
 }
 
-export function Poll_Request(url, data, config, success_cb, fail_cb, milliseconds = 1000) {
-    this.pollTimer = null;
-    this.interval = milliseconds;
-    this.url = url;
-    this.success_cb = success_cb;
-    this.fail_cb = fail_cb;
-    this.data = data;
-    this.config = config
-  }
-  
-  Poll_Request.prototype.disablePoll = function () {
-    clearInterval(this.pollTimer); 
-    this.pollTimer = null;
-  };
-  
-  Poll_Request.prototype.activatePoll = function () {
-    this.pollTimer = setInterval(() => {
-    //   $.getJSON(this.url).then(response => console.log(response))
-    Axios.post(this.url, this.data, this.config)
-        .then((response) => {
-            if (this.success_cb){
-                this.success_cb(response);
-            }
-        })
-        .catch((err) => {
-            if (this.fail_cb) {
-                this.fail_cb(err)
-            }
-            else {
-                error(err)
-            }
-        })
-    }, this.interval);
-  };
+export class Poll_Request {
+    constructor({
+        url, data, config, success_cb, fail_cb, milliseconds = 1000,
+    }) {
+        this.pollTimer = null;
+        this.interval = milliseconds;
+        this.url = url;
+        this.success_cb = success_cb;
+        this.fail_cb = fail_cb;
+        this.data = data;
+        this.config = config;
+    }
+
+    disablePoll() {
+        clearInterval(this.pollTimer);
+        this.pollTimer = null;
+    }
+
+    activatePoll() {
+        const self = this;
+        this.pollTimer = setInterval(() => {
+        //   $.getJSON(this.url).then(response => console.log(response))
+            Axios.post(self.url, self.data, self.config)
+                .then((response) => {
+                    if (self.success_cb) {
+                        self.success_cb(response);
+                    }
+                })
+                .catch((err) => {
+                    if (self.fail_cb) {
+                        self.fail_cb(err);
+                        self.disablePoll();
+                    } else {
+                        error(err);
+                    }
+                });
+        }, this.interval);
+    }
+}
