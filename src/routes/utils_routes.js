@@ -1,8 +1,8 @@
 const Logger = require('bug-killer');
 const moment = require('moment');
 const cool = require('cool-ascii-faces');
-const readJson = require('r-json');
-const {falsy: isFalsey} = require('is_js');
+
+const { falsy: isFalsey } = require('is_js');
 const rp = require('request-promise');
 const _ = require('underscore');
 
@@ -37,9 +37,9 @@ module.exports = {
             items: result,
         };
     },
-    format_date: date => moment(date, moment.ISO_8601),
+    format_date: (date) => moment(date, moment.ISO_8601),
     today: (format = 'MM/DD/YYYY') => moment().format(format),
-    relative_time: date => moment(date, moment.ISO_8601).fromNow(),
+    relative_time: (date) => moment(date, moment.ISO_8601).fromNow(),
     cool_face: () => cool(),
     move_note: (req) => {
         const note = isFalsey(req.body.note) ? '' : req.body.note;

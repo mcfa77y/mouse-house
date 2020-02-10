@@ -5,10 +5,14 @@ import csv from 'csvtojson';
 import { Request } from 'express';
 import { falsy } from 'is_js';
 
+
 import platemap_controller from '../controllers/platemap_controller';
 import product_info_controller from '../controllers/product_info_controller';
 import molecule_controller from '../controllers/molecule_controller';
+import { RedisClient } from 'redis';
 
+const redis = require("redis");
+const client: RedisClient = redis.createClient(process.env.REDIS_URL);
 
 const TMP_DIR = join(__dirname, '../../tmp');
 
@@ -124,9 +128,19 @@ const build_platemap = (row): Platemap => {
     return result;
 }
 
+export const test_poll = async(token: string) =>{
+    const pkg = {hello: "world"};
+    client.set(token, JSON.stringify(pkg));
+}
+const update_progress_info = (token, progress_info) => {
+    client.set(token, JSON.stringify(progress_info));
+}
 
-export const process_platemap_csv = async (csv_file_array: Express.Multer.File[]) => {
-    const result = [];
+export const process_platemap_csv = async (csv_file_array: Express.Multer.File[], token: string) => {
+    const progress_info = {csv_total: csv_file_array.length, platemap_map: {}, csv_count: 0, is_finished: false};
+    update_progress_info(token, progress_info);
+
+    
     for (let file of csv_file_array) {
         const rows = (await csv({ flatKeys: true }).fromFile(file.path))
             .map(reshape_keys)
@@ -138,6 +152,10 @@ export const process_platemap_csv = async (csv_file_array: Express.Multer.File[]
         console.log("end create platemap: " + platemap.name);
         const row_total = rows.length;
         let row_count = 0;
+        let row_percent = 0.0;
+        const name = platemap.name;
+        const platemap_info = {name, row_total, row_count, row_percent};
+        progress_info.platemap_map[platemap.name] = platemap_info
         rows.map(extract_molecule_product_info)
             .forEach(async ({ molecule, product_info }) => {
                 const product_info_id = await create_product_info_db(product_info);
@@ -145,13 +163,20 @@ export const process_platemap_csv = async (csv_file_array: Express.Multer.File[]
                 molecule.platemap_id = platemap_id;
                 await create_molecule_db(molecule);
                 row_count += 1;
-                console.log(`${platemap.name} - ${row_count} of ${row_total} = ${(row_count * 100.0) / row_total}`);
+                row_percent = (row_count * 100.0) / row_total;
+                platemap_info.row_count = row_count;
+                platemap_info.row_percent = row_percent;
+                console.log(`${platemap.name} - ${row_count} of ${row_total} = ${row_percent}`);
+                update_progress_info(token, progress_info);
             });
-
+        progress_info.csv_count += 1;
+        update_progress_info(token, progress_info);
         // result.push(data);
         // console.log(`data: ${JSON.stringify(data[0], null, 2)}`);
     }
-    return result;
+    progress_info.is_finished = true;
+    update_progress_info(token, progress_info);
+    
 }
 
 const cache = {}
