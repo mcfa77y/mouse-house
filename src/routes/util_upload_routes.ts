@@ -94,7 +94,7 @@ const build_molecule = (row): Molecule => {
         product_info_id: -1,
         smiles,
         targets,
-        weight,
+        weight: (falsy(weight)? -1.0: parseFloat(weight)),
     }
     return result;
 }
@@ -136,6 +136,21 @@ const update_progress_info = (token, progress_info) => {
     client.set(token, JSON.stringify(progress_info));
 }
 
+const cache = {}
+cache["EMPTY_CAS_NUMBER"] = 4114;
+let cache_product_info_hit = 0;
+let cache_product_info_miss = 0;
+
+const get_cache_hit_rate = ()=>{
+    const total = cache_product_info_hit + cache_product_info_miss
+    if (total == 0){
+        return 0.0;
+    } 
+    else {
+        return cache_product_info_hit / total * 100.0;
+    }
+}
+
 export const process_platemap_csv = async (csv_file_array: Express.Multer.File[], token: string) => {
     const progress_info = {csv_total: csv_file_array.length, platemap_map: {}, csv_count: 0, is_finished: false};
     update_progress_info(token, progress_info);
@@ -154,18 +169,23 @@ export const process_platemap_csv = async (csv_file_array: Express.Multer.File[]
         let row_count = 0;
         let row_percent = 0.0;
         const name = platemap.name;
-        const platemap_info = {name, row_total, row_count, row_percent};
-        progress_info.platemap_map[platemap.name] = platemap_info
+        const platemap_progress_info = {name, row_total, row_count, row_percent, cache_product_info_hit, cache_product_info_miss, cache_product_info_hit_rate: get_cache_hit_rate()};
+        progress_info.platemap_map[platemap.name] = platemap_progress_info
         rows.map(extract_molecule_product_info)
             .forEach(async ({ molecule, product_info }) => {
                 const product_info_id = await create_product_info_db(product_info);
+                
+                platemap_progress_info.cache_product_info_hit = cache_product_info_hit;
+                platemap_progress_info.cache_product_info_miss = cache_product_info_miss;
+                platemap_progress_info.cache_product_info_hit_rate = get_cache_hit_rate();
+
                 molecule.product_info_id = product_info_id;
                 molecule.platemap_id = platemap_id;
                 await create_molecule_db(molecule);
                 row_count += 1;
                 row_percent = (row_count * 100.0) / row_total;
-                platemap_info.row_count = row_count;
-                platemap_info.row_percent = row_percent;
+                platemap_progress_info.row_count = row_count;
+                platemap_progress_info.row_percent = row_percent;
                 console.log(`${platemap.name} - ${row_count} of ${row_total} = ${row_percent}`);
                 update_progress_info(token, progress_info);
             });
@@ -179,7 +199,6 @@ export const process_platemap_csv = async (csv_file_array: Express.Multer.File[]
     
 }
 
-const cache = {}
 const create_platemap_db = async (platemap: Platemap) => {
     let platemap_db;
     if (!(platemap.name in cache)) {
@@ -214,6 +233,10 @@ const create_product_info_db = async (product_info: Product_Info) => {
                 .catch(error => console.log(`error - product_info_controller insert: ${error}`));
         }
         cache[product_info.cas_number] = product_info_db.id;
+        cache_product_info_miss += 1;
+    } 
+    else {
+        cache_product_info_hit += 1;
     }
     return cache[product_info.cas_number];
 }

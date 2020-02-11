@@ -106,7 +106,10 @@ export function setup_table({ model_name, column_names, hide_id_column = false }
 
     const update_modal_button = $(`#update-${model_name}-button`);
     const delete_button = $(`#open-delete-${model_name}-modal-button`);
-
+    const adjust_columns_button = $('#adjust-columns-button');
+    adjust_columns_button.on('click', () => {
+        table.columns.adjust();
+    })
     function get_selected_row_ids() {
         const data = table.rows({ selected: true }).data().pluck('id');
 
