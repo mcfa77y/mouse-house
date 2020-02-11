@@ -8,8 +8,9 @@ import {
     upload_fields,
     process_platemap_csv,
     test_poll
-} from './util_upload_routes';
+} from './util_upload_platemap_routes';
 import { RedisClient } from 'redis';
+import { process_crc_csv } from './util_upload_crc_routes';
 
 const redis = require("redis");
 const client: RedisClient = redis.createClient(process.env.REDIS_URL);
@@ -34,9 +35,11 @@ router.post('/', upload_fields, async (req, res) => {
     
     const platemap_csv_files: Express.Multer.File[] = files["platemap_csv_files"];
     console.log(`platemap_csv_files: ${JSON.stringify(platemap_csv_files, null, 2)}`);
-    const token = await uidgen.generate();
     process_platemap_csv(platemap_csv_files, token);
-    // test_poll(token);
+    
+    const crc_csv_file: Express.Multer.File = files["crc_csv"];
+    console.log(`crc_csv_files: ${JSON.stringify(crc_csv_file, null, 2)}`);
+    process_crc_csv(crc_csv_file, token);
     res.send({ success: true, token });
 });
 
