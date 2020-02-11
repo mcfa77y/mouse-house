@@ -25,11 +25,12 @@ router.post('/table', (req: Request, res: Response) => {
   // const limit = parseInt(req.body.length);
   const {draw, start: offset, length: limit, columns, search, order} = req.body
   // const limit = 100;
+  
    molecule_controller.some_pretty({limit, offset, columns, search, order}).then(({molecules, count}) => {
      res.send( {
        data: molecules,
        recordsTotal: count,
-       recordsFiltered: molecules.length,
+       recordsFiltered: count,
        draw
      });
    })

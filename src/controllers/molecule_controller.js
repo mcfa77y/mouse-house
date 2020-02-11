@@ -217,12 +217,12 @@ class Molecule_Controller extends Base_Controller {
 
     insert(_model) {
     // console.log(`update molecule_model:\n ${JSON.stringify(_model, null, 2)}`);
-        const { product_info_id, platemap_id } = _model;
         return Molecule.create(_model, {
             returning: true,
             attributes: ['id'],
         }).catch((err) => {
             console.error(err);
+            console.log(`${JSON.stringify(_model, null, 2)}`);
         });
     }
 

@@ -22,7 +22,7 @@ const setup_form = () => {
     const success = (response) => {
         const progress = ({data})=>{
             // Toastr.info(JSON.stringify(data, null, 2));
-            if(data.progress.is_finish){
+            if(data.progress.is_finished){
                 pr.disablePoll();
                 return;
             }
