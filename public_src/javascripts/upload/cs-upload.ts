@@ -21,14 +21,12 @@ const setup_form = () => {
    
     const success = (response) => {
         const progress = ({data})=>{
-            // Toastr.info(JSON.stringify(data, null, 2));
+            $('#progress_info').html(`<pre>${JSON.stringify(data.progress, null, 2)}</pre>`);
             if(data.progress.is_finished){
                 pr.disablePoll();
                 return;
             }
-            $('#progress_info').html(`<pre>${JSON.stringify(data.progress, null, 2)}</pre>`);
         }
-        Toastr.info(response.data);
         const {token} = response.data;
         const pr_config = {
             url: "/upload/progress",
