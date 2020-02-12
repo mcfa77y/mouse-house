@@ -34,12 +34,14 @@ router.post('/', upload_fields, async (req, res) => {
     const files = req.files as { [fieldname: string]: Express.Multer.File[] };
     
     const platemap_csv_files: Express.Multer.File[] = files["platemap_csv_files"];
-    console.log(`platemap_csv_files: ${JSON.stringify(platemap_csv_files, null, 2)}`);
-    process_platemap_csv(platemap_csv_files, token);
+    if (platemap_csv_files != undefined && platemap_csv_files.length > 0){
+        console.log(`platemap_csv_files: ${JSON.stringify(platemap_csv_files, null, 2)}`);
+        process_platemap_csv(platemap_csv_files, token);
+    }
     
-    const crc_csv_file: Express.Multer.File = files["crc_csv"];
+    const crc_csv_file: Express.Multer.File[] = files["crc_csv"];
     console.log(`crc_csv_files: ${JSON.stringify(crc_csv_file, null, 2)}`);
-    process_crc_csv(crc_csv_file, token);
+    process_crc_csv(crc_csv_file[0], token);
     res.send({ success: true, token });
 });
 
@@ -53,6 +55,9 @@ router.post('/progress', async (req, res) => {
         if(err){
             console.log("redis get error")
         }
+        // console.log("\n\n\ntoken" + reply);
+        
+        log_json(reply);
         res.send({ token, progress: JSON.parse(reply) });
     })
 });

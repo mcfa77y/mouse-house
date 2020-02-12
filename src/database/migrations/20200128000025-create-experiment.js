@@ -1,0 +1,48 @@
+module.exports = {
+    up: (queryInterface, Sequelize) => queryInterface.createTable('Experiments', {
+        id: {
+            allowNull: false,
+            autoIncrement: true,
+            primaryKey: true,
+            type: Sequelize.INTEGER,
+        },
+        image_name: { type: Sequelize.STRING },
+        measurement_name: { type: Sequelize.STRING },
+        dapi_w1: { type: Sequelize.INTEGER, allowNull: true },
+        actin_w3: { type: Sequelize.INTEGER, allowNull: true },
+        lectin_w2: { type: Sequelize.INTEGER, allowNull: true },
+        tubulin_w2: { type: Sequelize.INTEGER, allowNull: true },
+        ph3_w3: { type: Sequelize.INTEGER, allowNull: true },
+        ph3_w4: { type: Sequelize.INTEGER, allowNull: true },
+        edu_w2: { type: Sequelize.INTEGER, allowNull: true },
+        calnexin_w4: { type: Sequelize.INTEGER, allowNull: true },
+        gm130w4: { type: Sequelize.INTEGER, allowNull: true },
+        controlplate: { type: Sequelize.INTEGER, allowNull: true },
+        cell_lines: { type: Sequelize.STRING },
+        timepoint: { type: Sequelize.STRING },
+        magnification: { type: Sequelize.STRING },
+        cp_version: { type: Sequelize.INTEGER, allowNull: true },
+        human_readable_name: { type: Sequelize.STRING },
+        experiment_date: { type: Sequelize.STRING },
+        ixmw1: { type: Sequelize.STRING, allowNull: true },
+        ixmw2: { type: Sequelize.STRING, allowNull: true },
+        ixmw3: { type: Sequelize.STRING, allowNull: true },
+        ixmw4: { type: Sequelize.STRING, allowNull: true },
+        platemap_id: {
+            type: Sequelize.INTEGER,
+            references: {
+                model: 'Platemaps',
+                key: 'id',
+            },
+        },
+        created_at: {
+            allowNull: false,
+            type: Sequelize.DATE,
+        },
+        updated_at: {
+            allowNull: false,
+            type: Sequelize.DATE,
+        },
+    }),
+    down: (queryInterface, Sequelize) => queryInterface.dropTable('Experiments'),
+};

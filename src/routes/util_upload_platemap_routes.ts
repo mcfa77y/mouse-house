@@ -85,8 +85,8 @@ const build_molecule = (row): Molecule => {
         cell, x, y,
         form,
         info,
-        max_solubility: (falsy(max_solubility)? -1.0: parseFloat(max_solubility)),
-        molarity_mm: (falsy(molarity_mm)? -1.0: parseFloat(molarity_mm)),
+        max_solubility: (falsy(max_solubility) ? -1.0 : parseFloat(max_solubility)),
+        molarity_mm: (falsy(molarity_mm) ? -1.0 : parseFloat(molarity_mm)),
         molarity_unit,
         name,
         pathway,
@@ -94,7 +94,7 @@ const build_molecule = (row): Molecule => {
         product_info_id: -1,
         smiles,
         targets,
-        weight: (falsy(weight)? -1.0: parseFloat(weight)),
+        weight: (falsy(weight) ? -1.0 : parseFloat(weight)),
     }
     return result;
 }
@@ -109,7 +109,7 @@ const build_product_info = (row): Product_Info => {
     const result = {
         catalog_number,
         barcode,
-        cas_number: (falsy(cas_number)? "EMPTY_CAS_NUMBER": cas_number),
+        cas_number: (falsy(cas_number) ? "EMPTY_CAS_NUMBER" : cas_number),
         url
     }
     return result;
@@ -128,8 +128,8 @@ const build_platemap = (row): Platemap => {
     return result;
 }
 
-export const test_poll = async(token: string) =>{
-    const pkg = {hello: "world"};
+export const test_poll = async (token: string) => {
+    const pkg = { hello: "world" };
     client.set(token, JSON.stringify(pkg));
 }
 const update_progress_info = (token, progress_info) => {
@@ -137,25 +137,51 @@ const update_progress_info = (token, progress_info) => {
 }
 
 const cache = {}
-cache["EMPTY_CAS_NUMBER"] = 4114;
+
 let cache_product_info_hit = 0;
 let cache_product_info_miss = 0;
 
-const get_cache_hit_rate = ()=>{
+const get_cache_hit_rate = () => {
     const total = cache_product_info_hit + cache_product_info_miss
-    if (total == 0){
+    if (total == 0) {
         return 0.0;
-    } 
+    }
     else {
         return cache_product_info_hit / total * 100.0;
     }
 }
 
+const create_empty_product_info = async () => {
+    const empty_product_info = {
+        catalog_number: '',
+        barcode: '',
+        cas_number: "EMPTY_CAS_NUMBER",
+        url: ''
+    };
+    let product_info_db;
+    if (!(empty_product_info.cas_number in cache)) {
+        const product_info_db_result_set = await product_info_controller.Model.findAll({
+            attributes: ['id', 'cas_number'],
+            where: { cas_number: empty_product_info.cas_number }
+        });
+
+        if (product_info_db_result_set.length > 0) {
+            cache[product_info_db_result_set[0].cas_number] = product_info_db_result_set[0].id;
+        }
+        else {
+            product_info_db = await product_info_controller.insert(empty_product_info)
+                .catch(error => console.log(`error - product_info_controller insert empty : ${error}`));
+            cache[product_info_db.cas_number] = product_info_db.id;
+        }
+    }
+}
+
 export const process_platemap_csv = async (csv_file_array: Express.Multer.File[], token: string) => {
-    const progress_info = {csv_total: csv_file_array.length, platemap_map: {}, csv_count: 0, is_finished: false};
+    const progress_info = { csv_total: csv_file_array.length, platemap_map: {}, csv_count: 0, is_finished: false };
     update_progress_info(token, progress_info);
 
-    
+    await create_empty_product_info();
+
     for (let file of csv_file_array) {
         const rows = (await csv({ flatKeys: true }).fromFile(file.path))
             .map(reshape_keys)
@@ -169,12 +195,12 @@ export const process_platemap_csv = async (csv_file_array: Express.Multer.File[]
         let row_count = 0;
         let row_percent = 0.0;
         const name = platemap.name;
-        const platemap_progress_info = {name, row_total, row_count, row_percent, cache_product_info_hit, cache_product_info_miss, cache_product_info_hit_rate: get_cache_hit_rate()};
+        const platemap_progress_info = { name, row_total, row_count, row_percent, cache_product_info_hit, cache_product_info_miss, cache_product_info_hit_rate: get_cache_hit_rate() };
         progress_info.platemap_map[platemap.name] = platemap_progress_info
         rows.map(extract_molecule_product_info)
             .forEach(async ({ molecule, product_info }) => {
                 const product_info_id = await create_product_info_db(product_info);
-                
+
                 platemap_progress_info.cache_product_info_hit = cache_product_info_hit;
                 platemap_progress_info.cache_product_info_miss = cache_product_info_miss;
                 platemap_progress_info.cache_product_info_hit_rate = get_cache_hit_rate();
@@ -191,12 +217,10 @@ export const process_platemap_csv = async (csv_file_array: Express.Multer.File[]
             });
         progress_info.csv_count += 1;
         update_progress_info(token, progress_info);
-        // result.push(data);
-        // console.log(`data: ${JSON.stringify(data[0], null, 2)}`);
     }
     progress_info.is_finished = true;
     update_progress_info(token, progress_info);
-    
+
 }
 
 const create_platemap_db = async (platemap: Platemap) => {
@@ -234,7 +258,7 @@ const create_product_info_db = async (product_info: Product_Info) => {
         }
         cache[product_info.cas_number] = product_info_db.id;
         cache_product_info_miss += 1;
-    } 
+    }
     else {
         cache_product_info_hit += 1;
     }
