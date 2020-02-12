@@ -4,54 +4,23 @@ import { join, parse } from 'path';
 import csv from 'csvtojson';
 import { Request } from 'express';
 import { falsy } from 'is_js';
-
+import { promisifyAll } from 'bluebird';
 
 import platemap_controller from '../controllers/platemap_controller';
-import product_info_controller from '../controllers/product_info_controller';
-import molecule_controller from '../controllers/molecule_controller';
+import experiment_controller from '../controllers/experiment_controller';
 import { RedisClient } from 'redis';
 
 const redis = require("redis");
-const client: RedisClient = redis.createClient(process.env.REDIS_URL);
+promisifyAll(redis);
+const client: any = redis.createClient(process.env.REDIS_URL);
 
-const TMP_DIR = join(__dirname, '../../tmp');
 
-interface Molecule {
-    form: string;
-    info: string;
-    max_solubility: number;
-    name: string;
-    pathway: string;
-    smiles: string;
-    targets: string;
-    weight: number;
-    molarity_mm: number;
-    molarity_unit: string;
-    cell: string;
-    x: number;
-    y: number;
-    platemap_id: number;
-    product_info_id: number
-}
-
-interface Product_Info {
-    catalog_number: string;
-    barcode: string;
-    cas_number: string;
-    url: string;
-}
-
-interface Platemap {
-    id_384: string;
-    id_ucsc_csc: string;
-    library: string;
-    name: string;
-}
 
 interface Experiment {
     image_name: string,
     measurement_name: string,
-    platemap_id: string,
+    platemap_name: string,
+    platemap_id: number,
     dapi_w1: number,
     actin_w3: number,
     lectin_w2: number,
@@ -74,68 +43,6 @@ interface Experiment {
     ixmw4: string,
 }
 
-const build_molecule = (row): Molecule => {
-    const {
-        form,
-        information: info,
-        max_solubility_in_dmso_mm: max_solubility,
-        molecule_name: name,
-        pathway,
-        smiles,
-        targets,
-        mw: weight,
-        molarity_mm,
-        unit: molarity_unit,
-        "384_well": cell,
-        well_x: x,
-        well_y: y,
-    } = row;
-    const result: Molecule = {
-        cell, x, y,
-        form,
-        info,
-        max_solubility: (falsy(max_solubility)? -1.0: parseFloat(max_solubility)),
-        molarity_mm: (falsy(molarity_mm)? -1.0: parseFloat(molarity_mm)),
-        molarity_unit,
-        name,
-        pathway,
-        platemap_id: -1,
-        product_info_id: -1,
-        smiles,
-        targets,
-        weight: (falsy(weight)? -1.0: parseFloat(weight)),
-    }
-    return result;
-}
-
-const build_product_info = (row): Product_Info => {
-    const {
-        catalog_no: catalog_number,
-        barcode,
-        cas_number,
-        url,
-    } = row;
-    const result = {
-        catalog_number,
-        barcode,
-        cas_number: (falsy(cas_number)? "EMPTY_CAS_NUMBER": cas_number),
-        url
-    }
-    return result;
-}
-
-const build_platemap = (row): Platemap => {
-    const {
-        "384_plate_id": id_384,
-        ucsc_csc_plate_id: id_ucsc_csc,
-        library,
-        originalname: name,
-    } = row;
-    const result = {
-        id_384, id_ucsc_csc, library, name
-    }
-    return result;
-}
 const build_experiment = (row): Experiment => {
     const {
         image_name,
@@ -186,119 +93,113 @@ const build_experiment = (row): Experiment => {
         ixmw2,
         ixmw3,
         ixmw4,
+        platemap_id: -1,
+        platemap_name: plate_map_file,
     }
-    return result
+    return result;
 }
 
 const update_progress_info = (token, progress_info) => {
     client.set(token, JSON.stringify(progress_info));
 }
 
+const get_progress_info = (token) => {
+    return client.getAsync(token)
+        .then(result => {
+            return JSON.parse(result);
+        })
+        .catch((err) => {
+            console.log('could not find token: ' + token);
+            update_progress_info(token, {});
+            return {};
+        })
+}
+
 const cache = {}
 cache["EMPTY_CAS_NUMBER"] = 4114;
-let cache_product_info_hit = 0;
-let cache_product_info_miss = 0;
+let cache_experiment_hit = 0;
+let cache_experiment_miss = 0;
 
-const get_cache_hit_rate = ()=>{
-    const total = cache_product_info_hit + cache_product_info_miss
-    if (total == 0){
+const get_cache_hit_rate = () => {
+    const total = cache_experiment_hit + cache_experiment_miss
+    if (total == 0) {
         return 0.0;
-    } 
+    }
     else {
-        return cache_product_info_hit / total * 100.0;
+        return cache_experiment_hit / total * 100.0;
     }
 }
 
-const crc_columns = ["Image Name", "Measurement Name", "Plate Map File", "DAPI (W1)", "ACTIN (W3)", "LECTIN (W2)", "TUBULIN (W2)", "PH3 (W3)", "PH3 (W4)", "EdU (W2)", "CALNEXIN (W4)", "GM130(W4)", "ControlPlate", "Cell Lines", "TimePoint", "Magnification", "CP Version", "Human Readable Name", "Experiment Date", "IXMW1", "IXMW2", "IXMW3", "IXMW4"]
 export const process_crc_csv = async (csv_file: Express.Multer.File, token: string) => {
-    const progress_info = {experiment_map: {}, expr_is_finished: false};
+    const progress_info = { is_finished: false, crc_progress_info: {} };
     update_progress_info(token, progress_info);
 
-    
-        const file = csv_file;
-        const rows = (await csv({ flatKeys: true }).fromFile(file.path))
-            .map(reshape_keys)
-        
-        const row_total = rows.length;
-        let row_count = 0;
-        let row_percent = 0.0;
-        const name = csv_file.originalname;
-        const platemap_progress_info = {name, row_total, row_count, row_percent, cache_product_info_hit, cache_product_info_miss, cache_product_info_hit_rate: get_cache_hit_rate()};
-        progress_info.experiment_map[platemap.name] = platemap_progress_info
-        rows.map(extract_molecule_product_info)
-            .forEach(async ({ molecule, product_info }) => {
-                const product_info_id = await create_product_info_db(product_info);
-                
-                platemap_progress_info.cache_product_info_hit = cache_product_info_hit;
-                platemap_progress_info.cache_product_info_miss = cache_product_info_miss;
-                platemap_progress_info.cache_product_info_hit_rate = get_cache_hit_rate();
 
-                molecule.product_info_id = product_info_id;
-                molecule.platemap_id = platemap_id;
-                await create_molecule_db(molecule);
-                row_count += 1;
-                row_percent = (row_count * 100.0) / row_total;
-                platemap_progress_info.row_count = row_count;
-                platemap_progress_info.row_percent = row_percent;
-                console.log(`${platemap.name} - ${row_count} of ${row_total} = ${row_percent}`);
-                update_progress_info(token, progress_info);
-            });
-        progress_info.csv_count += 1;
-        update_progress_info(token, progress_info);
-        // result.push(data);
-        // console.log(`data: ${JSON.stringify(data[0], null, 2)}`);
-    }
-    progress_info.is_finished = true;
-    update_progress_info(token, progress_info);
-    
+    const file = csv_file;
+    const rows = (await csv({ flatKeys: true }).fromFile(file.path))
+        .map(reshape_keys)
+
+    const row_total = rows.length;
+    let row_count = 0;
+    let row_percent = 0.0;
+    const name = csv_file.originalname;
+    const crc_progress_info = { name, row_total, row_count, row_percent, cache_experiment_hit, cache_experiment_miss, cache_experiment_hit_rate: get_cache_hit_rate() };
+
+    rows.map(build_experiment)
+        .forEach(async (experiment) => {
+            // get platemap id
+            let platemap_db;
+            const platemap_db_result_set = await platemap_controller.Model
+                .findAll({ where: { name: experiment.platemap_name + '.csv' }, attributes: ['id', 'name'] })
+                .catch(error => console.log(`error - platemap controller findall: ${error}`));
+
+            if (platemap_db_result_set.length >= 1) {
+                platemap_db = platemap_db_result_set[0];
+                experiment.platemap_id = platemap_db.id;
+                const experiment_id = await create_experiment_db(experiment);
+            }
+            else {
+                console.log(`no platemap ${experiment.platemap_name} found for experiment: ${experiment.human_readable_name}`);
+            }
+
+
+            crc_progress_info.cache_experiment_hit = cache_experiment_hit;
+            crc_progress_info.cache_experiment_miss = cache_experiment_miss;
+            crc_progress_info.cache_experiment_hit_rate = get_cache_hit_rate();
+
+            row_count += 1;
+            row_percent = (row_count * 100.0) / row_total;
+            crc_progress_info.row_count = row_count;
+            crc_progress_info.row_percent = row_percent;
+            console.log(`${name} - ${row_count} of ${row_total} = ${row_percent}`);
+            progress_info.crc_progress_info = crc_progress_info;
+            if (row_count == row_total) { progress_info.is_finished = true; }
+
+            update_progress_info(token, progress_info);
+        });
 }
 
 
-const create_platemap_db = async (platemap: Platemap) => {
-    let platemap_db;
-    if (!(platemap.name in cache)) {
+
+const create_experiment_db = async (experiment: Experiment) => {
+    let experiment_db;
+    if (!(experiment.human_readable_name in cache)) {
         // check db
-        const platemap_db_result_set = await platemap_controller.Model.findAll({ where: { name: platemap.name }, attributes: ['id', 'name'] })
-            .catch(error => console.log(`error - platemap controller findall: ${error}`));
+        const expr_db_result_set = await experiment_controller.Model.findAll({ where: { name: experiment.human_readable_name }, attributes: ['id', 'human_readable_name'] })
+            .catch(error => console.log(`error - experiment controller findall: ${error}`));
 
-        if (platemap_db_result_set.length >= 1) {
-            platemap_db = platemap_db_result_set[0];
+        if (expr_db_result_set != undefined && expr_db_result_set.length >= 1) {
+            experiment_db = expr_db_result_set[0];
+            cache[experiment_db.human_readable_name] = experiment_db.id;
         }
         else {
-            platemap_db = await platemap_controller.insert(platemap)
-                .catch(error => console.log(`error - platemap controller insert: ${error}`));
+            delete experiment.p
+            experiment_db = await experiment_controller.insert(experiment)
+                .catch(error => console.log(`error - experiment controller insert: ${error}`));
+            cache[experiment_db.human_readable_name] = experiment_db.id;
         }
-        cache[platemap.name] = platemap_db.id;
     }
-    return cache[platemap.name];
-}
-
-const create_product_info_db = async (product_info: Product_Info) => {
-    let product_info_db;
-    let cas_number = (product_info.cas_number === "") ? "EMPTY_CAS_NUMBER" : product_info.cas_number;
-    if (!(cas_number in cache)) {
-        // check if already in db
-        const product_info_db_result_set = await product_info_controller.Model.findAll({ where: { cas_number }, attributes: ['id'] })
-            .catch(error => console.log(`error - product_info_controller get_where: ${error}`));
-        if (product_info_db_result_set.length >= 1) {
-            product_info_db = product_info_db_result_set[0];
-        }
-        else {
-            product_info_db = await product_info_controller.insert(product_info)
-                .catch(error => console.log(`error - product_info_controller insert: ${error}`));
-        }
-        cache[product_info.cas_number] = product_info_db.id;
-        cache_product_info_miss += 1;
-    } 
-    else {
-        cache_product_info_hit += 1;
-    }
-    return cache[product_info.cas_number];
-}
-
-const create_molecule_db = async (molecule: Molecule) => {
-    const molecule_db = await molecule_controller.insert(molecule);
-    return molecule_db.id;
+    return cache[experiment.human_readable_name];
 }
 
 // convert to lowercase, replace space with underscore
@@ -316,12 +217,3 @@ const reshape_keys = (csv_row_raw: object) => {
             return acc;
         }, {})
 }
-
-const extract_molecule_product_info = (csv_row: object) => {
-    const molecule = build_molecule(csv_row);
-    const product_info = build_product_info(csv_row);
-    return {
-        molecule, product_info
-    }
-}
-// end common stuff
