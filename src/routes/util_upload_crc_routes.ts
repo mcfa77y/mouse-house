@@ -8,7 +8,7 @@ import { promisifyAll } from 'bluebird';
 
 import platemap_controller from '../controllers/platemap_controller';
 import experiment_controller from '../controllers/experiment_controller';
-import { RedisClient } from 'redis';
+// import { RedisClient } from 'redis';
 
 const redis = require("redis");
 promisifyAll(redis);
@@ -185,7 +185,8 @@ const create_experiment_db = async (experiment: Experiment) => {
     let experiment_db;
     if (!(experiment.human_readable_name in cache)) {
         // check db
-        const expr_db_result_set = await experiment_controller.Model.findAll({ where: { name: experiment.human_readable_name }, attributes: ['id', 'human_readable_name'] })
+        const expr_db_result_set = await experiment_controller.Model
+            .findAll({ where: { name: experiment.human_readable_name }, attributes: ['id', 'human_readable_name'] })
             .catch(error => console.log(`error - experiment controller findall: ${error}`));
 
         if (expr_db_result_set != undefined && expr_db_result_set.length >= 1) {
@@ -193,7 +194,7 @@ const create_experiment_db = async (experiment: Experiment) => {
             cache[experiment_db.human_readable_name] = experiment_db.id;
         }
         else {
-            delete experiment.p
+            delete experiment.platemap_name;
             experiment_db = await experiment_controller.insert(experiment)
                 .catch(error => console.log(`error - experiment controller insert: ${error}`));
             cache[experiment_db.human_readable_name] = experiment_db.id;

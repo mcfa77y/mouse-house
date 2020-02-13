@@ -1,8 +1,18 @@
 <form id="upload-fields" enctype="multipart/form-data">
-  {{>form_elements/file_input id="crc_csv" description="CytoRunContent CSV" placeholder="cytoRunContent.csv"}}
-  {{>form_elements/file_input id="platemap_csv_files" description="Platemap CSVs" placeholder="platemap.csv" isMultiple=true}}
-  {{>form_elements/file_input id="images_zip" description="Images zip" placeholder="images.zip"}}
-  <button id="submit" type="submit" class="btn btn-primary float-right">Submit</button>
+  <div class="row">
+    <div class="col-md-4 offset-md-4">{{>form_elements/file_input id="crc_csv" description="CytoRunContent CSV" placeholder="cytoRunContent.csv"}}</div>
+  </div>
+  <div class="row">
+    <div class="col-md-4 offset-md-4">{{>form_elements/file_input id="platemap_csv_files" description="Platemap CSVs" placeholder="platemap.csv" isMultiple=true}}</div>
+  </div>
+  <div class="row">
+    <div class="col-md-4 offset-md-4">{{>form_elements/file_input id="images_zip" description="Images zip" placeholder="images.zip"}}</div>
+  </div>
+  <div class="row">
+    <div class="col-md-4 offset-md-4">
+        <button id="submit" type="submit" class="btn btn-primary float-right">Submit</button>
+      </div>
+  </div>
 </form>
 
 <div id="progress_info">
