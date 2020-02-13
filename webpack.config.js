@@ -10,26 +10,26 @@ const MODE = 'development';
 
 
 const modules = ['grid', 'project', 'experiment', 'upload', 'molecule'];
-function create_entry(){
+function create_entry() {
     // traverse modules inside of JS_DIR
     return modules.reduce((acc, module) => {
         const module_dir = path.resolve(JS_DIR, module);
-        const file_list = fs.readdirSync(module_dir)
+        const file_list = fs.readdirSync(module_dir);
         // taverse files in module dir
         const module_entries = file_list.reduce((sub_acc, file) => {
-                const entry = {};
-                // transform filename cs-grid-cards.js -> grid_cards
-                // which is used as entry key
-                const entry_key = file.split('-').slice(1).join("_").slice(0,-3); 
-                const entry_path = path.resolve(module_dir, file);
-                
-                entry[entry_key] = entry_path;
-                
-                return Object.assign(sub_acc, entry);
-            }, {});
+            const entry = {};
+            // transform filename cs-grid-cards.js -> grid_cards
+            // which is used as entry key
+            const entry_key = file.split('-').slice(1).join('_').slice(0, -3);
+            const entry_path = path.resolve(module_dir, file);
+
+            entry[entry_key] = entry_path;
+
+            return Object.assign(sub_acc, entry);
+        }, {});
 
         return Object.assign(acc, module_entries);
-    }, {})
+    }, {});
 }
 
 module.exports = [
