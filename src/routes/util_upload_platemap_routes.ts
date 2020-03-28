@@ -4,15 +4,45 @@ import { join, parse } from 'path';
 import csv from 'csvtojson';
 import { Request } from 'express';
 import { falsy } from 'is_js';
-
+// import { Promise: bb } from "bluebird";
+import { RedisClient } from 'redis';
 
 import platemap_controller from '../controllers/platemap_controller';
 import product_info_controller from '../controllers/product_info_controller';
 import molecule_controller from '../controllers/molecule_controller';
-import { RedisClient } from 'redis';
+
+const bb = require("bluebird");
 
 const redis = require("redis");
-const client: RedisClient = redis.createClient(process.env.REDIS_URL);
+const redis_config = {
+    url : process.env.LOCAL_REDIS_URL,
+    retry_strategy: function(options) {
+          if (options.error && options.error.code === "ECONNREFUSED") {
+            // End reconnecting on a specific error and flush all commands with
+            // a individual error
+            return new Error("The server refused the connection");
+          }
+          if (options.total_retry_time > 1000 * 60 * 60) {
+            // End reconnecting after a specific timeout and flush all commands
+            // with a individual error
+            return new Error("Retry time exhausted");
+          }
+          if (options.attempt > 10) {
+            // End reconnecting with built in error
+            return undefined;
+          }
+          // reconnect after
+           return Math.min(options.attempt * 100, 3000);
+        }
+}
+const client: RedisClient = redis.createClient(redis_config);
+// const client: RedisClient = redis.createClient();
+// console.log(client.address);
+
+
+client.on("error", function(error) {
+    console.error(error);
+  });
 
 const TMP_DIR = join(__dirname, '../../tmp');
 
@@ -128,12 +158,20 @@ const build_platemap = (row): Platemap => {
     return result;
 }
 
-export const test_poll = async (token: string) => {
-    const pkg = { hello: "world" };
-    client.set(token, JSON.stringify(pkg));
-}
 const update_progress_info = (token, progress_info) => {
-    client.set(token, JSON.stringify(progress_info));
+    try{
+        // console.log("start: set progress token");
+        client.set(token, JSON.stringify(progress_info), (err, reply) => {
+            if (err) {
+                console.log("error: set progress token - " + err);
+            }
+            console.log("success: set progress token: " + JSON.stringify(progress_info.platemap_map, null, 2));
+        });
+        // console.log("end: set progress token");
+    }
+    catch (err) {
+        console.log("err: update progress info - " + err);
+    }
 }
 
 const cache = {}
@@ -197,8 +235,9 @@ export const process_platemap_csv = async (csv_file_array: Express.Multer.File[]
         const name = platemap.name;
         const platemap_progress_info = { name, row_total, row_count, row_percent, cache_product_info_hit, cache_product_info_miss, cache_product_info_hit_rate: get_cache_hit_rate() };
         progress_info.platemap_map[platemap.name] = platemap_progress_info
-        rows.map(extract_molecule_product_info)
-            .forEach(async ({ molecule, product_info }) => {
+
+        let p_list = rows.map(extract_molecule_product_info)
+            .map(async ({ molecule, product_info }) => {
                 const product_info_id = await create_product_info_db(product_info);
 
                 platemap_progress_info.cache_product_info_hit = cache_product_info_hit;
@@ -213,13 +252,21 @@ export const process_platemap_csv = async (csv_file_array: Express.Multer.File[]
                 platemap_progress_info.row_count = row_count;
                 platemap_progress_info.row_percent = row_percent;
                 console.log(`${platemap.name} - ${row_count} of ${row_total} = ${row_percent}`);
+                progress_info.csv_count += 1;
                 update_progress_info(token, progress_info);
+                return Promise.resolve();
             });
-        progress_info.csv_count += 1;
-        update_progress_info(token, progress_info);
+        bb.all(p_list)
+            .then(() => {
+                console.log("finished")
+                progress_info.is_finished = true;
+                update_progress_info(token, progress_info);
+            })
+            .catch((err) => {
+                console.log("error2: " + err);
+            })
     }
-    progress_info.is_finished = true;
-    update_progress_info(token, progress_info);
+    
 
 }
 

@@ -12,7 +12,7 @@
     "start": "node index.js",
     "build:clean_dist": "rm -rf dist",
     "build:tsc_watch": "npm run build:clean_dist; npx tsc --watch",
-    "watch": "nvm use 12.14.0; webpack --watch",
+    "watch": "nvm use 12.14.0; npx webpack --watch",
     "debug": "nvm use 12.14.0; nodemon --inspect index.js",
     "dev": "npx nodemon src/index.ts",
     "postinstall": "webpack -p  --progress"
