@@ -1,50 +1,11 @@
-import multer from 'multer';
-import { StorageEngine } from 'multer';
-import { join, parse } from 'path';
 import csv from 'csvtojson';
-import { Request } from 'express';
 import { falsy } from 'is_js';
-// import { Promise: bb } from "bluebird";
-import { RedisClient } from 'redis';
+import { all } from 'bluebird';
 
 import platemap_controller from '../controllers/platemap_controller';
 import product_info_controller from '../controllers/product_info_controller';
 import molecule_controller from '../controllers/molecule_controller';
-
-const bb = require("bluebird");
-
-const redis = require("redis");
-const redis_config = {
-    url : process.env.LOCAL_REDIS_URL,
-    retry_strategy: function(options) {
-          if (options.error && options.error.code === "ECONNREFUSED") {
-            // End reconnecting on a specific error and flush all commands with
-            // a individual error
-            return new Error("The server refused the connection");
-          }
-          if (options.total_retry_time > 1000 * 60 * 60) {
-            // End reconnecting after a specific timeout and flush all commands
-            // with a individual error
-            return new Error("Retry time exhausted");
-          }
-          if (options.attempt > 10) {
-            // End reconnecting with built in error
-            return undefined;
-          }
-          // reconnect after
-           return Math.min(options.attempt * 100, 3000);
-        }
-}
-const client: RedisClient = redis.createClient(redis_config);
-// const client: RedisClient = redis.createClient();
-// console.log(client.address);
-
-
-client.on("error", function(error) {
-    console.error(error);
-  });
-
-const TMP_DIR = join(__dirname, '../../tmp');
+import { client } from './util_upload_common_routes'
 
 interface Molecule {
     form: string;
@@ -77,23 +38,6 @@ interface Platemap {
     library: string;
     name: string;
 }
-const storage: StorageEngine = multer.diskStorage({
-    destination: function (req: Request, file, cb) {
-        cb(null, TMP_DIR)
-    },
-    filename: function (req: Request, file, cb) {
-        const x = parse(file.originalname);
-        cb(null, x.name + '-' + Date.now() + x.ext)
-    }
-})
-
-const upload = multer({ storage });
-
-export const upload_fields = upload.fields([
-    { name: 'platemap_csv_files', maxCount: 400 },
-    { name: 'crc_csv', maxCount: 1 },
-    { name: 'images_zip', maxCount: 1 },
-]);
 
 const build_molecule = (row): Molecule => {
     const {
@@ -159,15 +103,13 @@ const build_platemap = (row): Platemap => {
 }
 
 const update_progress_info = (token, progress_info) => {
-    try{
-        // console.log("start: set progress token");
+    try {
         client.set(token, JSON.stringify(progress_info), (err, reply) => {
             if (err) {
                 console.log("error: set progress token - " + err);
             }
             console.log("success: set progress token: " + JSON.stringify(progress_info.platemap_map, null, 2));
         });
-        // console.log("end: set progress token");
     }
     catch (err) {
         console.log("err: update progress info - " + err);
@@ -188,7 +130,10 @@ const get_cache_hit_rate = () => {
         return cache_product_info_hit / total * 100.0;
     }
 }
-
+/* 
+    this fn creates an empty product info or uses an already existing product info
+    and enters it into the product info cache
+*/
 const create_empty_product_info = async () => {
     const empty_product_info = {
         catalog_number: '',
@@ -215,7 +160,13 @@ const create_empty_product_info = async () => {
 }
 
 export const process_platemap_csv = async (csv_file_array: Express.Multer.File[], token: string) => {
-    const progress_info = { csv_total: csv_file_array.length, platemap_map: {}, csv_count: 0, is_finished: false };
+    const progress_info = {
+        csv_total: csv_file_array.length,
+        platemap_map: {},
+        csv_count: 0,
+        is_finished: false
+    };
+
     update_progress_info(token, progress_info);
 
     await create_empty_product_info();
@@ -226,19 +177,27 @@ export const process_platemap_csv = async (csv_file_array: Express.Multer.File[]
         // create platemap
         const platemap = build_platemap(rows[0]);
         platemap.name = file.originalname;
-        console.log("start create platemap: " + platemap.name);
-        const platemap_id = await create_platemap_db(platemap);
-        console.log("end create platemap: " + platemap.name);
+        // console.log("start create platemap: " + platemap.name);
+        const platemap_id = await create_if_new_platemap_db(platemap);
+        // console.log("end create platemap: " + platemap.name);
         const row_total = rows.length;
         let row_count = 0;
         let row_percent = 0.0;
         const name = platemap.name;
-        const platemap_progress_info = { name, row_total, row_count, row_percent, cache_product_info_hit, cache_product_info_miss, cache_product_info_hit_rate: get_cache_hit_rate() };
+        const platemap_progress_info = {
+            name,
+            row_total,
+            row_count,
+            row_percent,
+            cache_product_info_hit,
+            cache_product_info_miss,
+            cache_product_info_hit_rate: get_cache_hit_rate()
+        };
         progress_info.platemap_map[platemap.name] = platemap_progress_info
 
         let p_list = rows.map(extract_molecule_product_info)
             .map(async ({ molecule, product_info }) => {
-                const product_info_id = await create_product_info_db(product_info);
+                const product_info_id = await create_if_new_product_info_db(product_info);
 
                 platemap_progress_info.cache_product_info_hit = cache_product_info_hit;
                 platemap_progress_info.cache_product_info_miss = cache_product_info_miss;
@@ -246,9 +205,9 @@ export const process_platemap_csv = async (csv_file_array: Express.Multer.File[]
 
                 molecule.product_info_id = product_info_id;
                 molecule.platemap_id = platemap_id;
-                await create_molecule_db(molecule);
+                await create_if_new_molecule_db(molecule);
                 row_count += 1;
-                row_percent = (row_count * 100.0) / row_total;
+                row_percent = parseFloat(((row_count * 100.0) / row_total).toFixed(1));
                 platemap_progress_info.row_count = row_count;
                 platemap_progress_info.row_percent = row_percent;
                 console.log(`${platemap.name} - ${row_count} of ${row_total} = ${row_percent}`);
@@ -256,31 +215,27 @@ export const process_platemap_csv = async (csv_file_array: Express.Multer.File[]
                 update_progress_info(token, progress_info);
                 return Promise.resolve();
             });
-        bb.all(p_list)
+        all(p_list)
             .then(() => {
                 console.log("finished")
                 progress_info.is_finished = true;
                 update_progress_info(token, progress_info);
             })
             .catch((err) => {
-                console.log("error2: " + err);
+                console.log("platemap upload: " + err);
             })
     }
-    
+
 
 }
 
-const create_platemap_db = async (platemap: Platemap) => {
-    let platemap_db;
+const create_if_new_platemap_db = async (platemap: Platemap) => {
     if (!(platemap.name in cache)) {
         // check db
-        const platemap_db_result_set = await platemap_controller.Model.findAll({ where: { name: platemap.name }, attributes: ['id', 'name'] })
-            .catch(error => console.log(`error - platemap controller findall: ${error}`));
+        let platemap_db = await platemap_controller.Model.findOne({ where: { name: platemap.name }, attributes: ['id', 'name'] })
+            .catch(error => console.log(`error - platemap controller findOne: ${error}`));
 
-        if (platemap_db_result_set.length >= 1) {
-            platemap_db = platemap_db_result_set[0];
-        }
-        else {
+        if (falsy(platemap_db)) {
             platemap_db = await platemap_controller.insert(platemap)
                 .catch(error => console.log(`error - platemap controller insert: ${error}`));
         }
@@ -289,17 +244,13 @@ const create_platemap_db = async (platemap: Platemap) => {
     return cache[platemap.name];
 }
 
-const create_product_info_db = async (product_info: Product_Info) => {
-    let product_info_db;
+const create_if_new_product_info_db = async (product_info: Product_Info) => {
     let cas_number = (product_info.cas_number === "") ? "EMPTY_CAS_NUMBER" : product_info.cas_number;
     if (!(cas_number in cache)) {
         // check if already in db
-        const product_info_db_result_set = await product_info_controller.Model.findAll({ where: { cas_number }, attributes: ['id'] })
-            .catch(error => console.log(`error - product_info_controller get_where: ${error}`));
-        if (product_info_db_result_set.length >= 1) {
-            product_info_db = product_info_db_result_set[0];
-        }
-        else {
+        let product_info_db = await product_info_controller.Model.findOne({ where: { cas_number }, attributes: ['id'] })
+            .catch(error => console.log(`error - product_info_controller findOne: ${error}`));
+        if (falsy(product_info_db)) {
             product_info_db = await product_info_controller.insert(product_info)
                 .catch(error => console.log(`error - product_info_controller insert: ${error}`));
         }
@@ -312,8 +263,14 @@ const create_product_info_db = async (product_info: Product_Info) => {
     return cache[product_info.cas_number];
 }
 
-const create_molecule_db = async (molecule: Molecule) => {
-    const molecule_db = await molecule_controller.insert(molecule);
+const create_if_new_molecule_db = async (molecule: Molecule) => {
+    const { cell, platemap_id, product_info_id } = molecule;
+    let molecule_db = await molecule_controller.Model.findOne({ where: { cell, platemap_id, product_info_id }, attributes: ['id'] })
+        .catch(error => console.log(`error - molecule_controller get_where: ${error}`));
+    if (falsy(molecule_db)) {
+        molecule_db = await molecule_controller.insert(molecule)
+            .catch(error => console.log(`error - molecule_controller insert: ${error}`));
+    }
     return molecule_db.id;
 }
 

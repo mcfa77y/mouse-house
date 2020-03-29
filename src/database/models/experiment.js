@@ -8,7 +8,6 @@ export default (sequelize, DataTypes) => {
     const Experiment = sequelize.define('Experiment', {
         image_name: DataTypes.STRING,
         measurement_name: DataTypes.STRING,
-        platemap_name: DataTypes.STRING,
         dapi_w1: DataTypes.INTEGER,
         actin_w3: DataTypes.INTEGER,
         lectin_w2: DataTypes.INTEGER,

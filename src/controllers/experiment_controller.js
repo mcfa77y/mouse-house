@@ -1,27 +1,69 @@
 const utils = require('./utils_controller');
 const Base_Controller = require('./base_controller');
 const { Experiment } = require('../database/models');
+// const platemap_controller = require('./platemap_controller');
 
 class Experiment_Controller extends Base_Controller {
-    pretty(model) {
+    async pretty(model) {
         const {
-            id, name, note, created_at, updated_at,
-            grid_data_uri,
-            metadata_uri,
-            image_config,
-            tag_config,
+            id,
+            image_name,
+            measurement_name,
+            dapi_w1,
+            actin_w3,
+            lectin_w2,
+            tubulin_w2,
+            ph3_w3,
+            ph3_w4,
+            edu_w2,
+            calnexin_w4,
+            gm130w4,
+            controlplate,
+            cell_lines,
+            timepoint,
+            magnification,
+            cp_version,
+            human_readable_name,
+            experiment_date,
+            ixmw1,
+            ixmw2,
+            ixmw3,
+            ixmw4,
+            created_at,
+            updated_at,
+            platemap_id,
         } = model;
         // const experiments = await model.getExperiments({ raw: true });
+        const platemap_db = await model.getPlatemap({ attributes: ['name'] });
+        console.log(`platemap_db: ${JSON.stringify(platemap_db, null, 2)}`);
+
         return {
-            id,
-            name,
-            note,
             created_at: utils.format_date(created_at),
             updated_at: utils.format_date(updated_at),
-            grid_data_uri,
-            metadata_uri,
-            image_config,
-            tag_config,
+            id,
+            image_name,
+            measurement_name,
+            dapi_w1,
+            actin_w3,
+            lectin_w2,
+            tubulin_w2,
+            ph3_w3,
+            ph3_w4,
+            edu_w2,
+            calnexin_w4,
+            gm130w4,
+            controlplate,
+            cell_lines,
+            timepoint,
+            magnification,
+            cp_version,
+            human_readable_name,
+            experiment_date,
+            ixmw1,
+            ixmw2,
+            ixmw3,
+            ixmw4,
+            platemap_id: platemap_db.name,
         };
     }
 

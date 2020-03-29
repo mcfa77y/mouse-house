@@ -1,20 +1,10 @@
-import multer from 'multer';
-import { StorageEngine } from 'multer';
-import { join, parse } from 'path';
 import csv from 'csvtojson';
-import { Request } from 'express';
 import { falsy } from 'is_js';
-import { promisifyAll } from 'bluebird';
+import { all } from 'bluebird';
 
 import platemap_controller from '../controllers/platemap_controller';
 import experiment_controller from '../controllers/experiment_controller';
-// import { RedisClient } from 'redis';
-
-const redis = require("redis");
-promisifyAll(redis);
-const client: any = redis.createClient(process.env.REDIS_URL);
-
-
+import { client } from './util_upload_common_routes';
 
 interface Experiment {
     image_name: string,
@@ -72,7 +62,6 @@ const build_experiment = (row): Experiment => {
     const result = {
         image_name,
         measurement_name,
-        plate_map_file,
         dapi_w1,
         actin_w3,
         lectin_w2,
@@ -94,7 +83,7 @@ const build_experiment = (row): Experiment => {
         ixmw3,
         ixmw4,
         platemap_id: -1,
-        platemap_name: plate_map_file,
+        platemap_name: plate_map_file.split('_')[0],
     }
     return result;
 }
@@ -103,20 +92,7 @@ const update_progress_info = (token, progress_info) => {
     client.set(token, JSON.stringify(progress_info));
 }
 
-const get_progress_info = (token) => {
-    return client.getAsync(token)
-        .then(result => {
-            return JSON.parse(result);
-        })
-        .catch((err) => {
-            console.log('could not find token: ' + token);
-            update_progress_info(token, {});
-            return {};
-        })
-}
-
 const cache = {}
-cache["EMPTY_CAS_NUMBER"] = 4114;
 let cache_experiment_hit = 0;
 let cache_experiment_miss = 0;
 
@@ -143,18 +119,27 @@ export const process_crc_csv = async (csv_file: Express.Multer.File, token: stri
     let row_count = 0;
     let row_percent = 0.0;
     const name = csv_file.originalname;
-    const crc_progress_info = { name, row_total, row_count, row_percent, cache_experiment_hit, cache_experiment_miss, cache_experiment_hit_rate: get_cache_hit_rate() };
+    const crc_progress_info = {
+        name,
+        row_total,
+        row_count,
+        row_percent,
+        cache_experiment_hit,
+        cache_experiment_miss,
+        cache_experiment_hit_rate: get_cache_hit_rate()
+    };
 
-    rows.map(build_experiment)
-        .forEach(async (experiment) => {
+    const p_list = rows.map(build_experiment)
+        .map(async (experiment) => {
             // get platemap id
-            let platemap_db;
-            const platemap_db_result_set = await platemap_controller.Model
-                .findAll({ where: { name: experiment.platemap_name + '.csv' }, attributes: ['id', 'name'] })
+            let platemap_db = await platemap_controller.Model
+                .findOne({
+                    where: { name: experiment.platemap_name + '.csv' },
+                    attributes: ['id', 'name']
+                })
                 .catch(error => console.log(`error - platemap controller findall: ${error}`));
 
-            if (platemap_db_result_set.length >= 1) {
-                platemap_db = platemap_db_result_set[0];
+            if (!falsy(platemap_db)) {
                 experiment.platemap_id = platemap_db.id;
                 const experiment_id = await create_experiment_db(experiment);
             }
@@ -168,7 +153,7 @@ export const process_crc_csv = async (csv_file: Express.Multer.File, token: stri
             crc_progress_info.cache_experiment_hit_rate = get_cache_hit_rate();
 
             row_count += 1;
-            row_percent = (row_count * 100.0) / row_total;
+            row_percent = parseFloat(((row_count * 100.0) / row_total).toFixed(1));
             crc_progress_info.row_count = row_count;
             crc_progress_info.row_percent = row_percent;
             console.log(`${name} - ${row_count} of ${row_total} = ${row_percent}`);
@@ -176,21 +161,29 @@ export const process_crc_csv = async (csv_file: Express.Multer.File, token: stri
             if (row_count == row_total) { progress_info.is_finished = true; }
 
             update_progress_info(token, progress_info);
+            return Promise.resolve();
         });
+    all(p_list)
+        .then(() => {
+            console.log("finished")
+            progress_info.is_finished = true;
+            update_progress_info(token, progress_info);
+        })
+        .catch((err) => {
+            console.log("crc upload: " + err);
+        })
 }
 
 
 
 const create_experiment_db = async (experiment: Experiment) => {
-    let experiment_db;
     if (!(experiment.human_readable_name in cache)) {
         // check db
-        const expr_db_result_set = await experiment_controller.Model
-            .findAll({ where: { name: experiment.human_readable_name }, attributes: ['id', 'human_readable_name'] })
+        let experiment_db = await experiment_controller.Model
+            .findOne({ where: { human_readable_name: experiment.human_readable_name }, attributes: ['id', 'human_readable_name'] })
             .catch(error => console.log(`error - experiment controller findall: ${error}`));
 
-        if (expr_db_result_set != undefined && expr_db_result_set.length >= 1) {
-            experiment_db = expr_db_result_set[0];
+        if (!falsy(experiment_db)) {
             cache[experiment_db.human_readable_name] = experiment_db.id;
         }
         else {
