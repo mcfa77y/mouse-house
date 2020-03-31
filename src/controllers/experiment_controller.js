@@ -1,3 +1,5 @@
+const { map } = require('bluebird');
+
 const utils = require('./utils_controller');
 const Base_Controller = require('./base_controller');
 const { Experiment } = require('../database/models');
@@ -31,11 +33,9 @@ class Experiment_Controller extends Base_Controller {
             ixmw4,
             created_at,
             updated_at,
-            platemap_id,
         } = model;
         // const experiments = await model.getExperiments({ raw: true });
         const platemap_db = await model.getPlatemap({ attributes: ['name'] });
-        console.log(`platemap_db: ${JSON.stringify(platemap_db, null, 2)}`);
 
         return {
             created_at: utils.format_date(created_at),
@@ -69,8 +69,9 @@ class Experiment_Controller extends Base_Controller {
 
     async all_pretty() {
         const self = this;
-        const all_experiments = await super.all();
-        return all_experiments.map((experiment) => self.pretty(experiment));
+        return super.all()
+            .then((items) => map(items, (item) => self.pretty(item)))
+            .then((model_array) => model_array);
     }
 
     insert(model) {
@@ -90,12 +91,6 @@ class Experiment_Controller extends Base_Controller {
             where: { id: _model.id },
             returning: true,
         });
-    }
-
-    async get_projects(id) {
-        const experiment = await this.Model.findByPk(id);
-        const projects = await experiment.getProjects({ raw: true });
-        return { projects, experiment };
     }
 
     get model() {
