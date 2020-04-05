@@ -1,5 +1,5 @@
 const express = require('express');
-const {falsy: isFalsey} = require('is_js');
+const { falsy: isFalsey } = require('is_js');
 
 const router = express.Router();
 const BlueBird = require('bluebird');
@@ -10,7 +10,7 @@ const { cool_face, select_json, log_json } = require('./utils_routes');
 
 router.get('/', (req, res) => {
     console.log('get cage list');
-    
+
     BlueBird.props({
         cages: cage_controller.all_pretty(),
     })
@@ -30,7 +30,7 @@ router.get('/create', (req, res) => {
     })
         .then(({ input }) => {
             let mice_select = input.mice
-                .map(mouse => ({ id: mouse.id, description: mouse.id_alias }));
+                .map((mouse) => ({ id: mouse.id, description: mouse.id_alias }));
             mice_select = select_json(mice_select);
             const cage_type = select_json(input.cage_type);
             const { mice } = input;
@@ -55,7 +55,7 @@ router.get('/:id_alias', (req, res) => {
         .then(({ input, cage }) => {
             const { mice } = input;
             const mice_select = select_json(input.mice
-                    .map(mouse => ({ id: mouse.id, description: mouse.id_alias })));
+                .map((mouse) => ({ id: mouse.id, description: mouse.id_alias })));
             const cage_type = select_json(input.cage_type);
             const verb = 'Update';
             log_json(cage);

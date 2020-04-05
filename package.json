@@ -128,7 +128,7 @@
     "@types/hbs": "^4.0.1",
     "@types/helmet": "0.0.45",
     "@types/is": "0.0.21",
-    "@types/jquery": "^3.3.31",
+    "@types/jquery": "^3.3.34",
     "@types/morgan": "^1.7.37",
     "@types/node": "^13.1.6",
     "@types/sequelize": "^4.28.8",

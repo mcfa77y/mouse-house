@@ -26,11 +26,11 @@ const PUBLIC_DIR = path.join(__dirname, '../../public/experiments');
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        const url = req["originalUrl"];
+        const url = req['originalUrl'];
         if (url === '/grid/config') {
             cb(null, CONFIG_DIR);
         } else if (url === '/grid/table') {
-            const foo = path.join(PUBLIC_DIR, sanitize_config_name(req["body"].config_name_description));
+            const foo = path.join(PUBLIC_DIR, sanitize_config_name(req['body'].config_name_description));
             try {
                 fs.mkdirSync(foo);
             } catch (err) {
@@ -40,16 +40,16 @@ const storage = multer.diskStorage({
         }
     },
     filename: (req, file, cb) => {
-        const url = req["originalUrl"];
-        let new_name = "";
+        const url = req['originalUrl'];
+        let new_name = '';
         if (url === '/grid/config') {
-            new_name = `${file.fieldname}_${Date.now()}.json`
+            new_name = `${file.fieldname}_${Date.now()}.json`;
             // cb(null, `${file.fieldname}_${Date.now()}.json`);
         } else if (url === '/grid/table') {
             new_name = `${file.originalname}`;
         }
         console.log(`new_name: ${new_name}`);
-        
+
         cb(null, new_name);
     },
 });
@@ -67,7 +67,7 @@ router.get('/', (req, res) => {
         ({ config_map } = req.session);
     } else {
         req.session.config_map = config_map;
-    // res.cookie('config_map', config_map);
+        // res.cookie('config_map', config_map);
     }
     const config_name_select_list = Object.keys(config_map)
         .map((config_name) => ({ id: `${config_name}`, description: `${config_name}` }));
@@ -83,7 +83,7 @@ router.get('/:config_name', async (req, res) => {
         ({ config_map } = req.session);
     } else {
         req.session.config_map = config_map;
-    // res.cookie('config_map', config_map);
+        // res.cookie('config_map', config_map);
     }
     const config_name_select_list = Object.keys(config_map)
         .map((config_name) => ({ id: `${config_name}`, description: `${config_name}` }));
@@ -211,8 +211,8 @@ const public_upload_fields = upload.fields([
 
 // create table from csv and image dir
 router.post('/table', public_upload_fields, async (req, res) => {
-    console.log("doingng tble stuff");
-    
+    console.log('doing table stuff');
+
     const config_map = add_config(req);
     save_config_to_disk(config_map, CONFIG_DIR);
     const {
@@ -233,7 +233,7 @@ router.post('/table', public_upload_fields, async (req, res) => {
     const new_row = synthesize_rows(row_value_list, meta_row_value_list, meta_column_headers);
     const dt = {
         column_headers,
-        row_value_list: new_row,
+        row_name_list: new_row,
     };
     const html = grid_table_template(dt);
     res.status(200).send({

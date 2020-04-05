@@ -1,7 +1,7 @@
-const BlueBird = require('bluebird');
-const { falsy: isFalsey } = require('is_js');
+// const BlueBird = require('bluebird');
+// const { falsy: isFalsey } = require('is_js');
 const { Op } = require('sequelize');
-const utils = require('./utils_controller');
+const { format_date } = require('./utils_controller');
 // const city_names = require('../lib/data/city_names.json').city_names;
 
 const Base_Controller = require('./base_controller');
@@ -40,8 +40,8 @@ class Molecule_Controller extends Base_Controller {
         return {
             id,
             name,
-            created_at: utils.format_date(created_at),
-            updated_at: utils.format_date(updated_at),
+            created_at: format_date(created_at),
+            updated_at: format_date(updated_at),
             barcode,
             cas_number,
             catalog_number,
@@ -58,7 +58,10 @@ class Molecule_Controller extends Base_Controller {
             weight,
             x,
             y,
-            platemap_name: platemap.name,
+            platemap: {
+                name: platemap.name,
+                id: platemap.id,
+            },
             product_info: product_info.cas_number,
         };
     }
@@ -139,10 +142,10 @@ class Molecule_Controller extends Base_Controller {
         const include = [];
         columns
             .filter(
-                ({ data }) => data === 'platemap_name' || data === 'product_info',
+                ({ data }) => data === 'platemap' || data === 'product_info',
             )
             .forEach(({ data, search }) => {
-                if (data === 'platemap_name') {
+                if (data === 'platemap') {
                     include.push(
                         this.build_include_helper(Platemap, 'name', search, 'platemap'),
                     );
@@ -188,10 +191,11 @@ class Molecule_Controller extends Base_Controller {
         if (limit > 0) {
             config = Object.assign(config, { limit, offset });
         }
-        const all_molecules = await Molecule.findAndCountAll(config).catch((error) => {
-            console.log(`error - find some molecule: ${error}`);
-            console.log(`error - find some molecule stack:\n ${error.stack}`);
-        });
+        const all_molecules = await Molecule.findAndCountAll(config)
+            .catch((error) => {
+                console.log(`error - find some molecule: ${error}`);
+                console.log(`error - find some molecule stack:\n ${error.stack}`);
+            });
         const molecules = all_molecules.rows.map((molecule) => self.pretty(molecule));
 
         return {
@@ -211,7 +215,7 @@ class Molecule_Controller extends Base_Controller {
     }
 
     insert(_model) {
-    // console.log(`update molecule_model:\n ${JSON.stringify(_model, null, 2)}`);
+        // console.log(`update molecule_model:\n ${JSON.stringify(_model, null, 2)}`);
         return Molecule.create(_model, {
             returning: true,
             attributes: ['id'],

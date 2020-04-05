@@ -1,11 +1,12 @@
 const BlueBird = require('bluebird');
 // const _ = require('underscore')
-const {falsy: isFalsey} = require('is_js');
+const { falsy: isFalsey } = require('is_js');
 
 const Base_Controller = require('./base_controller');
 const enum_controller = require('./enum_controller');
 // const cage_controller = require('./cage_controller')
-const utils = require('./utils_controller');
+const { format_date, remove_empty, relative_time
+} = require('./utils_controller');
 const { Mouse } = require('../database/models');
 
 
@@ -30,7 +31,6 @@ class Mouse_Controller extends Base_Controller {
     }
 
     pretty(mouse) {
-        const self = this;
         return BlueBird.props({
             sex: enum_controller.get(mouse.sex_id),
             genotype: enum_controller.get(mouse.genotype_id),
@@ -58,10 +58,10 @@ class Mouse_Controller extends Base_Controller {
                 pretty_mouse.sex_id = `${mouse.sex_id}`;
                 pretty_mouse.genotype_id = `${mouse.genotype_id}`;
                 pretty_mouse.status_id = `${mouse.status_id}`;
-                pretty_mouse.dob = utils.format_date(mouse.dob);
-                pretty_mouse.age = utils.relative_time(mouse.dob);
-                pretty_mouse.create_at = utils.format_date(mouse.create_at);
-                pretty_mouse.modify_at = utils.format_date(mouse.modify_at);
+                pretty_mouse.dob = format_date(mouse.dob);
+                pretty_mouse.age = relative_time(mouse.dob);
+                pretty_mouse.create_at = format_date(mouse.create_at);
+                pretty_mouse.modify_at = format_date(mouse.modify_at);
                 pretty_mouse.breeds = isFalsey(breeds) ? [] : breeds.map((breed) => `${breed.id_alias}`);
                 pretty_mouse.cage = isFalsey(cage) ? '' : cage.name;
                 pretty_mouse.cage_id = isFalsey(cage) ? '' : `${cage.id}`;
@@ -99,8 +99,7 @@ class Mouse_Controller extends Base_Controller {
     }
 
     insert(_model) {
-        const self = this;
-        _model = utils.remove_empty(_model, true);
+        _model = remove_empty(_model, true);
         return Mouse.create(_model, {
             include: [
                 { association: Mouse.Note },
@@ -118,8 +117,7 @@ class Mouse_Controller extends Base_Controller {
     }
 
     update(model) {
-        const self = this;
-        return Mouse.update(utils.remove_empty(model), {
+        return Mouse.update(remove_empty(model), {
             where: {
                 id: model.id,
             },

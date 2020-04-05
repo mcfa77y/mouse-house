@@ -1,11 +1,14 @@
 import range from 'lodash/range';
 
 import { setup_list_page_buttons } from '../cs-model-common';
-import { model_name, column_names } from './cs-molecule-common';
+import { model_name, column_names, column_name_index_map, column_hide_index_list } from './cs-molecule-common';
 
-export function setup_table({ model_name, column_names, hide_id_column = false }) {
+export function setup_table({ model_name, column_names }) {
     const columns = column_names.map((x) => ({ data: x }));
-
+    columns[column_name_index_map['platemap']].render = (data, type, row) => {
+        const html = `<a href='experiment/${data.id}'>${data.name}</a>`;
+        return html;
+    }
     let table_options: DataTables.Settings = {
         serverSide: true,
         ajax: { url: '/molecule/table', type: 'POST' },
@@ -59,15 +62,27 @@ export function setup_table({ model_name, column_names, hide_id_column = false }
 
     };
 
-    if (hide_id_column) {
-        table_options = $.extend(table_options, {
-            columnDefs: [{
-                targets: [0],
-                visible: false,
-                searchable: false,
-            }],
-        });
-    }
+    // if (hide_id_column) {
+    // table_options = $.extend(table_options, {
+    //     columnDefs: [{
+    //         targets: [],
+    //         visible: false,
+    //         // searchable: false,
+    //     }],
+    // });
+    // }
+    const columnDefs = column_hide_index_list.reduce((acc, hidden_index) => {
+        const foo = {
+            targets: hidden_index,
+            visible: false
+        }
+        acc.push(foo);
+        return acc;
+    }, []);
+
+    table_options = $.extend(table_options, {
+        columnDefs
+    });
 
     // Setup - add a text input to each footer cell
     let table_id = `#${model_name}-list`;
@@ -147,6 +162,6 @@ export function setup_table({ model_name, column_names, hide_id_column = false }
 }
 
 $(document).ready(() => {
-    const molecule_table = setup_table({ model_name, column_names, hide_id_column: true });
+    const molecule_table = setup_table({ model_name, column_names });
     setup_list_page_buttons(model_name, molecule_table);
 });

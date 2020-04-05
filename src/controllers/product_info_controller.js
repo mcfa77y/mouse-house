@@ -1,7 +1,7 @@
-const BlueBird = require('bluebird');
-const { falsy: isFalsey } = require('is_js');
+// const BlueBird = require('bluebird');
+// const { falsy: isFalsey } = require('is_js');
 
-const utils = require('./utils_controller');
+const { format_date } = require('./utils_controller');
 // const city_names = require('../lib/data/city_names.json').city_names;
 
 const Base_Controller = require('./base_controller');
@@ -19,8 +19,8 @@ class Product_Info_Controller extends Base_Controller {
         // const experiments = await model.getExperiments({ raw: true });
         return {
             id,
-            created_at: utils.format_date(created_at),
-            updated_at: utils.format_date(updated_at),
+            created_at: format_date(created_at),
+            updated_at: format_date(updated_at),
             barcode,
             cas_number,
             catalog_number,

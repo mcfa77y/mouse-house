@@ -19,20 +19,22 @@ router.get('/', async (req: Request, res: Response) => {
 send table ajax response
 */
 router.post('/table', (req: Request, res: Response) => {
-  log_json(req.body);
+  // log_json(req.body);
   // const draw = parseInt(req.body.draw);
   // const offset = parseInt(req.body.start);
   // const limit = parseInt(req.body.length);
   const {draw, start: offset, length: limit, columns, search, order} = req.body
   // const limit = 100;
   
-   molecule_controller.some_pretty({limit, offset, columns, search, order}).then(({molecules, count}) => {
-     res.send( {
-       data: molecules,
-       recordsTotal: count,
-       recordsFiltered: count,
-       draw
-     });
+   molecule_controller.some_pretty({limit, offset, columns, search, order})
+     .then(({ molecules, count }) => {
+      // molecules. 
+      res.send( {
+        data: molecules,
+        recordsTotal: count,
+        recordsFiltered: count,
+        draw
+      });
    })
   });
   

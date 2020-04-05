@@ -1,5 +1,4 @@
 import Axios from 'axios';
-const {falsy: isFalsey} = require('is_js');
 import * as Toastr from 'toastr';
 
 import { form_ids_vals } from '../cs-form-helper';
@@ -8,6 +7,8 @@ import { setup_tag } from './cs-grid-tag';
 import { setup_grid_cells, set_grid_mode } from './cs-grid-cell';
 import { setup_cards } from './cs-grid-cards';
 import { set_custom_file_label } from '../cs-model-common';
+
+const { falsy: isFalsey } = require('is_js');
 
 const data_the_table = () => {
     const table_options = {
@@ -22,8 +23,8 @@ const setup_form = () => {
 
     const create_table = (response) => {
         $('#results_spinner').collapse('hide');
-        if (response.data.html == undefined){
-            Toastr.warning("unable to create table");
+        if (response.data.html == undefined) {
+            Toastr.warning('unable to create table');
             results.html(`${response.data}`);
         }
         results.html(`${response.data.html}`);

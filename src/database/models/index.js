@@ -35,7 +35,7 @@ if (process.env.NODE_ENV === 'production') {
         },
     });
 } else {
-    console.log('using default config for db');
+    console.log(`using default config for db\n${JSON.stringify(config, null, 2)}`);
     // console.log(`config: ${JSON.stringify(config, null, 2)}`);
 
     sequelize = new Sequelize(config.database, config.username, config.password, config);

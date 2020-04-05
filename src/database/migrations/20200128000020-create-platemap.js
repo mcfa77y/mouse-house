@@ -11,6 +11,7 @@ module.exports = {
         id_384: { type: Sequelize.STRING },
         id_ucsc_csc: { type: Sequelize.STRING },
         library: { type: Sequelize.STRING },
+        tags: Sequelize.JSONB,
         created_at: {
             allowNull: false,
             type: Sequelize.DATE,

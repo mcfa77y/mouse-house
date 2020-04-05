@@ -1,7 +1,7 @@
-const BlueBird = require('bluebird');
-const { falsy: isFalsey } = require('is_js');
+// const BlueBird = require('bluebird');
+// const { falsy: isFalsey } = require('is_js');
 
-const utils = require('./utils_controller');
+const { format_date } = require('./utils_controller');
 // const city_names = require('../lib/data/city_names.json').city_names;
 
 const Base_Controller = require('./base_controller');
@@ -17,8 +17,8 @@ class Project_Controller extends Base_Controller {
             id,
             name,
             note,
-            created_at: utils.format_date(created_at),
-            updated_at: utils.format_date(updated_at),
+            created_at: format_date(created_at),
+            updated_at: format_date(updated_at),
         };
     }
 
@@ -58,8 +58,10 @@ class Project_Controller extends Base_Controller {
 
     async get_experiments(id) {
         const project = await this.Model.findByPk(id);
-        const experiments = await project.getExperiments({ attributes: ['id', 'name'],
-        raw: true });
+        const experiments = await project.getExperiments({
+            attributes: ['id', 'name'],
+            raw: true
+        });
         return { project, experiments };
     }
 

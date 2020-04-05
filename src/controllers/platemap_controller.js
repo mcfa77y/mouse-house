@@ -1,7 +1,7 @@
-const BlueBird = require('bluebird');
-const { falsy: isFalsey } = require('is_js');
+// const BlueBird = require('bluebird');
+// const { falsy: isFalsey } = require('is_js');
 
-const utils = require('./utils_controller');
+const { identity, format_date } = require('./utils_controller');
 // const city_names = require('../lib/data/city_names.json').city_names;
 
 const Base_Controller = require('./base_controller');
@@ -16,18 +16,19 @@ class Platemap_Controller extends Base_Controller {
             molarity_mm,
             molarity_unit,
             library,
+            tags,
         } = model;
-        // const experiments = await model.getExperiments({ raw: true });
         return {
             id,
             name,
-            created_at: utils.format_date(created_at),
-            updated_at: utils.format_date(updated_at),
+            created_at: format_date(created_at),
+            updated_at: format_date(updated_at),
             id_384,
             id_ucsc_csc,
             molarity_mm,
             molarity_unit,
             library,
+            tags,
         };
     }
 
@@ -41,9 +42,7 @@ class Platemap_Controller extends Base_Controller {
         console.log(`_model: ${JSON.stringify(model, null, 2)}`);
 
         return Platemap.create(model, { returning: true, attributes: ['id'] })
-            .then((model) => {
-                return model;
-            })
+            .then(identity)
             .catch((err) => {
                 console.error(err);
             });

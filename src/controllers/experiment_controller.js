@@ -1,9 +1,11 @@
 const { map } = require('bluebird');
 
-const utils = require('./utils_controller');
+const { format_date, remove_empty } = require('./utils_controller');
+
 const Base_Controller = require('./base_controller');
 const { Experiment } = require('../database/models');
 // const platemap_controller = require('./platemap_controller');
+
 
 class Experiment_Controller extends Base_Controller {
     async pretty(model) {
@@ -35,11 +37,11 @@ class Experiment_Controller extends Base_Controller {
             updated_at,
         } = model;
         // const experiments = await model.getExperiments({ raw: true });
-        const platemap_db = await model.getPlatemap({ attributes: ['name'] });
+        const platemap_db = await model.getPlatemap({ attributes: ['name', 'id'] });
 
         return {
-            created_at: utils.format_date(created_at),
-            updated_at: utils.format_date(updated_at),
+            created_at: format_date(created_at),
+            updated_at: format_date(updated_at),
             id,
             image_name,
             measurement_name,
@@ -63,7 +65,8 @@ class Experiment_Controller extends Base_Controller {
             ixmw2,
             ixmw3,
             ixmw4,
-            platemap_id: platemap_db.name,
+            platemap_name: platemap_db.name,
+            platemap_id: platemap_db.id,
         };
     }
 
@@ -75,7 +78,7 @@ class Experiment_Controller extends Base_Controller {
     }
 
     insert(model) {
-        const _model = utils.remove_empty(model, true);
+        const _model = remove_empty(model, true);
         return Experiment.create(_model, {
             returning: true,
         })
@@ -85,7 +88,7 @@ class Experiment_Controller extends Base_Controller {
     }
 
     update(model) {
-        const _model = utils.remove_empty(model, true);
+        const _model = remove_empty(model, true);
 
         return Experiment.update(_model, {
             where: { id: _model.id },

@@ -23,9 +23,10 @@ router.get('/create', async (req: Request, res: Response) => {
 });
 
 router.get('/:experiment_id', async (req: Request, res: Response) => {
-  const { projects, experiment } = await experiment_controller.get_projects(req.params.experiment_id);
-  res.render('pages/experiment/experiment_update',
-    { experiment, projects });
+  experiment_controller
+  // const { projects, experiment } = await experiment_controller.get_projects(req.params.experiment_id);
+  // res.render('pages/experiment/experiment_update',
+  //   { experiment, projects });
 });
 
 

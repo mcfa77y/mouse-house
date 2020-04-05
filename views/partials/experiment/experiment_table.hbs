@@ -3,23 +3,24 @@
         <tr>
             <th>ID</th>
             <th>Experiment</th>
-            <th>image_name</th>
-            <th>measurement_name</th>
-            <th>cell_lines</th>
+            <th>platemap name</th>
+            <th>image name</th>
+            <th>measurement name</th>
+            <th>cell lines</th>
             <th>magnification</th>
-            <th>experiment_date</th>
+            <th>experiment date</th>
             <th>ixmw1</th>
             <th>ixmw2</th>
             <th>ixmw3</th>
             <th>ixmw4</th>
-            <th>platemap_id</th>
         </tr>
     </thead>
     <tbody>
         {{#each experiments}}
         <tr>
             <td>{{id}}</td>
-            <td><a href="/experiment/{{id}}">{{human_readable_name}}</a></td>
+            <td>{{human_readable_name}}</td>
+            <td><a href="/platemap/{{platemap_id}}">{{platemap_name}}</td>
             <td>{{image_name}}</td>
             <td>{{measurement_name}}</td>
             <td>{{cell_lines}}</td>
@@ -29,7 +30,6 @@
             <td>{{ixmw2}}</td>
             <td>{{ixmw3}}</td>
             <td>{{ixmw4}}</td>
-            <td>{{platemap_id}}</td>
         </tr>
         {{/each}}
     </tbody>

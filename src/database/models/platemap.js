@@ -10,6 +10,7 @@ export default (sequelize, DataTypes) => {
         id_384: DataTypes.STRING,
         id_ucsc_csc: DataTypes.STRING,
         library: DataTypes.STRING,
+        tags: DataTypes.JSONB,
     }, OPTIONS);
 
     Platemap.associate = (models) => {

@@ -1,6 +1,6 @@
 const BlueBird = require('bluebird');
 const { falsy: isFalsey } = require('is_js');
-const utils = require('./utils_controller');
+const { relative_time, format_date, remove_empty } = require('./utils_controller');
 // const city_names = require('../lib/data/city_names.json').city_names
 
 const Base_Controller = require('./base_controller');
@@ -22,29 +22,29 @@ class Breed_Controller extends Base_Controller {
 
                 pretty_model.male_mouse = {
                     id: male.id_alias,
-                    age: utils.relative_time(male.dob),
+                    age: relative_time(male.dob),
                 };
 
                 pretty_model.female_mouse = {
                     id: female.id_alias,
-                    age: utils.relative_time(female.dob),
+                    age: relative_time(female.dob),
                 };
 
 
                 pretty_model.id = parseInt(model.id, 10);
                 pretty_model.id_alias = model.id_alias;
-                pretty_model.ween_date = isFalsey(model.ween_date) ? '' : utils.format_date(model.ween_date);
+                pretty_model.ween_date = isFalsey(model.ween_date) ? '' : format_date(model.ween_date);
                 pretty_model.female_count = model.female_count;
                 pretty_model.genotype = isFalsey(genotype) ? '' : genotype.description;
                 pretty_model.genotype_id = isFalsey(genotype) ? '' : genotype.id;
-                pretty_model.litter_date = isFalsey(model.litter_date) ? '' : utils.format_date(model.litter_date);
+                pretty_model.litter_date = isFalsey(model.litter_date) ? '' : format_date(model.litter_date);
                 pretty_model.male_count = model.male_count;
                 pretty_model.note = isFalsey(note) ? '' : note.text;
-                pretty_model.pairing_date = isFalsey(model.pairing_date) ? '' : utils.format_date(model.pairing_date);
-                pretty_model.plug_date = isFalsey(model.plug_date) ? '' : utils.format_date(model.plug_date);
-                pretty_model.pup_check_date = isFalsey(model.pup_check_date) ? '' : utils.format_date(model.pup_check_date);
-                pretty_model.setup_date = isFalsey(model.setup_date) ? '' : utils.format_date(model.setup_date);
-                pretty_model.update_date = isFalsey(model.update_date) ? '' : utils.format_date(model.update_date);
+                pretty_model.pairing_date = isFalsey(model.pairing_date) ? '' : format_date(model.pairing_date);
+                pretty_model.plug_date = isFalsey(model.plug_date) ? '' : format_date(model.plug_date);
+                pretty_model.pup_check_date = isFalsey(model.pup_check_date) ? '' : format_date(model.pup_check_date);
+                pretty_model.setup_date = isFalsey(model.setup_date) ? '' : format_date(model.setup_date);
+                pretty_model.update_date = isFalsey(model.update_date) ? '' : format_date(model.update_date);
 
 
                 return pretty_model;
@@ -64,7 +64,7 @@ class Breed_Controller extends Base_Controller {
     }
 
     insert(model_original) {
-        const model = utils.remove_empty(model_original, true);
+        const model = remove_empty(model_original, true);
         return Breed.create(model, {
             include: [
                 { association: Breed.Note },
@@ -78,11 +78,11 @@ class Breed_Controller extends Base_Controller {
     }
 
     update(model_original) {
-        const _model = utils.remove_empty(model_original, true);
+        const _model = remove_empty(model_original, true);
         return Breed.update(_model, {
             where: { id: _model.id },
             include: [{ association: Breed.Note },
-                { association: Breed.Mouse }],
+            { association: Breed.Mouse }],
             returning: true,
         })
             .then((updated_model) => {

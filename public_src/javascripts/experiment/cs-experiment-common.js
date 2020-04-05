@@ -10,4 +10,4 @@ export const column_names = ['id',
     'ixmw2',
     'ixmw3',
     'ixmw4',
-    'platemap_id'];
+    'platemap_name'];

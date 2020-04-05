@@ -1,0 +1,30 @@
+<div class="card">
+  <div class="card-body">
+    <h5 id="results_title" class="card-title">{{platemap_name}}</h5>
+    <div id="results" class="collapse show">{{> platemap/platemap_table}}</div>
+    <div id="results_spinner" class="collapse" role="status">
+        <i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
+    </div>
+  </div>
+</div>
+
+
+<div class="card">
+  <div class="card-body">
+    <button id="tag_cells_button"
+    type="button"
+    class="btn btn-primary"
+    data-toggle="collapse" 
+    data-target="#tag_collapse">
+      Tag Cells
+    </button>
+  </div>
+</div>
+
+<div id="tag_collapse" class="collapse">
+  <div class="card ">
+    <div class="card-body">
+      {{> grid/grid_color_pallet}}
+    </div>
+  </div>
+</div>

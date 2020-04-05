@@ -25,8 +25,7 @@ const WELL_ROW_COUNT = 24;
  * @return PromiseLike<{CSV_DATA}>
  */
 
-const create_data_from_csv = (csv_uri) => {
-    return csv({ flatKeys: true })
+const create_data_from_csv = (csv_uri) => csv({ flatKeys: true })
     .fromFile(csv_uri)
     .then((data) => {
         const column_headers = Object.keys(data[0]);
@@ -38,7 +37,7 @@ const create_data_from_csv = (csv_uri) => {
         return {
             column_headers, row_value_list,
         };
-    })};
+    });
 
 const find_row_by_column = (col_name, test, data) => {
     const {
