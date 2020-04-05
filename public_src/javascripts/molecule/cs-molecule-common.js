@@ -30,10 +30,10 @@ export const column_name_show_set = new Set(['name',
     'pathway',
     'target',
     'cell',
-    'x',
-    'y',
+    // 'x',
+    // 'y',
     'created_at',
-    'info']);
+    'info', 'platemap']);
 
 export const column_hide_index_list = column_names.reduce((acc, column_name, index) => {
     if (!column_name_show_set.has(column_name)) {

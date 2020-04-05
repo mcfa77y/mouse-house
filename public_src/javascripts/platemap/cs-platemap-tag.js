@@ -44,17 +44,14 @@ export const setup_tag = () => {
             set_grid_mode(GRID_MODE.TAG_CELL);
         } else {
             set_grid_mode(GRID_MODE.CREATE_CARD);
-            const data = new FormData();
             const tags = $('.hover_cell').toArray()
                 .filter((x) => !$(x).hasClass('unselected_cell'))
                 .map((x) => ({
                     row_col: $(x).attr('value'),
                     tag: $(x).attr('class').replace('hover_cell', '').trim(),
                 }));
-            tags.forEach((tag) => {
-                data.append('tags[]', JSON.stringify(tag));
-            });
-            Axios.post('/grid/tags', data)
+            const platemap_id = $('#platemap_id').val();
+            Axios.post('/platemap/tags', { tags, platemap_id })
                 .then(saved_tags_success)
                 .catch(saved_tags_fail);
         }

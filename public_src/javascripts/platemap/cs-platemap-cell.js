@@ -48,9 +48,11 @@ export function setup_grid_cells() {
         const targetElement = get_target_element_by_class(event, '.hover_cell');
         if (get_grid_mode() === GRID_MODE.CREATE_CARD) {
             const index = targetElement[0].attributes.value.value;
-            const dt = form_ids_vals('grid-fields');
-            dt.append('index', index);
-            Axios.post('/grid/card', dt)
+            // const dt = form_ids_vals('grid-fields');
+            const platemap_id = $('#platemap_id').val();
+            // dt.append('index', index);
+            const dt = { platemap_id, index };
+            Axios.post('/platemap/card', dt)
                 .then(create_card)
                 .catch(error);
         } else if (get_grid_mode() === GRID_MODE.TAG_CELL) {

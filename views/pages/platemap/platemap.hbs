@@ -1,7 +1,9 @@
 <div class="card">
   <div class="card-body">
-    <h5 id="results_title" class="card-title">{{platemap_name}}</h5>
+    <h5 id="results_title" class="card-title">{{platemap.name}}</h5>
+
     <div id="results" class="collapse show">{{> platemap/platemap_table}}</div>
+    <input type="hidden" id="platemap_id" value="{{platemap.id}}"/>
     <div id="results_spinner" class="collapse" role="status">
         <i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
     </div>

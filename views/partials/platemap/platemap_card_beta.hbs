@@ -1,0 +1,43 @@
+<div class="card" id="image_{{id}}">
+    <div class="card-header">
+        {{name}}
+    </div>
+    <img class="card-img-top" src="{{image_uri}}" alt="Card image cap">
+
+    <div class="card-body">
+        {{!-- <h5 class="card-title">{{name}}</h5> --}}
+
+        <button class="btn btn-primary metadata_button" type="button" data-toggle="collapse"
+            data-target="#multiCollapse_{{id}}" aria-expanded="false"
+            aria-controls="multiCollapse_{{id}}">Metadata</button>
+
+
+        <div class="collapse multi-collapse" id="multiCollapse_{{id}}">
+
+            <table class="table table-striped table-bordered table-sm table-responsive" cellspacing="0" width="100%">
+                <tbody>
+                    {{#each molecule_meta_data as |molecule|}}
+                    <tr>
+                        <td><strong>{{molecule.name}}</strong></td>
+
+                        {{#eq class_name "smiles"}}
+                        <td class="{{molecule.class_name}}" value="{{molecule.value}}">
+                            <canvas id="smiles_canvas_{{../id}}" width="125" height="250"></canvas>
+                            </br>
+                            {{{value}}}
+                        </td>
+                        {{else}}
+                        <td class="{{molecule.class_name}}">
+                            {{{molecule.value}}}
+                        </td>
+                        {{/eq}}
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+
+        </div>
+
+        <button type="button" class="close-btn btn btn-secondary float-sm-right" data-effect="fadeOut">Close</button>
+    </div>
+</div>

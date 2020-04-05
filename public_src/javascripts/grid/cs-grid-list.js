@@ -23,7 +23,7 @@ const setup_form = () => {
 
     const create_table = (response) => {
         $('#results_spinner').collapse('hide');
-        if (response.data.html == undefined) {
+        if (response.data.html === undefined) {
             Toastr.warning('unable to create table');
             results.html(`${response.data}`);
         }

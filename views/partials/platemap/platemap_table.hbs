@@ -12,10 +12,13 @@
         </tr>
     </thead>
     <tbody>
-        {{#each grid as |row_name_list|}}
+        {{#each grid as |row_cell_list|}}
         <tr>
-            {{#each row_name_list as |name|}}
-            <td class="hover_cell unselected_cell" value="{{@../index}}_{{@index}}">{{name}}</td>
+            {{#each row_cell_list as |cell|}}
+            
+            <td class="hover_cell {{#if cell.tag}}{{cell.tag}}{{else}}unselected_cell{{/if}}" value="{{@../index}}_{{@index}}">{{cell.name}}</td>
+            
+            
             {{/each}}
         </tr>
 
