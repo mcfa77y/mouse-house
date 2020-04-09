@@ -1,8 +1,8 @@
 const BlueBird = require('bluebird');
 
-const enum_controller = require('../controllers/enum_controller');
-const mouse_controller = require('../controllers/mouse_controller');
-const { build_note } = require('./utils_routes');
+const enum_controller = require('../../controllers/enum_controller');
+const mouse_controller = require('../../controllers/mouse_controller');
+const { build_note } = require('../utils_routes');
 
 module.exports = {
 

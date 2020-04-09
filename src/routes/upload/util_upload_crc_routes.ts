@@ -2,8 +2,8 @@ import csv from 'csvtojson';
 import { falsy } from 'is_js';
 import { all } from 'bluebird';
 
-import platemap_controller from '../controllers/platemap_controller';
-import experiment_controller from '../controllers/experiment_controller';
+import platemap_controller from '../../controllers/platemap_controller';
+import experiment_controller from '../../controllers/experiment_controller';
 import { client } from './util_upload_common_routes';
 
 interface Experiment {
@@ -105,6 +105,7 @@ const get_cache_hit_rate = () => {
         return cache_experiment_hit / total * 100.0;
     }
 }
+
 
 export const process_crc_csv = async (csv_file: Express.Multer.File, token: string) => {
     const progress_info = { is_finished: false, crc_progress_info: {} };

@@ -2,9 +2,9 @@ import csv from 'csvtojson';
 import { falsy } from 'is_js';
 import { all } from 'bluebird';
 
-import platemap_controller from '../controllers/platemap_controller';
-import product_info_controller from '../controllers/product_info_controller';
-import molecule_controller from '../controllers/molecule_controller';
+import platemap_controller from '../../controllers/platemap_controller';
+import product_info_controller from '../../controllers/product_info_controller';
+import molecule_controller from '../../controllers/molecule_controller';
 import { client } from './util_upload_common_routes'
 
 interface Molecule {

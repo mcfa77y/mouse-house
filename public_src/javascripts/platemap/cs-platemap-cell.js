@@ -1,7 +1,7 @@
 import Axios from 'axios';
 import * as SmilesDrawer from 'smiles-drawer';
 
-import { form_ids_vals } from '../cs-form-helper';
+// import { form_ids_vals } from '../cs-form-helper';
 import {
     GRID_MODE, CELL_TAG, get_target_element_by_class, error,
 } from './cs-platemap-utils';
@@ -47,11 +47,11 @@ export function setup_grid_cells() {
     $(document).on('mousedown', '.hover_cell', (event) => {
         const targetElement = get_target_element_by_class(event, '.hover_cell');
         if (get_grid_mode() === GRID_MODE.CREATE_CARD) {
-            const index = targetElement[0].attributes.value.value;
+            const cell = targetElement[0].attributes.value.value;
             // const dt = form_ids_vals('grid-fields');
             const platemap_id = $('#platemap_id').val();
             // dt.append('index', index);
-            const dt = { platemap_id, index };
+            const dt = { platemap_id, cell };
             Axios.post('/platemap/card', dt)
                 .then(create_card)
                 .catch(error);

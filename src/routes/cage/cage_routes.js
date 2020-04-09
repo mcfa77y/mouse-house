@@ -4,9 +4,9 @@ const { falsy: isFalsey } = require('is_js');
 const router = express.Router();
 const BlueBird = require('bluebird');
 
-const cage_controller = require('../controllers/cage_controller');
+const cage_controller = require('../../controllers/cage_controller');
 const utils = require('./utils_cage_routes');
-const { cool_face, select_json, log_json } = require('./utils_routes');
+const { cool_face, select_json, log_json } = require('../utils_routes');
 
 router.get('/', (req, res) => {
     console.log('get cage list');

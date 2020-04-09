@@ -4,8 +4,8 @@ const router = express.Router();
 const BlueBird = require('bluebird');
 const {falsy: isFalsey} = require('is_js');
 
-const breed_controller = require('../controllers/breed_controller');
-const { select_json, log_json, getErrorGif } = require('./utils_routes');
+const breed_controller = require('../../controllers/breed_controller');
+const { select_json, log_json, getErrorGif } = require('../utils_routes');
 const { get_breed_inputs, create_model } = require('./utils_breed_routes');
 
 // list

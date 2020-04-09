@@ -43,7 +43,7 @@ const setup_form = () => {
     const submit_button = $('#submit');
     const platemap_file_input: HTMLInputElement = <HTMLInputElement>document.querySelector('#platemap_csv_files');
     const crc_file_input: HTMLInputElement = <HTMLInputElement>document.querySelector('#crc_csv');
-    const image_zip_file_input: HTMLInputElement = <HTMLInputElement>document.querySelector('#images_zip');
+    const image_zip_file_input: HTMLInputElement = <HTMLInputElement>document.querySelector('#images_csv');
     
     submit_button.click((e) => {
         e.preventDefault();
@@ -57,8 +57,8 @@ const setup_form = () => {
         dt.append('crc_csv', crc_file_input.files[0]);
         // dt.append('crc_csv_label', document.getElementById('crc_csv_label').innerText);
 
-        dt.append('images_zip', image_zip_file_input.files[0]);
-        // dt.append('images_zip_label', document.getElementById('images_zip_label').innerText);
+        dt.append('images_csv', image_zip_file_input.files[0]);
+        // dt.append('images_csv_label', document.getElementById('images_csv_label').innerText);
         
         // const config = {
             
@@ -77,11 +77,11 @@ const setup_form = () => {
         set_custom_file_label('crc_csv', value);
     });
 
-    $('#images_zip').change(() => {
+    $('#images_csv').change(() => {
         // get the file name
         const value = image_zip_file_input.files[0].name;
         // replace the "Choose a file" label
-        set_custom_file_label('images_zip', value);
+        set_custom_file_label('images_csv', value);
     });
 
     $('#platemap_csv_files').change(() => {

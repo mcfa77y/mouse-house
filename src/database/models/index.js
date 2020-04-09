@@ -7,6 +7,7 @@ const project_experiment = require('./project_experiment');
 const platemap = require('./platemap');
 const product_info = require('./product_info');
 const molecule = require('./molecule');
+const image_metadata = require('./image_metadata');
 
 const env = process.env.NODE_ENV || 'development';
 
@@ -41,7 +42,6 @@ if (process.env.NODE_ENV === 'production') {
     sequelize = new Sequelize(config.database, config.username, config.password, config);
 }
 
-
 const modules = [
     project,
     experiment,
@@ -49,6 +49,7 @@ const modules = [
     platemap,
     product_info,
     molecule,
+    image_metadata,
 ];
 
 // Initialize models

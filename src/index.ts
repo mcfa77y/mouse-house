@@ -38,16 +38,16 @@ app.use(session({
 import hbs from 'hbs';
 import helpers from 'handlebars-helpers';
 
-import breed from './routes/breed_routes';
-import mouse from './routes/mouse_routes';
-import cage from './routes/cage_routes';
-import grid from './routes/grid_routes';
+import breed from './routes/breed/breed_routes';
+import mouse from './routes/mouse/mouse_routes';
+import cage from './routes/cage/cage_routes';
+import grid from './routes/grid/grid_routes';
 import project from './routes/project_routes';
 import experiment from './routes/experiment_routes';
 import dropbox from './routes/dropbox_routes';
-import upload from './routes/upload_routes';
+import upload from './routes/upload/upload_routes';
 import molecule from './routes/molecule_routes';
-import platemap from './routes/platemap_routes';
+import platemap from './routes/platemap/platemap_routes';
 
 const hbsutils = hbs_utils(hbs);
 

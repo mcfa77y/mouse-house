@@ -12,12 +12,15 @@
         </tr>
     </thead>
     <tbody>
-        {{#each grid as |row_cell_list|}}
+        {{#each grid as |row_molecule_list|}}
         <tr>
-            {{#each row_cell_list as |cell|}}
-            
-            <td class="hover_cell {{#if cell.tag}}{{cell.tag}}{{else}}unselected_cell{{/if}}" value="{{@../index}}_{{@index}}">{{cell.name}}</td>
-            
+            {{#each row_molecule_list as |molecule|}}
+            {{!-- <td class="hover_cell {{#if molecule.tag}}{{molecule.tag}}{{else}}unselected_cell{{/if}}" value="{{@../index}}_{{@index}}">{{molecule.name}}</td> --}}
+            {{#if molecule.tag}}
+            <td class="hover_cell {{molecule.tag}}" value="{{molecule.cell}}">{{molecule.name}}</td>
+            {{else}}
+            <td class="hover_cell unselected_cell" value="{{molecule.cell}}">{{molecule.name}}</td>
+            {{/if}}
             
             {{/each}}
         </tr>

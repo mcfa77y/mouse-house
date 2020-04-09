@@ -7,7 +7,7 @@ import { Request } from 'express';
 const redis = require("redis");
 
 // make sure this folder exists on root dir of project
-const TMP_DIR = join(__dirname, '../../tmp');
+const TMP_DIR = join(__dirname, '../../../tmp');
 
 const storage: StorageEngine = multer.diskStorage({
     destination: function (req: Request, file, cb) {
@@ -24,7 +24,7 @@ const upload = multer({ storage });
 export const upload_fields = upload.fields([
     { name: 'platemap_csv_files', maxCount: 400 },
     { name: 'crc_csv', maxCount: 1 },
-    { name: 'images_zip', maxCount: 1 },
+    { name: 'images_csv', maxCount: 1 },
 ]);
 
 

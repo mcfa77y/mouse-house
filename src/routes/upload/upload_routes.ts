@@ -2,7 +2,7 @@ import express from 'express';
 
 import UIDGenerator from 'uid-generator';
 
-import { log_json } from './utils_routes'
+import { log_json } from '../utils_routes'
 import { falsy } from 'is_js';
 
 
@@ -17,6 +17,7 @@ import {
 import { process_crc_csv } from './util_upload_crc_routes';
 
 import { client } from './util_upload_common_routes';
+import { process_image_csv } from './util_upload_image_routes';
 
 const router = express.Router();
 const uidgen = new UIDGenerator()
@@ -46,6 +47,12 @@ router.post('/', upload_fields, async (req, res) => {
     if (!falsy(crc_csv_files) && crc_csv_files.length > 0) {
         console.log(`crc_csv_files: ${JSON.stringify(crc_csv_files, null, 2)}`);
         process_crc_csv(crc_csv_files[0], token);
+    }
+
+    const image_csv_files: Express.Multer.File[] = files["images_csv"];
+    if (!falsy(image_csv_files) && image_csv_files.length > 0) {
+        console.log(`image_csv_files: ${JSON.stringify(image_csv_files, null, 2)}`);
+        process_image_csv(image_csv_files[0], token);
     }
     // console.log(`crc_csv_files: ${JSON.stringify(crc_csv_file, null, 2)}`);
     // process_crc_csv(crc_csv_file[0], token);

@@ -1,9 +1,9 @@
 const BlueBird = require('bluebird');
 
-const enum_controller = require('../controllers/enum_controller');
-const mouse_controller = require('../controllers/mouse_controller');
-const cage_controller = require('../controllers/cage_controller');
-const { build_note, log_json } = require('./utils_routes');
+const enum_controller = require('../../controllers/enum_controller');
+const mouse_controller = require('../../controllers/mouse_controller');
+const cage_controller = require('../../controllers/cage_controller');
+const { build_note, log_json } = require('../utils_routes');
 
 
 module.exports = {
@@ -23,7 +23,7 @@ module.exports = {
         };
         return cage_controller.model
             .findOrCreate({ where: cage })
-            .spread(result => result.id)
+            .spread((result) => result.id)
             .catch((err) => {
                 console.log('cage upsert error: ');
                 log_json(err);
@@ -36,7 +36,7 @@ module.exports = {
             type: mouse_controller.STATUS,
         };
         return enum_controller.model.findOrCreate({ where: status })
-            .spread(result => result.id)
+            .spread((result) => result.id)
             .catch((err) => {
                 console.log('status upsert error: ');
                 log_json(err);
@@ -49,7 +49,7 @@ module.exports = {
             type: mouse_controller.GENOTYPE,
         };
         return enum_controller.model.findOrCreate({ where: genotype })
-            .spread(result => result.id)
+            .spread((result) => result.id)
             .catch((err) => {
                 console.log('genotype upsert error: ');
                 log_json(err);
