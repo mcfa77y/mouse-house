@@ -11,7 +11,11 @@ module.exports = {
         size: { type: Sequelize.STRING },
         wavelength: { type: Sequelize.INTEGER },
         sector: { type: Sequelize.INTEGER },
-        uri: { type: Sequelize.STRING },
+        uri: {
+            type: Sequelize.STRING,
+            unique: true,
+            allowNull: false,
+        },
 
         molecule_id: {
             type: Sequelize.INTEGER,

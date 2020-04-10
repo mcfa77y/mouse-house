@@ -32,7 +32,7 @@ class Image_Metadata_Controller extends Base_Controller {
     }
 
     insert(model) {
-        console.log(`_model: ${JSON.stringify(model, null, 2)}`);
+        // console.log(`_model: ${JSON.stringify(model, null, 2)}`);
 
         return Image_Metadata.create(model, { returning: true, attributes: ['id'] })
             .then(identity)

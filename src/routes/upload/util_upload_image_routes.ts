@@ -24,9 +24,11 @@ const build_image_metadata = (row): Image_Metadata => {
         sector,
         uri,
     } = row;
+    // minus magnification -20x
+    const human_readable_name = experiment_human_readable_name.substring(0, experiment_human_readable_name.length - 4);
     const result = {
         size,
-        experiment_human_readable_name: experiment_human_readable_name.substring(0, experiment_human_readable_name.length - 4),
+        experiment_human_readable_name: human_readable_name,
         molecule_cell,
         wavelength,
         sector,
@@ -96,24 +98,38 @@ const init_progress_info = (row_total, name) => {
         row_percent,
         cache_hit: cache_hit,
         cache_miss: cache_miss,
-        cache_hit_rate: get_cache_hit_rate()
+        cache_hit_rate: get_cache_hit_rate(),
+        start_time: new Date(),
+        elapsed_time_hr: 0,
+        rate: -1.0
     };
 }
-const update_x = (image_progress_info, progress_info) => {
+
+const update_x = (image_progress_info, progress_info, perChunk) => {
 
     image_progress_info.cache_hit = cache_hit;
     image_progress_info.cache_miss = cache_miss;
     image_progress_info.cache_hit_rate = get_cache_hit_rate();
+    
+    let curr_date = new Date();
+    const delta_sec = (curr_date.getTime() - image_progress_info.start_time.getTime());
+    image_progress_info.elapsed_time_hr = (delta_sec / (1000 * 3600)).toFixed(3)
+    
+    image_progress_info.rate = (image_progress_info.row_count / delta_sec).toFixed(3);
 
     let { row_count, row_percent, row_total } = image_progress_info;
     row_count += 1;
     row_percent = parseFloat(((row_count * 100.0) / row_total).toFixed(1));
     image_progress_info.row_count = row_count;
     image_progress_info.row_percent = row_percent;
-    console.log(`${name} - ${row_count} of ${row_total} = ${row_percent}`);
+    // if (row_count % perChunk == 0) {
+    //     console.log(`\n\nimage_meta_data upload - ${row_count} of ${row_total} = ${row_percent}\n\n`);
+    // }
 
     progress_info.image_progress_info = image_progress_info;
-    if (row_count == row_total) { progress_info.is_finished = true; }
+    if (row_count == row_total) { 
+        progress_info.is_finished = true; 
+    }
 }
 
 export const process_image_csv = async (csv_file: Express.Multer.File, token: string) => {
@@ -125,9 +141,33 @@ export const process_image_csv = async (csv_file: Express.Multer.File, token: st
         .map(reshape_keys)
 
     const image_progress_info = init_progress_info(rows.length, csv_file.originalname);
+    const image_data_list = rows.map(build_image_metadata);
+    // get set of expr names
+    const experiment_name_list = image_data_list.reduce((acc, image_data) => {
+        acc.add(image_data.experiment_human_readable_name)
+        return acc;
+    }, new Set<string>());
+    // populate cache
+    const db_stuffs_promise_list = Array.from(experiment_name_list).map((experiment_name) => {
+        return get_db_stuffs(experiment_name);
+    })
+    await all(db_stuffs_promise_list);
+    const perChunk = 100;
+    const chunk_image_data_list = image_data_list.reduce((resultArray, item, index) => {
+        const chunkIndex = Math.floor(index / perChunk)
 
-    const p_list = rows.map(build_image_metadata)
-        .map((image_metadata) => {
+        if (!resultArray[chunkIndex]) {
+            resultArray[chunkIndex] = [] // start a new chunk
+        }
+
+        resultArray[chunkIndex].push(item)
+
+        return resultArray
+    }, [])
+    const chunk_total = chunk_image_data_list.length;
+    for (let chunk_index in chunk_image_data_list) {
+        const img_data_list = chunk_image_data_list[chunk_index]
+        const p_list = img_data_list.map((image_metadata) => {
             const {
                 size,
                 wavelength,
@@ -137,36 +177,89 @@ export const process_image_csv = async (csv_file: Express.Multer.File, token: st
                 experiment_human_readable_name: human_readable_name
             } = image_metadata;
 
-            return get_db_stuffs(human_readable_name).then(({ experiment_db, molecule_cell_db_map }) => {
+            return get_db_stuffs(human_readable_name).then(
+                ({ experiment_db, molecule_cell_db_map }) => {
 
-                const image_metadata_model = {
-                    size,
-                    wavelength: wavelength[wavelength.length - 1],
-                    sector: sector[sector.length - 1],
-                    uri,
-                    experiment_id: experiment_db.id,
-                    molecule_id: molecule_cell_db_map[cell]
-                };
+                    const image_metadata_model = {
+                        size,
+                        wavelength: parseInt(wavelength[wavelength.length - 1]),
+                        sector: parseInt(sector[sector.length - 1]),
+                        uri,
+                        experiment_id: experiment_db.id,
+                        molecule_id: molecule_cell_db_map[cell].id
+                    };
 
-                image_matadata_controller.insert(image_metadata_model);
+                    return image_matadata_controller.insert(image_metadata_model)
+                        .then(() => {
 
-                update_x(image_progress_info, progress_info);
+                            update_x(image_progress_info, progress_info, perChunk);
+                            if (image_progress_info.row_count % perChunk == 0 || image_progress_info.row_count == image_progress_info.row_total) {
+                                update_progress_info(token, progress_info);
+                            }
+                        })
 
-                update_progress_info(token, progress_info);
-                return Promise.resolve();
-            });
+                    // return Promise.resolve();
+                });
 
         });
 
-    all(p_list)
-        .then(() => {
-            console.log("finished")
-            progress_info.is_finished = true;
-            update_progress_info(token, progress_info);
-        })
-        .catch((err) => {
-            console.log("crc upload: " + err);
-        })
+        await all(p_list)
+            .then(() => {
+                console.log(`finished chunk - ${chunk_index + 1} / ${chunk_total}`)
+                // progress_info.is_finished = true;
+                // update_progress_info(token, progress_info);
+            })
+            .catch((err) => {
+                console.log("crc upload: " + err);
+            })
+    }
+    
+
+    // const p_list = image_data_list
+    //     .map((image_metadata) => {
+    //         const {
+    //             size,
+    //             wavelength,
+    //             sector,
+    //             uri,
+    //             molecule_cell: cell,
+    //             experiment_human_readable_name: human_readable_name
+    //         } = image_metadata;
+
+    //         return get_db_stuffs(human_readable_name).then(
+    //             ({ experiment_db, molecule_cell_db_map }) => {
+
+    //             const image_metadata_model = {
+    //                 size,
+    //                 wavelength: parseInt(wavelength[wavelength.length - 1]),
+    //                 sector: parseInt(sector[sector.length - 1]),
+    //                 uri,
+    //                 experiment_id: experiment_db.id,
+    //                 molecule_id: molecule_cell_db_map[cell].id
+    //             };
+
+    //             return image_matadata_controller.insert(image_metadata_model)
+    //             .then(() => {
+
+    //                 update_x(image_progress_info, progress_info);
+
+    //                 update_progress_info(token, progress_info);
+    //             })
+
+    //             // return Promise.resolve();
+    //         });
+
+    //     });
+
+    // all(p_list)
+    //     .then(() => {
+    //         console.log("finished")
+    //         progress_info.is_finished = true;
+    //         update_progress_info(token, progress_info);
+    //     })
+    //     .catch((err) => {
+    //         console.log("crc upload: " + err);
+    //     })
 }
 
 // convert to lowercase, replace space with underscore
