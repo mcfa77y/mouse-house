@@ -2,10 +2,6 @@ const Logger = require('bug-killer');
 const moment = require('moment');
 const { falsy: isFalsey } = require('is_js');
 
-// String.prototype.toProperCase = function () {
-//     return this.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
-// };
-
 export const identity = (x) => x;
 export const log_json = (json) => {
     let cache = [];

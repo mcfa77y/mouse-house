@@ -8,7 +8,7 @@ const Base_Controller = require('./base_controller');
 const { Project } = require('../database/models');
 
 class Project_Controller extends Base_Controller {
-    pretty(model) {
+    async pretty(model) {
         const {
             id, name, note, created_at, updated_at,
         } = model;
@@ -60,7 +60,7 @@ class Project_Controller extends Base_Controller {
         const project = await this.Model.findByPk(id);
         const experiments = await project.getExperiments({
             attributes: ['id', 'name'],
-            raw: true
+            raw: true,
         });
         return { project, experiments };
     }

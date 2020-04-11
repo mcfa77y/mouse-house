@@ -1,4 +1,7 @@
 // const BlueBird = require('bluebird');
+
+import { identity } from './utils_controller';
+import { all } from 'bluebird';
 // const { falsy: isFalsey } = require('is_js');
 const { Op } = require('sequelize');
 const { format_date } = require('./utils_controller');
@@ -11,7 +14,7 @@ const TYPE_STRING = 'string';
 const TYPE_NUMBER = 'number';
 const TYPE_DATE = 'date';
 class Molecule_Controller extends Base_Controller {
-    pretty(model) {
+    async pretty(model) {
         const {
             id,
             name,
@@ -39,7 +42,10 @@ class Molecule_Controller extends Base_Controller {
         // const experiments = await model.getExperiments({ raw: true });
         return {
             id,
-            name,
+            name: {
+                name,
+                id,
+            },
             created_at: format_date(created_at),
             updated_at: format_date(updated_at),
             barcode,
@@ -94,7 +100,9 @@ class Molecule_Controller extends Base_Controller {
     }
 
     build_where(columns) {
-        const where = {};
+        const where = {
+            name: { [Op.ne]: '' },
+        };
         const filtered_cols = columns
             .filter(({ searchable }) => searchable === 'true')
             .filter(({ search }) => search.value !== '')
@@ -176,7 +184,7 @@ class Molecule_Controller extends Base_Controller {
     }
 
     async some_pretty({
-        limit, offset, columns, search, order,
+        limit, offset, columns, order, search
     }) {
         const self = this;
 
@@ -196,8 +204,11 @@ class Molecule_Controller extends Base_Controller {
                 console.log(`error - find some molecule: ${error}`);
                 console.log(`error - find some molecule stack:\n ${error.stack}`);
             });
-        const molecules = all_molecules.rows.map((molecule) => self.pretty(molecule));
 
+        const p_list = all_molecules.rows
+            .map((molecule) => self.pretty(molecule));
+
+        const molecules = await all(p_list);
         return {
             molecules,
             count: all_molecules.count,
@@ -211,7 +222,7 @@ class Molecule_Controller extends Base_Controller {
             include: ['platemap', 'product_info'],
         }).catch((error) => console.log(`error - find all molecule: ${error}`));
 
-        return all_molecules.map((molecule) => self.pretty(molecule));
+        return all_molecules.map((molecule) => self.pretty(molecule)).then(identity);
     }
 
     insert(_model) {
@@ -251,4 +262,5 @@ class Molecule_Controller extends Base_Controller {
     }
 }
 
-module.exports = new Molecule_Controller(Molecule);
+// module.exports = new Molecule_Controller(Molecule);
+export default new Molecule_Controller(Molecule);

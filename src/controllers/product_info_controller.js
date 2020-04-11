@@ -1,6 +1,8 @@
 // const BlueBird = require('bluebird');
 // const { falsy: isFalsey } = require('is_js');
 
+import { identity } from './utils_controller';
+
 const { format_date } = require('./utils_controller');
 // const city_names = require('../lib/data/city_names.json').city_names;
 
@@ -8,7 +10,7 @@ const Base_Controller = require('./base_controller');
 const { Product_Info } = require('../database/models');
 
 class Product_Info_Controller extends Base_Controller {
-    pretty(model) {
+    async pretty(model) {
         const {
             id, created_at, updated_at,
             barcode,
@@ -38,9 +40,7 @@ class Product_Info_Controller extends Base_Controller {
         console.log(`_model: ${JSON.stringify(model, null, 2)}`);
 
         return Product_Info.create(model, { returning: true })
-            .then((model) => {
-                return model;
-            })
+            .then(identity)
             .catch((err) => {
                 console.error(err);
             });
@@ -69,4 +69,5 @@ class Product_Info_Controller extends Base_Controller {
     }
 }
 
-module.exports = new Product_Info_Controller(Product_Info);
+// module.exports = new Product_Info_Controller(Product_Info);
+export default new Product_Info_Controller(Product_Info);

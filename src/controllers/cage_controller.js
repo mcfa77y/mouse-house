@@ -9,7 +9,7 @@ const { Cage } = require('../database/models');
 const { Mouse } = require('../database/models');
 
 class Cage_Controller extends Base_Controller {
-    pretty(model) {
+    async pretty(model) {
         return BlueBird.props({
             type: model.getType(),
             mice: model.getMice(),
@@ -60,7 +60,10 @@ class Cage_Controller extends Base_Controller {
                     nu_model.update({ id_alias: `c${nu_model.id}` });
                 }
                 if (!isFalsey(_model.mouse_ids)) {
-                    Mouse.update({ cage_id: nu_model.id }, { where: { id: { $in: _model.mouse_ids } } });
+                    Mouse.update(
+                        { cage_id: nu_model.id },
+                        { where: { id: { $in: _model.mouse_ids } } },
+                    );
                 }
                 return nu_model;
             })

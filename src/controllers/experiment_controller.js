@@ -1,4 +1,4 @@
-const { map } = require('bluebird');
+// const { map } = require('bluebird');
 
 const { format_date, remove_empty } = require('./utils_controller');
 
@@ -70,12 +70,12 @@ class Experiment_Controller extends Base_Controller {
         };
     }
 
-    async all_pretty() {
-        const self = this;
-        return super.all()
-            .then((items) => map(items, (item) => self.pretty(item)))
-            .then((model_array) => model_array);
-    }
+    // async all_pretty() {
+    //     const self = this;
+    //     return super.all()
+    //         .then((items) => map(items, (item) => self.pretty(item)))
+    //         .then((model_array) => model_array);
+    // }
 
     insert(model) {
         const _model = remove_empty(model, true);

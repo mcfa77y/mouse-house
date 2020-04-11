@@ -8,7 +8,7 @@ const Base_Controller = require('./base_controller');
 const { Platemap } = require('../database/models');
 
 class Platemap_Controller extends Base_Controller {
-    pretty(model) {
+    async pretty(model) {
         const {
             id, name, created_at, updated_at,
             id_384,

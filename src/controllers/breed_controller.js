@@ -8,7 +8,7 @@ const { Breed } = require('../database/models');
 // const Mouse = require('../database/models').Mouse
 
 class Breed_Controller extends Base_Controller {
-    pretty(model) {
+    async pretty(model) {
         return BlueBird.props({
             genotype: model.getGenotype(),
             male: model.getMale(),
@@ -81,8 +81,9 @@ class Breed_Controller extends Base_Controller {
         const _model = remove_empty(model_original, true);
         return Breed.update(_model, {
             where: { id: _model.id },
-            include: [{ association: Breed.Note },
-            { association: Breed.Mouse }],
+            include: [
+                { association: Breed.Note },
+                { association: Breed.Mouse }],
             returning: true,
         })
             .then((updated_model) => {

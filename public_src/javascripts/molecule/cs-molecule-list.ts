@@ -9,6 +9,10 @@ export function setup_table({ model_name, column_names }) {
         const html = `<a href='experiment/${data.id}'>${data.name}</a>`;
         return html;
     }
+    columns[column_name_index_map['name']].render = (data, type, row) => {
+        const html = `<a href='molecule/${data.id}'>${data.name}</a>`;
+        return html;
+    }
     let table_options: DataTables.Settings = {
         serverSide: true,
         ajax: { url: '/molecule/table', type: 'POST' },

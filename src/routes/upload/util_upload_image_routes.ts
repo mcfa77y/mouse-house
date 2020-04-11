@@ -5,6 +5,7 @@ import { all } from 'bluebird';
 import experiment_controller from '../../controllers/experiment_controller';
 import image_matadata_controller from '../../controllers/image_metadata_controller';
 import { client } from './util_upload_common_routes';
+import molecule from '../../database/models/molecule';
 
 interface Image_Metadata {
     size: string,
@@ -18,18 +19,18 @@ interface Image_Metadata {
 const build_image_metadata = (row): Image_Metadata => {
     const {
         size,
-        experiment_human_readable_name,
-        molecule_cell,
+        experiment_name,
+        cell,
         wavelength,
         sector,
         uri,
     } = row;
     // minus magnification -20x
-    const human_readable_name = experiment_human_readable_name.substring(0, experiment_human_readable_name.length - 4);
+    const human_readable_name = experiment_name.substring(0, experiment_name.length - 4);
     const result = {
         size,
         experiment_human_readable_name: human_readable_name,
-        molecule_cell,
+        molecule_cell: cell,
         wavelength,
         sector,
         uri,
@@ -67,12 +68,19 @@ const get_db_stuffs = async (human_readable_name: string) => {
                 },
                 attributes: ['id', 'human_readable_name', 'platemap_id'],
             })
-            .catch(error => console.log(`error - experiment controller findone: ${error}`));
+            .catch((error) => {
+                console.log(`error - experiment controller findone: ${error}`);
+                console.log('looking for: ' + human_readable_name);
+            });
         const platemap_db = await experiment_db.getPlatemap()
-            .catch(error => console.log(`error - experiment.platemap : ${error}`));
+            .catch((error) => {
+                console.log(`error - experiment.platemap : ${error}`);
+            });
 
         const molecule_db_list = await platemap_db.getMolecules({ attributes: ['id', 'cell'] })
-            .catch(error => console.log(`error - platemap.molecules : ${error}`));
+            .catch((error) => {
+                console.log(`error - platemap.molecules : ${error}`);
+            });
 
         const molecule_cell_db_map = molecule_db_list.reduce((acc, molecule_db) => {
             acc[molecule_db.cell] = molecule_db
@@ -106,16 +114,15 @@ const init_progress_info = (row_total, name) => {
 }
 
 const update_x = (image_progress_info, progress_info, perChunk) => {
-
     image_progress_info.cache_hit = cache_hit;
     image_progress_info.cache_miss = cache_miss;
     image_progress_info.cache_hit_rate = get_cache_hit_rate();
-    
+
     let curr_date = new Date();
-    const delta_sec = (curr_date.getTime() - image_progress_info.start_time.getTime());
-    image_progress_info.elapsed_time_hr = (delta_sec / (1000 * 3600)).toFixed(3)
-    
-    image_progress_info.rate = (image_progress_info.row_count / delta_sec).toFixed(3);
+    const delta_ms = (curr_date.getTime() - image_progress_info.start_time.getTime());
+    image_progress_info.elapsed_time_hr = (delta_ms / (1000 * 3600)).toFixed(3)
+
+    image_progress_info.rate = (image_progress_info.row_count / delta_ms * 1000).toFixed(3);
 
     let { row_count, row_percent, row_total } = image_progress_info;
     row_count += 1;
@@ -127,8 +134,8 @@ const update_x = (image_progress_info, progress_info, perChunk) => {
     // }
 
     progress_info.image_progress_info = image_progress_info;
-    if (row_count == row_total) { 
-        progress_info.is_finished = true; 
+    if (row_count == row_total) {
+        progress_info.is_finished = true;
     }
 }
 
@@ -137,6 +144,8 @@ export const process_image_csv = async (csv_file: Express.Multer.File, token: st
     update_progress_info(token, progress_info);
 
     const file = csv_file;
+    // to do check if there is a header
+    // size, experiment_name, cell, wavelength, sector, uri
     const rows = (await csv({ flatKeys: true }).fromFile(file.path))
         .map(reshape_keys)
 
@@ -149,9 +158,15 @@ export const process_image_csv = async (csv_file: Express.Multer.File, token: st
     }, new Set<string>());
     // populate cache
     const db_stuffs_promise_list = Array.from(experiment_name_list).map((experiment_name) => {
-        return get_db_stuffs(experiment_name);
+        return get_db_stuffs(experiment_name)
+            .catch((err) => {
+                console.error(err);
+            });
     })
-    await all(db_stuffs_promise_list);
+    await all(db_stuffs_promise_list)
+        .catch((err) => {
+            console.error(err);
+        });
     const perChunk = 100;
     const chunk_image_data_list = image_data_list.reduce((resultArray, item, index) => {
         const chunkIndex = Math.floor(index / perChunk)
@@ -213,7 +228,7 @@ export const process_image_csv = async (csv_file: Express.Multer.File, token: st
                 console.log("crc upload: " + err);
             })
     }
-    
+
 
     // const p_list = image_data_list
     //     .map((image_metadata) => {

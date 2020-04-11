@@ -1,33 +1,73 @@
 <div class="card" id="image_{{id}}">
-<div class="card-header">
-    {{name}}
-  </div>
-    <img class="card-img-top" src="{{image_uri}}" alt="Card image cap">
+    <div class="card-header">
+        Drug {{name}}
+    </div>
 
     <div class="card-body">
         {{!-- <h5 class="card-title">{{name}}</h5> --}}
 
-        <button class="btn btn-primary metadata_button" type="button" data-toggle="collapse" data-target="#multiCollapse_{{id}}"
-            aria-expanded="false" aria-controls="multiCollapse_{{id}}">Metadata</button>
+        <div class="drug">
+            <table class="table table-dark">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Cyto</th>
+                        <th scope="col">w1 - Nuclei</th>
+                        <th scope="col">w2 - Golgi</th>
+                        <th scope="col">w3 - Actin</th>
+                        <th scope="col">w4 - PHH3</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {{> platemap/platemap_drug_row drug=drug_foo.cyto.lps_minus lps_status='- LPS'}}
+                    {{> platemap/platemap_drug_row drug=drug_foo.cyto.lps_plus lps_status='+ LPS'}}
+
+                </tbody>
+            </table>
+
+            <table class="table table-dark">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Edu</th>
+                        <th scope="col">w1 - Nuclei</th>
+                        <th scope="col">w2 - Tubulin</th>
+                        <th scope="col">w3 - Edu</th>
+                        <th scope="col">w4 - Mito</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {{> platemap/platemap_drug_row drug=drug_foo.edu.lps_minus lps_status='- LPS'}}
+                    {{> platemap/platemap_drug_row drug=drug_foo.edu.lps_plus lps_status='+ LPS'}}
+
+                </tbody>
+            </table>
+
+
+        </div>
+
+        <button class="btn btn-primary metadata_button" type="button" data-toggle="collapse"
+            data-target="#multiCollapse_{{id}}" aria-expanded="false"
+            aria-controls="multiCollapse_{{id}}">Metadata</button>
 
 
         <div class="collapse multi-collapse" id="multiCollapse_{{id}}">
 
             <table class="table table-striped table-bordered table-sm table-responsive" cellspacing="0" width="100%">
                 <tbody>
-                    {{#each row_zip}}
+                    {{#each molecule_meta_data as |molecule|}}
                     <tr>
-                        <td><strong>{{name}}</strong></td>
-                        
+                        <td><strong>{{molecule.name}}</strong></td>
+
                         {{#eq class_name "smiles"}}
-                        <td class="{{class_name}}" value="{{value}}">
-                          <canvas id="smiles_canvas_{{../id}}" width="125" height="250"></canvas>
-                          </br>
-                          {{{value}}}
+                        <td class="{{molecule.class_name}}" value="{{molecule.value}}">
+                            <canvas id="smiles_canvas_{{../id}}" width="125" height="250"></canvas>
+                            </br>
+                            {{{value}}}
                         </td>
                         {{else}}
-                        <td class="{{class_name}}">
-                          {{{value}}}
+                        <td class="{{molecule.class_name}}">
+                            {{{molecule.value}}}
                         </td>
                         {{/eq}}
                     </tr>
@@ -37,6 +77,8 @@
 
         </div>
 
-        <button type="button" class="close-btn btn btn-secondary float-sm-right" data-effect="fadeOut">Close</button>
     </div>
+
+    <button type="button" class="close-btn btn btn-secondary float-sm-right" data-effect="fadeOut">Close</button>
+</div>
 </div>

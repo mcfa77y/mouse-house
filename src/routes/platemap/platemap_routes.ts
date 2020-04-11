@@ -1,13 +1,10 @@
 import { Router, Request, Response } from 'express';
-import { falsy as isFalsey } from 'is_js';
 const fs = require('fs');
 const path = require('path');
 const hbs = require('hbs');
 
 // import experiment_controller from '../controllers/experiment_controller';
 import platemap_controller from '../../controllers/platemap_controller';
-import molecule_controller from '../../controllers/molecule_controller';
-import { identity } from '../../controllers/utils_controller';
 import { create_platemap_grid, get_card_data } from './platemap_routes_logic';
 const PARTIALS_DIR = path.join(__dirname, '../../../views/partials/platemap/');
 
@@ -17,7 +14,7 @@ const router: Router = Router();
 // const source = fs.readFileSync(grid_table_template_uri, 'utf-8');
 // const grid_table_template = hbs.handlebars.compile(source);
 
-const CARD_SOURCE = fs.readFileSync(path.join(PARTIALS_DIR, 'platemap_card_beta.hbs'), 'utf-8');
+const CARD_SOURCE = fs.readFileSync(path.join(PARTIALS_DIR, 'platemap_card.hbs'), 'utf-8');
 const CARD_HTML_TEMPLATE = hbs.handlebars.compile(CARD_SOURCE);
 
 
@@ -45,7 +42,10 @@ router.get('/:platemap_id', async (req: Request, res: Response) => {
 
 // create card
 router.post('/card', async (req: Request, res: Response) => {
-  const card_data = await get_card_data(req, res);
+  const {
+    cell, platemap_id,
+} = req.body;
+  const card_data = await get_card_data(cell, platemap_id);
   const card_html = CARD_HTML_TEMPLATE(card_data);
 
   // res.render('pages/grid/grid_view', dt);

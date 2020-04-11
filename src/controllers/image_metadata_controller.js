@@ -8,7 +8,7 @@ const Base_Controller = require('./base_controller');
 const { Image_Metadata } = require('../database/models');
 
 class Image_Metadata_Controller extends Base_Controller {
-    pretty(model) {
+    async pretty(model) {
         const {
             id, created_at, updated_at,
             wavelength,

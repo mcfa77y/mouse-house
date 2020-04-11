@@ -1,4 +1,7 @@
-const { log_json, remove_empty } = require('./utils_controller');
+const { map } = require('bluebird');
+
+const { remove_empty } = require('./utils_controller');
+
 // Constructor
 class Base_Controller {
     constructor(_Model) {
@@ -8,6 +11,17 @@ class Base_Controller {
 
     all() {
         return this.Model.findAll();
+    }
+
+    async pretty({ dataValues }) {
+        return dataValues;
+    }
+
+    async all_pretty() {
+        const self = this;
+        return self.all()
+            .then((model) => map(model, (item) => self.pretty(item)))
+            .then((model_array) => model_array);
     }
 
     get(_id) {
@@ -39,7 +53,8 @@ class Base_Controller {
         return this.get(_id)
             .then((model) => {
                 model.id_alias = `${model.id_alias}_${date.toISOString()}`;
-                return this.Model.update(model.dataValues, { where: { id: model.id }, returning: true });
+                return this.Model.update(model.dataValues,
+                    { where: { id: model.id }, returning: true });
             })
             .then((model) => {
                 console.log(model);

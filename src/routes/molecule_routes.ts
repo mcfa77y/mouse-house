@@ -1,8 +1,11 @@
 import { Router, Request, Response } from 'express';
-import { falsy as isFalsey } from 'is_js';
+const fs = require('fs');
+const path = require('path');
+const hbs = require('hbs');
 
 import molecule_controller from '../controllers/molecule_controller';
-import { log_json } from '../controllers/utils_controller';
+import { get_card_data } from './platemap/platemap_routes_logic';
+import molecule from '../database/models/molecule';
 
 const router: Router = Router();
 
@@ -18,7 +21,7 @@ router.get('/', async (req: Request, res: Response) => {
 /*
 send table ajax response
 */
-router.post('/table', (req: Request, res: Response) => {
+router.post('/table', async (req: Request, res: Response) => {
   // log_json(req.body);
   // const draw = parseInt(req.body.draw);
   // const offset = parseInt(req.body.start);
@@ -26,27 +29,35 @@ router.post('/table', (req: Request, res: Response) => {
   const { draw, start: offset, length: limit, columns, search, order } = req.body
   // const limit = 100;
 
-  molecule_controller.some_pretty({ limit, offset, columns, search, order })
-    .then(({ molecules, count }) => {
-      // molecules. 
-      res.send({
-        data: molecules,
-        recordsTotal: count,
-        recordsFiltered: count,
-        draw
-      });
-    })
-    .catch((err) =>
-      console.error(err));
+  const { molecules, count } = await molecule_controller.some_pretty({ limit, offset, columns, search, order })
+    .catch((err) => {
+      console.error(err)
+      return { molecules: {}, count: {} }
+    }
+    );
+
+  res.send({
+    data: molecules,
+    recordsTotal: count,
+    recordsFiltered: count,
+    draw
+  });
+
 
 });
 
 
-// router.get('/:molecule_id', async (req: Request, res: Response) => {
-//   const { projects, molecule } = await molecule_controller.get_projects(req.params.molecule_id);
-//   res.render('pages/molecule/molecule_update',
-//     { molecule, projects });
-// });
+router.get('/:molecule_id', async (req: Request, res: Response) => {
+  const { cell, platemap_id } = await molecule_controller.Model.findByPk(req.params.molecule_id, {
+    attributes: ['cell', 'platemap_id'],
+    raw: true
+  });
+  const card_data = await get_card_data(cell, platemap_id);
+  // const card_html = CARD_HTML_TEMPLATE(card_data);
+
+  res.render('pages/molecule/molecule_view',
+    card_data);
+});
 
 
 // router.delete('/:id', (req, res) => {
