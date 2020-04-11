@@ -1,0 +1,16 @@
+<div class="card">
+  <div class="card-body">
+    <h4 class="card-title">Molecules</h4>
+    {{> molecule/molecule_table}}
+    <div class="row mt-3">
+      <div class="col-md-12">
+        <span class="float-left" data-toggle="tooltip" data-placement="top" title="Adjust columns ">
+          <button id="adjust-columns-button" class="btn btn-primary" role="button"><i class="fas fa-columns fa-2x"></i></button>
+        </span>
+        {{>crud_buttons model_name='molecule'}}
+
+      </div>
+    </div>
+  </div>
+</div>
+{{> common/delete_confirmation_modal model_name='molecule'}}

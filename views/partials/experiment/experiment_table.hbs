@@ -1,0 +1,36 @@
+<table id='experiment-list' class="table table-striped table-bordered" cellspacing="0" width="100%">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Experiment</th>
+            <th>platemap name</th>
+            <th>image name</th>
+            <th>measurement name</th>
+            <th>cell lines</th>
+            <th>magnification</th>
+            <th>experiment date</th>
+            <th>ixmw1</th>
+            <th>ixmw2</th>
+            <th>ixmw3</th>
+            <th>ixmw4</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each experiments}}
+        <tr>
+            <td>{{id}}</td>
+            <td>{{human_readable_name}}</td>
+            <td><a href="/platemap/{{platemap_id}}">{{platemap_name}}</td>
+            <td>{{image_name}}</td>
+            <td>{{measurement_name}}</td>
+            <td>{{cell_lines}}</td>
+            <td>{{magnification}}</td>
+            <td>{{experiment_date}}</td>
+            <td>{{ixmw1}}</td>
+            <td>{{ixmw2}}</td>
+            <td>{{ixmw3}}</td>
+            <td>{{ixmw4}}</td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>

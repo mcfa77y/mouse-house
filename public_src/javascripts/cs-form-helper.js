@@ -16,14 +16,15 @@ export function set_radio(id, value = '') {
 export function id_to_val(el) {
     // const result = {};
     const result = new FormData();
-    result.append($(el).attr('id'), $(el).val())
+    result.append($(el).attr('id'), $(el).val());
     // result[$(el).attr('id')] = $(el).val();
     return result;
 }
 export function id_to_val_select(el) {
     // const result = {};
     const result = new FormData();
-    result[$(el).attr('id')] = $(el).val();
+    // result[$(el).attr('id')] = $(el).val();
+    result.append($(el).attr('id'), $(el).val());
     const s = el.selectize;
     const v = s.getValue();
     const description = s.getItem(v).text();
@@ -47,20 +48,19 @@ export function name_to_val(el) {
 }
 export function form_ids_vals(form_id) {
     const form = $(`#${form_id}`);
-    const form_data = new FormData();
     return [].concat(form.find(':text, select, :hidden, input').toArray()
-        .filter(el => $(el).attr('id') !== undefined)
-        .filter(el => $(el).attr('id').length > 0)
-        .filter(el => !$(el).attr('id').includes('-selectized'))
-        .filter(el => !$(el).attr('class') || $(el).attr('class') && !$(el).attr('class').includes('selectized'))
+        .filter((el) => $(el).attr('id') !== undefined)
+        .filter((el) => $(el).attr('id').length > 0)
+        .filter((el) => !$(el).attr('id').includes('-selectized'))
+        .filter((el) => !$(el).attr('class') || $(el).attr('class') && !$(el).attr('class').includes('selectized'))
         .map(id_to_val))
         .concat(form.find('select').toArray().map(id_to_val_select))
         .concat(form.find('textarea').toArray().map(id_to_val))
         .concat(form.find('.slider').toArray().map(id_to_val_slider))
         .concat(form.find(':radio:checked').toArray().map(name_to_val))
         .reduce((accumulator, currentValue) => {
-            for (let pair of currentValue.entries()){
-                accumulator.append(pair[0], pair[1])
+            for (const pair of currentValue.entries()) {
+                accumulator.append(pair[0], pair[1]);
             }
             return accumulator;
         }, new FormData());
@@ -82,4 +82,3 @@ export function json_string(json) {
     cache = null; // Enable garbage collection
     return result;
 }
-

@@ -1,0 +1,26 @@
+{
+  "384 Plate ID": "SelleckChem002",
+  "UCSC CSC Plate ID": "SP0136-A",
+  "Molarity (mM)": 10,
+  "Unit": "m",
+  "Volume": 25,
+  "Library": "L1700-Selleck-Bioactive-Compound-Library",
+
+  "384 well": "A04",
+  "Well X": 4,
+  "Well Y": 1,
+  
+  "Catalog No.": "S1662",
+  "Molecule Name": "Isradipine",
+  "Barcode": 192949510,
+  "M.w.": 371.39,
+  "CAS Number": "75695-93-1",
+  "Form": "free base",
+  "Targets": "Calcium Channel",
+  "Information": "Isradipine(Dynacirc) is a calcium channel blocker with an IC50 of 34�8 _M.",
+  "Smiles": "C1C=C(C2C(C=1)=NON=2)C3C(=C(NC(=C3C(OC(C)C)=O)C)C)C(=O)OC",
+  "Max Solubility in DMSO (mM)": 199,
+  "URL": "http://www.selleckchem.com/products/Isradipine(Dynacirc).html",
+  "Pathway": "Transmembrane Transporters",
+  "": "",
+}

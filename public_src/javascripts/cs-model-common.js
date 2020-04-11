@@ -1,17 +1,9 @@
 import * as Toastr from 'toastr';
 import range from 'lodash/range';
-import * as Axios from 'axios';
+import Axios from 'axios';
 import MaterialDatetimePicker from 'material-datetime-picker';
 
 import 'bootstrap';
-import 'datatables.net';
-import 'datatables.net-select';
-import 'datatables.net-select-dt/css/select.dataTables.css';
-import 'datatables.net-responsive';
-import 'datatables.net-responsive-dt/css/responsive.dataTables.min.css';
-import 'datatables.net-buttons';
-import 'datatables.net-buttons/js/buttons.colVis';
-import 'datatables.net-buttons/js/buttons.html5';
 // import 'bootstrap-material-design';
 
 import { form_ids_vals, json_string } from './cs-form-helper';
@@ -147,9 +139,13 @@ export function init_page(model_name) {
     setupTodayButton();
     setupToolTip();
 }
+export function get_selected_row_ids(table) {
+    const data = table.rows({ selected: true }).data().pluck('id');
+    return range(data.length).map((index) => data[index]);
+}
 
 export function setup_table({ model_name, column_names, hide_id_column = false }) {
-    const columns = column_names.map(x => ({ data: x }));
+    const columns = column_names.map((x) => ({ data: x }));
 
     let table_options = {
         select: { style: 'multi' },
@@ -192,11 +188,6 @@ export function setup_table({ model_name, column_names, hide_id_column = false }
     const update_modal_button = $(`#update-${model_name}-button`);
     const delete_button = $(`#open-delete-${model_name}-modal-button`);
 
-    function get_selected_row_ids() {
-        const data = table.rows({ selected: true }).data().pluck('id');
-
-        return range(data.length).map(index => data[index]);
-    }
 
     function update_crud_buttons() {
         const data = table.rows({ selected: true }).data().pluck('id');
@@ -225,7 +216,7 @@ export function setup_table({ model_name, column_names, hide_id_column = false }
     table.on('deselect', on_select);
 
     // custom table functions
-    table.get_selected_row_ids = get_selected_row_ids;
+    // table.get_selected_row_ids = get_selected_row_ids;
 
     update_crud_buttons();
     return table;
@@ -285,7 +276,8 @@ export function setup_list_page_buttons(model_name, table) {
     const delete_button = $(`#delete-${model_name}-button`);
 
     delete_button.click(() => {
-        Axios.delete(`/${model_name}/${table.get_selected_row_ids()}`)
+        const ids = get_selected_row_ids(table);
+        Axios.delete(`/${model_name}/${ids}`)
             .then((response) => {
                 console.log(response);
                 Toastr.success('delete succesful');
@@ -296,4 +288,48 @@ export function setup_list_page_buttons(model_name, table) {
             })
             .catch(error);
     });
+}
+
+export function set_custom_file_label(id, value) {
+    $(`#${id}`).next('.custom-file-label').html(value);
+}
+
+export class Poll_Request {
+    constructor({
+        url, data, config, success_cb, fail_cb, milliseconds = 1000,
+    }) {
+        this.pollTimer = null;
+        this.interval = milliseconds;
+        this.url = url;
+        this.success_cb = success_cb;
+        this.fail_cb = fail_cb;
+        this.data = data;
+        this.config = config;
+    }
+
+    disablePoll() {
+        clearInterval(this.pollTimer);
+        this.pollTimer = null;
+    }
+
+    activatePoll() {
+        const self = this;
+        this.pollTimer = setInterval(() => {
+        //   $.getJSON(this.url).then(response => console.log(response))
+            Axios.post(self.url, self.data, self.config)
+                .then((response) => {
+                    if (self.success_cb) {
+                        self.success_cb(response);
+                    }
+                })
+                .catch((err) => {
+                    if (self.fail_cb) {
+                        self.fail_cb(err);
+                        self.disablePoll();
+                    } else {
+                        error(err);
+                    }
+                });
+        }, this.interval);
+    }
 }

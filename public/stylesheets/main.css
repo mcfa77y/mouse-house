@@ -1,4 +1,4 @@
-.dropdown-menu {
+/* .dropdown-menu {
 z-index: 2002 !important;
 }
 
@@ -9,4 +9,7 @@ z-index: 2002 !important;
     right: 0;
     height: 60px;
     width: 800px;
+} */
+.dataTables_paginate a {
+    padding: 6px 9px !important;
 }

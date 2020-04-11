@@ -1,0 +1,33 @@
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">Add Project</h4>
+
+        <fieldset id="project-fields">
+            <div class="row">
+                {{> form_elements/text_input id='name' description='Name' placeholder='ex) project name'}}
+            </div>
+            <div class="row">
+                {{> form_elements/text_area_input id='note' description='Note'}}
+            </div>
+
+            <div class="row">
+                {{> form_elements/select_input experiments_select id='experiment_ids' isMultiple=true description='Experiments'}}
+                <div class='col-md-3 col-sm-6 d-flex align-items-center'>
+                    <button id='show-experiment-table-button' data-toggle='collapse' data-target='#experiment-table' type='button' class='btn btn-secondary'>Add experiments</button>
+                </div>
+            </div>
+            <div class='row d-flex flex-column'>
+                <div id='experiment-table' class='collapse'>
+                    {{> experiment/experiment_table}}
+                </div>
+            </div>
+           
+            <input type="hidden" id="id" value="{{project.id}}"/>
+        </fieldset>
+        <div class="row">
+            <button id="save-project-button" type="button" class="btn btn-primary float-right">Save</button>
+            <button id="back-project-button" type="button" class="btn btn-secondary float-right">Back</button>
+        </div>
+    </div>
+    
+</div>

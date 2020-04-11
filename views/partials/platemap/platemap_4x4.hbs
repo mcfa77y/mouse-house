@@ -1,0 +1,17 @@
+{{!-- 4 col for each wave --}}
+<td>
+    <div class="col wave">
+        <div class="row sect">
+            {{#each wave as |sect|}}
+            {{!-- 4 sects 2 on each row --}}
+            <div class="col-md-6" data-toggle="tooltip" data-placement="top"
+                title="{{stain}} {{lps_status}} w{{wavelength}} s{{sector}}">
+                <a href="../{{uri}}" target="_blank" rel="noopener noreferrer">
+                    <img class="img-thumbnail align-self-center mr-3" src="../{{uri}}"
+                        alt-text="stain: {{stain}} {{lps_status}} wavelength: {{wavelength}} sector:{{sector}}" />
+                </a>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+</td>

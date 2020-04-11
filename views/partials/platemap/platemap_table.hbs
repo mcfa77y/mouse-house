@@ -1,0 +1,31 @@
+<div id='cell_image_array' class='collapse show'>
+    <div id="image_row" class="card-deck">
+    </div>
+</div>
+
+<table id='platemap_table' class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+    <thead>
+        <tr>
+            {{#each column_headers as |header|}}
+            <th>{{header}}</th>
+            {{/each}}
+        </tr>
+    </thead>
+    <tbody>
+        {{#each grid as |row_molecule_list|}}
+        <tr>
+            {{#each row_molecule_list as |molecule|}}
+            {{!-- <td class="hover_cell {{#if molecule.tag}}{{molecule.tag}}{{else}}unselected_cell{{/if}}" value="{{@../index}}_{{@index}}">{{molecule.name}}</td> --}}
+            {{#if molecule.tag}}
+            <td class="hover_cell {{molecule.tag}}" value="{{molecule.cell}}">{{molecule.name}}</td>
+            {{else}}
+            <td class="hover_cell unselected_cell" value="{{molecule.cell}}">{{molecule.name}}</td>
+            {{/if}}
+            
+            {{/each}}
+        </tr>
+
+        {{/each}}
+    </tbody>
+</table>
+

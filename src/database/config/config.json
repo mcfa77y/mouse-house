@@ -1,0 +1,36 @@
+{
+  "development": {
+    "username": "nszbcdoyixvxal",
+    "password": "32167b59dca6323114f5bed449e22c04d6df5be54d982bed905de9ca5c7af15f",
+    "database": "da1qgcmu4aha8e",
+    "host": "ec2-107-21-214-222.compute-1.amazonaws.com",
+    "dialect": "postgres",
+    "dialectOptions": {
+      "ssl": {
+        "require": true
+      }
+    }
+  },
+  "heroku": {
+    "username": "nszbcdoyixvxal",
+    "password": "32167b59dca6323114f5bed449e22c04d6df5be54d982bed905de9ca5c7af15f",
+    "database": "da1qgcmu4aha8e",
+    "host": "ec2-107-21-214-222.compute-1.amazonaws.com",
+    "dialect": "postgres",
+    "dialectOptions": {
+      "ssl": {
+        "require": true
+      }
+    }
+  },
+  "production": {
+    "use_env_variable": "DATABASE_URL",
+    "dialect": "postgres",
+    "ssl": true,
+    "dialectOptions": {
+      "ssl": {
+        "require": true
+      }
+    }
+  }
+}

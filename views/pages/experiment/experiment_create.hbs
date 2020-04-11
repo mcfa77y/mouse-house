@@ -1,0 +1,46 @@
+<div class="card">
+  <div class="card-body">
+    <h4 class="card-title">Add Experiment</h4>
+
+    <fieldset id="project-fields">
+      <div class="row">
+        {{> form_elements/text_input id='name' description='Name' placeholder='ex) project name'}}
+      </div>
+      <div class="row">
+        {{> form_elements/text_area_input id='note' description='Note'}}
+      </div>
+
+      <div class="row">
+
+        <div class="custom-file">
+          <input type="file" class="platemap-file-input" id="config_file">
+          <label class="custom-file-label" for="config_file">platemaps</label>
+        </div>
+      </div>
+
+      <div class="row">
+
+        <div class="custom-file">
+          <input type="file" class="platemap-file-input" id="config_file">
+          <label class="custom-file-label" for="config_file">images</label>
+        </div>
+      </div>
+
+      <div class="row">
+
+        <div class="custom-file">
+          <input type="file" class="platemap-file-input" id="config_file">
+          <label class="custom-file-label" for="config_file">cyto run content</label>
+        </div>
+      </div>
+  </div>
+
+  <input type="hidden" id="id" value="{{experiment.id}}" />
+  </fieldset>
+  <div class="row">
+    <button id="save-project-button" type="button" class="btn btn-primary float-right">Save</button>
+    <button id="back-project-button" type="button" class="btn btn-secondary float-right">Back</button>
+  </div>
+</div>
+
+</div>

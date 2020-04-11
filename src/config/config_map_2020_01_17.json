@@ -1,0 +1,14 @@
+{
+  "test": {
+    "image_path_obj": {
+      "root": "/",
+      "dir": "/experiments/test",
+      "base": "SP0135_HeLavsRAW_Cyto_EdU_COMBINED_336.jpg",
+      "ext": ".jpg",
+      "name": "SP0135_HeLavsRAW_Cyto_EdU_COMBINED_336"
+    },
+    "image_count": 384,
+    "grid_data_csv_uri": "/Users/joe.lau/Sites/js_for_fun/mouse-house/public/experiments/test/General_Platemap.csv",
+    "metadata_csv_uri": "/Users/joe.lau/Sites/js_for_fun/mouse-house/public/experiments/test/SP0135_Metadata.csv"
+  }
+}
