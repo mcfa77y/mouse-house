@@ -1,5 +1,8 @@
 const path = require('path');
-// const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+
 const webpack = require('webpack');
 const fs = require('fs');
 // const CONTROLLER_JS_DIR = './src/controllers';
@@ -9,7 +12,7 @@ const PUBLIC_DIR = './public';
 const MODE = 'development';
 
 
-const modules = ['grid', 'project', 'experiment', 'upload', 'molecule', 'platemap'];
+const modules = ['experiment', 'upload', 'molecule', 'platemap'];
 function create_entry() {
     // traverse modules inside of JS_DIR
     return modules.reduce((acc, module) => {
@@ -52,19 +55,20 @@ module.exports = [
                     },
                 },
             },
+            minimizer: [
+                new UglifyJsPlugin({
+                    test: /\.js(\?.*)?$/i,
+                    cache: true,
+                    parallel: true,
+                    sourceMap: true,
+                }),
+            ],
         },
         plugins: [
-            // new CleanWebpackPlugin(),
-            // new HtmlWebpackPlugin({
-            //     title: 'Output Management'
-            // }),
-            // new UglifyJSPlugin({
-            //     uglifyOptions: {
-            //         ie8: false,
-            //         ecma: 6
-            //     }
-            // }),
-
+            new CleanWebpackPlugin(),
+            new HtmlWebpackPlugin({
+                title: 'Output Management',
+            }),
             new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
             // new webpack.ProvidePlugin({
             //     $: "jquery",

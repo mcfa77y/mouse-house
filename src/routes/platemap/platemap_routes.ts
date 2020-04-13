@@ -14,7 +14,7 @@ const router: Router = Router();
 // const source = fs.readFileSync(grid_table_template_uri, 'utf-8');
 // const grid_table_template = hbs.handlebars.compile(source);
 
-const CARD_SOURCE = fs.readFileSync(path.join(PARTIALS_DIR, 'platemap_card.hbs'), 'utf-8');
+const CARD_SOURCE = fs.readFileSync(path.join(PARTIALS_DIR, 'platemap_card_tabs.hbs'), 'utf-8');
 const CARD_HTML_TEMPLATE = hbs.handlebars.compile(CARD_SOURCE);
 
 
@@ -44,7 +44,7 @@ router.get('/:platemap_id', async (req: Request, res: Response) => {
 router.post('/card', async (req: Request, res: Response) => {
   const {
     cell, platemap_id,
-} = req.body;
+  } = req.body;
   const card_data = await get_card_data(cell, platemap_id);
   const card_html = CARD_HTML_TEMPLATE(card_data);
 

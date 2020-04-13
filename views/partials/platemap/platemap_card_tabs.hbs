@@ -1,0 +1,136 @@
+<div class="card" id="image_{{id}}">
+    <div class="card-header">
+        Drug {{name}}
+    </div>
+
+    <div class="card-body">
+        {{!-- <h5 class="card-title">{{name}}</h5> --}}
+
+        <ul class="nav nav-pills" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="cyto-w1-tab" data-toggle="pill" href="#w1" role="tab" aria-controls="w1"
+                    aria-selected="true">Nuclei</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" id="w2-tab" data-toggle="pill" href="#w2" role="tab" aria-controls="w2"
+                    aria-selected="false">Golgi</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="w3-tab" data-toggle="pill" href="#w3" role="tab" aria-controls="w3"
+                    aria-selected="false">Actin</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="w4-tab" data-toggle="pill" href="#w4" role="tab" aria-controls="w4"
+                    aria-selected="false">PHH3</a>
+            </li>
+
+
+        </ul>
+
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="w1" role="tabpanel" aria-labelledby="w1-tab">
+                {{> platemap/platemap_drug_wave wave=drug_bar.cyto.lps_minus.w1 lps_status='- LPS'}}
+                {{> platemap/platemap_drug_wave wave=drug_bar.cyto.lps_plus.w1 lps_status='+ LPS'}}
+
+                {{> platemap/platemap_drug_wave wave=drug_bar.edu.lps_minus.w1 lps_status='- LPS'}}
+                {{> platemap/platemap_drug_wave wave=drug_bar.edu.lps_plus.w1 lps_status='+ LPS'}}
+            </div>
+            <div class="tab-pane fade" id="w2" role="tabpanel" aria-labelledby="w2-tab">
+                {{> platemap/platemap_drug_wave wave=drug_bar.cyto.lps_minus.w2 lps_status='- LPS'}}
+                {{> platemap/platemap_drug_wave wave=drug_bar.cyto.lps_plus.w2 lps_status='+ LPS'}}
+
+                {{> platemap/platemap_drug_wave wave=drug_bar.edu.lps_minus.w2 lps_status='- LPS'}}
+                {{> platemap/platemap_drug_wave wave=drug_bar.edu.lps_plus.w2 lps_status='+ LPS'}}
+            </div>
+            <div class="tab-pane fade" id="w3" role="tabpanel" aria-labelledby="w3-tab">
+                {{> platemap/platemap_drug_wave wave=drug_bar.cyto.lps_minus.w3 lps_status='- LPS'}}
+                {{> platemap/platemap_drug_wave wave=drug_bar.cyto.lps_plus.w3 lps_status='+ LPS'}}
+
+                {{> platemap/platemap_drug_wave wave=drug_bar.edu.lps_minus.w3 lps_status='- LPS'}}
+                {{> platemap/platemap_drug_wave wave=drug_bar.edu.lps_plus.w3 lps_status='+ LPS'}}
+            </div>
+            <div class="tab-pane fade" id="w4" role="tabpanel" aria-labelledby="w4-tab">
+                {{> platemap/platemap_drug_wave wave=drug_bar.cyto.lps_minus.w4 lps_status='- LPS'}}
+                {{> platemap/platemap_drug_wave wave=drug_bar.cyto.lps_plus.w4 lps_status='+ LPS'}}
+
+                {{> platemap/platemap_drug_wave wave=drug_bar.edu.lps_minus.w4 lps_status='- LPS'}}
+                {{> platemap/platemap_drug_wave wave=drug_bar.edu.lps_plus.w4 lps_status='+ LPS'}}
+            </div>
+        </div>
+        {{!-- 
+        <div class="drug">
+            <table class="table table-dark">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Cyto</th>
+                        <th scope="col">w1 - Nuclei</th>
+                        <th scope="col">w2 - Golgi</th>
+                        <th scope="col">w3 - Actin</th>
+                        <th scope="col">w4 - PHH3</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {{> platemap/platemap_drug_row drug=drug_foo.cyto.lps_minus lps_status='- LPS'}}
+                    {{> platemap/platemap_drug_row drug=drug_foo.cyto.lps_plus lps_status='+ LPS'}}
+
+                </tbody>
+            </table>
+
+            <table class="table table-dark">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Edu</th>
+                        <th scope="col">w1 - Nuclei</th>
+                        <th scope="col">w2 - Tubulin</th>
+                        <th scope="col">w3 - Edu</th>
+                        <th scope="col">w4 - Mito</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {{> platemap/platemap_drug_row drug=drug_foo.edu.lps_minus lps_status='- LPS'}}
+                    {{> platemap/platemap_drug_row drug=drug_foo.edu.lps_plus lps_status='+ LPS'}}
+
+                </tbody>
+            </table> --}}
+
+
+    </div>
+
+    <button class="btn btn-primary metadata_button" type="button" data-toggle="collapse"
+        data-target="#multiCollapse_{{id}}" aria-expanded="false" aria-controls="multiCollapse_{{id}}">Metadata</button>
+
+
+    <div class="collapse multi-collapse" id="multiCollapse_{{id}}">
+
+        <table class="table table-striped table-bordered table-sm table-responsive" cellspacing="0" width="100%">
+            <tbody>
+                {{#each molecule_meta_data as |molecule|}}
+                <tr>
+                    <td><strong>{{molecule.name}}</strong></td>
+
+                    {{#eq class_name "smiles"}}
+                    <td class="{{molecule.class_name}}" value="{{molecule.value}}">
+                        <canvas id="smiles_canvas_{{../id}}" width="125" height="250"></canvas>
+                        </br>
+                        {{{value}}}
+                    </td>
+                    {{else}}
+                    <td class="{{molecule.class_name}}">
+                        {{{molecule.value}}}
+                    </td>
+                    {{/eq}}
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+
+    </div>
+
+</div>
+
+<button type="button" class="close-btn btn btn-secondary float-sm-right" data-effect="fadeOut">Close</button>
+</div>
+</div>
