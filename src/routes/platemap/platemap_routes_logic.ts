@@ -61,6 +61,86 @@ const get_molcule_meta_data = async (cell, platemap_id) => {
     return { molecule_meta_data, molecule_db };
 }
 
+const get_img_2 = async (platemap_id, molecule_db) => {
+    // const [row, col] = index.split('_').map((x) => parseInt(x, 10) + 1);
+
+    let img_url_list = [];
+    const experiment_db_list = await experiment_controller.Model.findAll(
+        {
+            where: {
+                platemap_id,
+            },
+            attributes: ['id'],
+            raw: true
+        });
+    const experiment_id_list = experiment_db_list.reduce((acc, val) => {
+        acc.push(val.id);
+        return acc;
+    }, []);
+
+
+    const foo = await image_metadata_controller.Model.findAll({
+        where: {
+            molecule_id: molecule_db.id,
+            experiment_id: {
+                [Op.in]: experiment_id_list
+            },
+            size: 'full',
+        },
+        include: [{
+            association: image_metadata_controller.Model.Experiment,
+            attributes: ['human_readable_name']
+        }],
+        raw: true,
+    })
+        .catch((err) => {
+            console.error("image metadata find all error");
+            console.error(err);
+        })
+
+    const drug_list = ['edu', 'cyto']
+    // console.log(foo);
+    // make map where key is [cyto|edu]_[minus|plus]_lps > wave > sector.uri
+    /*
+        drug > -/+ lps > w > s > uri
+    */
+   const wavelength_count = 4;
+   const sector_count = 4;
+    const fizz = {
+        cyto: {
+            lps_minus: {w1:new Array(sector_count), w2:new Array(sector_count), w3:new Array(sector_count), w4:new Array(sector_count)},
+            lps_plus: {w1:new Array(sector_count), w2:new Array(sector_count), w3:new Array(sector_count), w4:new Array(sector_count)}
+        },
+        edu: {
+            lps_minus: {w1:new Array(sector_count), w2:new Array(sector_count), w3:new Array(sector_count), w4:new Array(sector_count)},
+            lps_plus: {w1:new Array(sector_count), w2:new Array(sector_count), w3:new Array(sector_count), w4:new Array(sector_count)}
+        },
+    };
+    for (let bar of foo) {
+        const { wavelength, sector, uri } = bar;
+        let human_readable_name = bar['experiment.human_readable_name'].toLowerCase();
+        let stain = '';
+        let lps_status = '';
+        if (human_readable_name.includes('edu')) {
+            stain = 'edu'
+        }
+        else if (human_readable_name.includes('cyto')) {
+            stain = 'cyto';
+        }
+        if (human_readable_name.includes('lps')) {
+            lps_status = 'lps_plus';
+        }
+        else {
+            lps_status = 'lps_minus';
+        }
+        const wl = `w${wavelength}`;
+        fizz[stain][lps_status][wl][sector - 1] = { uri, stain, lps_status, wavelength, sector };
+    }
+    
+    return fizz;
+}
+
+
 const get_img = async (platemap_id, molecule_db) => {
     // const [row, col] = index.split('_').map((x) => parseInt(x, 10) + 1);
 
@@ -141,32 +221,7 @@ const get_img = async (platemap_id, molecule_db) => {
         }
         sector_list[sector - 1] = { uri, stain, lps_status, wavelength, sector };
     }
-    // const experiment_db_list = await experiment_controller.Model.findAll(
-    //     {
-    //         where: {
-    //             platemap_id,
-    //         },
-    //         attributes: ['id']
-    //     });
-
-    // for (let experiment_db of experiment_db_list) {
-    // let experiment_name = experiment_db.human_readable_name + "-" + experiment_db.magnification;
-    // let cell = molecule_db.cell;
-
-    // for (let sector_id of ['s1', 's2', 's3', 's4']) {
-    //     for (let wavelength_id of ['w1', 'w2', 'w3', 'w4']) {
-    //         try {
-
-    //             const img_url = image_index['thumb'][experiment_name][cell][wavelength_id][sector_id]
-    //             img_url_list.push(img_url);
-    //         }
-    //         catch (err) {
-    //             console.log(err);
-
-    //         }
-    //     }
-    // }
-    // }
+    
     return fizz;
 }
 
@@ -223,13 +278,16 @@ export const get_card_data = async (cell, platemap_id) => {
     const { molecule_meta_data, molecule_db } = await get_molcule_meta_data(cell, platemap_id)
 
     const drug_foo = await get_img(platemap_id, molecule_db);
+    const drug_bar = await get_img_2(platemap_id, molecule_db);
 
+    
     const id = sanitize_string(molecule_db.name);
     const card_data = {
         id,
         molecule_meta_data,
         name: `${molecule_db.name}`,
-        drug_foo
+        drug_foo,
+        drug_bar
         // id: path.parse(file).name,
         // row_zip,
         // column_headers: data.column_headers,
