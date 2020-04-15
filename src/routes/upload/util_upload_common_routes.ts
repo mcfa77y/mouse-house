@@ -11,11 +11,21 @@ const TMP_DIR = join(__dirname, '../../../tmp');
 
 const storage: StorageEngine = multer.diskStorage({
     destination: function (req: Request, file, cb) {
-        cb(null, TMP_DIR)
+        try {
+            cb(null, TMP_DIR)
+        }
+        catch (err) {
+            console.error(err);
+        }
     },
     filename: function (req: Request, file, cb) {
-        const x = parse(file.originalname);
-        cb(null, x.name + '-' + Date.now() + x.ext)
+        try {
+            const x = parse(file.originalname);
+            cb(null, x.name + '-' + Date.now() + x.ext)
+        }
+        catch (err) {
+            console.error(err);
+        }
     }
 })
 

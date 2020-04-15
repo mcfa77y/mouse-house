@@ -7,16 +7,13 @@
   },
   "main": "index.js",
   "scripts": {
-    "build": "webpack",
-    "build:prod": "webpack -p",
-    "start": "node index.js",
-    "build:clean_dist": "rm -rf dist",
+    "build:clean_dist": "rm -rf dist; rm -rf tmp; mkdir tmp;",
     "build:watch_tsc": "npm run build:clean_dist; npx tsc --watch",
     "build:watch_webpack": "nvm use 12.14.0; npx webpack --watch",
     "build:watch": "npm run build:watch_tsc & npm run build:watch_webpack&",
     "debug": "nvm use 12.14.0; nodemon --inspect index.js",
     "dev": "npx nodemon src/index.ts",
-    "postinstall": "webpack -p  --progress"
+    "postinstall": "webpack -p --progress"
   },
   "dependencies": {
     "@types/datatables.net": "^1.10.18",

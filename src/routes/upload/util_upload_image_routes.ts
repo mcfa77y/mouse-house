@@ -6,6 +6,7 @@ import experiment_controller from '../../controllers/experiment_controller';
 import image_matadata_controller from '../../controllers/image_metadata_controller';
 import { client } from './util_upload_common_routes';
 import molecule from '../../database/models/molecule';
+import { Op } from 'sequelize';
 
 interface Image_Metadata {
     size: string,
@@ -64,7 +65,9 @@ const get_db_stuffs = async (human_readable_name: string) => {
         const experiment_db = await experiment_controller.Model
             .findOne({
                 where: {
-                    human_readable_name
+                    human_readable_name: {
+                        [Op.iLike]: human_readable_name
+                    },
                 },
                 attributes: ['id', 'human_readable_name', 'platemap_id'],
             })
@@ -157,14 +160,18 @@ export const process_image_csv = async (csv_file: Express.Multer.File, token: st
         return acc;
     }, new Set<string>());
     // populate cache
-    const db_stuffs_promise_list = Array.from(experiment_name_list).map((experiment_name) => {
-        return get_db_stuffs(experiment_name)
-            .catch((err) => {
-                console.error(err);
-            });
-    })
+    const db_stuffs_promise_list = Array
+        .from(experiment_name_list)
+        .map((experiment_name) => {
+            return get_db_stuffs(experiment_name)
+                .catch((err) => {
+                    console.error("error populating cache");
+                    console.error(err);
+                });
+        })
     await all(db_stuffs_promise_list)
         .catch((err) => {
+            console.error("error populating cache - all");
             console.error(err);
         });
     const perChunk = 100;
@@ -179,7 +186,7 @@ export const process_image_csv = async (csv_file: Express.Multer.File, token: st
 
         return resultArray
     }, [])
-    const chunk_total = chunk_image_data_list.length;
+    const chunk_total = chunk_image_data_list.length * experiment_name_list.size;
     for (let chunk_index in chunk_image_data_list) {
         const img_data_list = chunk_image_data_list[chunk_index]
         const p_list = img_data_list.map((image_metadata) => {
@@ -192,28 +199,38 @@ export const process_image_csv = async (csv_file: Express.Multer.File, token: st
                 experiment_human_readable_name: human_readable_name
             } = image_metadata;
 
-            return get_db_stuffs(human_readable_name).then(
-                ({ experiment_db, molecule_cell_db_map }) => {
+            return get_db_stuffs(human_readable_name)
+                .then(
+                    ({ experiment_db, molecule_cell_db_map }) => {
 
-                    const image_metadata_model = {
-                        size,
-                        wavelength: parseInt(wavelength[wavelength.length - 1]),
-                        sector: parseInt(sector[sector.length - 1]),
-                        uri,
-                        experiment_id: experiment_db.id,
-                        molecule_id: molecule_cell_db_map[cell].id
-                    };
+                        const image_metadata_model = {
+                            size,
+                            wavelength: parseInt(wavelength[wavelength.length - 1]),
+                            sector: parseInt(sector[sector.length - 1]),
+                            uri,
+                            experiment_id: experiment_db.id,
+                            molecule_id: molecule_cell_db_map[cell].id
+                        };
 
-                    return image_matadata_controller.insert(image_metadata_model)
-                        .then(() => {
+                        return image_matadata_controller.insert(image_metadata_model)
+                            .then(() => {
 
-                            update_x(image_progress_info, progress_info, perChunk);
-                            if (image_progress_info.row_count % perChunk == 0 || image_progress_info.row_count == image_progress_info.row_total) {
-                                update_progress_info(token, progress_info);
-                            }
-                        })
+                                update_x(image_progress_info, progress_info, perChunk);
+                                if (image_progress_info.row_count % perChunk == 0 || image_progress_info.row_count == image_progress_info.row_total) {
+                                    update_progress_info(token, progress_info);
+                                }
+                            })
+                            .catch((err) => {
+                                update_x(image_progress_info, progress_info, perChunk);
+                                if (image_progress_info.row_count % perChunk == 0 || image_progress_info.row_count == image_progress_info.row_total) {
+                                    update_progress_info(token, progress_info);
+                                }
+                            })
+                    })
+                .catch((err) => {
+                    console.error("error get db stuffs: " + human_readable_name);
+                    console.error(err);
 
-                    // return Promise.resolve();
                 });
 
         });
@@ -222,7 +239,7 @@ export const process_image_csv = async (csv_file: Express.Multer.File, token: st
             .then(() => {
                 console.log(`finished chunk - ${chunk_index + 1} / ${chunk_total}`)
                 // progress_info.is_finished = true;
-                // update_progress_info(token, progress_info);
+                update_progress_info(token, progress_info);
             })
             .catch((err) => {
                 console.log("crc upload: " + err);

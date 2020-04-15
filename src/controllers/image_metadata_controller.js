@@ -34,10 +34,11 @@ class Image_Metadata_Controller extends Base_Controller {
     insert(model) {
         // console.log(`_model: ${JSON.stringify(model, null, 2)}`);
 
-        return Image_Metadata.create(model, { returning: true, attributes: ['id'] })
+        return Image_Metadata.create(model, { returning: true, attributes: ['id', 'uri'] })
             .then(identity)
             .catch((err) => {
                 console.error(err);
+                console.error(`duplicate: ${model.uri}`);
             });
     }
 
