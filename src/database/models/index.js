@@ -1,15 +1,17 @@
+// @ts-nocheck
 
 const { Sequelize } = require('sequelize');
 
-const project = require('./project');
+// const project = require('./old_models/project');
 const experiment = require('./experiment');
-const project_experiment = require('./project_experiment');
+// const project_experiment = require('./old_models/project_experiment');
 const platemap = require('./platemap');
 const product_info = require('./product_info');
 const molecule = require('./molecule');
 const image_metadata = require('./image_metadata');
 
-const env = process.env.NODE_ENV || 'development';
+const env = 'local';
+// const env = process.env.NODE_ENV || 'development';
 
 console.log(`enter index.js model: ${__dirname}`);
 
@@ -38,14 +40,14 @@ if (process.env.NODE_ENV === 'production') {
 } else {
     console.log(`using default config for db\n${JSON.stringify(config, null, 2)}`);
     // console.log(`config: ${JSON.stringify(config, null, 2)}`);
-
+    // config.dialect = "postgres" as Dialect;
     sequelize = new Sequelize(config.database, config.username, config.password, config);
 }
 
 const modules = [
-    project,
+    // project,
     experiment,
-    project_experiment,
+    // project_experiment,
     platemap,
     product_info,
     molecule,

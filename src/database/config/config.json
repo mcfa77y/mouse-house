@@ -11,6 +11,13 @@
       }
     }
   },
+  "local": {
+    "username": "",
+    "password": "",
+    "database": "postgres",
+    "host": "localhost",
+    "dialect": "postgres"
+    },
   "heroku": {
     "username": "nszbcdoyixvxal",
     "password": "32167b59dca6323114f5bed449e22c04d6df5be54d982bed905de9ca5c7af15f",

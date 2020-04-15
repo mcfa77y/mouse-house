@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import e, { Request, Response } from 'express';
 
 import platemap_controller from '../../controllers/platemap_controller';
 import molecule_controller from '../../controllers/molecule_controller';
@@ -79,13 +79,12 @@ const get_img_2 = async (platemap_id, molecule_db) => {
     }, []);
 
 
-    const foo = await image_metadata_controller.Model.findAll({
+    const image_metadata_db_list = await image_metadata_controller.Model.findAll({
         where: {
             molecule_id: molecule_db.id,
             experiment_id: {
                 [Op.in]: experiment_id_list
             },
-            size: 'full',
         },
         include: [{
             association: image_metadata_controller.Model.Experiment,
@@ -104,21 +103,21 @@ const get_img_2 = async (platemap_id, molecule_db) => {
     /*
         drug > -/+ lps > w > s > uri
     */
-   const wavelength_count = 4;
-   const sector_count = 4;
-    const fizz = {
+    const wavelength_count = 4;
+    const sector_count = 4;
+    const card_image_metadata = {
         cyto: {
-            lps_minus: {w1:new Array(sector_count), w2:new Array(sector_count), w3:new Array(sector_count), w4:new Array(sector_count)},
-            lps_plus: {w1:new Array(sector_count), w2:new Array(sector_count), w3:new Array(sector_count), w4:new Array(sector_count)}
+            lps_minus: { overlay: new Array(sector_count), w1: new Array(sector_count), w2: new Array(sector_count), w3: new Array(sector_count), w4: new Array(sector_count) },
+            lps_plus: { overlay: new Array(sector_count), w1: new Array(sector_count), w2: new Array(sector_count), w3: new Array(sector_count), w4: new Array(sector_count) }
         },
         edu: {
-            lps_minus: {w1:new Array(sector_count), w2:new Array(sector_count), w3:new Array(sector_count), w4:new Array(sector_count)},
-            lps_plus: {w1:new Array(sector_count), w2:new Array(sector_count), w3:new Array(sector_count), w4:new Array(sector_count)}
+            lps_minus: { overlay: new Array(sector_count), w1: new Array(sector_count), w2: new Array(sector_count), w3: new Array(sector_count), w4: new Array(sector_count) },
+            lps_plus: { overlay: new Array(sector_count), w1: new Array(sector_count), w2: new Array(sector_count), w3: new Array(sector_count), w4: new Array(sector_count) }
         },
     };
-    for (let bar of foo) {
-        const { wavelength, sector, uri } = bar;
-        let human_readable_name = bar['experiment.human_readable_name'].toLowerCase();
+    for (let image_metadata_db of image_metadata_db_list) {
+        const { wavelength, sector, uri, size } = image_metadata_db;
+        let human_readable_name = image_metadata_db['experiment.human_readable_name'].toLowerCase();
         let stain = '';
         let lps_status = '';
         if (human_readable_name.includes('edu')) {
@@ -133,11 +132,14 @@ const get_img_2 = async (platemap_id, molecule_db) => {
         else {
             lps_status = 'lps_minus';
         }
-        const wl = `w${wavelength}`;
-        fizz[stain][lps_status][wl][sector - 1] = { uri, stain, lps_status, wavelength, sector };
+        let wl = `w${wavelength}`;
+        if ("composite" === size) {
+            wl = 'overlay'
+        }
+        card_image_metadata[stain][lps_status][wl][sector - 1] = { uri, stain, lps_status, wavelength, sector };
     }
-    
-    return fizz;
+
+    return card_image_metadata;
 }
 
 
@@ -159,13 +161,12 @@ const get_img = async (platemap_id, molecule_db) => {
     }, []);
 
 
-    const foo = await image_metadata_controller.Model.findAll({
+    const image_metadata_db_list = await image_metadata_controller.Model.findAll({
         where: {
             molecule_id: molecule_db.id,
             experiment_id: {
                 [Op.in]: experiment_id_list
             },
-            size: 'full',
         },
         include: [{
             association: image_metadata_controller.Model.Experiment,
@@ -178,8 +179,6 @@ const get_img = async (platemap_id, molecule_db) => {
             console.error(err);
         })
 
-    const drug_list = ['edu', 'cyto']
-    // console.log(foo);
     // make map where key is [cyto|edu]_[minus|plus]_lps > wave > sector.uri
     /*
         drug > -/+ lps > w > s > uri
@@ -196,9 +195,9 @@ const get_img = async (platemap_id, molecule_db) => {
     };
     const wavelength_count = 4;
     const sector_count = 4;
-    for (let bar of foo) {
-        const { wavelength, sector, uri } = bar;
-        let human_readable_name = bar['experiment.human_readable_name'].toLowerCase();
+    for (let image_metadata_db of image_metadata_db_list) {
+        let { wavelength, sector, uri, size } = image_metadata_db;
+        let human_readable_name = image_metadata_db['experiment.human_readable_name'].toLowerCase();
         let stain = '';
         let lps_status = '';
         if (human_readable_name.includes('edu')) {
@@ -214,14 +213,18 @@ const get_img = async (platemap_id, molecule_db) => {
             lps_status = 'lps_minus';
         }
         let wavelength_list = fizz[stain][lps_status];
-        let sector_list = wavelength_list[wavelength - 1]
+        if ('composite' == size) {
+            wavelength = 0;
+        }
+        let sector_list = wavelength_list[wavelength]
         if (sector_list == undefined) {
-            wavelength_list[wavelength - 1] = new Array(sector_count);
-            sector_list = wavelength_list[wavelength - 1]
+            wavelength_list[wavelength] = new Array(sector_count);
+            sector_list = wavelength_list[wavelength]
         }
         sector_list[sector - 1] = { uri, stain, lps_status, wavelength, sector };
+
     }
-    
+
     return fizz;
 }
 
@@ -280,7 +283,7 @@ export const get_card_data = async (cell, platemap_id) => {
     const drug_foo = await get_img(platemap_id, molecule_db);
     const drug_bar = await get_img_2(platemap_id, molecule_db);
 
-    
+
     const id = sanitize_string(molecule_db.name);
     const card_data = {
         id,

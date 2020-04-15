@@ -215,16 +215,16 @@ export const process_platemap_csv = async (csv_file_array: Express.Multer.File[]
                 update_progress_info(token, progress_info);
                 return Promise.resolve();
             });
-        all(p_list)
+        await all(p_list)
             .then(() => {
-                console.log("finished")
-                progress_info.is_finished = true;
-                update_progress_info(token, progress_info);
+                console.log("finished: " + file.filename);
             })
             .catch((err) => {
                 console.log("platemap upload: " + err);
             })
     }
+    progress_info.is_finished = true;
+    update_progress_info(token, progress_info);
 
 
 }

@@ -38,13 +38,13 @@ app.use(session({
 import hbs from 'hbs';
 import helpers from 'handlebars-helpers';
 
-import breed from './routes/breed/breed_routes';
-import mouse from './routes/mouse/mouse_routes';
-import cage from './routes/cage/cage_routes';
+// import breed from './routes/breed/breed_routes';
+// import mouse from './routes/mouse/mouse_routes';
+// import cage from './routes/cage/cage_routes';
+// import project from './routes/project_routes';
+// import dropbox from './routes/dropbox_routes';
 import grid from './routes/grid/grid_routes';
-import project from './routes/project_routes';
 import experiment from './routes/experiment_routes';
-import dropbox from './routes/dropbox_routes';
 import upload from './routes/upload/upload_routes';
 import molecule from './routes/molecule_routes';
 import platemap from './routes/platemap/platemap_routes';
@@ -69,13 +69,13 @@ hbsutils.registerWatchedPartials(path.join(VIEW_DIR, 'partials/form-elements'));
 app.set('views', VIEW_DIR);
 app.set('view engine', 'hbs');
 
-app.use('/breed', breed);
-app.use('/mouse', mouse);
-app.use('/cage', cage);
+// app.use('/breed', breed);
+// app.use('/mouse', mouse);
+// app.use('/cage', cage);
+// app.use('/project', project);
+// app.use('/dropbox', dropbox);
 app.use('/grid', grid);
-app.use('/project', project);
 app.use('/experiment', experiment);
-app.use('/dropbox', dropbox);
 app.use('/upload', upload);
 app.use('/molecule', molecule);
 app.use('/platemap', platemap);
