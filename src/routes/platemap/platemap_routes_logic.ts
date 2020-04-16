@@ -240,8 +240,8 @@ export const create_platemap_grid = async (req: Request, res: Response) => {
     // reshape map in to rows/cols
     const grid = {};
     for (let molecule of molecule_db_list) {
-        let row_index = molecule.x - 1;
-        let col_index = molecule.y - 1;
+        let row_index = molecule.y - 1;
+        let col_index = molecule.x - 1;
         let row = grid[row_index];
         if (row == undefined) {
             grid[row_index] = []
@@ -271,7 +271,8 @@ export const create_platemap_grid = async (req: Request, res: Response) => {
     let column_headers = [];
     let offset = 'A'.charCodeAt(0);
     for (let i = 0; i < grid[0].length; i++) {
-        column_headers.push(String.fromCharCode(i + offset));
+        // column_headers.push(String.fromCharCode(i + offset));
+        column_headers.push((i+1) +'')
     }
     return { grid, column_headers, platemap_db };
 }
