@@ -4,97 +4,70 @@
     </div>
 
     <div class="card-body">
-        {{!-- <h5 class="card-title">{{name}}</h5> --}}
-
-        <ul class="nav nav-pills" id="myTab" role="tablist">
+        <ul class="nav nav-pills" id="tab_{{id}}" role="tablist">
             <li class="nav-item">
-                <a class="nav-link active" id="cyto-w1-tab" data-toggle="pill" href="#w1" role="tab" aria-controls="w1"
-                    aria-selected="true">Nuclei</a>
+                <a class="nav-link active" id="cyto-overlay-tab" data-toggle="pill" href="#overlay_{{id}}" role="tab"
+                    aria-controls="overlay_{{id}}" aria-selected="true">Overlay</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="cyto-w1-tab" data-toggle="pill" href="#w1_{{id}}" role="tab"
+                    aria-controls="w1_{{id}}" aria-selected="false">Nuclei</a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" id="w2-tab" data-toggle="pill" href="#w2" role="tab" aria-controls="w2"
-                    aria-selected="false">Golgi</a>
+                <a class="nav-link" id="w2_{{id}}-tab" data-toggle="pill" href="#w2_{{id}}" role="tab"
+                    aria-controls="w2_{{id}}" aria-selected="false">Actin/Edu</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id="w3-tab" data-toggle="pill" href="#w3" role="tab" aria-controls="w3"
-                    aria-selected="false">Actin</a>
+                <a class="nav-link" id="w3_{{id}}-tab" data-toggle="pill" href="#w3_{{id}}" role="tab"
+                    aria-controls="w3_{{id}}" aria-selected="false">Golgi/Tubulin</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id="w4-tab" data-toggle="pill" href="#w4" role="tab" aria-controls="w4"
-                    aria-selected="false">PHH3</a>
+                <a class="nav-link" id="w4_{{id}}-tab" data-toggle="pill" href="#w4_{{id}}" role="tab"
+                    aria-controls="w4_{{id}}" aria-selected="false">PHH3/Mitochondria</a>
             </li>
 
 
         </ul>
 
-        <div class="tab-content" id="myTabContent">
-            <div class="tab-pane fade show active" id="w1" role="tabpanel" aria-labelledby="w1-tab">
-                {{> platemap/platemap_drug_wave wave=drug_bar.cyto.lps_minus.w1 lps_status='- LPS'}}
-                {{> platemap/platemap_drug_wave wave=drug_bar.cyto.lps_plus.w1 lps_status='+ LPS'}}
+        <div class="tab-content" id="tab_{{id}}_content">
+            <div class="tab-pane fade show active" id="overlay_{{id}}" role="tabpanel"
+                aria-labelledby="overlay-tab_{{id}}">
+                {{> platemap/platemap_drug_wave wave=drug_bar.cyto.lps_minus.overlay stain="Cyto" lps_status='minus' feature='overlay'}}
+                {{> platemap/platemap_drug_wave wave=drug_bar.cyto.lps_plus.overlay stain="Cyto" lps_status='plus' feature='overlay'}}
 
-                {{> platemap/platemap_drug_wave wave=drug_bar.edu.lps_minus.w1 lps_status='- LPS'}}
-                {{> platemap/platemap_drug_wave wave=drug_bar.edu.lps_plus.w1 lps_status='+ LPS'}}
+                {{> platemap/platemap_drug_wave wave=drug_bar.edu.lps_minus.overlay stain='Edu' lps_status='minus' feature='overlay'}}
+                {{> platemap/platemap_drug_wave wave=drug_bar.edu.lps_plus.overlay stain='Edu' lps_status='plus' feature='overlay'}}
             </div>
-            <div class="tab-pane fade" id="w2" role="tabpanel" aria-labelledby="w2-tab">
-                {{> platemap/platemap_drug_wave wave=drug_bar.cyto.lps_minus.w2 lps_status='- LPS'}}
-                {{> platemap/platemap_drug_wave wave=drug_bar.cyto.lps_plus.w2 lps_status='+ LPS'}}
+            <div class="tab-pane fade" id="w1_{{id}}" role="tabpanel" aria-labelledby="w1-tab_{{id}}">
+                {{> platemap/platemap_drug_wave wave=drug_bar.cyto.lps_minus.w1 stain='Cyto' lps_status='minus' feature='w1'}}
+                {{> platemap/platemap_drug_wave wave=drug_bar.cyto.lps_plus.w1 stain='Cyto' lps_status='plus' feature='w1'}}
 
-                {{> platemap/platemap_drug_wave wave=drug_bar.edu.lps_minus.w2 lps_status='- LPS'}}
-                {{> platemap/platemap_drug_wave wave=drug_bar.edu.lps_plus.w2 lps_status='+ LPS'}}
+                {{> platemap/platemap_drug_wave wave=drug_bar.edu.lps_minus.w1 stain='Edu' lps_status='minus' feature='w1'}}
+                {{> platemap/platemap_drug_wave wave=drug_bar.edu.lps_plus.w1 stain='Edu' lps_status='plus' feature='w1'}}
             </div>
-            <div class="tab-pane fade" id="w3" role="tabpanel" aria-labelledby="w3-tab">
-                {{> platemap/platemap_drug_wave wave=drug_bar.cyto.lps_minus.w3 lps_status='- LPS'}}
-                {{> platemap/platemap_drug_wave wave=drug_bar.cyto.lps_plus.w3 lps_status='+ LPS'}}
+            <div class="tab-pane fade" id="w2_{{id}}" role="tabpanel" aria-labelledby="w2-tab_{{id}}">
+                {{> platemap/platemap_drug_wave wave=drug_bar.cyto.lps_minus.w2 stain='Cyto' lps_status='minus' feature='w2'}}
+                {{> platemap/platemap_drug_wave wave=drug_bar.cyto.lps_plus.w2 stain='Cyto' lps_status='plus' feature='w2'}}
 
-                {{> platemap/platemap_drug_wave wave=drug_bar.edu.lps_minus.w3 lps_status='- LPS'}}
-                {{> platemap/platemap_drug_wave wave=drug_bar.edu.lps_plus.w3 lps_status='+ LPS'}}
+                {{> platemap/platemap_drug_wave wave=drug_bar.edu.lps_minus.w2 stain='Edu' lps_status='minus' feature='w2'}}
+                {{> platemap/platemap_drug_wave wave=drug_bar.edu.lps_plus.w2 stain='Edu' lps_status='plus' feature='w2'}}
             </div>
-            <div class="tab-pane fade" id="w4" role="tabpanel" aria-labelledby="w4-tab">
-                {{> platemap/platemap_drug_wave wave=drug_bar.cyto.lps_minus.w4 lps_status='- LPS'}}
-                {{> platemap/platemap_drug_wave wave=drug_bar.cyto.lps_plus.w4 lps_status='+ LPS'}}
+            <div class="tab-pane fade" id="w3_{{id}}" role="tabpanel" aria-labelledby="w3-tab_{{id}}">
+                {{> platemap/platemap_drug_wave wave=drug_bar.cyto.lps_minus.w3 stain='Cyto' lps_status='minus' feature='w3'}}
+                {{> platemap/platemap_drug_wave wave=drug_bar.cyto.lps_plus.w3 stain='Cyto' lps_status='plus' feature='w3'}}
 
-                {{> platemap/platemap_drug_wave wave=drug_bar.edu.lps_minus.w4 lps_status='- LPS'}}
-                {{> platemap/platemap_drug_wave wave=drug_bar.edu.lps_plus.w4 lps_status='+ LPS'}}
+                {{> platemap/platemap_drug_wave wave=drug_bar.edu.lps_minus.w3 stain='Edu' lps_status='minus' feature='w3'}}
+                {{> platemap/platemap_drug_wave wave=drug_bar.edu.lps_plus.w3 stain='Edu' lps_status='plus' feature='w3'}}
+            </div>
+            <div class="tab-pane fade" id="w4_{{id}}" role="tabpanel" aria-labelledby="w4-tab_{{id}}">
+                {{> platemap/platemap_drug_wave wave=drug_bar.cyto.lps_minus.w4 stain='Cyto' lps_status='minus' feature='w4'}}
+                {{> platemap/platemap_drug_wave wave=drug_bar.cyto.lps_plus.w4 stain='Cyto' lps_status='plus' feature='w4'}}
+
+                {{> platemap/platemap_drug_wave wave=drug_bar.edu.lps_minus.w4 stain='Edu' lps_status='minus' feature='w4'}}
+                {{> platemap/platemap_drug_wave wave=drug_bar.edu.lps_plus.w4 stain='Edu' lps_status='plus' feature='w4'}}
             </div>
         </div>
-        {{!-- 
-        <div class="drug">
-            <table class="table table-dark">
-                <thead class="thead-dark">
-                    <tr>
-                        <th scope="col">Cyto</th>
-                        <th scope="col">w1 - Nuclei</th>
-                        <th scope="col">w2 - Golgi</th>
-                        <th scope="col">w3 - Actin</th>
-                        <th scope="col">w4 - PHH3</th>
-                    </tr>
-                </thead>
-                <tbody>
-
-                    {{> platemap/platemap_drug_row drug=drug_foo.cyto.lps_minus lps_status='- LPS'}}
-                    {{> platemap/platemap_drug_row drug=drug_foo.cyto.lps_plus lps_status='+ LPS'}}
-
-                </tbody>
-            </table>
-
-            <table class="table table-dark">
-                <thead class="thead-dark">
-                    <tr>
-                        <th scope="col">Edu</th>
-                        <th scope="col">w1 - Nuclei</th>
-                        <th scope="col">w2 - Tubulin</th>
-                        <th scope="col">w3 - Edu</th>
-                        <th scope="col">w4 - Mito</th>
-                    </tr>
-                </thead>
-                <tbody>
-
-                    {{> platemap/platemap_drug_row drug=drug_foo.edu.lps_minus lps_status='- LPS'}}
-                    {{> platemap/platemap_drug_row drug=drug_foo.edu.lps_plus lps_status='+ LPS'}}
-
-                </tbody>
-            </table> --}}
 
 
     </div>
@@ -129,8 +102,5 @@
 
     </div>
 
-</div>
-
-<button type="button" class="close-btn btn btn-secondary float-sm-right" data-effect="fadeOut">Close</button>
-</div>
+    <button type="button" class="close-btn btn btn-secondary float-sm-right" data-effect="fadeOut">Close</button>
 </div>

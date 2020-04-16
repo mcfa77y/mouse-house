@@ -14,8 +14,8 @@ const router: Router = Router();
 // const source = fs.readFileSync(grid_table_template_uri, 'utf-8');
 // const grid_table_template = hbs.handlebars.compile(source);
 
-const CARD_SOURCE = fs.readFileSync(path.join(PARTIALS_DIR, 'platemap_card.hbs'), 'utf-8');
-// const CARD_SOURCE = fs.readFileSync(path.join(PARTIALS_DIR, 'platemap_card_tabs.hbs'), 'utf-8');
+// const CARD_SOURCE = fs.readFileSync(path.join(PARTIALS_DIR, 'platemap_card.hbs'), 'utf-8');
+const CARD_SOURCE = fs.readFileSync(path.join(PARTIALS_DIR, 'platemap_card_tabs.hbs'), 'utf-8');
 const CARD_HTML_TEMPLATE = hbs.handlebars.compile(CARD_SOURCE);
 
 
