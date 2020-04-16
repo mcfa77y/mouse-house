@@ -29,8 +29,8 @@ export function setup_table({ model_name, column_names }) {
         scrollCollapse: true,
         paging: true,
         lengthMenu: [
-            [5, 10, 25, -1],
-            [5, 10, 25, 'All'],
+            [50, 100, 250, -1],
+            [50, 100, 250, 'All'],
         ],
 
         info: true,

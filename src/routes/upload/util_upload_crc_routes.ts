@@ -83,7 +83,7 @@ const build_experiment = (row): Experiment => {
         ixmw3,
         ixmw4,
         platemap_id: -1,
-        platemap_name: plate_map_file.split('_')[0],
+        platemap_name: plate_map_file,
     }
     return result;
 }

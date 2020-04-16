@@ -28,11 +28,11 @@ export const column_name_index_map = column_names.reduce((acc, name, index) => {
 export const column_name_show_set = new Set(['name',
     'molarity_mm',
     'pathway',
-    'target',
+    'targets',
     'cell',
     // 'x',
     // 'y',
-    'created_at',
+    // 'created_at',
     'info', 'platemap']);
 
 export const column_hide_index_list = column_names.reduce((acc, column_name, index) => {

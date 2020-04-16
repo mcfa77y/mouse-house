@@ -10,7 +10,7 @@ const product_info = require('./product_info');
 const molecule = require('./molecule');
 const image_metadata = require('./image_metadata');
 
-const env = 'local';
+const env = 'heroku';
 // const env = process.env.NODE_ENV || 'development';
 
 console.log(`enter index.js model: ${__dirname}`);
