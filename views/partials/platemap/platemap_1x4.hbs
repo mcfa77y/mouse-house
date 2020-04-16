@@ -1,0 +1,30 @@
+<div id="carousel_{{id}}_{{stain}}_{{lps_status}}_{{feature}}" class="carousel slide" data-ride="carousel" data-interval="false">
+    <ol class="carousel-indicators">
+        <li data-target="#carousel_{{id}}_{{stain}}_{{lps_status}}_{{feature}}" data-slide-to="0" class="active"></li>
+        <li data-target="#carousel_{{id}}_{{stain}}_{{lps_status}}_{{feature}}" data-slide-to="1"></li>
+        <li data-target="#carousel_{{id}}_{{stain}}_{{lps_status}}_{{feature}}" data-slide-to="2"></li>
+        <li data-target="#carousel_{{id}}_{{stain}}_{{lps_status}}_{{feature}}" data-slide-to="3"></li>
+    </ol>
+    <div class="carousel-inner">
+        {{#each wave as |sect|}}
+        <div class="carousel-item {{#if @first}} active {{/if}}">
+            <a href="../{{uri}}" target="_blank" rel="noopener noreferrer">
+                <img class="d-block w-100" src="../{{uri}}"
+                    alt-text="stain: {{stain}} {{lps_status}} wavelength: {{wavelength}} sector:{{sector}}" />
+            </a>
+            <div class="carousel-caption d-none d-md-block">
+                <p>{{stain}} {{lps_status}} w{{wavelength}} s{{sector}}</p>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+
+    <a class="carousel-control-prev" href="#carousel_{{id}}_{{stain}}_{{lps_status}}_{{feature}}" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#carousel_{{id}}_{{stain}}_{{lps_status}}_{{feature}}" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+    </a>
+</div>
