@@ -6,7 +6,7 @@ import { model_name, column_names, column_name_index_map, column_hide_index_list
 export function setup_table({ model_name, column_names }) {
     const columns = column_names.map((x) => ({ data: x }));
     columns[column_name_index_map['platemap']].render = (data, type, row) => {
-        const html = `<a href='experiment/${data.id}'>${data.name}</a>`;
+        const html = `<a href='platemap/${data.id}'>${data.name}</a>`;
         return html;
     }
     columns[column_name_index_map['name']].render = (data, type, row) => {
