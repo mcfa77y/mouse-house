@@ -4,12 +4,21 @@
     </div>
 
     <div class="card-body">
-        {{> platemap/platemap_card_tab drug_stain=drug_bar.cyto stain="Cyto" wave_2_label="Actin" wave_3_label="Golgi" wave_4_label="PHH3"}}
-        {{> platemap/platemap_card_tab drug_stain=drug_bar.edu stain="EdU" wave_2_label="Tubulin" wave_3_label="EdU" wave_4_label="Mitochondria"}}
+        <div class="row">
+            <div class="col-md-6">
+                {{> platemap/platemap_card_tab drug_stain=drug.cyto stain="Cyto" wave_2_label="Actin" wave_3_label="Golgi" wave_4_label="PHH3"}}
+
+            </div>
+            <div class="col-md-6">
+                {{> platemap/platemap_card_tab drug_stain=drug.edu stain="EdU" wave_2_label="Tubulin" wave_3_label="EdU" wave_4_label="Mitochondria"}}
+
+            </div>
+        </div>
     </div>
 
     <button class="btn btn-primary metadata_button" type="button" data-toggle="collapse"
-        data-target="#multiCollapse_cyto_{{id}}" aria-expanded="false" aria-controls="multiCollapse_cyto_{{id}}">Metadata</button>
+        data-target="#multiCollapse_cyto_{{id}}" aria-expanded="false"
+        aria-controls="multiCollapse_cyto_{{id}}">Metadata</button>
 
 
     <div class="collapse multi-collapse" id="multiCollapse_{{id}}">
