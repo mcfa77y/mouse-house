@@ -6,6 +6,7 @@ import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
 import hbs_utils from 'hbs-utils';
 import session from 'express-session';
+import { update_image_metadata } from './process_experiment_images';
 // const cors = require('cors');
 
 
@@ -22,8 +23,11 @@ app.use(router);
 
 app.use(cookieParser());
 
-// const foo = __dirname.substring(4);
 const PUBLIC_DIR = path.join(__dirname, '..', 'public')
+// process image locations before setting up static dir
+const EXPIRIMENT_DIR = path.join(PUBLIC_DIR, 'experiments');
+update_image_metadata(EXPIRIMENT_DIR);
+
 console.log(`static path: ${PUBLIC_DIR}`);
 app.use(express.static(PUBLIC_DIR));
 
