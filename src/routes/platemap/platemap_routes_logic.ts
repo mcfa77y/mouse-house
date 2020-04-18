@@ -80,6 +80,9 @@ const get_img_from_json = async (platemap_id, molecule_cell) => {
         .map(val => val['human_readable_name'].toLowerCase());
 
     const image_metadata_list = experiment_hrn_list
+        .filter((experiment_hrn)=>{
+            return EXPR_IMG_META_TO_JSON_MAP[experiment_hrn] != undefined;
+        })
         .map((experiment_hrn) => {
             const key_expr_img_meta_json = `hrn_${experiment_hrn}`;
             if (cache_image_meta_data.has(key_expr_img_meta_json)) {
