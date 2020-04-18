@@ -1,0 +1,48 @@
+<ul class="nav nav-pills" id="tab_{{stain}}_{{id}}" role="tablist">
+    <li class="nav-item">
+        <a class="nav-link active" id="cyto-overlay-tab" data-toggle="pill" href="#overlay_{{stain}}_{{id}}" role="tab"
+            aria-controls="overlay_{{stain}}_{{id}}" aria-selected="true">Overlay</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="cyto-w1-tab" data-toggle="pill" href="#w1_{{stain}}_{{id}}" role="tab" aria-controls="w1_{{stain}}_{{id}}"
+            aria-selected="false">Nuclei</a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link" id="w2_{{stain}}_{{id}}-tab" data-toggle="pill" href="#w2_{{stain}}_{{id}}" role="tab" aria-controls="w2_{{stain}}_{{id}}"
+            aria-selected="false">{{wave_2_label}}</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="w3_{{stain}}_{{id}}-tab" data-toggle="pill" href="#w3_{{stain}}_{{id}}" role="tab" aria-controls="w3_{{stain}}_{{id}}"
+            aria-selected="false">{{wave_3_label}}</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="w4_{{stain}}_{{id}}-tab" data-toggle="pill" href="#w4_{{stain}}_{{id}}" role="tab" aria-controls="w4_{{stain}}_{{id}}"
+            aria-selected="false">{{wave_3_label}}</a>
+    </li>
+
+
+</ul>
+
+<div class="tab-content" id="tab_{{stain}}_{{id}}_content">
+    <div class="tab-pane fade show active" id="overlay_{{stain}}_{{id}}" role="tabpanel" aria-labelledby="overlay-tab_{{stain}}_{{id}}">
+        {{> platemap/platemap_1x4 wave=drug_stain.lps_minus.overlay lps_status='minus' feature='overlay'}}
+        {{> platemap/platemap_1x4 wave=drug_stain.lps_plus.overlay lps_status='plus' feature='overlay'}}
+    </div>
+    <div class="tab-pane fade" id="w1_{{stain}}_{{id}}" role="tabpanel" aria-labelledby="w1-tab_{{stain}}_{{id}}">
+        {{> platemap/platemap_1x4 wave=drug_stain.lps_minus.w1 lps_status='minus' feature='w1'}}
+        {{> platemap/platemap_1x4 wave=drug_stain.lps_plus.w1 lps_status='plus' feature='w1'}}
+    </div>
+    <div class="tab-pane fade" id="w2_{{stain}}_{{id}}" role="tabpanel" aria-labelledby="w2-tab_{{stain}}_{{id}}">
+        {{> platemap/platemap_1x4 wave=drug_stain.lps_minus.w2 lps_status='minus' feature='w2'}}
+        {{> platemap/platemap_1x4 wave=drug_stain.lps_plus.w2 lps_status='plus' feature='w2'}}
+    </div>
+    <div class="tab-pane fade" id="w3_{{stain}}_{{id}}" role="tabpanel" aria-labelledby="w3-tab_{{stain}}_{{id}}">
+        {{> platemap/platemap_1x4 wave=drug_stain.lps_minus.w3 lps_status='minus' feature='w3'}}
+        {{> platemap/platemap_1x4 wave=drug_stain.lps_plus.w3 lps_status='plus' feature='w3'}}
+    </div>
+    <div class="tab-pane fade" id="w4_{{stain}}_{{id}}" role="tabpanel" aria-labelledby="w4-tab_{{stain}}_{{id}}">
+        {{> platemap/platemap_1x4 wave=drug_stain.lps_minus.w4 lps_status='minus' feature='w4'}}
+        {{> platemap/platemap_1x4 wave=drug_stain.lps_plus.w4 lps_status='plus' feature='w4'}}
+    </div>
+</div>
