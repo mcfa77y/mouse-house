@@ -75,22 +75,28 @@ const get_db_stuffs = async (human_readable_name: string) => {
                 console.log(`error - experiment controller findone: ${error}`);
                 console.log('looking for: ' + human_readable_name);
             });
-        const platemap_db = await experiment_db.getPlatemap()
-            .catch((error) => {
-                console.log(`error - experiment.platemap : ${error}`);
-            });
 
-        const molecule_db_list = await platemap_db.getMolecules({ attributes: ['id', 'cell'] })
-            .catch((error) => {
-                console.log(`error - platemap.molecules : ${error}`);
-            });
+        if (!falsy(experiment_db)) {
+            const platemap_db = await experiment_db.getPlatemap()
+                .catch((error) => {
+                    console.log(`error - experiment.platemap : ${error}`);
+                });
 
-        const molecule_cell_db_map = molecule_db_list.reduce((acc, molecule_db) => {
-            acc[molecule_db.cell] = molecule_db
-            return acc;
-        }, {});
+            const molecule_db_list = await platemap_db.getMolecules({ attributes: ['id', 'cell'] })
+                .catch((error) => {
+                    console.log(`error - platemap.molecules : ${error}`);
+                });
 
-        cache[human_readable_name] = { experiment_db, molecule_cell_db_map };
+            const molecule_cell_db_map = molecule_db_list.reduce((acc, molecule_db) => {
+                acc[molecule_db.cell] = molecule_db
+                return acc;
+            }, {});
+
+            cache[human_readable_name] = { experiment_db, molecule_cell_db_map };
+        }
+        else {
+            console.log(`error - experiment not found : ${human_readable_name}`);
+        }
     }
     else {
         cache_hit += 1;

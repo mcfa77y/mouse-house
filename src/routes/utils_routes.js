@@ -25,7 +25,7 @@ export const log_json = (json) => {
     Logger.log(result);
 };
 
-export const sanitize_string = (name) => name.trim().replace(' ', '_');
+export const sanitize_string = (name) => name.trim().replace(' ', '_').replace('(', '').replace(')', '');
 
 export const select_json = (items) => {
     const result = items.map((x) => {
