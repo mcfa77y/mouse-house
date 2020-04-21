@@ -80,7 +80,7 @@ const get_img_from_json = async (platemap_id, molecule_cell) => {
         .map(val => val['human_readable_name'].toLowerCase());
 
     const image_metadata_list = experiment_hrn_list
-        .filter((experiment_hrn)=>{
+        .filter((experiment_hrn) => {
             return EXPR_IMG_META_TO_JSON_MAP[experiment_hrn] != undefined;
         })
         .map((experiment_hrn) => {
@@ -108,17 +108,19 @@ const get_img_from_json = async (platemap_id, molecule_cell) => {
         drug > -/+ lps > w > s > uri
     */
     const sector_count = 4;
-    const wavelength_struct = { overlay: new Array(sector_count), w1: new Array(sector_count), w2: new Array(sector_count), w3: new Array(sector_count), w4: new Array(sector_count) };
-    const lps_struct = {
-        lps_minus: { ...wavelength_struct },
-        lps_plus: { ...wavelength_struct }
-    };
+    // const wavelength_struct = { overlay: new Array(sector_count), w1: new Array(sector_count), w2: new Array(sector_count), w3: new Array(sector_count), w4: new Array(sector_count) };
+    // const lps_struct = {
+    //     lps_minus: { ...wavelength_struct },
+    //     lps_plus: { ...wavelength_struct }
+    // };
     const card_image_metadata = {
         cyto: {
-            ...lps_struct
+            lps_minus: { overlay: new Array(sector_count), w1: new Array(sector_count), w2: new Array(sector_count), w3: new Array(sector_count), w4: new Array(sector_count) },
+            lps_plus: { overlay: new Array(sector_count), w1: new Array(sector_count), w2: new Array(sector_count), w3: new Array(sector_count), w4: new Array(sector_count) }
         },
         edu: {
-            ...lps_struct
+            lps_minus: { overlay: new Array(sector_count), w1: new Array(sector_count), w2: new Array(sector_count), w3: new Array(sector_count), w4: new Array(sector_count) },
+            lps_plus: { overlay: new Array(sector_count), w1: new Array(sector_count), w2: new Array(sector_count), w3: new Array(sector_count), w4: new Array(sector_count) }
         },
     };
     for (let image_metadata of image_metadata_list) {
