@@ -127,7 +127,7 @@ export const update_image_metadata = (dir, pretty_print = false) => {
                     if (human_readable_name.includes('edu')) {
                         stain = 'edu'
                     }
-                    else if (human_readable_name.includes('cyto')) {
+                    else if (human_readable_name.includes('cyto') || human_readable_name.includes('cyto2')) {
                         stain = 'cyto';
                     }
                     if (human_readable_name.includes('lps')) {
