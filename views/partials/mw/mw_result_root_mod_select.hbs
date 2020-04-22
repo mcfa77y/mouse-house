@@ -1,0 +1,61 @@
+<ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+    {{#each html_data}}
+    <li class="nav-item">
+        {{#if @first}}
+        <a class="nav-link active" id="pills-{{root_mod_name}}-tab" data-toggle="pill" href="#pills-{{root_mod_name}}"
+            role="tab" aria-controls="pills-{{root_mod_name}}" aria-selected="true">{{root_mod_name}}</a>
+        {{else}}
+        <a class="nav-link" id="pills-{{root_mod_name}}-tab" data-toggle="pill" href="#pills-{{root_mod_name}}"
+            role="tab" aria-controls="pills-{{root_mod_name}}" aria-selected="false">{{root_mod_name}}</a>
+        {{/if}}
+    </li>
+    {{/each}}
+</ul>
+
+<div class="tab-content" id="pills-tabContent">
+    {{#each html_data}}
+    <div class="tab-pane fade {{#if @first}}show active{{else}}fade{{/if}}" id="pills-{{root_mod_name}}" role="tabpanel"
+        aria-labelledby="pills-{{root_mod_name}}-tab">
+        <div class="card card-body">
+            <form>
+                <fieldset class="form-group">
+
+
+                    {{!-- check boxes w radio sub mods --}}
+                    {{#each ch_mod_list}}
+                    <div class="row">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="{{ch_mod_type}}"
+                                id="{{../root_mod_name}}_{{ch_mod_type}}_checkbox">
+                            <label class="form-check-label" for="{{../root_mod_name}}_{{ch_mod_type}}_checkbox">
+                                {{ch_mod_type}}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        {{#each ch_setting_list as |setting|}}
+                        <div class="col">
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="{{../../root_mod_name}}_{{../ch_mod_type}}_{{setting}}"
+                                    value="{{../ch_mod_type}}_{{setting}}"
+                                    name="{{../../root_mod_name}}_{{../ch_mod_type}}_radio"
+                                    class="custom-control-input" disabled>
+                                <label class="custom-control-label"
+                                    for="{{../../root_mod_name}}_{{../ch_mod_type}}_{{setting}}">{{setting}}</label>
+                            </div>
+                        </div>
+                        {{/each}}
+                    </div>
+                    {{/each}}
+                    <div class="row">
+                        <div class="col align-self-end">
+                            <button id="{{root_mod_name}}_reset_button" type="button" class="btn btn-secondary">Reset</button>
+
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+    {{/each}}
+</div>

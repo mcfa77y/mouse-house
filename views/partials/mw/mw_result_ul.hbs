@@ -1,0 +1,22 @@
+{{>form_elements/select_input root_mod_select}}
+<ul>
+    {{#each mods}}
+    <li>
+        {{root_mod_name}}
+        <ul>
+            {{#each ch_mod_list}}
+            <li>
+                {{ch_mod_type}}
+                <ul>
+                    {{#each ch_setting_list as |setting|}}
+                    <li>
+                        {{setting}}
+                    </li>
+                    {{/each}}
+                </ul>
+            </li>
+            {{/each}}
+        </ul>
+    </li>
+    {{/each}}
+</ul>

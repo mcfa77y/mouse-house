@@ -6,9 +6,9 @@ const hbs = require('hbs');
 // import experiment_controller from '../controllers/experiment_controller';
 import platemap_controller from '../../controllers/platemap_controller';
 import { create_platemap_grid, get_card_data } from './platemap_routes_logic';
+const router: Router = Router();
 const PARTIALS_DIR = path.join(__dirname, '../../../views/partials/platemap/');
 
-const router: Router = Router();
 
 // const grid_table_template_uri = path.join(PARTIALS_DIR, 'grid_table.hbs');
 // const source = fs.readFileSync(grid_table_template_uri, 'utf-8');

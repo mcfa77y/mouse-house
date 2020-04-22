@@ -1,0 +1,1754 @@
+[
+ {
+  "modifications": [
+   {
+    "modificationType": "FullyReduced",
+    "modificationSetting": "None"
+   }
+  ],
+  "molWeight": 145561.73392000003,
+  "reducedCysCount": 34
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "IntactOxydized",
+    "modificationSetting": "None"
+   }
+  ],
+  "molWeight": 145529.47792000003,
+  "reducedCysCount": 2
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "PartiallyReduced",
+    "modificationSetting": "None"
+   }
+  ],
+  "molWeight": 145535.52592000004,
+  "reducedCysCount": 8
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "FullyReduced",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "TerminalLysRemoved",
+    "modificationSetting": "Removed"
+   }
+  ],
+  "molWeight": 145305.35392000002,
+  "reducedCysCount": 34
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "IntactOxydized",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "TerminalLysRemoved",
+    "modificationSetting": "Removed"
+   }
+  ],
+  "molWeight": 145273.09792000003,
+  "reducedCysCount": 2
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "PartiallyReduced",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "TerminalLysRemoved",
+    "modificationSetting": "Removed"
+   }
+  ],
+  "molWeight": 145279.14592000004,
+  "reducedCysCount": 8
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "FullyReduced",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "TerminalPyroGlutamate",
+    "modificationSetting": "HCModified"
+   }
+  ],
+  "molWeight": 145525.70392000003,
+  "reducedCysCount": 34
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "IntactOxydized",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "TerminalPyroGlutamate",
+    "modificationSetting": "HCModified"
+   }
+  ],
+  "molWeight": 145493.44792000004,
+  "reducedCysCount": 2
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "PartiallyReduced",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "TerminalPyroGlutamate",
+    "modificationSetting": "HCModified"
+   }
+  ],
+  "molWeight": 145499.49592000004,
+  "reducedCysCount": 8
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "FullyReduced",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "TerminalLysRemoved",
+    "modificationSetting": "Removed"
+   },
+   {
+    "modificationType": "TerminalPyroGlutamate",
+    "modificationSetting": "HCModified"
+   }
+  ],
+  "molWeight": 145269.32392000002,
+  "reducedCysCount": 34
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "IntactOxydized",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "TerminalLysRemoved",
+    "modificationSetting": "Removed"
+   },
+   {
+    "modificationType": "TerminalPyroGlutamate",
+    "modificationSetting": "HCModified"
+   }
+  ],
+  "molWeight": 145237.06792000003,
+  "reducedCysCount": 2
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "PartiallyReduced",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "TerminalLysRemoved",
+    "modificationSetting": "Removed"
+   },
+   {
+    "modificationType": "TerminalPyroGlutamate",
+    "modificationSetting": "HCModified"
+   }
+  ],
+  "molWeight": 145243.11592000004,
+  "reducedCysCount": 8
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "FullyReduced",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G0F"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G0F"
+   }
+  ],
+  "molWeight": 148452.33392,
+  "reducedCysCount": 34
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "FullyReduced",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G1F"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G1F"
+   }
+  ],
+  "molWeight": 148776.73392000003,
+  "reducedCysCount": 34
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "FullyReduced",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G2F"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G2F"
+   }
+  ],
+  "molWeight": 149100.93392000004,
+  "reducedCysCount": 34
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "FullyReduced",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G0"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G0"
+   }
+  ],
+  "molWeight": 148160.13392000005,
+  "reducedCysCount": 34
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "FullyReduced",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G1"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G1"
+   }
+  ],
+  "molWeight": 148484.33392,
+  "reducedCysCount": 34
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "FullyReduced",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G2"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G2"
+   }
+  ],
+  "molWeight": 148808.73392000003,
+  "reducedCysCount": 34
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "IntactOxydized",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G0F"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G0F"
+   }
+  ],
+  "molWeight": 148420.07792,
+  "reducedCysCount": 2
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "IntactOxydized",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G1F"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G1F"
+   }
+  ],
+  "molWeight": 148744.47792000003,
+  "reducedCysCount": 2
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "IntactOxydized",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G2F"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G2F"
+   }
+  ],
+  "molWeight": 149068.67792000005,
+  "reducedCysCount": 2
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "IntactOxydized",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G0"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G0"
+   }
+  ],
+  "molWeight": 148127.87792000006,
+  "reducedCysCount": 2
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "IntactOxydized",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G1"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G1"
+   }
+  ],
+  "molWeight": 148452.07792,
+  "reducedCysCount": 2
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "IntactOxydized",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G2"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G2"
+   }
+  ],
+  "molWeight": 148776.47792000003,
+  "reducedCysCount": 2
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "PartiallyReduced",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G0F"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G0F"
+   }
+  ],
+  "molWeight": 148426.12592000002,
+  "reducedCysCount": 8
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "PartiallyReduced",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G1F"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G1F"
+   }
+  ],
+  "molWeight": 148750.52592000004,
+  "reducedCysCount": 8
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "PartiallyReduced",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G2F"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G2F"
+   }
+  ],
+  "molWeight": 149074.72592000006,
+  "reducedCysCount": 8
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "PartiallyReduced",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G0"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G0"
+   }
+  ],
+  "molWeight": 148133.92592000007,
+  "reducedCysCount": 8
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "PartiallyReduced",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G1"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G1"
+   }
+  ],
+  "molWeight": 148458.12592000002,
+  "reducedCysCount": 8
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "PartiallyReduced",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G2"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G2"
+   }
+  ],
+  "molWeight": 148782.52592000004,
+  "reducedCysCount": 8
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "FullyReduced",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "TerminalLysRemoved",
+    "modificationSetting": "Removed"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G0F"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G0F"
+   }
+  ],
+  "molWeight": 148195.95392,
+  "reducedCysCount": 34
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "FullyReduced",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "TerminalLysRemoved",
+    "modificationSetting": "Removed"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G1F"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G1F"
+   }
+  ],
+  "molWeight": 148520.35392000002,
+  "reducedCysCount": 34
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "FullyReduced",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "TerminalLysRemoved",
+    "modificationSetting": "Removed"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G2F"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G2F"
+   }
+  ],
+  "molWeight": 148844.55392000003,
+  "reducedCysCount": 34
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "FullyReduced",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "TerminalLysRemoved",
+    "modificationSetting": "Removed"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G0"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G0"
+   }
+  ],
+  "molWeight": 147903.75392000005,
+  "reducedCysCount": 34
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "FullyReduced",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "TerminalLysRemoved",
+    "modificationSetting": "Removed"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G1"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G1"
+   }
+  ],
+  "molWeight": 148227.95392,
+  "reducedCysCount": 34
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "FullyReduced",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "TerminalLysRemoved",
+    "modificationSetting": "Removed"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G2"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G2"
+   }
+  ],
+  "molWeight": 148552.35392000002,
+  "reducedCysCount": 34
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "IntactOxydized",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "TerminalLysRemoved",
+    "modificationSetting": "Removed"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G0F"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G0F"
+   }
+  ],
+  "molWeight": 148163.69792,
+  "reducedCysCount": 2
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "IntactOxydized",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "TerminalLysRemoved",
+    "modificationSetting": "Removed"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G1F"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G1F"
+   }
+  ],
+  "molWeight": 148488.09792000003,
+  "reducedCysCount": 2
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "IntactOxydized",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "TerminalLysRemoved",
+    "modificationSetting": "Removed"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G2F"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G2F"
+   }
+  ],
+  "molWeight": 148812.29792000004,
+  "reducedCysCount": 2
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "IntactOxydized",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "TerminalLysRemoved",
+    "modificationSetting": "Removed"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G0"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G0"
+   }
+  ],
+  "molWeight": 147871.49792000005,
+  "reducedCysCount": 2
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "IntactOxydized",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "TerminalLysRemoved",
+    "modificationSetting": "Removed"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G1"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G1"
+   }
+  ],
+  "molWeight": 148195.69792,
+  "reducedCysCount": 2
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "IntactOxydized",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "TerminalLysRemoved",
+    "modificationSetting": "Removed"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G2"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G2"
+   }
+  ],
+  "molWeight": 148520.09792000003,
+  "reducedCysCount": 2
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "PartiallyReduced",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "TerminalLysRemoved",
+    "modificationSetting": "Removed"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G0F"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G0F"
+   }
+  ],
+  "molWeight": 148169.74592000002,
+  "reducedCysCount": 8
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "PartiallyReduced",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "TerminalLysRemoved",
+    "modificationSetting": "Removed"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G1F"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G1F"
+   }
+  ],
+  "molWeight": 148494.14592000004,
+  "reducedCysCount": 8
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "PartiallyReduced",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "TerminalLysRemoved",
+    "modificationSetting": "Removed"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G2F"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G2F"
+   }
+  ],
+  "molWeight": 148818.34592000005,
+  "reducedCysCount": 8
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "PartiallyReduced",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "TerminalLysRemoved",
+    "modificationSetting": "Removed"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G0"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G0"
+   }
+  ],
+  "molWeight": 147877.54592000006,
+  "reducedCysCount": 8
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "PartiallyReduced",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "TerminalLysRemoved",
+    "modificationSetting": "Removed"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G1"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G1"
+   }
+  ],
+  "molWeight": 148201.74592000002,
+  "reducedCysCount": 8
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "PartiallyReduced",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "TerminalLysRemoved",
+    "modificationSetting": "Removed"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G2"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G2"
+   }
+  ],
+  "molWeight": 148526.14592000004,
+  "reducedCysCount": 8
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "FullyReduced",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "TerminalPyroGlutamate",
+    "modificationSetting": "HCModified"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G0F"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G0F"
+   }
+  ],
+  "molWeight": 148416.30392,
+  "reducedCysCount": 34
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "FullyReduced",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "TerminalPyroGlutamate",
+    "modificationSetting": "HCModified"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G1F"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G1F"
+   }
+  ],
+  "molWeight": 148740.70392000003,
+  "reducedCysCount": 34
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "FullyReduced",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "TerminalPyroGlutamate",
+    "modificationSetting": "HCModified"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G2F"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G2F"
+   }
+  ],
+  "molWeight": 149064.90392000004,
+  "reducedCysCount": 34
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "FullyReduced",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "TerminalPyroGlutamate",
+    "modificationSetting": "HCModified"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G0"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G0"
+   }
+  ],
+  "molWeight": 148124.10392000005,
+  "reducedCysCount": 34
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "FullyReduced",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "TerminalPyroGlutamate",
+    "modificationSetting": "HCModified"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G1"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G1"
+   }
+  ],
+  "molWeight": 148448.30392,
+  "reducedCysCount": 34
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "FullyReduced",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "TerminalPyroGlutamate",
+    "modificationSetting": "HCModified"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G2"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G2"
+   }
+  ],
+  "molWeight": 148772.70392000003,
+  "reducedCysCount": 34
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "IntactOxydized",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "TerminalPyroGlutamate",
+    "modificationSetting": "HCModified"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G0F"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G0F"
+   }
+  ],
+  "molWeight": 148384.04792,
+  "reducedCysCount": 2
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "IntactOxydized",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "TerminalPyroGlutamate",
+    "modificationSetting": "HCModified"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G1F"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G1F"
+   }
+  ],
+  "molWeight": 148708.44792000004,
+  "reducedCysCount": 2
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "IntactOxydized",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "TerminalPyroGlutamate",
+    "modificationSetting": "HCModified"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G2F"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G2F"
+   }
+  ],
+  "molWeight": 149032.64792000005,
+  "reducedCysCount": 2
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "IntactOxydized",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "TerminalPyroGlutamate",
+    "modificationSetting": "HCModified"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G0"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G0"
+   }
+  ],
+  "molWeight": 148091.84792000006,
+  "reducedCysCount": 2
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "IntactOxydized",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "TerminalPyroGlutamate",
+    "modificationSetting": "HCModified"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G1"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G1"
+   }
+  ],
+  "molWeight": 148416.04792,
+  "reducedCysCount": 2
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "IntactOxydized",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "TerminalPyroGlutamate",
+    "modificationSetting": "HCModified"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G2"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G2"
+   }
+  ],
+  "molWeight": 148740.44792000004,
+  "reducedCysCount": 2
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "PartiallyReduced",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "TerminalPyroGlutamate",
+    "modificationSetting": "HCModified"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G0F"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G0F"
+   }
+  ],
+  "molWeight": 148390.09592000002,
+  "reducedCysCount": 8
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "PartiallyReduced",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "TerminalPyroGlutamate",
+    "modificationSetting": "HCModified"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G1F"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G1F"
+   }
+  ],
+  "molWeight": 148714.49592000004,
+  "reducedCysCount": 8
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "PartiallyReduced",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "TerminalPyroGlutamate",
+    "modificationSetting": "HCModified"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G2F"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G2F"
+   }
+  ],
+  "molWeight": 149038.69592000006,
+  "reducedCysCount": 8
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "PartiallyReduced",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "TerminalPyroGlutamate",
+    "modificationSetting": "HCModified"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G0"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G0"
+   }
+  ],
+  "molWeight": 148097.89592000007,
+  "reducedCysCount": 8
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "PartiallyReduced",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "TerminalPyroGlutamate",
+    "modificationSetting": "HCModified"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G1"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G1"
+   }
+  ],
+  "molWeight": 148422.09592000002,
+  "reducedCysCount": 8
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "PartiallyReduced",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "TerminalPyroGlutamate",
+    "modificationSetting": "HCModified"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G2"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G2"
+   }
+  ],
+  "molWeight": 148746.49592000004,
+  "reducedCysCount": 8
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "FullyReduced",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "TerminalLysRemoved",
+    "modificationSetting": "Removed"
+   },
+   {
+    "modificationType": "TerminalPyroGlutamate",
+    "modificationSetting": "HCModified"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G0F"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G0F"
+   }
+  ],
+  "molWeight": 148159.92392,
+  "reducedCysCount": 34
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "FullyReduced",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "TerminalLysRemoved",
+    "modificationSetting": "Removed"
+   },
+   {
+    "modificationType": "TerminalPyroGlutamate",
+    "modificationSetting": "HCModified"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G1F"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G1F"
+   }
+  ],
+  "molWeight": 148484.32392000002,
+  "reducedCysCount": 34
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "FullyReduced",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "TerminalLysRemoved",
+    "modificationSetting": "Removed"
+   },
+   {
+    "modificationType": "TerminalPyroGlutamate",
+    "modificationSetting": "HCModified"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G2F"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G2F"
+   }
+  ],
+  "molWeight": 148808.52392000004,
+  "reducedCysCount": 34
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "FullyReduced",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "TerminalLysRemoved",
+    "modificationSetting": "Removed"
+   },
+   {
+    "modificationType": "TerminalPyroGlutamate",
+    "modificationSetting": "HCModified"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G0"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G0"
+   }
+  ],
+  "molWeight": 147867.72392000005,
+  "reducedCysCount": 34
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "FullyReduced",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "TerminalLysRemoved",
+    "modificationSetting": "Removed"
+   },
+   {
+    "modificationType": "TerminalPyroGlutamate",
+    "modificationSetting": "HCModified"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G1"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G1"
+   }
+  ],
+  "molWeight": 148191.92392,
+  "reducedCysCount": 34
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "FullyReduced",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "TerminalLysRemoved",
+    "modificationSetting": "Removed"
+   },
+   {
+    "modificationType": "TerminalPyroGlutamate",
+    "modificationSetting": "HCModified"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G2"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G2"
+   }
+  ],
+  "molWeight": 148516.32392000002,
+  "reducedCysCount": 34
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "IntactOxydized",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "TerminalLysRemoved",
+    "modificationSetting": "Removed"
+   },
+   {
+    "modificationType": "TerminalPyroGlutamate",
+    "modificationSetting": "HCModified"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G0F"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G0F"
+   }
+  ],
+  "molWeight": 148127.66792,
+  "reducedCysCount": 2
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "IntactOxydized",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "TerminalLysRemoved",
+    "modificationSetting": "Removed"
+   },
+   {
+    "modificationType": "TerminalPyroGlutamate",
+    "modificationSetting": "HCModified"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G1F"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G1F"
+   }
+  ],
+  "molWeight": 148452.06792000003,
+  "reducedCysCount": 2
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "IntactOxydized",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "TerminalLysRemoved",
+    "modificationSetting": "Removed"
+   },
+   {
+    "modificationType": "TerminalPyroGlutamate",
+    "modificationSetting": "HCModified"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G2F"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G2F"
+   }
+  ],
+  "molWeight": 148776.26792000004,
+  "reducedCysCount": 2
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "IntactOxydized",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "TerminalLysRemoved",
+    "modificationSetting": "Removed"
+   },
+   {
+    "modificationType": "TerminalPyroGlutamate",
+    "modificationSetting": "HCModified"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G0"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G0"
+   }
+  ],
+  "molWeight": 147835.46792000005,
+  "reducedCysCount": 2
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "IntactOxydized",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "TerminalLysRemoved",
+    "modificationSetting": "Removed"
+   },
+   {
+    "modificationType": "TerminalPyroGlutamate",
+    "modificationSetting": "HCModified"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G1"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G1"
+   }
+  ],
+  "molWeight": 148159.66792,
+  "reducedCysCount": 2
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "IntactOxydized",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "TerminalLysRemoved",
+    "modificationSetting": "Removed"
+   },
+   {
+    "modificationType": "TerminalPyroGlutamate",
+    "modificationSetting": "HCModified"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G2"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G2"
+   }
+  ],
+  "molWeight": 148484.06792000003,
+  "reducedCysCount": 2
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "PartiallyReduced",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "TerminalLysRemoved",
+    "modificationSetting": "Removed"
+   },
+   {
+    "modificationType": "TerminalPyroGlutamate",
+    "modificationSetting": "HCModified"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G0F"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G0F"
+   }
+  ],
+  "molWeight": 148133.71592000002,
+  "reducedCysCount": 8
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "PartiallyReduced",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "TerminalLysRemoved",
+    "modificationSetting": "Removed"
+   },
+   {
+    "modificationType": "TerminalPyroGlutamate",
+    "modificationSetting": "HCModified"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G1F"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G1F"
+   }
+  ],
+  "molWeight": 148458.11592000004,
+  "reducedCysCount": 8
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "PartiallyReduced",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "TerminalLysRemoved",
+    "modificationSetting": "Removed"
+   },
+   {
+    "modificationType": "TerminalPyroGlutamate",
+    "modificationSetting": "HCModified"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G2F"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G2F"
+   }
+  ],
+  "molWeight": 148782.31592000005,
+  "reducedCysCount": 8
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "PartiallyReduced",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "TerminalLysRemoved",
+    "modificationSetting": "Removed"
+   },
+   {
+    "modificationType": "TerminalPyroGlutamate",
+    "modificationSetting": "HCModified"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G0"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G0"
+   }
+  ],
+  "molWeight": 147841.51592000006,
+  "reducedCysCount": 8
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "PartiallyReduced",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "TerminalLysRemoved",
+    "modificationSetting": "Removed"
+   },
+   {
+    "modificationType": "TerminalPyroGlutamate",
+    "modificationSetting": "HCModified"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G1"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G1"
+   }
+  ],
+  "molWeight": 148165.71592000002,
+  "reducedCysCount": 8
+ },
+ {
+  "modifications": [
+   {
+    "modificationType": "PartiallyReduced",
+    "modificationSetting": "None"
+   },
+   {
+    "modificationType": "TerminalLysRemoved",
+    "modificationSetting": "Removed"
+   },
+   {
+    "modificationType": "TerminalPyroGlutamate",
+    "modificationSetting": "HCModified"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G2"
+   },
+   {
+    "modificationType": "Glycosylation",
+    "modificationSetting": "G2"
+   }
+  ],
+  "molWeight": 148490.11592000004,
+  "reducedCysCount": 8
+ }
+]

@@ -13,14 +13,17 @@ export function set_radio(id, value = '') {
         }
     });
 }
-export function id_to_val(el) {
+
+
+
+export function formdata_id_to_val(el) {
     // const result = {};
     const result = new FormData();
     result.append($(el).attr('id'), $(el).val());
     // result[$(el).attr('id')] = $(el).val();
     return result;
 }
-export function id_to_val_select(el) {
+export function formdata_id_to_val_select(el) {
     // const result = {};
     const result = new FormData();
     // result[$(el).attr('id')] = $(el).val();
@@ -32,21 +35,21 @@ export function id_to_val_select(el) {
     result.append(`${$(el).attr('id').replace('_id', '')}_description`, description);
     return result;
 }
-export function id_to_val_slider(el) {
+export function formdata_id_to_val_slider(el) {
     // const result = {};
     const result = new FormData();
     // result[$(el).attr('id')] = el.noUiSlider.get();
     result.append($(el).attr('id'), el.noUiSlider.get());
     return result;
 }
-export function name_to_val(el) {
+export function formdata_name_to_val(el) {
     // const result = {};
     const result = new FormData();
     // result[$(el).attr('name')] = $(el).val();
     result.append($(el).attr('name'), $(el).val());
     return result;
 }
-export function form_ids_vals(form_id) {
+export function formdata_form_ids_vals(form_id) {
     const form = $(`#${form_id}`);
     return [].concat(form.find(':text, select, :hidden, input').toArray()
         .filter((el) => $(el).attr('id') !== undefined)
@@ -64,6 +67,64 @@ export function form_ids_vals(form_id) {
             }
             return accumulator;
         }, new FormData());
+}
+
+
+
+
+
+
+export function id_to_val(el) {
+    const result = {};
+    // const result = new FormData();
+    // result.append($(el).attr('id'), $(el).val());
+    result[$(el).attr('id')] = $(el).val();
+    return result;
+}
+export function id_to_val_select(el) {
+    const result = {};
+    // const result = new FormData();
+    result[$(el).attr('id')] = $(el).val();
+    result.append($(el).attr('id'), $(el).val());
+    const s = el.selectize;
+    const v = s.getValue();
+    const description = s.getItem(v).text();
+    result[`${$(el).attr('id').replace('_id', '')}_description`] = description;
+    // result.append(`${$(el).attr('id').replace('_id', '')}_description`, description);
+    return result;
+}
+export function id_to_val_slider(el) {
+    const result = {};
+    // const result = new FormData();
+    result[$(el).attr('id')] = el.noUiSlider.get();
+    // result.append($(el).attr('id'), el.noUiSlider.get());
+    return result;
+}
+export function name_to_val(el) {
+    const result = {};
+    // const result = new FormData();
+    result[$(el).attr('name')] = $(el).val();
+    // result.append($(el).attr('name'), $(el).val());
+    return result;
+}
+export function form_ids_vals(form_id) {
+    const form = $(`#${form_id}`);
+    return [].concat(form.find(':text, select, :hidden, input').toArray()
+        .filter((el) => $(el).attr('id') !== undefined)
+        .filter((el) => $(el).attr('id').length > 0)
+        .filter((el) => !$(el).attr('id').includes('-selectized'))
+        .filter((el) => !$(el).attr('class') || $(el).attr('class') && !$(el).attr('class').includes('selectized'))
+        .map(id_to_val))
+        .concat(form.find('select').toArray().map(id_to_val_select))
+        .concat(form.find('textarea').toArray().map(id_to_val))
+        .concat(form.find('.slider').toArray().map(id_to_val_slider))
+        .concat(form.find(':radio:checked').toArray().map(name_to_val))
+        .reduce((accumulator, currentValue) => {
+            Object.keys(currentValue).forEach((key) => {
+                accumulator[key] = currentValue[key];
+            })
+            return accumulator;
+        }, {});
 }
 
 export function json_string(json) {

@@ -46,12 +46,12 @@ if (process.env.NODE_ENV === 'production') {
 
 const modules = [
     // project,
-    experiment,
+    // experiment,
     // project_experiment,
-    platemap,
-    product_info,
-    molecule,
-    image_metadata,
+    // platemap,
+    // product_info,
+    // molecule,
+    // image_metadata,
 ];
 
 // Initialize models
