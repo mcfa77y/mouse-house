@@ -111,6 +111,7 @@ export const update_image_metadata = (dir, pretty_print = false) => {
         .forEach((expr_uri) => {
             // process expr 
             const img_uri_list = getAllFiles(expr_uri, '.jpg')
+            let expr_name = "";
             const image_metadata = img_uri_list
                 .reduce((acc2, img_uri) => {
                     // ex file name for image
@@ -124,6 +125,7 @@ export const update_image_metadata = (dir, pretty_print = false) => {
                     let stain = '';
                     let lps_status = '';
                     human_readable_name = human_readable_name.toLocaleLowerCase();
+                    expr_name = human_readable_name;
                     if (human_readable_name.includes('edu')) {
                         stain = 'edu'
                     }
@@ -150,7 +152,7 @@ export const update_image_metadata = (dir, pretty_print = false) => {
                     });
                     return acc2;
                 }, { experiment_name: '' });
-            const expr_name = path.parse(expr_uri).name.toLocaleLowerCase();
+            // const expr_name = path.parse(expr_uri).name.toLocaleLowerCase();
             image_metadata.experiment_name = expr_name;
             // write metadata to file
             console.log('writing image metadata for experiment: ' + expr_name);
