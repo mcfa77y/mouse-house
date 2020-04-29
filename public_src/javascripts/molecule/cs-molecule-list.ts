@@ -1,6 +1,6 @@
 import range from 'lodash/range';
 
-import { setup_list_page_buttons } from '../cs-model-common';
+import { setup_list_page_buttons, get_selected_row_ids, get_selected_row_name_ids } from '../cs-model-common';
 import { model_name, column_names, column_name_index_map, column_hide_index_list } from './cs-molecule-common';
 
 export function setup_table({ model_name, column_names }) {
@@ -164,8 +164,35 @@ export function setup_table({ model_name, column_names }) {
     // update_crud_buttons();
     return table;
 }
+const setup_shopping_cart = (table) => {
+    const cart = $('#molecule_id_list').selectize();
+    const cart_selectize = cart[0].selectize;
+    const add_button = $('#add-to-cart-button');
+    add_button.click(() => {
+        const selected_molecule_name_id_list = get_selected_row_name_ids(table);
+        const prev_selected_id_list: string[] = cart_selectize.getValue();
+        const curr_selected_id_list: string[] = [];
+        selected_molecule_name_id_list
+            .filter(({id}) => {
+                return !prev_selected_id_list.includes(id + "")
+            })
+            .forEach(({name, id}) => {
+                const id_string = id +"";
+                curr_selected_id_list.push(id_string);
+                cart_selectize.addOption({ value: id_string, text: name})
+            })
+        cart_selectize.setValue([...cart_selectize.getValue(), ...curr_selected_id_list]);
+        cart_selectize.refreshOptions();
+    });
+
+    const view_cart_button = $('#view-cart-button');
+    view_cart_button.click(() => {
+
+    })
+}
 
 $(document).ready(() => {
     const molecule_table = setup_table({ model_name, column_names });
-    setup_list_page_buttons(model_name, molecule_table);
+    setup_shopping_cart(molecule_table);
+    // setup_list_page_buttons(model_name, molecule_table);
 });
