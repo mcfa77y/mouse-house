@@ -258,8 +258,9 @@ class Molecule_Controller extends Base_Controller {
     // }
 
     get model() {
-        return Molecule;
+        return this.Model;
     }
+
 }
 
 // module.exports = new Molecule_Controller(Molecule);

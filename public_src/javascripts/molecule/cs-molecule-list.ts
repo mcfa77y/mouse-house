@@ -2,6 +2,7 @@ import range from 'lodash/range';
 
 import { setup_list_page_buttons, get_selected_row_ids, get_selected_row_name_ids } from '../cs-model-common';
 import { model_name, column_names, column_name_index_map, column_hide_index_list } from './cs-molecule-common';
+import Axios from 'axios';
 
 export function setup_table({ model_name, column_names }) {
     const columns = column_names.map((x) => ({ data: x }));
@@ -164,6 +165,7 @@ export function setup_table({ model_name, column_names }) {
     // update_crud_buttons();
     return table;
 }
+
 const setup_shopping_cart = (table) => {
     const cart = $('#molecule_id_list').selectize();
     const cart_selectize = cart[0].selectize;
@@ -187,7 +189,8 @@ const setup_shopping_cart = (table) => {
 
     const view_cart_button = $('#view-cart-button');
     view_cart_button.click(() => {
-
+        const molecule_id_list = cart_selectize.getValue()
+        window.location.href = "/molecule/multi/" + molecule_id_list.join("_");
     })
 }
 

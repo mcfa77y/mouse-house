@@ -30,7 +30,7 @@ if (process.env.NODE_ENV === 'production') {
         },
     });
 } else if (process.env.NODE_ENV === 'test') {
-    console.log('using prod for db');
+    console.log('using test for db');
     sequelize = new Sequelize(process.env.DATABASE_URL, {
         dialect: 'postgres',
         dialectOptions: {
