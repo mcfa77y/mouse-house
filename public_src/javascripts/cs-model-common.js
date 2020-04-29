@@ -144,6 +144,11 @@ export function get_selected_row_ids(table) {
     return range(data.length).map((index) => data[index]);
 }
 
+export function get_selected_row_name_ids(table) {
+    const data = table.rows({ selected: true }).data().pluck('name');
+    return range(data.length).map((index) => data[index]);
+}
+
 export function setup_table({ model_name, column_names, hide_id_column = false }) {
     const columns = column_names.map((x) => ({ data: x }));
 

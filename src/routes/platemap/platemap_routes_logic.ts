@@ -52,6 +52,11 @@ const get_molcule_meta_data = async (cell, platemap_id) => {
         const product_info_db = molecule_db.product_info;
         const product_info_cs = Object.keys(product_info_db.dataValues)
             .reduce((acc, key) => {
+                if (key === 'url') {
+                    const url = product_info_db.dataValues[key];
+                    const value = `<a href="${url}" target="_blank"> ${url} </a>`;
+                    product_info_db.dataValues[key] = value;
+                }
                 acc.push({ name: key, class_name: key, value: product_info_db.dataValues[key] });
                 return acc;
             }, []);

@@ -4,10 +4,30 @@
     {{> molecule/molecule_table}}
     <div class="row mt-3">
       <div class="col-md-12">
-        <span class="float-left" data-toggle="tooltip" data-placement="top" title="Adjust columns ">
-          <button id="adjust-columns-button" class="btn btn-primary" role="button"><i class="fas fa-columns fa-2x"></i></button>
-        </span>
-        {{>crud_buttons model_name='molecule'}}
+        <div class="row">
+          <div class="col-md-4">
+            <span class="float-left" data-toggle="tooltip" data-placement="top" title="Adjust columns ">
+              <button id="adjust-columns-button" class="btn btn-primary" role="button"><i
+                  class="fas fa-columns"></i></button>
+            </span>
+
+          </div>
+          <div class="col">
+
+            {{> form_elements/select_input id='molecule_id_list' isMultiple=true description='Selected molecules' class="x"}}
+            <span class="float-right" data-toggle="tooltip" data-placement="top" title="Add to cart">
+              <button id="add-to-cart-button" class="btn btn-primary m-1" role="button">
+                <i class="fa fa-plus"></i>
+              </button>
+            </span>
+            <span class="float-right" data-toggle="tooltip" data-placement="top" title="View selected molecules">
+              <button id="view-cart-button" class="btn btn-primary float-right m-1" role="button">
+                View molecules
+              </button>
+            </span>
+          </div>
+        </div>
+
 
       </div>
     </div>

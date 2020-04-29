@@ -54,9 +54,23 @@ router.get('/:molecule_id', async (req: Request, res: Response) => {
   });
   const card_data = await get_card_data(cell, platemap_id);
   // const card_html = CARD_HTML_TEMPLATE(card_data);
-
+  const options = { ...card_data, extra_js: ['molecule_view.bundle.js'] };
   res.render('pages/molecule/molecule_view',
-    card_data);
+    options);
+});
+
+
+router.post('/', async (req: Request, res: Response) => {
+  
+  const { cell, platemap_id } = await molecule_controller.Model.findByPk(req.params.molecule_id, {
+    attributes: ['cell', 'platemap_id'],
+    raw: true
+  });
+  const card_data = await get_card_data(cell, platemap_id);
+  // const card_html = CARD_HTML_TEMPLATE(card_data);
+  const options = { ...card_data, extra_js: ['molecule_view.bundle.js'] };
+  res.render('pages/molecule/molecule_view',
+    options);
 });
 
 
