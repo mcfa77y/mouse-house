@@ -1,11 +1,9 @@
+/* eslint-disable @typescript-eslint/camelcase */
 import { Router, Request, Response } from 'express';
-const fs = require('fs');
-const path = require('path');
-const hbs = require('hbs');
 
 import molecule_controller from '../controllers/molecule_controller';
 import { get_card_data } from './platemap/platemap_routes_logic';
-import molecule from '../database/models/molecule';
+
 
 const router: Router = Router();
 
@@ -26,50 +24,58 @@ router.post('/table', async (req: Request, res: Response) => {
   // const draw = parseInt(req.body.draw);
   // const offset = parseInt(req.body.start);
   // const limit = parseInt(req.body.length);
-  const { draw, start: offset, length: limit, columns, search, order } = req.body
+  const {
+    draw, start: offset, length: limit, columns, search, order,
+  } = req.body;
   // const limit = 100;
 
-  const { molecules, count } = await molecule_controller.some_pretty({ limit, offset, columns, search, order })
+  const { molecules, count } = await molecule_controller.some_pretty({
+    limit, offset, columns, search, order,
+  })
     .catch((err) => {
-      console.error(err)
-      return { molecules: {}, count: {} }
-    }
-    );
+      console.error(err);
+      return { molecules: {}, count: {} };
+    });
 
   res.send({
     data: molecules,
     recordsTotal: count,
     recordsFiltered: count,
-    draw
+    draw,
   });
-
-
 });
 
 
 router.get('/:molecule_id', async (req: Request, res: Response) => {
   const { cell, platemap_id } = await molecule_controller.Model.findByPk(req.params.molecule_id, {
     attributes: ['cell', 'platemap_id'],
-    raw: true
+    raw: true,
   });
   const card_data = await get_card_data(cell, platemap_id);
-  // const card_html = CARD_HTML_TEMPLATE(card_data);
   const options = { ...card_data, extra_js: ['molecule_view.bundle.js'] };
   res.render('pages/molecule/molecule_view',
     options);
 });
 
 
-router.post('/', async (req: Request, res: Response) => {
-  
-  const { cell, platemap_id } = await molecule_controller.Model.findByPk(req.params.molecule_id, {
-    attributes: ['cell', 'platemap_id'],
-    raw: true
-  });
-  const card_data = await get_card_data(cell, platemap_id);
-  // const card_html = CARD_HTML_TEMPLATE(card_data);
-  const options = { ...card_data, extra_js: ['molecule_view.bundle.js'] };
-  res.render('pages/molecule/molecule_view',
+router.get('/multi/:molecule_id_list', async (req: Request, res: Response) => {
+  const molecule_id_list = req.params.molecule_id_list.split('_');
+  const options: { extra_js: string[]; card_data_list: any } = { extra_js: ['molecule_view.bundle.js'], card_data_list: [] };
+  const card_data_promise_list = molecule_id_list
+    .map((molecule_id) => molecule_controller.model()
+      .findByPk(molecule_id, {
+        attributes: ['cell', 'platemap_id'],
+        raw: true,
+      })
+      .then(({ cell, platemap_id }) => get_card_data(cell, platemap_id)));
+
+  const card_data_list: object[] = await Promise.all(card_data_promise_list);
+  const x = card_data_list.reduce((acc: object[], card_data: object) => {
+    acc.push(card_data);
+    return acc;
+  }, []);
+  options.card_data_list = x;
+  res.render('pages/molecule/molecule_view_multi',
     options);
 });
 
