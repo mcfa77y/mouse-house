@@ -7,7 +7,7 @@ const FOOBAR = {
     symmetricGlycosylation: true
 }
 
-const error = ({ response }) => {
+const error = (response) => {
     const results = $('#results');
     let warning = `<div class="alert alert-warning" role="alert">${JSON.stringify(arguments[0], null, 2)}</div>`;
     // let warning = `<div class="alert alert-warning" role="alert">${arguments[0])}</div>`;
@@ -34,8 +34,16 @@ const update_mw = () => {
             return acc
         }, [])
         .sort().join("_").toLowerCase();
-    const mw = parseFloat(sorted_mod_mw_map[root_mod_name][key]);
-    $('#results').html("<h2>molecular weight: " + mw.toFixed(2) + "</hw>");
+
+    let mw = parseFloat(sorted_mod_mw_map[root_mod_name][key]);
+    if (isNaN(mw)) {
+        $('#results').html("<h2>molecular weight: </h2>");
+    } else {
+        mw = parseFloat(mw.toFixed(2));
+        const mw_string = mw.toLocaleString()
+        $('#results').html("<h2>molecular weight: " + mw_string + "</h2>");
+    }
+
 }
 
 const get_root_mod_name = () => {
@@ -51,14 +59,14 @@ const set_sorted_mod_mw_map = (sorted_mod_mw_map) => {
 const do_plot = () => {
     const sorted_mod_mw_map = get_sorted_mod_mw_map();
     const root_mod_name = get_root_mod_name();
-    const x = Object.keys(sorted_mod_mw_map[root_mod_name]);
+    const x = Object.keys(sorted_mod_mw_map[root_mod_name]).map(x => x.replace(/glycosylation_/g, ''));
     const y: number[] = Object.values(sorted_mod_mw_map[root_mod_name]);
     const range = 0.5
     const y_min = Math.min(...y) * (100 - range) / 100.0;
     const y_max = Math.max(...y) * (100 + range) / 100.0;
     const width = []
     for (let i = 0; i < x.length - 1; i++) {
-        width.push[1];
+        width.push[2];
     }
     const data = [
         {
@@ -69,10 +77,14 @@ const do_plot = () => {
         }
     ];
     const layout = {
+        xaxis: {
+            tickangle: 45,
+        },
         yaxis: {
             range: [y_min, y_max],
-            categoryorder: 'category ascending'
         },
+        height: 300,
+
     }
 
     Plotly.newPlot('plot', data, layout);
@@ -145,9 +157,14 @@ const setup_results = (sorted_mod_mw_map) => {
 const setup_form = () => {
 
     const success = (res) => {
-        $('#mods').html(res.data.html);
-
-        setup_results(res.data.sorted_mod_mw_map);
+        if (res.data.success != undefined && !res.data.success) {
+            $('#results').html("<h2>"+res.data.message+"</h2>");
+            $('#mods').html("");
+        } else {
+            $('#results').html("");
+            $('#mods').html(res.data.html);
+            setup_results(res.data.sorted_mod_mw_map);
+        }
     }
 
     const submit_button = $('#submit');
@@ -168,32 +185,19 @@ const setup_form = () => {
         // const seq_list = sequence_input.value.split('\n');
         // const data = { ...data_struct };
         // data.sequences = seq_list;
-        const data = JSON.parse(json_input.value);
-        const uri = "http://reswebappdev303.gene.com:21135/tapir-helm2-service/calculation/antibodyModificationMolecularWeights"
-        // Axios.post(uri, data, {
-        //     headers: {
-        //         "Content-Type": "application/json"
-        //     }
-        // })
-        //     .then(success)
-        //     .catch(error);
-        Axios.post('/mw', data)
+        try{
+
+            const data = JSON.parse(json_input.value);
+            FOOBAR.symmetricGlycosylation = data.symmetricGlycosylation;
+            const uri = "http://reswebappdev303.gene.com:21135/tapir-helm2-service/calculation/antibodyModificationMolecularWeights"
+            Axios.post('/mw', data)
             .then(success)
             .catch(error);
-
-        // var settings = {
-        //     "url": "http://reswebappdev303.gene.com:21135/tapir-helm2-service/calculation/antibodyModificationMolecularWeights",
-        //     "method": "POST",
-        //     "timeout": 0,
-        //     "headers": {
-        //         "Content-Type": "application/json"
-        //     },
-        //     "data": JSON.stringify({ "sequences": ["DIQMTQSPSSLSASVGDRVTITCKASQGFNKYVAWYQQKPGKAPKLLIYYTSTLQPGVPSRFSGSGSGRDYTLTISSLQPEDFATYYCLQYGDLLYAFGQGTKVEIKRTVAAPSVFIFPPSDEQLKSGTASVVCLLNNFYPREAKVQWKVDNALQSGNSQESVTEQDSKDSTYSLSSTLTLSKADYEKHKVYACEVTHQGLSSPVTKSFNRGEC", "EVQLVQSGAEVKKPGASVKVSCKASGYTFTSYWIGWVRQAPGQGLEWIGDIYPGGGYTNYNEKFKGRVTITRDTSTSTAYLELSSLRSEDTAVYYCARLAGSSYRGAMDSWGQGTLVTVSSCSTKGPSVFPLAPSSKSTSGGTAALGCLVKDYFPEPVTVSWNSGALTSGVHTFPAVLQSSGLYSLSSVVTVPSSSLGTQTYICNVNHKPSNTKVDKKVEPKSCDKTHTCPPCPAPELLGGPSVFLFPPKPKDTLMISRTPEVTCVVVDVSHEDPEVKFNWYVDGVEVHNAKTKPREEQYNSTYRVVSVLTVLHQDWLNGKEYKCKVSNKALPAPIEKTISKAKGQPREPQVYTLPPSREEMTKNQVSLTCLVKGFYPSDIAVEWESNGQPENNYKTTPPVLDSDGSFFLYSKLTVDKSRWQQGNVFSCSVMHEALHNHYTQKSLSLSPGK", "EVQLVQSGAEVKKPGASVKVSCKASGYTFTSYWIGWVRQAPGQGLEWIGDIYPGGGYTNYNEKFKGRVTITRDTSTSTAYLELSSLRSEDTAVYYCARLAGSSYRGAMDSWGQGTLVTVSSCSTKGPSVFPLAPSSKSTSGGTAALGCLVKDYFPEPVTVSWNSGALTSGVHTFPAVLQSSGLYSLSSVVTVPSSSLGTQTYICNVNHKPSNTKVDKKVEPKSCDKTHTCPPCPAPELLGGPSVFLFPPKPKDTLMISRTPEVTCVVVDVSHEDPEVKFNWYVDGVEVHNAKTKPREEQYNSTYRVVSVLTVLHQDWLNGKEYKCKVSNKALPAPIEKTISKAKGQPREPQVYTLPPSREEMTKNQVSLTCLVKGFYPSDIAVEWESNGQPENNYKTTPPVLDSDGSFFLYSKLTVDKSRWQQGNVFSCSVMHEALHNHYTQKSLSLSPGK", "DIQMTQSPSSLSASVGDRVTITCKASQGFNKYVAWYQQKPGKAPKLLIYYTSTLQPGVPSRFSGSGSGRDYTLTISSLQPEDFATYYCLQYGDLLYAFGQGTKVEIKRTVAAPSVFIFPPSDEQLKSGTASVVCLLNNFYPREAKVQWKVDNALQSGNSQESVTEQDSKDSTYSLSSTLTLSKADYEKHKVYACEVTHQGLSSPVTKSFNRGEC"], "engineeredCysCount": 2, "interchain_HH_LinkCount": 2, "interchain_HL_LinkCount": 1, "symmetricGlycosylation": true, "fusionPosition": 0, "conceptUid": "ABP1AA00095" }),
-        // };
-
-        // $.ajax(settings).done(function (response) {
-        //     console.log(response);
-        // });
+        }
+        catch (err) {
+            $('#results').html(err);
+        }
+        
     });
 
     const demo_json = {

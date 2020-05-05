@@ -46,25 +46,37 @@ router.post('/', async (req, res) => {
     const mod_mw = await Axios.post(uri, req.body)
         .then((resp) => {
             console.log(`${json_string(resp)}`);
-
+            if (resp.data.successful != undefined && !resp.data.successful) {
+                console.log(resp.data.statusMessage);
+                return {
+                    success: false,
+                    message: resp.data.statusMessage
+                }
+            }
             // res.send(resp.data.object.modificationmolweights)
             return resp.data.object.modificationmolweights;
         })
         .catch((err) => {
             console.error(err);
-            return {};
+            return { success: false, message: err };
         });
     // writeFileSync('mod_mw.json', JSON.stringify(mod_mw, null, 1))
     // const mod_mw = JSON.parse(readFileSync('mod_mw.json', 'utf-8'))
-    const { result_map, html_data, sorted_mod_mw_map } = get_level2_mods(mod_mw)
-    // const results_data = { mods: html_data };
-    // const results_html = RESULTS_HTML_TEMPLATE(results_data)
-    
-    const results_html = RESULT_ROOT_MOD_SELECT_HTML_TEMPLATE({html_data})
-    res.status(200).send({
-        html: results_html,
-        sorted_mod_mw_map
-    });
+    if (mod_mw.success != undefined && !mod_mw.success) {
+        
+        res.status(200).send({
+            success: false,
+            message: mod_mw.message
+        });
+    }
+    else {
+        const { html_data, sorted_mod_mw_map } = get_level2_mods(mod_mw)
+        const results_html = RESULT_ROOT_MOD_SELECT_HTML_TEMPLATE({ html_data })
+        res.status(200).send({
+            html: results_html,
+            sorted_mod_mw_map
+        });
+    }
 
 });
 
