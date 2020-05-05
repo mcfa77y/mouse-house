@@ -170,24 +170,39 @@ const setup_form = () => {
     const submit_button = $('#submit');
     // const sequence_input: HTMLInputElement = <HTMLInputElement>document.querySelector('#sequence');
     const json_input: HTMLInputElement = <HTMLInputElement>document.querySelector('#json');
+    const sequences_input: HTMLInputElement = <HTMLInputElement>document.querySelector('#sequences');
+    const engineeredCysCount_input: HTMLInputElement = <HTMLInputElement>document.querySelector('#engineeredCysCount');
+    const interchain_HH_LinkCount_input: HTMLInputElement = <HTMLInputElement>document.querySelector('#interchain_HH_LinkCount');
+    const interchain_HL_LinkCount_input: HTMLInputElement = <HTMLInputElement>document.querySelector('#interchain_HL_LinkCount');
+    const symmetricGlycosylation_input: HTMLInputElement = <HTMLInputElement>document.querySelector('#symmetricGlycosylation');
+    const fusionPosition_input: HTMLInputElement = <HTMLInputElement>document.querySelector('#fusionPosition');
+    const conceptUid_input: HTMLInputElement = <HTMLInputElement>document.querySelector('#conceptUid');
 
     submit_button.click((e) => {
         e.preventDefault();
-        // const data_struct = {
-        //     sequences: [],
-        //     engineeredCysCount: 2,
-        //     interchain_HH_LinkCount: 2,
-        //     interchain_HL_LinkCount: 1,
-        //     symmetricGlycosylation: true,
-        //     fusionPosition: 0,
-        //     conceptUid: "ABP1AA00095"
-        // }
-        // const seq_list = sequence_input.value.split('\n');
-        // const data = { ...data_struct };
-        // data.sequences = seq_list;
+        const data_struct = {
+            sequences: [],
+            engineeredCysCount: 2,
+            interchain_HH_LinkCount: 2,
+            interchain_HL_LinkCount: 1,
+            symmetricGlycosylation: true,
+            fusionPosition: 0,
+            conceptUid: "ABP1AA00095"
+        }
+        
+        const seq_list = sequences_input.value.split('\n');
+        const data = { ...data_struct };
+        data.sequences = seq_list;
+        data.engineeredCysCount = parseInt(engineeredCysCount_input.value);
+        data.interchain_HH_LinkCount = parseInt(interchain_HH_LinkCount_input.value);
+        data.interchain_HL_LinkCount = parseInt(interchain_HL_LinkCount_input.value);
+        data.fusionPosition = parseInt(fusionPosition_input.value);
+        data.conceptUid = conceptUid_input.value;
+        data.symmetricGlycosylation = JSON.parse(symmetricGlycosylation_input.value.toLowerCase());
+        
         try{
 
-            const data = JSON.parse(json_input.value);
+            // const data = JSON.parse(json_input.value);
             FOOBAR.symmetricGlycosylation = data.symmetricGlycosylation;
             const uri = "http://reswebappdev303.gene.com:21135/tapir-helm2-service/calculation/antibodyModificationMolecularWeights"
             Axios.post('/mw', data)
