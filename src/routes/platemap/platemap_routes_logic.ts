@@ -140,7 +140,7 @@ const get_img_from_json = async (platemap_id, molecule_cell) => {
         if ("composite" === feature) {
             wl = 'overlay'
         }
-        card_image_metadata[stain][lps_status][wl][sector - 1] = { uri, stain, lps_status, wavelength, sector };
+        card_image_metadata[stain][lps_status][wl][sector] = { uri, stain, lps_status, wavelength, sector };
     }
     cache_image_meta_data.set(key, card_image_metadata);
     return card_image_metadata;
