@@ -258,7 +258,7 @@ class Molecule_Controller extends Base_Controller {
     // }
 
     get model() {
-        return this.Model;
+        return Molecule;
     }
 
 }

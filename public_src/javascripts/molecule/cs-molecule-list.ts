@@ -11,7 +11,7 @@ export function setup_table({ model_name, column_names }) {
         return html;
     }
     columns[column_name_index_map['name']].render = (data, type, row) => {
-        const html = `<a href='molecule/${data.id}'>${data.name}</a>`;
+        const html = `<a href='molecule/${data.id}' target='_blank'>${data.name}</a>`;
         return html;
     }
     let table_options: DataTables.Settings = {
@@ -190,7 +190,9 @@ const setup_shopping_cart = (table) => {
     const view_cart_button = $('#view-cart-button');
     view_cart_button.click(() => {
         const molecule_id_list = cart_selectize.getValue()
-        window.location.href = "/molecule/multi/" + molecule_id_list.join("_");
+        const url = "/molecule/multi/" + molecule_id_list.join("_");
+        
+        window.open(url, '_blank');
     })
 }
 

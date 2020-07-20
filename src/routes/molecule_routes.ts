@@ -62,7 +62,7 @@ router.get('/multi/:molecule_id_list', async (req: Request, res: Response) => {
   const molecule_id_list = req.params.molecule_id_list.split('_');
   const options: { extra_js: string[]; card_data_list: any } = { extra_js: ['molecule_view.bundle.js'], card_data_list: [] };
   const card_data_promise_list = molecule_id_list
-    .map((molecule_id) => molecule_controller.model()
+    .map((molecule_id) => molecule_controller.Model
       .findByPk(molecule_id, {
         attributes: ['cell', 'platemap_id'],
         raw: true,
