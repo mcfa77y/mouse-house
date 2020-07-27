@@ -57,7 +57,7 @@ const setup_form = () => {
         dt.append('crc_csv', crc_file_input.files[0]);
         // dt.append('crc_csv_label', document.getElementById('crc_csv_label').innerText);
 
-        dt.append('images_csv', image_zip_file_input.files[0]);
+        // dt.append('images_csv', image_zip_file_input.files[0]);
         // dt.append('images_csv_label', document.getElementById('images_csv_label').innerText);
         
         // const config = {
