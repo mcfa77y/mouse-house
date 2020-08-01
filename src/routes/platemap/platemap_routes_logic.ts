@@ -142,7 +142,7 @@ const get_img_from_json = async (platemap_id, molecule_cell) => {
             }
             const image_metadata_uri: string = EXPR_IMG_META_TO_JSON_MAP[experiment_hrn];
             const image_metadata_buffer: string = readFileSync(image_metadata_uri).toString();
-            const image_metadata: Foo_Map = JSON.parse(image_metadata_buffer);
+            const image_metadata: Bar = JSON.parse(image_metadata_buffer);
             cache_image_meta_data.set(key_expr_img_meta_json, image_metadata);
             return image_metadata;
         })
