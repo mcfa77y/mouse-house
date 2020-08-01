@@ -1,12 +1,23 @@
-import { Router, Application } from 'express';
-import express = require('express');
-import path from 'path';
-import logger from 'morgan'
 import cookieParser from 'cookie-parser';
-import helmet from 'helmet';
-import hbs_utils from 'hbs-utils';
+import { Application, Router } from 'express';
 import session from 'express-session';
-import { update_image_metadata } from './process_experiment_images';
+import helpers from 'handlebars-helpers';
+// handel bars helpers
+import hbs from 'hbs';
+import hbs_utils from 'hbs-utils';
+import helmet from 'helmet';
+import logger from 'morgan';
+import path from 'path';
+import { parseHrtimeToSeconds, rm_expr_img_meta, update_image_metadata } from './process_experiment_images';
+import experiment from './routes/experiment_routes';
+import grid from './routes/grid/grid_routes';
+import molecule from './routes/molecule_routes';
+import platemap from './routes/platemap/platemap_routes';
+import upload from './routes/upload/upload_routes';
+
+
+
+import express = require('express');
 // const cors = require('cors');
 
 
@@ -23,10 +34,15 @@ app.use(router);
 
 app.use(cookieParser());
 
-const PUBLIC_DIR = path.join(__dirname, '..', 'public')
+const PUBLIC_DIR = path.join(__dirname, '..', 'public');
 // process image locations before setting up static dir
 const EXPIRIMENT_DIR = path.join(PUBLIC_DIR, 'experiments');
-update_image_metadata(EXPIRIMENT_DIR);
+// rm_expr_img_meta().then(() => {
+    const startTime = process.hrtime();
+    update_image_metadata(EXPIRIMENT_DIR, true).then(() => {
+        parseHrtimeToSeconds(process.hrtime(startTime), 'update_image_metadata');
+    });
+// });
 
 console.log(`static path: ${PUBLIC_DIR}`);
 app.use(express.static(PUBLIC_DIR));
@@ -37,21 +53,6 @@ app.use(session({
     resave: false,
     saveUninitialized: true,
 }));
-
-// handel bars helpers
-import hbs from 'hbs';
-import helpers from 'handlebars-helpers';
-
-// import breed from './routes/breed/breed_routes';
-// import mouse from './routes/mouse/mouse_routes';
-// import cage from './routes/cage/cage_routes';
-// import project from './routes/project_routes';
-// import dropbox from './routes/dropbox_routes';
-import grid from './routes/grid/grid_routes';
-import experiment from './routes/experiment_routes';
-import upload from './routes/upload/upload_routes';
-import molecule from './routes/molecule_routes';
-import platemap from './routes/platemap/platemap_routes';
 
 const hbsutils = hbs_utils(hbs);
 

@@ -21,7 +21,7 @@ module.exports = {
     ],
     rules: {
         "camelcase": "off",
-        "@typescript-eslint/camelcase": ["never"],
+        "@typescript-eslint/camelcase": 0,
         "no-underscore-dangle": 0,
         "class-methods-use-this": "off",
         "indent": [
