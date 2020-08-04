@@ -2,7 +2,6 @@ import range from 'lodash/range';
 
 import { setup_list_page_buttons, get_selected_row_ids, get_selected_row_name_ids } from '../cs-model-common';
 import { model_name, column_names, column_name_index_map, column_hide_index_list } from './cs-molecule-common';
-import Axios from 'axios';
 
 export function setup_table({ model_name, column_names }) {
     const columns = column_names.map((x) => ({ data: x }));
