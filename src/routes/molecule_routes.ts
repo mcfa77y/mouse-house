@@ -24,7 +24,7 @@ router.post('/table', async (req: Request, res: Response) => {
   // const draw = parseInt(req.body.draw);
   // const offset = parseInt(req.body.start);
   // const limit = parseInt(req.body.length);
-  const {
+const {
     draw, start: offset, length: limit, columns, search, order,
   } = req.body;
   // const limit = 100;

@@ -37,12 +37,11 @@ app.use(cookieParser());
 const PUBLIC_DIR = path.join(__dirname, '..', 'public');
 // process image locations before setting up static dir
 const EXPIRIMENT_DIR = path.join(PUBLIC_DIR, 'experiments');
-// rm_expr_img_meta().then(() => {
-    const startTime = process.hrtime();
-    update_image_metadata(EXPIRIMENT_DIR, true).then(() => {
-        parseHrtimeToSeconds(process.hrtime(startTime), 'update_image_metadata');
-    });
-// });
+const startTime = process.hrtime();
+update_image_metadata(EXPIRIMENT_DIR, true).then(() => {
+    parseHrtimeToSeconds(process.hrtime(startTime), 'update_image_metadata');
+});
+
 
 console.log(`static path: ${PUBLIC_DIR}`);
 app.use(express.static(PUBLIC_DIR));

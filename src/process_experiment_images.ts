@@ -79,10 +79,10 @@ export const update_image_metadata = async (dir, pretty_print = false) => {
             // dirs with image_metadata.json have been processed
             // console.log(`expr_uri: ${expr_uri}`);
             const expr_name = expr_uri.split('/').slice(-1)[0].toLocaleLowerCase();
-            startTime = process.hrtime();
+            // startTime = process.hrtime();
             const json_file_list = await glob_promise(`${expr_uri}/image_metadata.json`);
             const is_write_image_metadata = json_file_list.length === 0;
-            parseHrtimeToSeconds(process.hrtime(startTime), `update_0 - found image_metadata.json: ${!is_write_image_metadata} \t expr: ${expr_name}`);
+            // parseHrtimeToSeconds(process.hrtime(startTime), `update_0 - found image_metadata.json: ${!is_write_image_metadata} \t expr: ${expr_name}`);
 
             return is_write_image_metadata;
         }))
