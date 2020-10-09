@@ -33,12 +33,15 @@
     }
   },
   "production": {
-    "use_env_variable": "DATABASE_URL",
+    "username": "macropcsc",
+    "password": "tA#stolabMPcsc",
+    "database": "macropcsc",
+    "host": "localhost",
     "dialect": "postgres",
-    "ssl": true,
     "dialectOptions": {
       "ssl": {
-        "require": true
+        "require": true,
+        "rejectUnauthorized": false
       }
     }
   }

@@ -11,8 +11,11 @@
     "build:watch_tsc": "npm run build:clean_dist; npx tsc --watch",
     "build:watch_webpack": "nvm use 12.14.0; npx webpack --watch",
     "build:watch": "npm run build:watch_tsc & npm run build:watch_webpack&",
+    "build:with_clean": "npm run build:clean_dist; npx tsc; npx webpack",
+    "build": "npx tsc; npx webpack",
     "debug": "nvm use 12.14.0; nodemon --inspect index.js",
     "dev": "npx nodemon src/index.ts",
+    "start": "node dist/index.js",
     "postinstall": "webpack -p --progress"
   },
   "dependencies": {

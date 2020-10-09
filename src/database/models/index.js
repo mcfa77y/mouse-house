@@ -10,7 +10,8 @@ const product_info = require('./product_info');
 const molecule = require('./molecule');
 const image_metadata = require('./image_metadata');
 
-const env = 'heroku';
+// const env = 'heroku';
+const env = 'production';
 // const env = process.env.NODE_ENV || 'development';
 
 console.log(`enter index.js model: ${__dirname}`);
@@ -21,14 +22,11 @@ const db = {};
 let sequelize;
 
 if (process.env.NODE_ENV === 'production') {
-    console.log('using prod for db');
+    console.log(`using prod config for db\n${JSON.stringify(config, null, 2)}`);
 
-    sequelize = new Sequelize(process.env.DATABASE_URL, {
-        dialect: 'postgres',
-        dialectOptions: {
-            ssl: true,
-        },
-    });
+    sequelize = new Sequelize(config.database, config.username, config.password, config);
+
+
 } else if (process.env.NODE_ENV === 'test') {
     console.log('using test for db');
     sequelize = new Sequelize(process.env.DATABASE_URL, {
