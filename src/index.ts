@@ -8,6 +8,9 @@ import hbs_utils from 'hbs-utils';
 import helmet from 'helmet';
 import logger from 'morgan';
 import path from 'path';
+
+const http = require('http');
+
 import { parseHrtimeToSeconds, rm_expr_img_meta, update_image_metadata } from './process_experiment_images';
 import experiment from './routes/experiment_routes';
 import grid from './routes/grid/grid_routes';
@@ -20,6 +23,7 @@ import upload from './routes/upload/upload_routes';
 import express = require('express');
 // const cors = require('cors');
 
+const port = 5000;
 
 const app: Application = express();
 const router = Router();
@@ -86,10 +90,14 @@ app.use('/molecule', molecule);
 app.use('/platemap', platemap);
 
 
+//app.get('/', (request, response) => {
+//    response.render('pages/index');
+//});
+
 app.get('/', (request, response) => {
     response.render('pages/index');
-});
-
+    const http = require('http');
+);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
@@ -122,4 +130,7 @@ app.use((err, req, res, next) => {
 
 app.listen(app.get('port'), () => {
     console.log('Node app is running on port', app.get('port'));
+    const server = http.createServer({}, app)
+                   .listen(5000, '127.0.0.1', () => {console.log(`Server Listening and Running on port: ${port}/`);});
+    });
 });
